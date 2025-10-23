@@ -1,5 +1,4 @@
 import type { MissionAndValuesBlock as MissionAndValuesBlockProps } from 'src/payload-types'
-
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
@@ -15,7 +14,7 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
   missionCard,
   valuesCard,
 }) => {
-  return (
+  return (  
     <section className={cn('py-12 px-6 max-w-7xl mx-auto', className)}>
       {/* Header Section - Centered */}
       <div className="text-center sm:text-start mb-12">
@@ -40,10 +39,13 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
           <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left max-w-[330px] lg:max-w-[400px] mx-auto md:mx-0">
             {/* Icon */}
             <div className="w-12 h-12 flex items-center justify-center mb-6">
-              <div
-                dangerouslySetInnerHTML={{ __html: missionCard.icon || '' }}
-                className="w-[62px] h-[62px] flex items-center justify-center"
-              />
+              {missionCard.icon && typeof missionCard.icon === 'object' && (
+                <img
+                  src={missionCard.icon.url || ''}
+                  alt={missionCard.icon.alt || 'Mission icon'}
+                  className="w-[62px] h-[62px] object-contain"
+                />
+              )}
             </div>
 
             {/* Title */}
@@ -61,14 +63,17 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
           <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left max-w-[330px] lg:max-w-[400px] mx-auto md:mx-0">
             {/* Icon */}
             <div className="w-12 h-12 flex items-center justify-center mb-6">
-              <div
-                dangerouslySetInnerHTML={{ __html: valuesCard.icon || '' }}
-                className="w-[62px] h-[62px] flex items-center justify-center"
-              />
+              {valuesCard.icon && typeof valuesCard.icon === 'object' && (
+                <img
+                  src={valuesCard.icon.url || ''}
+                  alt={valuesCard.icon.alt || 'Values icon'}
+                  className="w-[62px] h-[62px] object-contain"
+                />
+              )}
             </div>
 
             {/* Title */}
-            <h2 className="text-[#C90E1D] text-2xl lg:text-3xl font-semibold  pb-[72px] uppercase tracking-wider">
+            <h2 className="text-[#C90E1D] text-2xl lg:text-3xl font-semibold pb-[72px] uppercase tracking-wider">
               {valuesCard.title}
             </h2>
 

@@ -61,10 +61,17 @@ export const WhyWorkWithUsBlock: React.FC<Props> = ({
                   feature.iconAlignment === 'right' ? 'md:ml-auto' : '',
                 )}
               >
-                <div
+                {/* <div
                   dangerouslySetInnerHTML={{ __html: feature.icon || '' }}
                   className="w-[88px] h-[87px] flex items-center justify-center"
-                />
+                /> */}
+                {feature.icon && typeof feature.icon === 'object' && (
+                  <img
+                    src={feature.icon.url || ''}
+                    alt={feature.icon.alt || 'Mission icon'}
+                    className="w-[62px] h-[62px] object-contain"
+                  />
+                )}
               </div>
 
               <div>

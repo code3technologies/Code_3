@@ -820,12 +820,12 @@ export interface MissionAndValuesBlock {
   title: string;
   subtitle: string;
   missionCard: {
-    icon: string;
+    icon: string | Media;
     title: string;
     content: string;
   };
   valuesCard: {
-    icon: string;
+    icon: string | Media;
     title: string;
     content: string;
   };
@@ -843,7 +843,7 @@ export interface WhyWorkWithUsBlock {
   subtitle: string;
   features?:
     | {
-        icon: string;
+        icon: string | Media;
         title: string;
         description: string;
         colSpan: '4' | '5';
@@ -865,7 +865,7 @@ export interface WhyChooseUsAboutBlock {
   subtitle: string;
   features?:
     | {
-        icon: string;
+        icon: string | Media;
         title: string;
         description: string;
         id?: string | null;

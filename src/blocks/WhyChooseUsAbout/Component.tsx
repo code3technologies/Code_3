@@ -42,10 +42,13 @@ export const WhyChooseUsAboutBlock: React.FC<Props> = ({
               <div className="rounded-2xl p-6 sm:p-8 text-center">
                 {/* Icon */}
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: feature.icon || '' }}
-                    className="w-[52px] h-[52px] flex items-center justify-center"
-                  />
+                  {feature.icon && typeof feature.icon === 'object' && (
+                    <img
+                      src={feature.icon.url || ''}
+                      alt={feature.icon.alt || 'Mission icon'}
+                      className="w-[62px] h-[62px] object-contain"
+                    />
+                  )}
                 </div>
 
                 {/* Title */}
