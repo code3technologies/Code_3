@@ -229,6 +229,7 @@ export interface Page {
     | AboutUsBannerBlock
     | TrustedBrandsBlock
     | CurrentOpeningsBlock
+    | ServiceSolutionsBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1061,6 +1062,28 @@ export interface CurrentOpeningsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceSolutionsBlock".
+ */
+export interface ServiceSolutionsBlock {
+  badge: string;
+  title: string;
+  description: string;
+  services?:
+    | {
+        title: string;
+        description: string;
+        buttonText?: string | null;
+        buttonLink?: string | null;
+        gridSpan: '2' | '3' | '2-3';
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceSolutions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1379,6 +1402,7 @@ export interface PagesSelect<T extends boolean = true> {
         aboutUsBanner?: T | AboutUsBannerBlockSelect<T>;
         trustedBrands?: T | TrustedBrandsBlockSelect<T>;
         currentOpenings?: T | CurrentOpeningsBlockSelect<T>;
+        serviceSolutions?: T | ServiceSolutionsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1750,6 +1774,27 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
         type?: T;
         viewJobText?: T;
         viewJobLink?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceSolutionsBlock_select".
+ */
+export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  services?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        buttonText?: T;
+        buttonLink?: T;
+        gridSpan?: T;
         id?: T;
       };
   id?: T;

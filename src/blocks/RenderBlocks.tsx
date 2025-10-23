@@ -19,6 +19,7 @@ import { WhyChooseUsBlock } from './WhyChooseUs/Component'
 import { CurrentOpeningsBlock } from './CurrentOpenings/Component'
 import { CareersBlock } from './CareersBanner/Component'
 import { TrustedBrandsBlock } from './TrustedBrands/Component'
+import { ServiceSolutionsBlock } from './ServiceSolutions/Components'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -37,7 +38,8 @@ const blockComponents = {
   careers: CareersBlock,
   aboutUsBanner: AboutUsBannerBlock,
   trustedBrands: TrustedBrandsBlock,
-  currentOpenings: CurrentOpeningsBlock
+  currentOpenings: CurrentOpeningsBlock,
+  serviceSolutions: ServiceSolutionsBlock
 }
 
 export const RenderBlocks: React.FC<{
