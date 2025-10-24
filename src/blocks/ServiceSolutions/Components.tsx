@@ -8,6 +8,7 @@ import { cn } from '@/utilities/ui'
 interface Service {
   title: string
   description: string
+  showButton?: boolean
   buttonText?: string
   buttonLink?: string
   gridSpan?: string
@@ -17,6 +18,7 @@ interface ServiceSolutionsBlockProps {
   badge?: string
   title?: string
   description?: string
+  headerAlignment?: 'left' | 'center' | 'right'
   services?: Service[]
   className?: string
 }
@@ -36,25 +38,41 @@ const getGridSpanClass = (gridSpan: string) => {
   }
 }
 
+const getAlignmentClass = (alignment: string) => {
+  switch (alignment) {
+    case 'center':
+      return 'text-center'
+    case 'right':
+      return 'text-right md:text-end'
+    case 'left':
+    default:
+      return 'text-center md:text-start'
+  }
+}
+
 export const ServiceSolutionsBlock: React.FC<Props> = ({
   className,
   badge = 'Services',
   title = 'Solutions We Deliver',
   description = 'We go beyond technology—we create future-ready solutions that empower businesses to perform better, stay secure, and grow faster. With expertise across IT, ICT, Cybersecurity, and AV, we are your single point of contact for all technology needs.',
+  headerAlignment = 'left',
   services = [],
 }) => {
   return (
     <section className={cn('py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden', className)}>
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="mb-16 text-center md:text-start">
+        <div className={cn('mb-16', getAlignmentClass(headerAlignment))}>
           <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
             {badge}
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             {title}
           </h2>
-          <p className="px-3 md:px-0 mx-auto md:mx-0 text-md md:text-xl lg:max-w-3xl text-gray-600 leading-relaxed">
+          <p className={cn(
+            'px-3 md:px-0 text-md md:text-xl lg:max-w-3xl text-gray-600 leading-relaxed',
+            headerAlignment === 'center' ? 'mx-auto' : headerAlignment === 'right' ? 'md:ml-auto md:mr-0' : 'mx-auto md:mx-0'
+          )}>
             {description}
           </p>
         </div>
@@ -75,52 +93,55 @@ export const ServiceSolutionsBlock: React.FC<Props> = ({
                     {service.title}
                   </span>
                 </div>
-                <h3 className="text-md max-w-xl md:text-xl font-semibold text-gray-900 mb-4">
+                <h3 className="text-md max-w-lg md:text-xl font-semibold text-gray-900 mb-4">
                   {service.description}
                 </h3>
-                <Button
-                  variant="exploreLink"
-                  onClick={() => {
-                    if (service.buttonLink && service.buttonLink !== '#') {
-                      window.open(service.buttonLink, '_blank')
-                    }
-                  }}
-                >
-                  {service.buttonText || 'Explore Service'}
-                  <svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 10 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                {service.showButton && (
+                  <Button
+                    variant="exploreLink"
+                    size="link"
+                    onClick={() => {
+                      if (service.buttonLink && service.buttonLink !== '#') {
+                        window.open(service.buttonLink, '_blank')
+                      }
+                    }}
                   >
-                    <path
-                      d="M0.833252 9.16732L9.16659 0.833984M9.16659 0.833984H0.833252M9.16659 0.833984V9.16732"
-                      stroke="url(#paint0_linear_864_7934)"
-                      strokeWidth="1.66667"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_864_7934"
-                        x1="3.3963"
-                        y1="11.8317"
-                        x2="-1.83432"
-                        y2="3.96613"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stopColor="#C90E1D" />
-                        <stop offset="1" stopColor="#F0B4AC" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </Button>
+                    {service.buttonText || 'Explore Service'}
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0.833252 9.16732L9.16659 0.833984M9.16659 0.833984H0.833252M9.16659 0.833984V9.16732"
+                        stroke="url(#paint0_linear_864_7934)"
+                        strokeWidth="1.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="paint0_linear_864_7934"
+                          x1="3.3963"
+                          y1="11.8317"
+                          x2="-1.83432"
+                          y2="3.96613"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stopColor="#C90E1D" />
+                          <stop offset="1" stopColor="#F0B4AC" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
     </section>
-  )
+  )
 }

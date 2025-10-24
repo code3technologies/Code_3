@@ -230,6 +230,7 @@ export interface Page {
     | TrustedBrandsBlock
     | CurrentOpeningsBlock
     | ServiceSolutionsBlock
+    | ServicesHeroBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1068,10 +1069,12 @@ export interface ServiceSolutionsBlock {
   badge: string;
   title: string;
   description: string;
+  headerAlignment: 'left' | 'center' | 'right';
   services?:
     | {
         title: string;
         description: string;
+        showButton?: boolean | null;
         buttonText?: string | null;
         buttonLink?: string | null;
         gridSpan: '2' | '3' | '2-3';
@@ -1081,6 +1084,21 @@ export interface ServiceSolutionsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'serviceSolutions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesHeroBlock".
+ */
+export interface ServicesHeroBlock {
+  title: string;
+  subtitle: string;
+  buttonText: string;
+  buttonLink?: string | null;
+  image1: string | Media;
+  image2: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1403,6 +1421,7 @@ export interface PagesSelect<T extends boolean = true> {
         trustedBrands?: T | TrustedBrandsBlockSelect<T>;
         currentOpenings?: T | CurrentOpeningsBlockSelect<T>;
         serviceSolutions?: T | ServiceSolutionsBlockSelect<T>;
+        servicesHero?: T | ServicesHeroBlockSelect<T>;
       };
   meta?:
     | T
@@ -1787,16 +1806,32 @@ export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   description?: T;
+  headerAlignment?: T;
   services?:
     | T
     | {
         title?: T;
         description?: T;
+        showButton?: T;
         buttonText?: T;
         buttonLink?: T;
         gridSpan?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesHeroBlock_select".
+ */
+export interface ServicesHeroBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  buttonText?: T;
+  buttonLink?: T;
+  image1?: T;
+  image2?: T;
   id?: T;
   blockName?: T;
 }
