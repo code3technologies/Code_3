@@ -21,6 +21,7 @@ import { CareersBlock } from './CareersBanner/Component'
 import { TrustedBrandsBlock } from './TrustedBrands/Component'
 import { ServiceSolutionsBlock } from './ServiceSolutions/Components'
 import { ServicesHeroBlock } from './ServicesHero/Component'
+import { ServicesStepsBlock } from './ServicesSteps/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -41,7 +42,8 @@ const blockComponents = {
   trustedBrands: TrustedBrandsBlock,
   currentOpenings: CurrentOpeningsBlock,
   serviceSolutions: ServiceSolutionsBlock,
-  servicesHero: ServicesHeroBlock
+  servicesHero: ServicesHeroBlock,
+  servicesSteps: ServicesStepsBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -231,6 +231,7 @@ export interface Page {
     | CurrentOpeningsBlock
     | ServiceSolutionsBlock
     | ServicesHeroBlock
+    | ServicesStepsBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1102,6 +1103,27 @@ export interface ServicesHeroBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesStepsBlock".
+ */
+export interface ServicesStepsBlock {
+  badge: string;
+  title: string;
+  subtitle: string;
+  steps?:
+    | {
+        stepNumber: string;
+        title: string;
+        description: string;
+        icon: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesSteps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1422,6 +1444,7 @@ export interface PagesSelect<T extends boolean = true> {
         currentOpenings?: T | CurrentOpeningsBlockSelect<T>;
         serviceSolutions?: T | ServiceSolutionsBlockSelect<T>;
         servicesHero?: T | ServicesHeroBlockSelect<T>;
+        servicesSteps?: T | ServicesStepsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1832,6 +1855,26 @@ export interface ServicesHeroBlockSelect<T extends boolean = true> {
   buttonLink?: T;
   image1?: T;
   image2?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesStepsBlock_select".
+ */
+export interface ServicesStepsBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        stepNumber?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

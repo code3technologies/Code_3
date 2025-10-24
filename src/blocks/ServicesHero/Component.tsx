@@ -76,7 +76,7 @@ export const ServicesHeroBlock: React.FC<Props> = ({
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden px-6 lg:px-8 md:flex max-w-[2000px] mx-auto xl:min-h-[760px] bg-[linear-gradient(-30deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
+      <div className="hidden px-6 lg:px-8 md:flex max-w-[2000px] mx-auto xl:min-h-[680px] bg-[linear-gradient(-30deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
         <div className="mx-auto py-12 max-w-7xl">
           <div className="flex justify-between items-end">
             <h1 className="text-[6rem] xl:text-[8.5rem] font-bold text-[#C90E1D]">
