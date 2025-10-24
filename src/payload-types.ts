@@ -232,6 +232,7 @@ export interface Page {
     | ServiceSolutionsBlock
     | ServicesHeroBlock
     | ServicesStepsBlock
+    | ServiceDetailBannerBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1124,6 +1125,19 @@ export interface ServicesStepsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceDetailBannerBlock".
+ */
+export interface ServiceDetailBannerBlock {
+  serviceName: string;
+  title: string;
+  description: string;
+  showGradientLine?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceDetailBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1445,6 +1459,7 @@ export interface PagesSelect<T extends boolean = true> {
         serviceSolutions?: T | ServiceSolutionsBlockSelect<T>;
         servicesHero?: T | ServicesHeroBlockSelect<T>;
         servicesSteps?: T | ServicesStepsBlockSelect<T>;
+        serviceDetailBanner?: T | ServiceDetailBannerBlockSelect<T>;
       };
   meta?:
     | T
@@ -1875,6 +1890,18 @@ export interface ServicesStepsBlockSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceDetailBannerBlock_select".
+ */
+export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
+  serviceName?: T;
+  title?: T;
+  description?: T;
+  showGradientLine?: T;
   id?: T;
   blockName?: T;
 }
