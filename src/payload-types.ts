@@ -219,7 +219,6 @@ export interface Page {
         blockType: 'faq';
       }
     | ServicesBlock
-    | HeroBannerBlock
     | MissionAndValuesBlock
     | WhyWorkWithUsBlock
     | WhyChooseUsAboutBlock
@@ -233,6 +232,7 @@ export interface Page {
     | ServicesHeroBlock
     | ServicesStepsBlock
     | ServiceDetailBannerBlock
+    | ServiceOverviewBlock
   )[];
   meta?: {
     title?: string | null;
@@ -439,21 +439,9 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  showLogo?: boolean | null;
+  title?: string | null;
+  description?: string | null;
   links?:
     | {
         link: {
@@ -473,11 +461,12 @@ export interface CallToActionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'buttonWithGradientOnHover') | null;
         };
         id?: string | null;
       }[]
     | null;
+  backgroundImage?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -802,21 +791,6 @@ export interface ServicesBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroBannerBlock".
- */
-export interface HeroBannerBlock {
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  buttonLink?: string | null;
-  backgroundImage?: (string | null) | Media;
-  showLogo?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'heroBanner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MissionAndValuesBlock".
  */
 export interface MissionAndValuesBlock {
@@ -1138,6 +1112,19 @@ export interface ServiceDetailBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceOverviewBlock".
+ */
+export interface ServiceOverviewBlock {
+  badge: string;
+  title: string;
+  description: string;
+  image: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceOverview';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1446,7 +1433,6 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         services?: T | ServicesBlockSelect<T>;
-        heroBanner?: T | HeroBannerBlockSelect<T>;
         missionAndValues?: T | MissionAndValuesBlockSelect<T>;
         whyWorkWithUs?: T | WhyWorkWithUsBlockSelect<T>;
         whyChooseUsAbout?: T | WhyChooseUsAboutBlockSelect<T>;
@@ -1460,6 +1446,7 @@ export interface PagesSelect<T extends boolean = true> {
         servicesHero?: T | ServicesHeroBlockSelect<T>;
         servicesSteps?: T | ServicesStepsBlockSelect<T>;
         serviceDetailBanner?: T | ServiceDetailBannerBlockSelect<T>;
+        serviceOverview?: T | ServiceOverviewBlockSelect<T>;
       };
   meta?:
     | T
@@ -1480,7 +1467,9 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
-  richText?: T;
+  showLogo?: T;
+  title?: T;
+  description?: T;
   links?:
     | T
     | {
@@ -1496,6 +1485,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  backgroundImage?: T;
   id?: T;
   blockName?: T;
 }
@@ -1583,20 +1573,6 @@ export interface ServicesBlockSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroBannerBlock_select".
- */
-export interface HeroBannerBlockSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
-  buttonText?: T;
-  buttonLink?: T;
-  backgroundImage?: T;
-  showLogo?: T;
   id?: T;
   blockName?: T;
 }
@@ -1902,6 +1878,18 @@ export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   showGradientLine?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceOverviewBlock_select".
+ */
+export interface ServiceOverviewBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  image?: T;
   id?: T;
   blockName?: T;
 }

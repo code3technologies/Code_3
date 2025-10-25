@@ -45,7 +45,7 @@ export const ServicesHeroBlock: React.FC<Props> = ({
                     variant="default"
                   onClick={() => {
                     if (buttonLink && buttonLink !== '#') {
-                        window.open(buttonLink, '_blank')
+                        window.open(buttonLink, '_self')
                       }
                   }}
                 >
@@ -88,7 +88,7 @@ export const ServicesHeroBlock: React.FC<Props> = ({
                     variant="default"
                   onClick={() => {
                     if (buttonLink && buttonLink !== '#') {
-                      window.open(buttonLink, '_blank')
+                      window.open(buttonLink, '_self')
                     }
                   }}
                 >

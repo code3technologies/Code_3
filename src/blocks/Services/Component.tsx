@@ -29,18 +29,14 @@ export const ServicesBlock: React.FC<Props> = ({
           typeof currentService.image === 'string'
             ? currentService.image
             : currentService.image.url || ''
-        console.log('Constructed image URL:', imageUrl)
       }
     }
   }, [currentService])
 
   const getImageUrl = (image: string | { url?: string; filename?: string } | Media) => {
-    if (typeof image === 'string') {
-      console.log('Image is a string:', image);
-      
+    if (typeof image === 'string') {      
       return image.startsWith('http') ? image : `/images/${image}` // adjust relative path if needed
     }
-    console.log('Image is an object:', image);
     
     return image?.url || image?.filename || ''
   }

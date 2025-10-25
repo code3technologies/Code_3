@@ -31,7 +31,7 @@ const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) 
 
   const linkProps = {
     href: item.link,
-    ...(item.openInNewTab && { target: '_blank', rel: 'noopener noreferrer' }),
+    ...(item.openInNewTab && { target: '_self', rel: 'noopener noreferrer' }),
     className: `flex items-center gap-2 ${item.cssClass || ''} ${
       isMobile ? 'text-base font-semibold py-2' : 'hover:text-red-600 transition'
     }`,
@@ -67,7 +67,7 @@ const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) 
                   className={`block ${
                     isMobile ? 'text-sm py-1' : 'px-3 py-2 text-sm hover:bg-gray-100 rounded'
                   }`}
-                  {...(subItem.openInNewTab && { target: '_blank', rel: 'noopener noreferrer' })}
+                  {...(subItem.openInNewTab && { target: '_self', rel: 'noopener noreferrer' })}
                 >
                   <div className="flex items-center gap-2">
                     {subItem.icon && <DynamicIcon name={subItem.icon} className="w-3 h-3" />}

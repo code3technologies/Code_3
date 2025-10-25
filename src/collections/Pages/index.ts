@@ -22,7 +22,6 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { FAQ } from '@/blocks/FAQ/config'
 import { Services } from '@/blocks/Services/config'
-import { HeroBanner } from '@/blocks/HeroBanner/config'
 import { MissionAndValues } from '@/blocks/MissionAndValues/config'
 import { WhyWorkWithUs } from '@/blocks/WhyWorkWithUs/config'
 import { WhyChooseUsAbout } from '@/blocks/WhyChooseUsAbout/config'
@@ -36,6 +35,7 @@ import { ServiceSolutions } from '@/blocks/ServiceSolutions/config'
 import { ServicesHero } from '@/blocks/ServicesHero/config'
 import { ServicesSteps } from '@/blocks/ServicesSteps/config'
 import { ServiceDetailBanner } from '@/blocks/ServiceDetailBanner/config'
+import { ServiceOverview } from '@/blocks/ServiceOverview/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -91,7 +91,29 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, FAQ, Services, HeroBanner, MissionAndValues, WhyWorkWithUs, WhyChooseUsAbout, WhyChooseUs, ContactUs, Careers, AboutUsBanner, TrustedBrands, CurrentOpenings, ServiceSolutions, ServicesHero, ServicesSteps, ServiceDetailBanner],
+              blocks: [
+                CallToAction, 
+                Content, 
+                MediaBlock, 
+                Archive, 
+                FormBlock, 
+                FAQ, 
+                Services, 
+                MissionAndValues, 
+                WhyWorkWithUs, 
+                WhyChooseUsAbout, 
+                WhyChooseUs, 
+                ContactUs, 
+                Careers, 
+                AboutUsBanner, 
+                TrustedBrands, 
+                CurrentOpenings, 
+                ServiceSolutions, 
+                ServicesHero, 
+                ServicesSteps, 
+                ServiceDetailBanner,
+                ServiceOverview,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

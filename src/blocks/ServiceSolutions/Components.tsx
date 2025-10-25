@@ -102,7 +102,7 @@ export const ServiceSolutionsBlock: React.FC<Props> = ({
                     size="link"
                     onClick={() => {
                       if (service.buttonLink && service.buttonLink !== '#') {
-                        window.open(service.buttonLink, '_blank')
+                        window.open(service.buttonLink, '_self')
                       }
                     }}
                   >

@@ -18,7 +18,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        exploreLink: "text-[#C90E1D]/85 hover:text-[#C90E1D]/90 hover:cursor-pointer font-medium transition-all duration-200 flex items-start gap-3 group p-0 h-auto justify-start w-max"
+        buttonWithGradientOnHover: "transform transition-all cursor-pointer rounded-full bg-black text-sm font-medium text-white duration-300 active:scale-95 hover:bg-gradient-to-br outline-none hover:from-black hover:to-white/40 hover:via-black sm:text-base",
+        exploreLink: "text-[#C90E1D]/85 hover:text-[#C90E1D]/90 hover:cursor-pointer font-medium transition-all duration-200 flex items-start gap-3 group p-0 h-auto justify-start w-max",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -26,7 +27,10 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         full: "w-full h-10 px-5",
-        link: "px-0 py-2"
+        link: "px-0 py-2",
+        alignCenter: "px-6 py-3 sm:px-8 sm:py-4 w-max mx-auto",
+        alignRight: "px-6 py-3 w-max ml-auto",
+        alignLeft: "px-6 py-3 w-max mr-auto",
       },
     },
     defaultVariants: {

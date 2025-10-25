@@ -77,15 +77,4 @@ export const Media: CollectionConfig = {
       },
     ],
   },
-  hooks: {
-    afterChange: [
-      ({ doc }) => {
-        console.log('✅ File uploaded to Blob:', doc.url)
-        if (doc?.sizes) {
-          console.log('Generated sizes:', Object.keys(doc.sizes))
-        }
-        return doc
-      },
-    ],
-  },
 }

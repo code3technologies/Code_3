@@ -17,7 +17,7 @@ const BeforeDashboard: React.FC = () => {
         <li>
           <SeedButton />
           {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
+          <a href="/" target="_self">
             visit your website
           </a>
           {' to see the results.'}
@@ -32,7 +32,7 @@ const BeforeDashboard: React.FC = () => {
           <a
             href="https://payloadcms.com/docs/configuration/collections"
             rel="noopener noreferrer"
-            target="_blank"
+            target="_self"
           >
             collections
           </a>
@@ -40,7 +40,7 @@ const BeforeDashboard: React.FC = () => {
           <a
             href="https://payloadcms.com/docs/fields/overview"
             rel="noopener noreferrer"
-            target="_blank"
+            target="_self"
           >
             fields
           </a>
@@ -48,7 +48,7 @@ const BeforeDashboard: React.FC = () => {
           <a
             href="https://payloadcms.com/docs/getting-started/what-is-payload"
             rel="noopener noreferrer"
-            target="_blank"
+            target="_self"
           >
             Getting Started
           </a>
@@ -62,7 +62,7 @@ const BeforeDashboard: React.FC = () => {
       <a
         href="https://payloadcms.com/docs/custom-components/overview"
         rel="noopener noreferrer"
-        target="_blank"
+        target="_self"
       >
         custom component
       </a>

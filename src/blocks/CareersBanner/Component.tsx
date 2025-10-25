@@ -3,6 +3,7 @@
 import type { CareersBlock as CareersBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Button } from '@/components/ui/button'
 
 type Props = CareersBlockProps & {
   className?: string
@@ -52,16 +53,19 @@ export const CareersBlock: React.FC<Props> = ({
           <p className="text-sm lg:text-base xl:text-xl text-gray-800 max-w-sm xl:max-w-2xl">
             {description}
           </p>
-          <button
-            className="bg-black md:mt-3 text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:cursor-pointer active:scale-95"
-            onClick={() => {
-              if (buttonLink && buttonLink !== '#') {
-                window.open(buttonLink, '_blank')
-              }
-            }}
-          >
-            {buttonText}
-          </button>
+          {buttonText && (
+            <Button
+              variant="buttonWithGradientOnHover"
+              size="alignLeft"
+              onClick={() => {
+                if (buttonLink && buttonLink !== '#') {
+                  window.open(buttonLink, '_self')
+                }
+              }}
+            >
+              {buttonText}
+            </Button>
+          )}
         </div>
 
         {/* Team Images */}
