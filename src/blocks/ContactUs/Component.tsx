@@ -39,7 +39,6 @@ export const ContactUsBlock: React.FC<Props> = ({
     { value: 'sales', label: 'Sales Inquiry' },
     { value: 'partnership', label: 'Partnership' },
   ],
-  ...rest
 }) => {
   return (
     <section

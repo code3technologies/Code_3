@@ -3,6 +3,7 @@ import React from 'react'
 import type { Footer } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
+import { Media } from '@/components/Media'
 
 export async function Footer() {
   const footerData = (await getCachedGlobal('footer', 1)()) as Footer
@@ -108,7 +109,6 @@ export async function Footer() {
             >
               <path d="M7 16L7 2M7 2L1 8M7 2L13 8" stroke="#ECEEEC" strokeWidth="1.5" />
             </svg>
-            <p className='hidden'>jo</p>
           </button>
 
           <div className="hidden md:block text-gray-300 mt-auto text-sm">
@@ -123,14 +123,9 @@ export async function Footer() {
 
         <div className="w-full relative overflow-hidden">
           {bottomBar?.exploreServicesImage ? (
-            <img
-              src={
-                typeof bottomBar.exploreServicesImage === 'string'
-                  ? bottomBar.exploreServicesImage
-                  : bottomBar.exploreServicesImage.url || ''
-              }
-              alt=""
-              className="w-full h-[80px] lg:h-[160px] rounded-xl object-cover"
+            <Media
+              resource={bottomBar.exploreServicesImage}
+              imgClassName="w-full h-[80px] lg:max-h-[160px] lg:h-[160px] rounded-xl object-cover"
             />
           ) : (
             <div className="w-full h-26 rounded-xl bg-red-800"></div>

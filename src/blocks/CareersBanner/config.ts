@@ -46,10 +46,6 @@ export const Careers: Block = {
           required: true,
         },
         {
-          name: 'alt',
-          type: 'text',
-        },
-        {
           name: 'hasTopMargin',
           type: 'checkbox',
           defaultValue: false,

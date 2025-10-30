@@ -1,13 +1,30 @@
 
 import type { CurrentOpeningsBlock as CurrentOpeningsBlockProps } from 'src/payload-types'
-
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { select } from 'payload/shared'
 
 type Props = {
   className?: string
 } & CurrentOpeningsBlockProps
+
+interface Department {
+  id?: string | null | undefined
+  value: string
+  label: string
+}
+
+interface JobListing {
+  id?: string | null | undefined
+  department: string
+  title: string
+  category: string
+  categoryColor: 'blue' | 'pink' | 'green' | 'orange'
+  description: string
+  location: string
+  type: string
+  viewJobText?: string
+  viewJobLink?: string | null | undefined
+}
 
 const getCategoryColorClasses = (color: string) => {
   const colorMap = {
@@ -67,7 +84,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
             </label>
 
             <select className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700 w-full sm:w-48">
-              {departments.map((dept: any, index: number) => (
+              {departments.map((dept: Department, index: number) => (
                 <option key={dept.id || index} value={dept.value}>
                   {dept.label}
                 </option>
@@ -79,7 +96,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
 
       {/* Job Listings */}
       <div className="space-y-6">
-        {jobListings?.map((job: any, index: number) => (
+        {jobListings?.map((job: JobListing, index: number) => (
           <div
             key={job.id || index}
             className="bg-[#FAFAFA] border border-[#E0DDDD] rounded-xl p-6 transition-all"

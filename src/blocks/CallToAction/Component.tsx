@@ -1,43 +1,10 @@
-// import React from 'react'
-
-// import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
-
-// import RichText from '@/components/RichText'
-// import { CMSLink } from '@/components/Link'
-
-// export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
-//   return (
-//     <div className="container">
-//       <div className="bg-card rounded border-border border p-4 flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
-//         <div className="max-w-[48rem] flex items-center">
-//           {richText && <RichText className="mb-0" data={richText} enableGutter={false} />}
-//         </div>
-//         <div className="flex flex-col gap-8">
-//           {(links || []).map(({ link }, i) => {
-//             return <CMSLink key={i} size="lg" {...link} />
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-
-
-
-
-
-
-
-
-
-
 'use client'
 import React from 'react'
 import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { cn } from '@/utilities/ui'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -49,19 +16,17 @@ export const CallToActionBlock: React.FC<Props> = ({
   title,
   description,
   backgroundImage,
-  showLogo = false,
+  showLogo = true,
 }) => {
   return (
     <div className={cn('max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12', className)}>
       <div className="relative mx-auto min-w-full max-w-6xl rounded-[32px] text-center overflow-hidden">
         {backgroundImage && (
           <div className="absolute inset-0 z-[-1] rounded-[32px] overflow-hidden">
-            <img
-              src={
-                typeof backgroundImage === 'string' ? backgroundImage : backgroundImage.url || ''
-              }
-              alt="Background"
-              className="h-full w-full rounded-[32px] object-cover"
+            <Media
+              resource={backgroundImage}
+              fill
+              imgClassName="h-full w-full rounded-[32px] object-cover"
             />
           </div>
         )}

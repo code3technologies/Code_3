@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
-import type { Media, ServicesStepsBlock } from '@/payload-types'
+import type { Media as MediaType, ServicesStepsBlock } from '@/payload-types'
+import { Media } from '@/components/Media'
 
 interface ServicesStepsProps {
   badge?: string
@@ -10,7 +11,7 @@ interface ServicesStepsProps {
     stepNumber?: string
     title?: string
     description?: string
-    icon?: Media | string
+    icon?: MediaType | string
     id?: string | null
   }> | null
 }
@@ -77,11 +78,10 @@ const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
                             <div className={`bg-[#F3F3F3] border border-[#E0DDDD] max-w-[320px] xl:max-w-[360px] ${isEven ? 'ml-auto' : 'mr-auto'} rounded-[2rem] p-8`}>
                                 <div className="flex flex-col justify-between h-full gap-16">
                                     <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        {step.icon && typeof step.icon === 'object' && (
-                                            <img
-                                            src={step.icon.url || ''}
-                                            alt={step.icon.alt || 'Step icon'}
-                                            className="w-[62px] h-[62px] object-contain"
+                                        {step.icon && (
+                                            <Media
+                                              resource={step.icon}
+                                              imgClassName="w-[62px] h-[62px] object-contain"
                                             />
                                         )}
                                     </div>
@@ -123,11 +123,10 @@ const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
                   <div className="bg-[#F3F3F3] border border-[#E0DDDD] max-w-[16rem] rounded-[1.5rem] p-4">
                     <div className="flex flex-col justify-between h-full gap-14">
                       <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                        {step.icon && typeof step.icon === 'object' && (
-                            <img
-                            src={step.icon.url || ''}
-                            alt={step.icon.alt || 'Step icon'}
-                            className="w-[62px] h-[62px] object-contain"
+                        {step.icon && (
+                            <Media
+                              resource={step.icon}
+                              imgClassName="w-[62px] h-[62px] object-contain"
                             />
                         )}
                       </div>

@@ -4,29 +4,109 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { ChevronDown, Search, Menu, X } from 'lucide-react'
-import * as LucideIcons from 'lucide-react'
+import { icons, type LucideIcon } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 
-interface HeaderClientProps {
-  data: Header
-  navigationPages?: any[]
+// Type definitions
+interface NavigationPage {
+  id: string
+  title: string
+  slug: string
+  href: string
+  order?: number
+  showInDesktop?: boolean
+  showInMobile?: boolean
 }
 
-// Dynamic icon component
+interface NavigationItem {
+  id: string
+  label: string
+  type: 'link' | 'dropdown' | 'mega'
+  link: string
+  icon?: string
+  cssClass?: string
+  openInNewTab?: boolean
+  order?: number
+  showInDesktop?: boolean
+  showInMobile?: boolean
+  subItems?: SubNavigationItem[]
+}
+
+interface SubNavigationItem {
+  id: string
+  label: string
+  link: string
+  icon?: string
+  description?: string
+  openInNewTab?: boolean
+}
+
+interface MenuSectionType {
+  id: string
+  title: string
+  items?: MenuItemType[]
+}
+
+interface MenuItemType {
+  id: string
+  name: string
+  link?: string
+}
+
+interface CTAButtons {
+  showContactButton?: boolean
+  contactText?: string
+  contactLink?: string
+  showLoginButton?: boolean
+  loginText?: string
+  loginLink?: string
+  buttonStyle?: 'rounded' | 'pill' | 'outline'
+}
+
+interface HeaderSettings {
+  backgroundColor?: string
+  stickyHeader?: boolean
+  headerHeight?: string
+  showSearchIcon?: boolean
+  searchLink?: string
+  hoverColor?: string
+}
+
+interface MobileMenu {
+  sections?: MenuSectionType[]
+}
+
+interface HeaderClientProps {
+  data: Header
+  navigationPages?: NavigationPage[]
+}
+
+// Dynamic icon component with proper typing
 const DynamicIcon = ({ name, className = 'w-4 h-4' }: { name?: string; className?: string }) => {
   if (!name) return null
 
-  const IconComponent = (LucideIcons as any)[name]
-  if (!IconComponent) return null
+  // Convert kebab-case to PascalCase for icon names
+  const kebabToPascal = (str: string): string =>
+    str
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('')
+
+  const componentName = kebabToPascal(name) as keyof typeof icons
+  
+  // Check if the icon exists in the icons object
+  if (!icons[componentName]) return null
+
+  const IconComponent = icons[componentName] as LucideIcon
 
   return <IconComponent className={className} />
 }
 
 // Navigation item component
-const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) => {
+const NavItem = ({ item, isMobile = false }: { item: NavigationItem; isMobile?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const linkProps = {
@@ -60,7 +140,7 @@ const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) 
                 isMobile ? 'bg-transparent space-y-1' : 'bg-white shadow-lg rounded-md border p-2'
               }`}
             >
-              {item.subItems?.map((subItem: any, index: number) => (
+              {item.subItems?.map((subItem: SubNavigationItem, index: number) => (
                 <Link
                   key={index}
                   href={subItem.link}
@@ -124,25 +204,32 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
-  const [showMegaMenu, setShowMegaMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
 
-  // Extract data from CMS
+  // Extract data from CMS with proper typing
   const logo = data?.logo
-  const megaMenu = data?.megaMenu
-  // Access custom CMS fields that may not yet be reflected in generated TS types
-  const megaMenuSettings = data?.megaMenu as any
-  const mobileMenu = data?.mobileMenu
-  const ctaButtons = data?.ctaButtons
-  const settings = data?.settings
+  const mobileMenu = data?.mobileMenu as MobileMenu | undefined
+  const ctaButtons = data?.ctaButtons as CTAButtons | undefined
+  const settings = data?.settings as HeaderSettings | undefined
 
   // Sort navigation items by order
   const sortedNavItems = (data?.navItems || [])
     .sort((a, b) => (a.order || 0) - (b.order || 0))
-    .filter((item) => item.showInDesktop !== false)
+    .filter((item) => item.showInDesktop !== false) as NavigationItem[]
 
   // Merge CMS navigation items with auto-generated ones
-  const allNavItems = [...sortedNavItems, ...navigationPages]
+  const allNavItems: NavigationItem[] = [
+    ...sortedNavItems,
+    ...navigationPages.map(page => ({
+      id: page.id,
+      label: page.title,
+      type: 'link' as const,
+      link: page.href,
+      order: page.order,
+      showInDesktop: page.showInDesktop,
+      showInMobile: page.showInMobile
+    }))
+  ]
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -180,7 +267,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
         {/* Desktop Links */}
         <div className="hidden md:flex flex-1 justify-center space-x-8 items-center">
           {/* Dynamic Navigation Items */}
-          {allNavItems.map((item: any, index: number) => (
+          {allNavItems.map((item: NavigationItem, index: number) => (
             <NavItem key={index} item={item} />
           ))}
 
@@ -190,93 +277,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
               <Link href="/about-us" className="hover:text-red-600 transition">
                 About Us
               </Link>
-              {/* <Link href="/infra-services" className="hover:text-red-600 transition">
-                Infra Services
-              </Link> */}
               <Link href="/careers" className="hover:text-red-600 transition">
                 Careers
               </Link>
             </>
           )}
-
-          {/* Digital Services Mega Menu */}
-          {/* {(megaMenuSettings?.showMegaMenu ?? true) && (
-            <div
-              className=""
-              onMouseEnter={() => setShowMegaMenu(true)}
-              onMouseLeave={() => setShowMegaMenu(false)}
-            >
-              <button className="hover:text-red-600 flex items-center">
-                {(megaMenuSettings?.megaMenuLabel as string) || 'Digital services'}{' '}
-                <span className="ml-1">+</span>
-              </button>
-              {showMegaMenu && (
-                <div className="absolute left-0 lg:top-24 top-20 w-screen bg-gradient-to-br from-[#b0182a] to-[#45060a] text-white p-12 z-50">
-                  <div className="max-w-7xl mx-auto grid grid-cols-4 gap-12">
-                    <div className="">
-                      <h2 className="text-white font-bold text-xl mb-12">
-                        {megaMenu?.title ||
-                          'Complete IT, Security & Digital Solutions for Businesses in UAE'}
-                      </h2>
-                      <span
-                        className="mt-10 text-6xl font-bold tracking-widest"
-                        style={{ fontFamily: 'monospace' }}
-                      >
-                        {megaMenu?.brandText || 'CODE3'}
-                      </span>
-                    </div>
-                    <div></div>
-                    {megaMenu?.serviceCategories
-                      ?.slice(0, 3)
-                      .map((category: any, index: number) => (
-                        <div key={index}>
-                          <h4 className="font-bold mb-2 text-white">{category.title}</h4>
-                          <ul className="space-y-1 text-sm">
-                            {category.services?.map((service: any, serviceIndex: number) => (
-                              <li key={serviceIndex}>
-                                {service.link ? (
-                                  <a href={service.link} className="hover:text-gray-300">
-                                    {service.name}
-                                  </a>
-                                ) : (
-                                  service.name
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                  </div>
-                  {megaMenu?.serviceCategories && megaMenu.serviceCategories.length > 3 && (
-                    <div className="max-w-7xl mx-auto grid grid-cols-4 gap-12 mt-8">
-                      <div></div>
-                      {megaMenu.serviceCategories
-                        .slice(3, 6)
-                        .map((category: any, index: number) => (
-                          <div key={index}>
-                            <h4 className="font-bold mb-2 text-white">{category.title}</h4>
-                            <ul className="space-y-1 text-sm">
-                              {category.services?.map((service: any, serviceIndex: number) => (
-                                <li key={serviceIndex}>
-                                  {service.link ? (
-                                    <a href={service.link} className="hover:text-gray-300">
-                                      {service.name}
-                                    </a>
-                                  ) : (
-                                    service.name
-                                  )}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )} */}
         </div>
+
         <div className="hidden md:flex items-center space-x-4">
           {settings?.showSearchIcon && (
             <Link
@@ -294,22 +301,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
               {ctaButtons?.contactText || 'Contact'}
             </Link>
           )}
-          {/* {ctaButtons?.showLoginButton !== false && (
-            <Link
-              href={ctaButtons?.loginLink || '/login'}
-              className={`ml-4 bg-black text-white px-4 py-1 ${
-                ctaButtons?.buttonStyle === 'rounded'
-                  ? 'rounded-lg'
-                  : ctaButtons?.buttonStyle === 'pill'
-                    ? 'rounded-full'
-                    : ctaButtons?.buttonStyle === 'outline'
-                      ? 'border border-black bg-transparent text-black hover:bg-black hover:text-white'
-                      : 'rounded'
-              }`}
-            >
-              {ctaButtons?.loginText || 'Login'}
-            </Link>
-          )} */}
         </div>
 
         {/* Mobile Hamburger */}
@@ -327,6 +318,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
           </button>
         </div>
       </div>
+
       {/* Mobile Menu */}
       {showMobileMenu && (
         <div
@@ -355,8 +347,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
           <div className="flex-1 flex flex-col justify-start px-4 py-6 text-white space-y-2 overflow-auto">
             {/* Dynamic Navigation Items for Mobile */}
             {allNavItems
-              .filter((item: any) => item.showInMobile !== false)
-              .map((item: any, index: number) => (
+              .filter((item: NavigationItem) => item.showInMobile !== false)
+              .map((item: NavigationItem, index: number) => (
                 <NavItem key={index} item={item} isMobile={true} />
               ))}
 
@@ -366,9 +358,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                 <Link href="/about-us" className="mb-3 text-base font-semibold">
                   About Us
                 </Link>
-                {/* <Link href="/infra-services" className="mb-3 text-base font-semibold">
-                  Infra Services
-                </Link> */}
                 <Link href="/careers" className="mb-3 text-base font-semibold">
                   Careers
                 </Link>
@@ -379,9 +368,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
             )}
 
             {/* Mobile Menu Sections */}
-            {mobileMenu?.sections?.map((section: any, index: number) => (
+            {mobileMenu?.sections?.map((section: MenuSectionType, index: number) => (
               <MenuSection key={index} title={section.title}>
-                {section.items?.map((item: any, itemIndex: number) => (
+                {section.items?.map((item: MenuItemType, itemIndex: number) => (
                   <MenuItem key={itemIndex}>
                     {item.link ? <span className="cursor-pointer">{item.name}</span> : item.name}
                   </MenuItem>
@@ -389,34 +378,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
               </MenuSection>
             ))}
           </div>
-
-          {/* Buttons */}
-          {/* <div className="flex items-center gap-3 px-4 pb-6 mt-auto">
-            {ctaButtons?.showLoginButton !== false && (
-              <Link
-                href={ctaButtons?.loginLink || '/login'}
-                className={`px-5 py-2 font-semibold shadow ${
-                  ctaButtons?.buttonStyle === 'rounded'
-                    ? 'rounded-lg bg-white text-black'
-                    : ctaButtons?.buttonStyle === 'pill'
-                      ? 'rounded-full bg-white text-black'
-                      : ctaButtons?.buttonStyle === 'outline'
-                        ? 'rounded border border-white text-white hover:bg-white hover:text-black'
-                        : 'rounded-full bg-white text-black'
-                }`}
-              >
-                {ctaButtons?.loginText || 'Login'}
-              </Link>
-            )}
-            {ctaButtons?.showContactButton !== false && (
-              <Link
-                href={ctaButtons?.contactLink || '/contact'}
-                className="px-5 py-2 rounded-full border border-white text-white font-semibold hover:bg-white hover:text-black transition"
-              >
-                {ctaButtons?.contactText || 'Contact'}
-              </Link>
-            )}
-          </div> */}
         </div>
       )}
     </header>

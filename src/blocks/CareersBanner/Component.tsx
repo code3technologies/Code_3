@@ -4,6 +4,7 @@ import type { CareersBlock as CareersBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import { Media } from '@/components/Media'
 
 type Props = CareersBlockProps & {
   className?: string
@@ -15,15 +16,12 @@ export const CareersBlock: React.FC<Props> = ({
   subtitle = 'Join Us. Build the Future.',
   description = 'At CODE3, we believe in people who push boundaries, embrace challenges, and create impactful solutions.',
   buttonText = 'See Open Positions',
-  buttonLink = '#',
+  buttonLink = '',
   teamImages,
 }) => {
   // Helper function to generate responsive classes for each team member
   const getResponsiveClasses = (member: NonNullable<typeof teamImages>[number]) => {
     return cn(
-      `aspect-[1/1]`,
-      `sm:aspect-[2/3]`,
-      `lg:aspect-[2/3]`,
       member.hasTopMargin && 'sm:mt-8 xl:mt-10',
       member.isVisibleOnMobile ? 'block' : 'hidden',
       member.isVisibleOnTablet ? 'sm:block' : 'sm:hidden',
@@ -73,19 +71,11 @@ export const CareersBlock: React.FC<Props> = ({
           {teamImages.map((teamMember, index) => {
             if (!teamMember || !teamMember.image) return null
 
-            const imageUrl =
-              typeof teamMember.image === 'string' ? teamMember.image : teamMember.image.url || ''
-
             return (
               <div key={index} className={getResponsiveClasses(teamMember)}>
-                <img
-                  src={imageUrl}
-                  alt={teamMember.alt || 'Team member'}
-                  className="w-full h-full object-cover object-top rounded-[2rem]"
-                  onError={(e) => {
-                    console.error('Team image failed to load:', e.currentTarget.src)
-                    e.currentTarget.style.display = 'none'
-                  }}
+                <Media
+                  resource={teamMember.image}
+                  imgClassName="aspect-square md:aspect-[2/3] w-full h-full object-cover object-top rounded-[2rem]"
                 />
               </div>
             )

@@ -1,11 +1,12 @@
 import React from 'react'
-import type { Media, ServiceOverviewBlock } from '@/payload-types'
+import type { Media as MediaType, ServiceOverviewBlock } from '@/payload-types'
+import { Media } from '@/components/Media'
 
 interface ServiceOverviewProps {
   badge?: string
   title?: string
   description?: string
-  image?: string | Media
+  image?: string | MediaType
 }
 
 const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
@@ -32,12 +33,11 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
 
         {/* Image Section */}
         <div className="flex-1 rounded-[2rem]">
-            {image && typeof image === 'object' && (
-                <img
-                    src={image.url || ''}
-                    alt={image.alt || 'Service Overview Image'}
-                    className="w-full h-full rounded-[2rem] object-cover"
-                />
+            {image && (
+              <Media
+                resource={image}
+                imgClassName="w-full h-full rounded-[2rem] object-cover"
+              />
             )}
         </div>
       </div>
@@ -45,8 +45,8 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
   )
 }
 
-const ServiceOverviewBlock: React.FC<any> = (props) => {
+const ServiceOverviewBlock: React.FC<ServiceOverviewBlock> = (props) => {
   return <ServiceOverviewComponent {...props} />
 }
 
-export { ServiceOverviewBlock }
+export { ServiceOverviewBlock }

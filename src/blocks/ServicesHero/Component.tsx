@@ -4,6 +4,7 @@ import type { ServicesHeroBlock as ServicesHeroBlockProps } from 'src/payload-ty
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -18,11 +19,6 @@ export const ServicesHeroBlock: React.FC<Props> = ({
   image1,
   image2,
 }) => {
-  const getImageUrl = (image: any) => {
-    if (!image) return ''
-    return typeof image === 'string' ? image : image.url || ''
-  }
-
   return (
     <div className={cn('', className)}>
       {/* Mobile Layout */}
@@ -58,17 +54,15 @@ export const ServicesHeroBlock: React.FC<Props> = ({
           {/* Images Section */}
           <div className="space-y-4">
             <div className="w-full">
-              <img
-                src={getImageUrl(image1)}
-                alt="Business meeting"
-                className="w-full aspect-4/3 object-cover rounded-[2rem] shadow-md"
+              <Media
+                resource={image1}
+                imgClassName="w-full aspect-4/3 object-cover rounded-[2rem] shadow-md"
               />
             </div>
             <div className="w-full">
-              <img
-                src={getImageUrl(image2)}
-                alt="Professional team"
-                className="w-full aspect-video object-cover rounded-[2rem] shadow-md"
+              <Media
+                resource={image2}
+                imgClassName="w-full aspect-video object-cover rounded-[2rem] shadow-md"
               />
             </div>
           </div>
@@ -107,17 +101,15 @@ export const ServicesHeroBlock: React.FC<Props> = ({
               </h3>
             </div>
             <div className="md:col-span-4 lg:col-span-3 mt-auto">
-              <img
-                src={getImageUrl(image1)}
-                alt="Business meeting discussion"
-                className="aspect-[4/3] min-w-full object-cover rounded-[2rem] shadow-lg"
+              <Media
+                resource={image1}
+                imgClassName="aspect-[4/3] min-w-full object-cover rounded-[2rem] shadow-lg"
               />
             </div>
             <div className="md:col-span-4 lg:col-span-5 mt-auto">
-              <img
-                src={getImageUrl(image2)}
-                alt="Professional team collaboration"
-                className="md:aspect-square lg:aspect-[6/4] object-cover min-w-full rounded-[2rem] shadow-lg"
+              <Media
+                resource={image2}
+                imgClassName="md:aspect-square lg:aspect-[6/4] object-cover min-w-full rounded-[2rem] shadow-lg"
               />
             </div>
           </div>

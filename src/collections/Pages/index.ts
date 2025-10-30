@@ -47,7 +47,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
+  // Type safe if the collection slug generic is passed to CollectionConfig - `CollectionConfig<'pages'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -80,6 +80,21 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
+      name: 'serviceCategory',
+      type: 'select',
+      label: 'Service Category',
+      defaultValue: 'none',
+      options: [
+        { label: 'Not a Service Page', value: 'none' },
+        { label: 'Infrastructure', value: 'infrastructure' },
+        { label: 'Digital', value: 'digital' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Categorize this page as Infrastructure or Digital to link it from Services.',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
@@ -92,25 +107,25 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                CallToAction, 
-                Content, 
-                MediaBlock, 
-                Archive, 
-                FormBlock, 
-                FAQ, 
-                Services, 
-                MissionAndValues, 
-                WhyWorkWithUs, 
-                WhyChooseUsAbout, 
-                WhyChooseUs, 
-                ContactUs, 
-                Careers, 
-                AboutUsBanner, 
-                TrustedBrands, 
-                CurrentOpenings, 
-                ServiceSolutions, 
-                ServicesHero, 
-                ServicesSteps, 
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                FAQ,
+                Services,
+                MissionAndValues,
+                WhyWorkWithUs,
+                WhyChooseUsAbout,
+                WhyChooseUs,
+                ContactUs,
+                Careers,
+                AboutUsBanner,
+                TrustedBrands,
+                CurrentOpenings,
+                ServiceSolutions,
+                ServicesHero,
+                ServicesSteps,
                 ServiceDetailBanner,
                 ServiceOverview,
               ],
@@ -140,7 +155,7 @@ export const Pages: CollectionConfig<'pages'> = {
 
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
+              // if the generateUrl function is configured
               hasGenerateFn: true,
 
               // field paths to match the target field for data
@@ -172,6 +187,6 @@ export const Pages: CollectionConfig<'pages'> = {
       },
       schedulePublish: true,
     },
-    maxPerDoc: 50,
-  },
+    maxPerDoc: 50,
+  },
 }

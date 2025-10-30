@@ -148,6 +148,10 @@ export interface UserAuthOperations {
 export interface Page {
   id: string;
   title: string;
+  /**
+   * Categorize this page as Infrastructure or Digital to link it from Services.
+   */
+  serviceCategory?: ('none' | 'infrastructure' | 'digital') | null;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -773,18 +777,10 @@ export interface ServicesBlock {
   badge: string;
   title: string;
   subtitle: string;
-  infraService: {
-    label: string;
-    title: string;
-    description: string;
-    image?: (string | null) | Media;
-  };
-  digitalService: {
-    label: string;
-    title: string;
-    description: string;
-    image?: (string | null) | Media;
-  };
+  /**
+   * Maximum number of service pages to display (pages with serviceCategory set)
+   */
+  maxServices?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'services';
@@ -931,7 +927,6 @@ export interface CareersBlock {
   teamImages?:
     | {
         image: string | Media;
-        alt?: string | null;
         hasTopMargin?: boolean | null;
         isVisibleOnMobile?: boolean | null;
         isVisibleOnTablet?: boolean | null;
@@ -1384,6 +1379,7 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  serviceCategory?: T;
   hero?:
     | T
     | {
@@ -1557,22 +1553,7 @@ export interface ServicesBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
-  infraService?:
-    | T
-    | {
-        label?: T;
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  digitalService?:
-    | T
-    | {
-        label?: T;
-        title?: T;
-        description?: T;
-        image?: T;
-      };
+  maxServices?: T;
   id?: T;
   blockName?: T;
 }
@@ -1720,7 +1701,6 @@ export interface CareersBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
-        alt?: T;
         hasTopMargin?: T;
         isVisibleOnMobile?: T;
         isVisibleOnTablet?: T;

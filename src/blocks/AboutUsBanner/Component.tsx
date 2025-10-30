@@ -5,6 +5,7 @@ import type { AboutUsBannerBlock as AboutUsBannerBlockProps } from 'src/payload-
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -55,22 +56,19 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
             {mobileImages?.map((imageData, index) => {
               if (!imageData.image) return null
 
-              const imageUrl =
-                typeof imageData.image === 'string' ? imageData.image : imageData.image.url || ''
-
               return (
-                <div key={index} className="w-full">
-                  <img
-                    src={imageUrl}
-                    alt={imageData.alt || 'About us image'}
-                    className={cn(
-                      'w-full object-cover rounded-[2rem] shadow-md',
-                      imageData.aspectRatio || 'aspect-4/3',
-                    )}
-                    onError={(e) => {
-                      console.error('Mobile image failed to load:', e.currentTarget.src)
-                      e.currentTarget.style.display = 'none'
-                    }}
+                <div 
+                  key={index} 
+                  className={cn(
+                    'w-full relative rounded-[2rem] shadow-md overflow-hidden',
+                    imageData.aspectRatio || 'aspect-4/3'
+                  )}
+                >
+                  <Media
+                    resource={imageData.image}
+                    fill
+                    imgClassName="object-cover"
+                    priority={index === 0}
                   />
                 </div>
               )
@@ -109,43 +107,32 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
             </div>
             <div className="col-span-2">
               {desktopImages?.[0]?.image && (
-                <img
-                  src={
-                    typeof desktopImages[0].image === 'string'
-                      ? desktopImages[0].image
-                      : desktopImages[0].image.url || ''
-                  }
-                  alt={desktopImages[0].alt || 'About us image'}
-                  className={cn(
-                    'aspect-6/3 min-w-full object-cover rounded-[2rem] shadow-lg',
-                    desktopImages[0].aspectRatio || 'aspect-6/3',
-                  )}
-                  onError={(e) => {
-                    console.error('Desktop image 1 failed to load:', e.currentTarget.src)
-                    e.currentTarget.style.display = 'none'
-                  }}
-                />
+                <div className={cn(
+                  'relative rounded-[2rem] shadow-lg overflow-hidden',
+                  desktopImages[0].aspectRatio || 'aspect-6/3'
+                )}>
+                  <Media
+                    resource={desktopImages[0].image}
+                    fill
+                    imgClassName="object-cover"
+                    priority
+                  />
+                </div>
               )}
             </div>
             <div className="">
               {desktopImages?.[1]?.image && (
-                <img
-                  src={
-                    typeof desktopImages[1].image === 'string'
-                      ? desktopImages[1].image
-                      : desktopImages[1].image.url || ''
-                  }
-                  alt={desktopImages[1].alt || 'About us image'}
-                  className={cn(
-                    'aspect-6/3 object-cover rounded-[2rem] shadow-lg',
-                    desktopImages[1].aspectRatio || 'aspect-6/3',
-                    desktopImages[1].hasMarginBottom && 'mb-4',
-                  )}
-                  onError={(e) => {
-                    console.error('Desktop image 2 failed to load:', e.currentTarget.src)
-                    e.currentTarget.style.display = 'none'
-                  }}
-                />
+                <div className={cn(
+                  'relative rounded-[2rem] shadow-lg overflow-hidden',
+                  desktopImages[1].aspectRatio || 'aspect-6/3',
+                  desktopImages[1].hasMarginBottom && 'mb-4'
+                )}>
+                  <Media
+                    resource={desktopImages[1].image}
+                    fill
+                    imgClassName="object-cover"
+                  />
+                </div>
               )}
               <h2 className="text-xl lg:text-2xl font-semibold leading-6 lg:leading-8 text-gray-800">
                 {subtitle}

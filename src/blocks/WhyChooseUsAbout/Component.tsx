@@ -1,7 +1,9 @@
 import type { WhyChooseUsAboutBlock as WhyChooseUsAboutBlockProps } from 'src/payload-types'
+import type { Media as MediaType } from 'src/payload-types'
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -13,6 +15,11 @@ export const WhyChooseUsAboutBlock: React.FC<Props> = ({
   subtitle = 'From managing your IT to securing your data, from connecting your spaces to equipping your meeting rooms',
   features = [],
 }) => {
+  // Type guard to check if icon is a Media object
+  const isMediaObject = (icon: string | MediaType): icon is MediaType => {
+    return typeof icon === 'object' && icon !== null && 'url' in icon
+  }
+
   return (
     <section className={cn('py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto', className)}>
       <div className="bg-[#FAFAFA] border border-[#E0DDDD] rounded-[32px] max-w-7xl mx-auto py-12 md:py-16 lg:py-20 px-5 w-full">
@@ -36,17 +43,16 @@ export const WhyChooseUsAboutBlock: React.FC<Props> = ({
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto relative">
-          {features?.map((feature: any, index: number) => (
+          {features?.map((feature, index) => (
             <React.Fragment key={feature.id || index}>
               {/* Feature Card */}
               <div className="rounded-2xl p-6 sm:p-8 text-center">
                 {/* Icon */}
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6">
-                  {feature.icon && typeof feature.icon === 'object' && (
-                    <img
-                      src={feature.icon.url || ''}
-                      alt={feature.icon.alt || 'Mission icon'}
-                      className="w-[62px] h-[62px] object-contain"
+                  {feature.icon && isMediaObject(feature.icon) && (
+                    <Media
+                      resource={feature.icon}
+                      imgClassName="w-[62px] h-[62px] object-contain"
                     />
                   )}
                 </div>
