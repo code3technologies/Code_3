@@ -1037,21 +1037,14 @@ export interface CurrentOpeningsBlock {
  * via the `definition` "ServiceSolutionsBlock".
  */
 export interface ServiceSolutionsBlock {
+  /**
+   * Select which type of services to display in this block
+   */
+  serviceType: 'infrastructure' | 'digital';
   badge: string;
   title: string;
   description: string;
   headerAlignment: 'left' | 'center' | 'right';
-  services?:
-    | {
-        title: string;
-        description: string;
-        showButton?: boolean | null;
-        buttonText?: string | null;
-        buttonLink?: string | null;
-        gridSpan: '2' | '3' | '2-3';
-        id?: string | null;
-      }[]
-    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'serviceSolutions';
@@ -1063,8 +1056,6 @@ export interface ServiceSolutionsBlock {
 export interface ServicesHeroBlock {
   title: string;
   subtitle: string;
-  buttonText: string;
-  buttonLink?: string | null;
   image1: string | Media;
   image2: string | Media;
   id?: string | null;
@@ -1797,21 +1788,11 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
  * via the `definition` "ServiceSolutionsBlock_select".
  */
 export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
+  serviceType?: T;
   badge?: T;
   title?: T;
   description?: T;
   headerAlignment?: T;
-  services?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        showButton?: T;
-        buttonText?: T;
-        buttonLink?: T;
-        gridSpan?: T;
-        id?: T;
-      };
   id?: T;
   blockName?: T;
 }
@@ -1822,8 +1803,6 @@ export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
 export interface ServicesHeroBlockSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
-  buttonText?: T;
-  buttonLink?: T;
   image1?: T;
   image2?: T;
   id?: T;

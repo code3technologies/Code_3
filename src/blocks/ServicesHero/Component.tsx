@@ -14,8 +14,6 @@ export const ServicesHeroBlock: React.FC<Props> = ({
   className,
   title = 'OUR SERVICES',
   subtitle = 'Your Technology, Secured & Simplified',
-  buttonText = 'See Our Services',
-  buttonLink,
   image1,
   image2,
 }) => {
@@ -36,18 +34,6 @@ export const ServicesHeroBlock: React.FC<Props> = ({
             </h1>
             <div className="space-y-3 mt-8">
               <h2 className="text-xl max-w-xs font-semibold text-gray-800">{subtitle}</h2>
-              {buttonText && (
-                <Button
-                    variant="default"
-                  onClick={() => {
-                    if (buttonLink && buttonLink !== '#') {
-                        window.open(buttonLink, '_self')
-                      }
-                  }}
-                >
-                  {buttonText}
-                </Button>
-              )}
             </div>
           </div>
 
@@ -77,18 +63,6 @@ export const ServicesHeroBlock: React.FC<Props> = ({
               {title.split(' ')[0]}
             </h1>
             <div className="mb-5">
-              {buttonText && (
-                <Button
-                    variant="default"
-                  onClick={() => {
-                    if (buttonLink && buttonLink !== '#') {
-                      window.open(buttonLink, '_self')
-                    }
-                  }}
-                >
-                  {buttonText}
-                </Button>
-              )}
             </div>
           </div>
           <div className="grid grid-cols-12 gap-4">

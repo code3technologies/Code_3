@@ -18,18 +18,6 @@ export const ServicesHero: Block = {
       required: true,
     },
     {
-      name: 'buttonText',
-      type: 'text',
-      label: 'Button Text',
-      defaultValue: 'See Our Services',
-      required: true,
-    },
-    {
-      name: 'buttonLink',
-      type: 'text',
-      label: 'Button Link',
-    },
-    {
       name: 'image1',
       type: 'upload',
       relationTo: 'media',
