@@ -20,7 +20,7 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
       <div className="flex flex-col md:flex-row rounded-2xl py-12 overflow-hidden max-w-7xl mx-auto gap-8">
         {/* Content Section */}
         <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-start justify-center gap-6">
-          <div className="inline-block w-max bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full uppercase tracking-wider lg:mb-8 xl:mb-12">
+          <div className="inline-block w-max bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full uppercase tracking-wider lg:mb-8 xl:mb-12">
             {badge}
           </div>
 

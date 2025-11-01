@@ -28,6 +28,6 @@ export const Code: Block = {
       type: 'code',
       label: false,
       required: true,
-    },
-  ],
+    },
+  ],
 }

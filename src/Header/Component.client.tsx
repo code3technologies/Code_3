@@ -51,7 +51,9 @@ interface SubNavigationItem {
 const DynamicIcon = ({ name, className = 'w-4 h-4' }: { name?: string; className?: string }) => {
   if (!name) return null
 
-  const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name]
+  const IconComponent = (
+    LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>
+  )[name]
   if (!IconComponent) return null
 
   return <IconComponent className={className} />
@@ -172,55 +174,59 @@ const MobileServiceSection = ({
         }`}
       >
         <div className="space-y-3">
-          {pages.map((page: NavigationPageData) => {
-            const pageSubs = getSubServices(page.id, subServices)
-            const hasSubServices = pageSubs.length > 0
-            const isExpanded = expandedServices.has(page.id)
+          {pages
+            .filter((page: NavigationPageData) => page && page.id && page.slug) // Filter out pages without slug
+            .map((page: NavigationPageData) => {
+              const pageSubs = getSubServices(page.id, subServices)
+              const hasSubServices = pageSubs.length > 0
+              const isExpanded = expandedServices.has(page.id)
 
-            return (
-              <div key={page.id} className="space-y-2">
-                <div className="flex items-center justify-between ml-4">
-                  <Link
-                    href={`/${page.slug}`}
-                    className="text-white font-medium transition-colors duration-300 flex-1"
-                    onClick={onLinkClick}
-                  >
-                    {page.title}
-                  </Link>
-                  {hasSubServices && (
-                    <button
-                      onClick={() => toggleService(page.id)}
-                      className="ml-2 text-xl font-bold text-white transition-transform duration-300"
+              return (
+                <div key={page.id} className="space-y-2">
+                  <div className="flex items-center justify-between ml-4">
+                    <Link
+                      href={`/${page.slug || '#'}`}
+                      className="text-white font-medium transition-colors duration-300 flex-1"
+                      onClick={onLinkClick}
                     >
-                      {isExpanded ? '−' : '+'}
-                    </button>
-                  )}
-                </div>
+                      {page.title}
+                    </Link>
+                    {hasSubServices && (
+                      <button
+                        onClick={() => toggleService(page.id)}
+                        className="ml-2 text-xl font-bold text-white transition-transform duration-300"
+                      >
+                        {isExpanded ? '−' : '+'}
+                      </button>
+                    )}
+                  </div>
 
-                <div
-                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                    isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  {hasSubServices && (
-                    <ul className="ml-8 space-y-2">
-                      {pageSubs.map((sub: NavigationPageData) => (
-                        <li key={sub.id}>
-                          <Link
-                            href={`/${sub.slug}`}
-                            className="text-white/80 text-md transition-colors duration-300 block"
-                            onClick={onLinkClick}
-                          >
-                            {sub.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <div
+                    className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                      isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    {hasSubServices && (
+                      <ul className="ml-8 space-y-2">
+                        {pageSubs
+                          .filter((sub: NavigationPageData) => sub && sub.id && sub.slug) // Filter out subs without slug
+                          .map((sub: NavigationPageData) => (
+                            <li key={sub.id}>
+                              <Link
+                                href={`/${sub.slug || '#'}`}
+                                className="text-white/80 text-md transition-colors duration-300 block"
+                                onClick={onLinkClick}
+                              >
+                                {sub.title}
+                              </Link>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
         </div>
       </div>
     </div>
@@ -250,12 +256,23 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
 
   // Convert navigationPages to NavigationPageData[]
   const servicePages = navigationPages as NavigationPageData[]
-  const infraPages = servicePages.filter((p: NavigationPageData) => p.serviceCategory === 'infrastructure' && !p.isSubService)
-  const digitalPages = servicePages.filter((p: NavigationPageData) => p.serviceCategory === 'digital' && !p.isSubService)
-  const infraSubServices = servicePages.filter((p: NavigationPageData) => p.serviceCategory === 'infrastructure' && p.isSubService)
-  const digitalSubServices = servicePages.filter((p: NavigationPageData) => p.serviceCategory === 'digital' && p.isSubService)
+  const infraPages = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && !p.isSubService,
+  )
+  const digitalPages = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'digital' && !p.isSubService,
+  )
+  const infraSubServices = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && p.isSubService,
+  )
+  const digitalSubServices = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'digital' && p.isSubService,
+  )
 
-  const getSubServices = (parentId: string, subServices: NavigationPageData[]): NavigationPageData[] => {
+  const getSubServices = (
+    parentId: string,
+    subServices: NavigationPageData[],
+  ): NavigationPageData[] => {
     return subServices.filter((sub: NavigationPageData) => {
       return sub.parentService === parentId
     })
@@ -517,38 +534,42 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
             {/* Services Grid */}
             <div className="h-full max-w-3xl overflow-auto">
               <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-x-[4rem] gap-y-[4rem]">
-                {infraPages.map((page: NavigationPageData) => {
-                  const subServices = getSubServices(page.id, infraSubServices)
-                  return (
-                    <div key={page.id}>
-                      {/* Parent Service - Now Clickable */}
-                      <Link
-                        href={`/${page.slug}`}
-                        className="text-xl font-bold mb-6 uppercase transition block"
-                        onClick={() => setShowInfraMegaMenu(false)}
-                      >
-                        <h2>{page.title}</h2>
-                      </Link>
+                {infraPages
+                  .filter((page: NavigationPageData) => page && page.id && page.slug)
+                  .map((page: NavigationPageData) => {
+                    const subServices = getSubServices(page.id, infraSubServices).filter(
+                      (sub: NavigationPageData) => sub && sub.id && sub.slug,
+                    )
+                    return (
+                      <div key={page.id}>
+                        {/* Parent Service - Now Clickable */}
+                        <Link
+                          href={`/${page.slug || '#'}`}
+                          className="text-xl font-bold mb-6 uppercase transition block"
+                          onClick={() => setShowInfraMegaMenu(false)}
+                        >
+                          <h2>{page.title}</h2>
+                        </Link>
 
-                      {/* Sub Services */}
-                      {subServices.length > 0 && (
-                        <ul className="space-y-3 text-sm">
-                          {subServices.map((sub: NavigationPageData) => (
-                            <li key={sub.id}>
-                              <Link
-                                href={`/${sub.slug}`}
-                                className="transition"
-                                onClick={() => setShowInfraMegaMenu(false)}
-                              >
-                                {sub.title}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  )
-                })}
+                        {/* Sub Services */}
+                        {subServices.length > 0 && (
+                          <ul className="space-y-3 text-sm">
+                            {subServices.map((sub: NavigationPageData) => (
+                              <li key={sub.id}>
+                                <Link
+                                  href={`/${sub.slug || '#'}`}
+                                  className="transition"
+                                  onClick={() => setShowInfraMegaMenu(false)}
+                                >
+                                  {sub.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )
+                  })}
               </div>
             </div>
           </div>
@@ -571,7 +592,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                 <br />
                 Businesses in UAE
               </p>
-              <h1 className="text-7xl font-bold tracking-widest" style={{ fontFamily: 'monospace' }}>
+              <h1
+                className="text-7xl font-bold tracking-widest"
+                style={{ fontFamily: 'monospace' }}
+              >
                 {megaMenu?.brandText || 'CODE3'}
               </h1>
             </div>
@@ -579,43 +603,47 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
             {/* Services Grid */}
             <div className="h-full max-w-3xl overflow-auto">
               <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-x-[4rem] gap-y-[4rem]">
-                {digitalPages.map((page: NavigationPageData) => {
-                  const subServices = getSubServices(page.id, digitalSubServices)
-                  return (
-                    <div key={page.id}>
-                      {/* Parent Service - Now Clickable */}
-                      <Link
-                        href={`/${page.slug}`}
-                        className="text-xl font-bold mb-6 uppercase transition block"
-                        onClick={() => setShowDigitalMegaMenu(false)}
-                      >
-                        <h2>{page.title}</h2>
-                      </Link>
+                {digitalPages
+                  .filter((page: NavigationPageData) => page && page.id && page.slug)
+                  .map((page: NavigationPageData) => {
+                    const subServices = getSubServices(page.id, digitalSubServices).filter(
+                      (sub: NavigationPageData) => sub && sub.id && sub.slug,
+                    )
+                    return (
+                      <div key={page.id}>
+                        {/* Parent Service - Now Clickable */}
+                        <Link
+                          href={`/${page.slug || '#'}`}
+                          className="text-xl font-bold mb-6 uppercase transition block"
+                          onClick={() => setShowDigitalMegaMenu(false)}
+                        >
+                          <h2>{page.title}</h2>
+                        </Link>
 
-                      {/* Sub Services */}
-                      {subServices.length > 0 && (
-                        <ul className="space-y-3 text-sm">
-                          {subServices.map((sub: NavigationPageData) => (
-                            <li key={sub.id}>
-                              <Link
-                                href={`/${sub.slug}`}
-                                className="transition"
-                                onClick={() => setShowDigitalMegaMenu(false)}
-                              >
-                                {sub.title}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  )
-                })}
+                        {/* Sub Services */}
+                        {subServices.length > 0 && (
+                          <ul className="space-y-3 text-sm">
+                            {subServices.map((sub: NavigationPageData) => (
+                              <li key={sub.id}>
+                                <Link
+                                  href={`/${sub.slug || '#'}`}
+                                  className="transition"
+                                  onClick={() => setShowDigitalMegaMenu(false)}
+                                >
+                                  {sub.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )
+                  })}
               </div>
             </div>
           </div>
         </div>
       )}
-    </>
-  )
+    </>
+  )
 }

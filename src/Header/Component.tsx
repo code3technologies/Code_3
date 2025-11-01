@@ -34,28 +34,30 @@ export async function Header() {
 
   // Map navigation pages with sub-service information
   const allPages = pagesRes.docs || []
-  const navigationPages: NavigationPageData[] = allPages.map((p) => {
-    const pageWithParent = p as Page & {
-      parentService?: string | { id: string } | null
-    }
-    let parentServiceId: string | null = null
-    if (pageWithParent.parentService) {
-      if (typeof pageWithParent.parentService === 'object' && pageWithParent.parentService.id) {
-        parentServiceId = pageWithParent.parentService.id
-      } else if (typeof pageWithParent.parentService === 'string') {
-        parentServiceId = pageWithParent.parentService
+  const navigationPages: NavigationPageData[] = allPages
+    .filter((p) => p && p.id && p.slug) // Filter out any undefined/null pages or pages without slug
+    .map((p) => {
+      const pageWithParent = p as Page & {
+        parentService?: string | { id: string } | null
       }
-    }
+      let parentServiceId: string | null = null
+      if (pageWithParent.parentService) {
+        if (typeof pageWithParent.parentService === 'object' && pageWithParent.parentService.id) {
+          parentServiceId = pageWithParent.parentService.id
+        } else if (typeof pageWithParent.parentService === 'string') {
+          parentServiceId = pageWithParent.parentService
+        }
+      }
 
-    return {
-      id: p.id,
-      slug: p.slug,
-      title: p.title,
-      serviceCategory: p.serviceCategory,
-      parentService: parentServiceId,
-      isSubService: !!parentServiceId,
-    }
-  })
+      return {
+        id: p.id,
+        slug: p.slug || null,
+        title: p.title || '',
+        serviceCategory: p.serviceCategory,
+        parentService: parentServiceId,
+        isSubService: !!parentServiceId,
+      }
+    })
 
-  return <HeaderClient data={headerData as Header} navigationPages={navigationPages} />
+  return <HeaderClient data={(headerData as Header) || null} navigationPages={navigationPages} />
 }

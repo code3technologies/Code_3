@@ -118,6 +118,8 @@ const config = {
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
+        primary_red: '#C90E1D',
+        secondary_red: '#FF3B4B',
       },
       fontFamily: {
         sans: ['"Open Sauce Sans"', 'sans-serif'],

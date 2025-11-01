@@ -66,7 +66,7 @@ export const ServiceSolutionsBlock: React.FC<Props> = ({
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <div className={cn('mb-10', getAlignmentClass(headerAlignment))}>
-            <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+            <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
               {badge}
             </div>
             <h2 className={cn('text-3xl md:text-5xl max-w-4xl font-bold text-gray-900 mb-6 leading-tight', headerAlignment === 'center' ? 'mx-auto' : headerAlignment === 'right' ? 'md:ml-auto md:mr-0' : 'mx-auto md:mx-0',)}>
