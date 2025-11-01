@@ -3,9 +3,8 @@
 import type { TrustedBrandsBlock as TrustedBrandsBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-
-// Import the Media type from your generated types
-import type { Media } from 'src/payload-types'
+import type { Media as MediaType } from 'src/payload-types'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -18,54 +17,27 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
   animationSpeed = 'normal',
   pauseOnHover = true,
 }) => {
-  // Handle null/undefined brands array
   const safeBrands = brands || []
-  
-  // Duplicate brands array for seamless infinite scroll (only if we have brands)
   const duplicatedBrands = safeBrands.length > 0 ? [...safeBrands, ...safeBrands, ...safeBrands] : []
-  
-  // Handle null animationSpeed
   const safeAnimationSpeed = animationSpeed || 'normal'
-  
-  // Animation speed classes
   const speedClasses = {
     slow: 'animate-scroll-slow',
     normal: 'animate-scroll',
     fast: 'animate-scroll-fast'
   } as const
 
-  // Correct Brand interface that matches Payload's generated types
   interface Brand {
     name: string
-    logo: string | Media | null
+    logo: string | MediaType
     url?: string | null
     id?: string | null
   }
 
-  const BrandLogo = ({ brand, index }: { brand: Brand; index: number }) => {
-    // Type guard function for Media objects
-    const isMediaObject = (logo: string | Media | null): logo is Media => {
-      return typeof logo === 'object' && logo !== null && 'url' in logo
-    }
-
-    // Extract URL from logo with proper type checking
-    const getLogoUrl = (logo: string | Media | null): string => {
-      if (typeof logo === 'string') {
-        return logo
-      }
-      if (isMediaObject(logo)) {
-        return logo.url || ''
-      }
-      return ''
-    }
-
-    const logoUrl = getLogoUrl(brand.logo)
-
-    const logoContent = logoUrl ? (
-      <img
-        src={logoUrl}
-        alt={brand.name || 'Brand logo'}
-        className="h-5 md:h-12 w-auto object-contain transition-all duration-300"
+  const BrandLogo = ({ brand }: { brand: Brand; index: number }) => {
+    const logoContent = brand.logo ? (
+      <Media
+        resource={brand.logo}
+        imgClassName="h-5 md:h-[35px] w-auto object-contain transition-all duration-300"
       />
     ) : (
       <div className="h-8 md:h-10 w-24 md:w-32 bg-gray-200 rounded flex items-center justify-center">
@@ -77,7 +49,7 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
       return (
         <a
           href={brand.url}
-          target="_blank"
+          target="_self"
           rel="noopener noreferrer"
           className="block transition-transform duration-300 cursor-pointer"
         >
@@ -89,7 +61,6 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
     return logoContent
   }
 
-  // Don't render if no brands
   if (duplicatedBrands.length === 0) {
     return (
       <section className={cn('py-12 md:py-16 px-4 bg-white', className)}>
@@ -118,8 +89,8 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
         {/* Infinite Scrolling Brands Container */}
         <div className="relative w-full">
           {/* Gradient fade masks */}
-          <div className="absolute -left-1 top-0 w-16 md:w-24 h-full bg-gradient-to-r from-white via-white/50 to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute -right-1 top-0 w-16 md:w-24 h-full bg-gradient-to-l from-white via-white/50 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute -left-1 top-0 w-16 md:w-24 h-full bg-gradient-to-r from-white via-white/30 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute -right-1 top-0 w-16 md:w-24 h-full bg-gradient-to-l from-white via-white/30 to-transparent z-10 pointer-events-none"></div>
           
           {/* Scrolling container */}
           <div className="flex overflow-hidden">

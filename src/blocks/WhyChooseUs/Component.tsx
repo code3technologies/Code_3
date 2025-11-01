@@ -4,6 +4,7 @@ import type { WhyChooseUsBlock as WhyChooseUsBlockProps } from 'src/payload-type
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -37,9 +38,6 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
           {features?.map((feature, index) => {
             if (!feature.image) return null
 
-            const imageUrl =
-              typeof feature.image === 'string' ? feature.image : feature.image.url || ''
-
             const colSpanClass = feature.colSpan === '5' ? 'md:col-span-5' : 'md:col-span-4'
             const heightClass =
               feature.colSpan === '5'
@@ -58,17 +56,9 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
                   )}
                 >
                   <div className="relative h-full flex flex-col justify-between overflow-hidden">
-                    <img
-                      src={imageUrl}
-                      alt={feature.alt || 'Feature image'}
-                      className={cn(
-                        'rounded-3xl w-full h-full object-cover',
-                        feature.colSpan === '5' && index === 2 && 'lg:h-auto object-[left_0%]',
-                      )}
-                      onError={(e) => {
-                        console.error('Feature image failed to load:', e.currentTarget.src)
-                        e.currentTarget.style.display = 'none'
-                      }}
+                    <Media
+                      resource={feature.image}
+                      imgClassName="w-full h-full object-cover"
                     />
 
                     {/* Gradient Overlay */}

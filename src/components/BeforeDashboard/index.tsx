@@ -1,4 +1,5 @@
 import { Banner } from '@payloadcms/ui/elements/Banner'
+import Link from 'next/link'
 import React from 'react'
 
 import { SeedButton } from './SeedButton'
@@ -17,9 +18,9 @@ const BeforeDashboard: React.FC = () => {
         <li>
           <SeedButton />
           {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
+          <Link href="/">
             visit your website
-          </a>
+          </Link>
           {' to see the results.'}
         </li>
         <li>

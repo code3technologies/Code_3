@@ -1,24 +1,27 @@
 import type { Block } from 'payload'
 
-export const HeroBanner: Block = {
-  slug: 'heroBanner',
+export const ServicesHero: Block = {
+  slug: 'servicesHero',
   fields: [
     {
       name: 'title',
       type: 'text',
       label: 'Title',
+      defaultValue: 'OUR SERVICES',
       required: true,
     },
     {
       name: 'subtitle',
-      type: 'textarea',
+      type: 'text',
       label: 'Subtitle',
+      defaultValue: 'Your Technology, Secured & Simplified',
       required: true,
     },
     {
       name: 'buttonText',
       type: 'text',
       label: 'Button Text',
+      defaultValue: 'See Our Services',
       required: true,
     },
     {
@@ -27,17 +30,19 @@ export const HeroBanner: Block = {
       label: 'Button Link',
     },
     {
-      name: 'backgroundImage',
+      name: 'image1',
       type: 'upload',
       relationTo: 'media',
-      label: 'Background Image',
+      label: 'First Image',
+      required: true,
     },
     {
-      name: 'showLogo',
-      type: 'checkbox',
-      label: 'Show Logo',
-      defaultValue: true,
+      name: 'image2',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Second Image',
+      required: true,
     },
   ],
-  interfaceName: 'HeroBannerBlock',
+  interfaceName: 'ServicesHeroBlock',
 }

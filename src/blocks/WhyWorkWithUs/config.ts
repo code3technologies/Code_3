@@ -34,8 +34,9 @@ export const WhyWorkWithUs: Block = {
       fields: [
         {
           name: 'icon',
-          type: 'textarea',
-          label: 'SVG Icon Code',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image',
           required: true,
         },
         {

@@ -72,10 +72,11 @@ export default buildConfig({
     // storage-adapter-placeholder
     vercelBlobStorage({
       enabled: true,
+      clientUploads: true,
       collections: {
-        media: true,
+         [Media.slug]: true,
       },
-      token: process.env.VERCEL_BLOB_STORAGE_TOKEN,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     })
   ],
   secret: process.env.PAYLOAD_SECRET,

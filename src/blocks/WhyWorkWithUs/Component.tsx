@@ -2,6 +2,7 @@ import type { WhyWorkWithUsBlock as WhyWorkWithUsBlockProps } from 'src/payload-
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -61,10 +62,12 @@ export const WhyWorkWithUsBlock: React.FC<Props> = ({
                   feature.iconAlignment === 'right' ? 'md:ml-auto' : '',
                 )}
               >
-                <div
-                  dangerouslySetInnerHTML={{ __html: feature.icon || '' }}
-                  className="w-[88px] h-[87px] flex items-center justify-center"
-                />
+                {feature.icon && typeof feature.icon === 'object' && (
+                  <Media
+                    resource={feature.icon}
+                    imgClassName="w-[62px] h-[62px] object-contain"
+                  />
+                )}
               </div>
 
               <div>

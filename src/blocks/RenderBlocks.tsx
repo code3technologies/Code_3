@@ -9,7 +9,6 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { FAQBlock } from './FAQ/Component'
 import { ServicesBlock } from './Services/Component'
-import { HeroBannerBlock } from './HeroBanner/Component'
 import { MissionAndValuesBlock } from './MissionAndValues/Component'
 import { WhyWorkWithUsBlock } from './WhyWorkWithUs/Component'
 import { WhyChooseUsAboutBlock } from './WhyChooseUsAbout/Component'
@@ -19,6 +18,11 @@ import { WhyChooseUsBlock } from './WhyChooseUs/Component'
 import { CurrentOpeningsBlock } from './CurrentOpenings/Component'
 import { CareersBlock } from './CareersBanner/Component'
 import { TrustedBrandsBlock } from './TrustedBrands/Component'
+import { ServiceSolutionsBlock } from './ServiceSolutions/Components'
+import { ServicesHeroBlock } from './ServicesHero/Component'
+import { ServicesStepsBlock } from './ServicesSteps/Component'
+import { ServiceDetailBannerBlock } from './ServiceDetailBanner/Component'
+import { ServiceOverviewBlock } from './ServiceOverview/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -28,7 +32,6 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   faq: FAQBlock,
   services: ServicesBlock,
-  heroBanner: HeroBannerBlock,
   missionAndValues: MissionAndValuesBlock,
   whyWorkWithUs: WhyWorkWithUsBlock,
   whyChooseUsAbout: WhyChooseUsAboutBlock,
@@ -37,7 +40,12 @@ const blockComponents = {
   careers: CareersBlock,
   aboutUsBanner: AboutUsBannerBlock,
   trustedBrands: TrustedBrandsBlock,
-  currentOpenings: CurrentOpeningsBlock
+  currentOpenings: CurrentOpeningsBlock,
+  serviceSolutions: ServiceSolutionsBlock,
+  servicesHero: ServicesHeroBlock,
+  servicesSteps: ServicesStepsBlock,
+  serviceDetailBanner: ServiceDetailBannerBlock,
+  serviceOverview: ServiceOverviewBlock,
 }
 
 export const RenderBlocks: React.FC<{

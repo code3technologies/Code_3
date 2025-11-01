@@ -1,4 +1,3 @@
-
 import type { Block } from 'payload'
 
 export const MissionAndValues: Block = {
@@ -33,8 +32,9 @@ export const MissionAndValues: Block = {
       fields: [
         {
           name: 'icon',
-          type: 'textarea',
-          label: 'SVG Icon Code',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image',
           required: true,
         },
         {
@@ -59,8 +59,9 @@ export const MissionAndValues: Block = {
       fields: [
         {
           name: 'icon',
-          type: 'textarea',
-          label: 'SVG Icon Code',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image',
           required: true,
         },
         {
