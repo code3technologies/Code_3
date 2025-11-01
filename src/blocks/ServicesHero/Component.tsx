@@ -3,7 +3,6 @@ import type { ServicesHeroBlock as ServicesHeroBlockProps } from 'src/payload-ty
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
 
 type Props = {

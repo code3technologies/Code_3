@@ -152,6 +152,10 @@ export interface Page {
    * Categorize this page as Infrastructure or Digital to link it from Services.
    */
   serviceCategory?: ('none' | 'infrastructure' | 'digital') | null;
+  /**
+   * Select a parent service if this is a sub-service. The parent must be a service page (Infrastructure or Digital).
+   */
+  parentService?: (string | null) | Page;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -1371,6 +1375,7 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   serviceCategory?: T;
+  parentService?: T;
   hero?:
     | T
     | {

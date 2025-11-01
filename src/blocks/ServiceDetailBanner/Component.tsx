@@ -27,12 +27,12 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
             )}
             <div className="max-w-5xl mx-auto text-center flex flex-col gap-3 md:gap-6">
                 {/* Service Name Badge */}
-                <div className="my-10 md:my-14 text-[#C90E1D] text-5xl md:text-6xl lg:text-7xl font-bold">
+                <div className="my-10 md:my-14 text-[#C90E1D] text-4xl md:text-6xl  font-bold">
                     {serviceName}
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                <h1 className="text-3xl md:text-5xl  font-bold text-gray-900 leading-tight">
                     {title}
                 </h1>
 
