@@ -120,7 +120,7 @@ const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
                     </div>
                     <div className="text-primary_red font-semibold text-xl w-max">{stepNumber}</div>
                   </div>
-                  <div className="bg-[#F3F3F3] border border-[#E0DDDD] max-w-[16rem] rounded-[1.5rem] p-4">
+                  <div className="bg-[#F3F3F3] border border-[#E0DDDD] w-full max-w-[16rem] rounded-[1.5rem] p-4">
                     <div className="flex flex-col justify-between h-full gap-14">
                       <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                         {step.icon && (
