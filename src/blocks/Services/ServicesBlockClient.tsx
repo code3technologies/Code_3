@@ -55,7 +55,7 @@ export const ServicesBlockClient: React.FC<
   const lastScrollY = useRef(0)
 
   const categories: { key: ServiceCategoryKey; label: string }[] = [
-    { key: 'infrastructure', label: 'Infrastructure Services' },
+    { key: 'infrastructure', label: 'Infra Services' },
     { key: 'digital', label: 'Digital Services' },
   ]
 
@@ -335,7 +335,7 @@ export const ServicesBlockClient: React.FC<
           className="flex flex-col justify-center h-auto max-h-[1200px] py-12 sm:py-16 md:py-20"
         >
           <div className="text-center mb-8 sm:mb-12 px-4">
-            <button className="bg-[#C90E1D] text-white px-3 border border-[#FF3B4B] py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <button className="bg-primary_red text-white px-3 border border-secondary_red py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               {badge}
             </button>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-[130%] mb-3 sm:mb-4">{title}</h1>
@@ -343,7 +343,7 @@ export const ServicesBlockClient: React.FC<
           </div>
 
           <div ref={containerRef} className="flex justify-center mb-12 sm:mb-16 px-4">
-            <div className="flex bg-white rounded-full border border-gray-300 p-1 shadow-sm">
+            <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-1 shadow-sm">
               {categories.map(({ key, label }) => {
                 const isActive = key === activeCategory
                 return (
@@ -353,8 +353,8 @@ export const ServicesBlockClient: React.FC<
                     className={cn(
                       'px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300',
                       isActive
-                        ? 'bg-gray-100 text-red-600 shadow-sm'
-                        : 'bg-white text-gray-700 hover:text-red-500',
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-[#717680]',
                     )}
                   >
                     {label}
@@ -386,7 +386,7 @@ export const ServicesBlockClient: React.FC<
       <div className="block sm:hidden bg-white">
         <div className="py-8 sm:py-12 px-4">
           <div className="text-center mb-6 sm:mb-8">
-            <button className="bg-[#C90E1D] text-white px-3 border border-[#FF3B4B] py-2 rounded-full text-xs font-medium mb-3 sm:mb-4">
+            <button className="bg-primary_red text-white px-3 border border-secondary_red py-2 rounded-full text-xs font-medium mb-3 sm:mb-4">
               {badge}
             </button>
             <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-[130%] mb-2 sm:mb-3">{title}</h1>
@@ -394,7 +394,7 @@ export const ServicesBlockClient: React.FC<
           </div>
 
           <div className="flex justify-center mb-6 sm:mb-8">
-            <div className="flex bg-white rounded-full border border-gray-300 p-0.5 shadow-sm">
+            <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-0.5 shadow-sm">
               {categories.map(({ key, label }) => {
                 const isActive = key === activeCategory
                 return (
@@ -404,8 +404,8 @@ export const ServicesBlockClient: React.FC<
                     className={cn(
                       'px-2 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs font-medium transition-colors duration-300',
                       isActive
-                        ? 'bg-gray-100 text-red-600 shadow-sm'
-                        : 'bg-white text-gray-700 hover:text-red-500',
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-[#717680]',
                     )}
                   >
                     {label.replace(' Services', '')}

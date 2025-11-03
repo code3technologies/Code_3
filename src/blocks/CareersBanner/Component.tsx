@@ -41,7 +41,7 @@ export const CareersBlock: React.FC<Props> = ({
       {/* Header Section */}
       <div className="px-8 grid grid-cols-1 sm:grid-cols-2 max-w-[1400px] mx-auto md:grid-cols-3 gap-4 sm:gap-x-26 sm:gap-y-20 md:gap-x-0">
         {/* Left Side - Title and Content */}
-        <h1 className="text-6xl md:text-[5.5rem] md:col-span-2 lg:text-[8rem] xl:text-[10rem] font-semibold text-[#C90E1D] mb-6 lg:mb-8">
+        <h1 className="text-6xl md:text-[5.5rem] md:col-span-2 lg:text-[8rem] xl:text-[10rem] font-semibold text-primary_red mb-6 lg:mb-8">
           {title}
         </h1>
         <div className="space-y-4 sm:mt-3 md:mt-6 lg:mt-8 xl:mt-10">

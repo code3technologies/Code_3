@@ -29,7 +29,7 @@ const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+          <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
             {badge}
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl md:max-w-[36rem] lg:max-w-[46rem] mx-auto font-bold text-gray-900 mb-6 leading-tight">
@@ -60,13 +60,13 @@ const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
                                         <div className="absolute left-[-26px] z-10">
                                         <div className="w-5 h-5 border-[3px] border-[#BF2620] bg-[#961712] rounded-full"></div>
                                         </div>
-                                        <span className="text-[#C90E1D] font-semibold text-3xl ml-4">
+                                        <span className="text-primary_red font-semibold text-3xl ml-4">
                                         {stepNumber}
                                         </span>
                                     </>
                                 ) : (
                                     <>
-                                        <span className="text-[#C90E1D] font-semibold text-3xl mr-4">
+                                        <span className="text-primary_red font-semibold text-3xl mr-4">
                                         {stepNumber}
                                         </span>
                                         <div className="absolute right-[-26px] z-10">
@@ -118,9 +118,9 @@ const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
                     <div className="z-10">
                       <div className="w-4 h-4 border-[3px] border-[#BF2620] bg-[#961712] rounded-full"></div>
                     </div>
-                    <div className="text-[#C90E1D] font-semibold text-xl w-max">{stepNumber}</div>
+                    <div className="text-primary_red font-semibold text-xl w-max">{stepNumber}</div>
                   </div>
-                  <div className="bg-[#F3F3F3] border border-[#E0DDDD] max-w-[16rem] rounded-[1.5rem] p-4">
+                  <div className="bg-[#F3F3F3] border border-[#E0DDDD] w-full max-w-[16rem] rounded-[1.5rem] p-4">
                     <div className="flex flex-col justify-between h-full gap-14">
                       <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                         {step.icon && (

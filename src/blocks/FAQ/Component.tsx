@@ -90,7 +90,7 @@ export const FAQBlock: React.FC<FAQBlockProps> = ({
           {/* Left Column: Title Section */}
           <div className="text-center md:text-left max-w-sm mx-auto">
             {badge && (
-              <span className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-sm font-semibold px-3 py-2 rounded-full uppercase">
+              <span className="inline-block bg-primary_red border border-secondary_red text-white text-sm font-semibold px-3 py-2 rounded-full uppercase">
                 {badge}
               </span>
             )}

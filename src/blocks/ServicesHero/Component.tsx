@@ -3,7 +3,6 @@ import type { ServicesHeroBlock as ServicesHeroBlockProps } from 'src/payload-ty
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
 
 type Props = {
@@ -14,8 +13,6 @@ export const ServicesHeroBlock: React.FC<Props> = ({
   className,
   title = 'OUR SERVICES',
   subtitle = 'Your Technology, Secured & Simplified',
-  buttonText = 'See Our Services',
-  buttonLink,
   image1,
   image2,
 }) => {
@@ -26,7 +23,7 @@ export const ServicesHeroBlock: React.FC<Props> = ({
         <div className="mx-auto px-4 sm:px-6 py-8">
           {/* Header Section */}
           <div className="mb-8">
-            <h1 className="text-6xl font-semibold text-[#C90E1D]">
+            <h1 className="text-6xl font-semibold text-primary_red">
               {title.split(' ').map((word, index) => (
                 <React.Fragment key={index}>
                   {word}
@@ -36,18 +33,6 @@ export const ServicesHeroBlock: React.FC<Props> = ({
             </h1>
             <div className="space-y-3 mt-8">
               <h2 className="text-xl max-w-xs font-semibold text-gray-800">{subtitle}</h2>
-              {buttonText && (
-                <Button
-                    variant="default"
-                  onClick={() => {
-                    if (buttonLink && buttonLink !== '#') {
-                        window.open(buttonLink, '_self')
-                      }
-                  }}
-                >
-                  {buttonText}
-                </Button>
-              )}
             </div>
           </div>
 
@@ -73,27 +58,15 @@ export const ServicesHeroBlock: React.FC<Props> = ({
       <div className="hidden px-6 lg:px-8 md:flex max-w-[2000px] mx-auto xl:min-h-[680px] bg-[linear-gradient(-30deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
         <div className="mx-auto py-12 max-w-7xl">
           <div className="flex justify-between items-end">
-            <h1 className="text-[6rem] xl:text-[8.5rem] font-bold text-[#C90E1D]">
+            <h1 className="text-[6rem] xl:text-[8.5rem] font-bold text-primary_red">
               {title.split(' ')[0]}
             </h1>
             <div className="mb-5">
-              {buttonText && (
-                <Button
-                    variant="default"
-                  onClick={() => {
-                    if (buttonLink && buttonLink !== '#') {
-                      window.open(buttonLink, '_self')
-                    }
-                  }}
-                >
-                  {buttonText}
-                </Button>
-              )}
             </div>
           </div>
           <div className="grid grid-cols-12 gap-4">
             <div className="flex col-span-4 flex-col justify-between">
-              <h1 className="text-[6rem] translate-y-[-52px] xl:translate-y-[-72px] xl:text-[8.5rem] font-bold text-[#C90E1D]">
+              <h1 className="text-[6rem] translate-y-[-52px] xl:translate-y-[-72px] xl:text-[8.5rem] font-bold text-primary_red">
                 {title.split(' ')[1]}
               </h1>
               <h3 className="lg:text-3xl text-xl max-w-xs mb-4 font-semibold text-gray-800">

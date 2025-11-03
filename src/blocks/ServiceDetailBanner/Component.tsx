@@ -23,16 +23,16 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
     return (
         <section className={cn('py-[72px] px-4 sm:px-6 lg:px-8 bg-gradient-to-t from-[#F7F7F7] to-transparent relative', className)}>
             {showGradientLine && (
-                <div className="absolute bg-gradient-to-r from-transparent via-[#C90E1D] to-transparent w-[80%] h-[1px] z-[5] bottom-0 left-1/2 -translate-x-1/2"></div>
+                <div className="absolute bg-gradient-to-r from-transparent via-primary_red to-transparent w-[80%] h-[1px] z-[5] bottom-0 left-1/2 -translate-x-1/2"></div>
             )}
             <div className="max-w-5xl mx-auto text-center flex flex-col gap-3 md:gap-6">
                 {/* Service Name Badge */}
-                <div className="my-10 md:my-14 text-[#C90E1D] text-5xl md:text-6xl lg:text-7xl font-bold">
+                <div className="my-10 md:my-14 text-primary_red text-4xl md:text-6xl  font-bold">
                     {serviceName}
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                <h1 className="text-3xl md:text-5xl  font-bold text-gray-900 leading-tight">
                     {title}
                 </h1>
 

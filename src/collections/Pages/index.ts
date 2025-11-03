@@ -86,12 +86,26 @@ export const Pages: CollectionConfig<'pages'> = {
       defaultValue: 'none',
       options: [
         { label: 'Not a Service Page', value: 'none' },
-        { label: 'Infrastructure', value: 'infrastructure' },
-        { label: 'Digital', value: 'digital' },
+        { label: 'Infrastructure Service', value: 'infrastructure' },
+        { label: 'Digital Service', value: 'digital' },
       ],
       admin: {
         position: 'sidebar',
         description: 'Categorize this page as Infrastructure or Digital to link it from Services.',
+      },
+    },
+    {
+      name: 'parentService',
+      type: 'relationship',
+      relationTo: 'pages',
+      label: 'Parent Service',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Select a parent service if this is a sub-service. The parent must be a service page (Infrastructure or Digital).',
+        condition: (data) => {
+          return data?.serviceCategory === 'infrastructure' || data?.serviceCategory === 'digital'
+        },
       },
     },
     {

@@ -27,7 +27,7 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
         <div className="mx-auto px-4 pb-8">
           {/* Header Section */}
           <div className="mb-8">
-            <h1 className="text-7xl md:text-[6rem] md:col-span-2 font-semibold text-[#C90E1D]">
+            <h1 className="text-7xl md:text-[6rem] md:col-span-2 font-semibold text-primary_red">
               ABOUT
               <br />
               US
@@ -81,7 +81,7 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
       <div className="hidden md:block max-w-[2000px] mx-auto xl:min-h-[760px] bg-[linear-gradient(-30deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
         <div className="container mx-auto px-4 py-16 max-w-[1400px]">
           <div className="flex justify-between items-end">
-            <h1 className="text-[7rem] xl:text-[9rem] font-bold text-red-600">ABOUT</h1>
+            <h1 className="text-[7rem] xl:text-[9rem] font-bold text-primary_red">ABOUT</h1>
             <div className="pb-4">
               {buttonText && (
                 <Button
@@ -100,7 +100,7 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
           </div>
           <div className="grid grid-cols-4 gap-4">
             <div className="flex flex-col justify-between">
-              <h1 className="text-[7rem] translate-y-[-52px] xl:text-[9rem] font-bold text-red-600">
+              <h1 className="text-[7rem] translate-y-[-52px] xl:text-[9rem] font-bold text-primary_red">
                 US
               </h1>
               <p className="md:text-sm lg:text-lg text-gray-600">{description}</p>

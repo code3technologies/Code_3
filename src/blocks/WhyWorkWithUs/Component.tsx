@@ -21,7 +21,7 @@ export const WhyWorkWithUsBlock: React.FC<Props> = ({
         {/* Header Section */}
         <div className="text-center mb-12 lg:mb-16">
           {/* Red Badge */}
-          <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+          <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
             {badge}
           </div>
 

@@ -60,7 +60,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
       {/* Header Section */}
       <div className="text-center mb-8">
         {/* CODE3 Badge */}
-        <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+        <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
           {badge}
         </div>
 
@@ -172,7 +172,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
                 </div>
               </div>
               <div className="mt-4 sm:mt-0 sm:ml-6">
-                <button className="text-[#C90E1D]/70 gap-2 text-sm font-medium hover:text-red-600 flex items-center">
+                <button className="text-primary_red/80 gap-2 text-sm font-medium hover:text-red-600 flex items-center">
                   {job.viewJobText || 'View Job'}
                   <svg
                     width="10"
