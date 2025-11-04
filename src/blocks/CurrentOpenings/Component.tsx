@@ -48,15 +48,15 @@ const getCategoryDotColor = (color: string) => {
 
 export const CurrentOpeningsBlock: React.FC<Props> = ({
   className,
-  badge = 'JOIN US',
-  title = 'Current Openings',
-  subtitle = "At CODE3, you'll innovate, grow, and make an impact—shaping the future of technology through IT, AV, and security solutions.",
+  badge,
+  title,
+  subtitle,
   showFilter = true,
   departments = [],
   jobListings = [],
 }) => {
   return (
-    <div className={cn('max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8', className)}>
+    <div id="current-openings" className={cn('max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8', className)}>
       {/* Header Section */}
       <div className="text-center mb-8">
         {/* CODE3 Badge */}

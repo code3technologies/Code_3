@@ -73,8 +73,8 @@ const config = {
         'scroll': 'scroll 30s linear infinite',
         'scroll-slow': 'scroll 50s linear infinite',
         'scroll-fast': 'scroll 20s linear infinite',
-        'slide-in-from-bottom': 'slide-in-from-bottom 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
-        'slide-in-from-top': 'slide-in-from-top 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+        'slide-in-from-bottom': 'slide-in-from-bottom 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+        'slide-in-from-top': 'slide-in-from-top 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -159,11 +159,11 @@ const config = {
           },
         },
         'slide-in-from-bottom': {
-          '0%': { transform: 'translateY(30%)', opacity: '0' },
+          '0%': { transform: 'translateY(0%)', opacity: '1' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         'slide-in-from-top': {
-          '0%': { transform: 'translateY(-30%)', opacity: '0' },
+          '0%': { transform: 'translateY(-0%)', opacity: '1' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         scroll: {

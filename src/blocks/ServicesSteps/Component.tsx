@@ -17,9 +17,9 @@ interface ServicesStepsProps {
 }
 
 const ServicesStepsComponent: React.FC<ServicesStepsProps> = ({
-  badge = 'Steps',
-  title = 'Simple Steps to Stress-Free IT',
-  subtitle = 'We handle the technical hassles so you can focus on growing your business.',
+  badge,
+  title,
+  subtitle,
   steps = [],
 }) => {
   const stepsArray = steps || []

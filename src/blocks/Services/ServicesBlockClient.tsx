@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
+import { Button } from '@/components/ui/button'
 
 type ServiceCategoryKey = 'infrastructure' | 'digital'
 type ScrollDirection = 'up' | 'down'
@@ -36,9 +37,9 @@ export const ServicesBlockClient: React.FC<
   ServicesBlockProps & { servicePages?: Page[]; className?: string; maxServices?: number }
 > = ({
   className,
-  badge = 'OUR SERVICES',
-  title = 'Your Technology Partner in Every Step',
-  subtitle = 'Whether you need a secure IT backbone or a strong digital presence',
+  badge,
+  title,
+  subtitle,
   maxServices = 6,
   servicePages = [],
 }) => {
@@ -48,6 +49,7 @@ export const ServicesBlockClient: React.FC<
   const [mounted, setMounted] = useState(false)
   const [showAllServices, setShowAllServices] = useState(false)
   const [sectionHeight, setSectionHeight] = useState('auto')
+  const [scrollProgress, setScrollProgress] = useState(0)
   
   const sectionRef = useRef<HTMLElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -59,7 +61,6 @@ export const ServicesBlockClient: React.FC<
     { key: 'digital', label: 'Digital Services' },
   ]
 
-  // Type-safe helper function using generated types
   const getServiceOverviewData = (page: Page): ServiceOverviewBlock | undefined => {
     if (!page.layout) return undefined
     
@@ -69,7 +70,6 @@ export const ServicesBlockClient: React.FC<
     )
   }
 
-  // Type-safe helper function using generated types
   const getServiceBannerData = (page: Page): ServiceDetailBannerBlock | undefined => {
     if (!page.layout) return undefined
     
@@ -84,7 +84,7 @@ export const ServicesBlockClient: React.FC<
     .slice(0, maxServices)
 
   const totalServices = filteredServices.length
-  const mobileServicesCount = 3
+  const mobileServicesCount = 4
   const displayedMobileServices = showAllServices 
     ? filteredServices 
     : filteredServices.slice(0, mobileServicesCount)
@@ -125,10 +125,27 @@ export const ServicesBlockClient: React.FC<
     setActiveIndex(0)
     setScrollDirection('down')
     setShowAllServices(false)
+    setScrollProgress(0)
+
+    if (contentRef.current && window.innerWidth >= 640) {
+      // Use setTimeout to ensure DOM has updated
+      setTimeout(() => {
+        if (contentRef.current) {
+          const contentHeight = contentRef.current.offsetHeight
+          const extraScrollHeight = window.innerHeight * 0.8
+          const totalServices = servicePages
+            .filter((page) => page.serviceCategory === activeCategory)
+            .slice(0, maxServices).length
+          
+          const totalHeight = contentHeight + ((totalServices - 1) * extraScrollHeight)
+          setSectionHeight(`${totalHeight}px`)
+        }
+      }, 0)
+    }
   }, [activeCategory])
 
   useEffect(() => {
-    if (!mounted || totalServices <= 1 || !sectionRef.current) return
+    if (!mounted || !sectionRef.current) return
 
     const handleScroll = () => {
       if (!sectionRef.current || window.innerWidth < 640) return
@@ -142,7 +159,10 @@ export const ServicesBlockClient: React.FC<
       const scrolledPastSection = scrollY - sectionTop
       
       if (scrolledPastSection >= 0 && scrolledPastSection <= sectionHeight) {
-        const scrollProgress = Math.min(scrolledPastSection / (sectionHeight - viewportHeight), 1)
+        const scrollProgressValue = Math.min(scrolledPastSection / (sectionHeight - viewportHeight), 1)
+        
+        // NEW: Update smooth progress state
+        setScrollProgress(scrollProgressValue * 100)
         
         const serviceThresholds = []
         for (let i = 0; i < totalServices; i++) {
@@ -151,7 +171,7 @@ export const ServicesBlockClient: React.FC<
         
         let newIndex = 0
         for (let i = serviceThresholds.length - 1; i >= 0; i--) {
-          if (scrollProgress >= serviceThresholds[i]) {
+          if (scrollProgressValue >= serviceThresholds[i]) {
             newIndex = i
             break
           }
@@ -163,6 +183,10 @@ export const ServicesBlockClient: React.FC<
           setActiveIndex(newIndex)
           setScrollDirection(direction)
         }
+      } else if (scrolledPastSection < 0) {
+        setScrollProgress(0)
+      } else {
+        setScrollProgress(100)
       }
       
       lastScrollY.current = scrollY
@@ -203,7 +227,7 @@ export const ServicesBlockClient: React.FC<
       (page.serviceCategory === 'infrastructure'
         ? 'Infrastructure'
         : page.serviceCategory === 'digital'
-          ? 'Digital'
+          ? 'Digital Services'
           : 'Service')
 
     const isActive = !isMobile && index === activeIndex
@@ -213,36 +237,60 @@ export const ServicesBlockClient: React.FC<
         : 'animate-slide-in-from-top opacity-100'
       : !isMobile ? 'opacity-0' : 'opacity-100'
 
+    // CHANGED: Use real-time scroll progress instead of card index
+    const progressPercentage = !isMobile ? scrollProgress : 100
+
     return (
       <div 
         className={cn(
           'flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8',
           isMobile && 'mb-12 sm:mb-16 last:mb-8 pb-6 sm:pb-8 border-b border-gray-100 last:border-b-0 last:pb-0',
-          !isMobile && 'h-full transition-all duration-700 ease-in-out transform',
+          !isMobile && 'h-full transition-all duration-1000 ease-in-out transform',
           !isMobile && slideAnimationClass,
-          !isMobile && (isActive ? 'translate-y-0 scale-100' : 'translate-y-4 scale-95')
+          !isMobile && (isActive ? 'translate-y-0' : 'translate-y-4')
         )}
       >
         <div className="relative flex flex-col justify-between w-full sm:w-1/2">
-          <div className="absolute sm:block hidden left-0 top-0 bottom-0 w-1 rounded-full bg-gradient-to-b from-[#BE251F] to-transparent"></div>
+          {/* CHANGED: Smooth real-time progress bar */}
+          <div className="absolute sm:block hidden left-0 top-0 bottom-0 w-1 rounded-full bg-gray-200 overflow-hidden">
+            <div 
+              className="absolute top-0 left-0 w-full rounded-full bg-gradient-to-b from-[#BE251F] via-[#FF1800] to-[#FF3B4B]"
+              style={{ 
+                height: `${progressPercentage}%`,
+                willChange: 'height'
+              }}
+            />
+            
+            {/* Optional: Glowing dot that follows scroll */}
+            {!isMobile && progressPercentage > 0 && progressPercentage < 100 && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-[#FF1800] rounded-full"
+                style={{ 
+                  top: `calc(${progressPercentage}% - 6px)`,
+                  boxShadow: '0 0 8px #FF1800, 0 0 12px #FF1800',
+                  willChange: 'top'
+                }}
+              />
+            )}
+          </div>
 
           <div className="flex flex-col justify-between gap-4 sm:gap-5 h-full sm:ml-6">
             <div className={cn(
               'w-12 h-12 sm:w-14 sm:h-14 bg-[#FF1800] border border-[#FF919A] rounded-full flex items-center justify-center',
-              !isMobile && 'transition-all duration-500',
-              !isMobile && (isActive ? 'scale-100 opacity-100' : 'scale-90 opacity-70')
+              !isMobile && 'transition-all duration-1000',
+              !isMobile && (isActive ? 'scale-100 opacity-100' : 'scale-100 opacity-100')
             )}>
               <WandIcon />
             </div>
 
             <div className={cn(
-              !isMobile && 'transition-all duration-700 ease-in-out',
-              !isMobile && (isActive ? 'opacity-100 translate-x-0' : 'opacity-70 translate-x-2')
+              !isMobile && 'transition-all duration-1000 ease-in-out',
+              !isMobile && (isActive ? 'opacity-100 translate-x-0' : 'opacity-100 translate-x-0')
             )}>
               <span className={cn(
                 'inline-block bg-[#F5D9D9] text-red-600 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4',
-                !isMobile && 'transition-all duration-500',
-                !isMobile && (isActive ? 'opacity-100 scale-100' : 'opacity-70 scale-95')
+                !isMobile && 'transition-all duration-1000',
+                !isMobile && (isActive ? 'opacity-100 scale-100' : 'opacity-100 scale-95')
               )}>
                 {serviceLabel}
               </span>
@@ -252,8 +300,8 @@ export const ServicesBlockClient: React.FC<
                   href={detailHref}
                   className={cn(
                     'text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#0D121C] mb-3 sm:mb-4 hover:text-red-600 block',
-                    !isMobile && 'transition-all duration-700',
-                    !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-70 translate-y-2')
+                    !isMobile && 'transition-all duration-1000',
+                    !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-2')
                   )}
                 >
                   {page.title}
@@ -261,8 +309,8 @@ export const ServicesBlockClient: React.FC<
               ) : (
                 <h2 className={cn(
                   'text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#0D121C] mb-3 sm:mb-4',
-                  !isMobile && 'transition-all duration-700',
-                  !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-70 translate-y-2')
+                  !isMobile && 'transition-all duration-1000',
+                  !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-2')
                 )}>
                   {page.title}
                 </h2>
@@ -270,8 +318,8 @@ export const ServicesBlockClient: React.FC<
 
               <p className={cn(
                 'text-gray-600 text-sm sm:text-base leading-relaxed',
-                !isMobile && 'transition-all duration-700 delay-100',
-                !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-60 translate-y-3')
+                !isMobile && 'transition-all duration-1000 delay-100',
+                !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-3')
               )}>
                 {serviceDescription}
               </p>
@@ -281,8 +329,8 @@ export const ServicesBlockClient: React.FC<
 
         <div className={cn(
           'relative w-full sm:w-1/2 rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[3/2]',
-          !isMobile && 'transition-all duration-700 ease-in-out',
-          !isMobile && (isActive ? 'opacity-100 scale-100 translate-x-0' : 'opacity-70 scale-95 translate-x-4')
+          !isMobile && 'transition-all duration-1000 ease-in-out',
+          !isMobile && (isActive ? 'opacity-100 scale-100 translate-x-0' : 'opacity-100 scale-95 translate-x-4')
         )}>
           {serviceImage ? (
             <Media
@@ -290,16 +338,16 @@ export const ServicesBlockClient: React.FC<
               fill
               imgClassName={cn(
                 'object-cover w-full h-full',
-                !isMobile && 'transition-all duration-700 ease-in-out',
-                !isMobile && (isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-80')
+                !isMobile && 'transition-all duration-1000 ease-in-out',
+                !isMobile && (isActive ? 'scale-100 opacity-100' : 'scale-80 opacity-100')
               )}
               priority={index === 0}
             />
           ) : (
             <div className={cn(
               'w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center',
-              !isMobile && 'transition-all duration-700',
-              !isMobile && (isActive ? 'opacity-100' : 'opacity-70')
+              !isMobile && 'transition-all duration-1000',
+              !isMobile && (isActive ? 'opacity-100' : 'opacity-100')
             )}>
               <span className="text-gray-500 text-sm">No image available</span>
             </div>
@@ -309,7 +357,6 @@ export const ServicesBlockClient: React.FC<
     )
   }
 
-  // Rest of the component remains the same...
   if (totalServices === 0) {
     return (
       <section className={cn('bg-white py-12 sm:py-16 md:py-20 px-4 relative', className)}>
@@ -351,7 +398,7 @@ export const ServicesBlockClient: React.FC<
                     key={key}
                     onClick={() => setActiveCategory(key)}
                     className={cn(
-                      'px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300',
+                      'px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300',
                       isActive
                         ? 'bg-white text-black shadow-sm'
                         : 'text-[#717680]',
@@ -394,7 +441,7 @@ export const ServicesBlockClient: React.FC<
           </div>
 
           <div className="flex justify-center mb-6 sm:mb-8">
-            <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-0.5 shadow-sm">
+            <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-1 shadow-sm">
               {categories.map(({ key, label }) => {
                 const isActive = key === activeCategory
                 return (
@@ -402,13 +449,13 @@ export const ServicesBlockClient: React.FC<
                     key={key}
                     onClick={() => setActiveCategory(key)}
                     className={cn(
-                      'px-2 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs font-medium transition-colors duration-300',
+                      'px-5 py-2 rounded-full text-xs font-medium transition-colors duration-300',
                       isActive
                         ? 'bg-white text-black shadow-sm'
                         : 'text-[#717680]',
                     )}
                   >
-                    {label.replace(' Services', '')}
+                    {label}
                   </button>
                 )
               })}
@@ -423,16 +470,15 @@ export const ServicesBlockClient: React.FC<
             ))}
           </div>
 
-          {filteredServices.length > mobileServicesCount && (
-            <div className="text-center mt-8">
-              <button
-                onClick={() => setShowAllServices(!showAllServices)}
-                className="bg-[#FF1800] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#E01500] transition-colors duration-200"
-              >
-                {showAllServices ? 'Show Less' : `Show All ${filteredServices.length} Services`}
-              </button>
-            </div>
-          )}
+          <div className="text-center mt-8">
+            <Button
+              variant="buttonWithGradientOnHover"
+              size="alignCenter"
+              onClick={() => window.open('/services', '_self')}
+            >
+              {`Explore Our Services`}
+            </Button>
+          </div>
         </div>
       </div>
     </section>

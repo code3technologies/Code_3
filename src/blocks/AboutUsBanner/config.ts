@@ -1,3 +1,4 @@
+import { linkGroup } from '@/fields/linkGroup'
 import type { Block } from 'payload'
 
 export const AboutUsBanner: Block = {
@@ -14,30 +15,20 @@ export const AboutUsBanner: Block = {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle',
-      defaultValue: "See Why We're the Better Choice",
       required: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
-      defaultValue:
-        'No guesswork. Transparent side-by-side comparison to help you choose confidently',
       required: true,
     },
-    {
-      name: 'buttonText',
-      type: 'text',
-      label: 'Button Text',
-      defaultValue: 'See Our Services',
-      required: true,
-    },
-    {
-      name: 'buttonLink',
-      type: 'text',
-      label: 'Button Link',
-      defaultValue: '#',
-    },
+    linkGroup({
+      appearances: ['default', 'outline', 'buttonWithGradientOnHover'],
+      overrides: {
+        maxRows: 1,
+      },
+    }),
     {
       name: 'mobileImages',
       type: 'array',
@@ -122,12 +113,10 @@ export const AboutUsBanner: Block = {
       ],
       defaultValue: [
         {
-          alt: 'Business meeting discussion',
           aspectRatio: 'aspect-6/3',
           hasMarginBottom: false,
         },
         {
-          alt: 'Professional team collaboration',
           aspectRatio: 'aspect-6/3',
           hasMarginBottom: true,
         },

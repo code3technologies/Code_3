@@ -10,9 +10,9 @@ type Props = {
 
 export const WhyWorkWithUsBlock: React.FC<Props> = ({
   className,
-  badge = 'WHY WORK WITH US',
-  title = 'Why Businesses Trust Us',
-  subtitle = "Choosing the right technology partner isn't just about products — it's about reliability, expertise, and support that never stops",
+  badge,
+  title,
+  subtitle,
   features = [],
 }) => {
   return (

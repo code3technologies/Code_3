@@ -4,25 +4,25 @@ export const ServiceDetailBanner: Block = {
   slug: 'serviceDetailBanner',
   fields: [
     {
+      name: 'serviceBadge',
+      type: 'text',
+      label: 'Service Badge Text For Sub-Services',
+    },
+    {
       name: 'serviceName',
       type: 'text',
       label: 'Service Name',
-      defaultValue: 'IT AMC',
       required: true,
     },
     {
       name: 'title',
       type: 'text',
-      label: 'Main Title',
-      defaultValue: 'Peace of Mind, Powered by IT AMC.',
-      required: true,
+      label: 'Title for Services  ',
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
-      defaultValue:
-        'From technology infrastructure to digital growth, we deliver end-to-end solutions that help your business run smarter and grow faster.',
       required: true,
     },
     {

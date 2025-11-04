@@ -4,8 +4,8 @@ import type { AboutUsBannerBlock as AboutUsBannerBlockProps } from 'src/payload-
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
+import { CMSLink } from '@/components/Link'
 
 type Props = {
   className?: string
@@ -13,10 +13,9 @@ type Props = {
 
 export const AboutUsBannerBlock: React.FC<Props> = ({
   className,
-  subtitle = "See Why We're the Better Choice",
-  description = 'No guesswork. Transparent side-by-side comparison to help you choose confidently',
-  buttonText = 'See Our Services',
-  buttonLink = '#',
+  subtitle,
+  description,
+  links,
   mobileImages = [],
   desktopImages = [],
 }) => {
@@ -35,18 +34,12 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
             <div className="space-y-3 mt-8">
               <h2 className="text-3xl font-semibold text-gray-800">{subtitle}</h2>
               <p className="text-md text-gray-700 max-w-xs">{description}</p>
-              {buttonText && (
-                <Button
-                  variant="buttonWithGradientOnHover"
-                  size="alignLeft"
-                  onClick={() => {
-                    if (buttonLink && buttonLink !== '#') {
-                        window.open(buttonLink, '_self')
-                      }
-                  }}
-                >
-                  {buttonText}
-                </Button>
+              {links && links.length > 0 && (
+                <div>
+                  {links.map(({ link }, i) => {
+                    return <CMSLink key={i} size="alignLeft" {...link} />
+                  })}
+                </div>
               )}
             </div>
           </div>
@@ -83,18 +76,12 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
           <div className="flex justify-between items-end">
             <h1 className="text-[7rem] xl:text-[9rem] font-bold text-primary_red">ABOUT</h1>
             <div className="pb-4">
-              {buttonText && (
-                <Button
-                  variant="buttonWithGradientOnHover"
-                  size="alignRight"
-                  onClick={() => {
-                    if (buttonLink && buttonLink !== '#') {
-                        window.open(buttonLink, '_self')
-                      }
-                  }}
-                >
-                  {buttonText}
-                </Button>
+              {links && links.length > 0 && (
+                <div>
+                  {links.map(({ link }, i) => {
+                    return <CMSLink key={i} size="alignRight" {...link} />
+                  })}
+                </div>
               )}
             </div>
           </div>

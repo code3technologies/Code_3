@@ -246,3 +246,72 @@
 /* ============================= */
 /* END OF FILE                    */
 /* ============================= */
+
+
+
+button.collapsible__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+input,
+textarea,
+select {
+  padding: 4px 8px;
+  border: 1px solid rgb(195, 195, 195);
+  border-radius: 4px;
+  outline: none;
+}
+
+button {
+  width: auto;
+  height: auto;
+  padding: 2px 8px;
+  margin: auto 3px;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 16px;
+  transition: transform 0.3s ease-in-out;
+}
+button:active {
+  transform: scale(.95)
+}
+button:hover {
+  cursor: pointer;
+}
+button.live-preview-toggler,
+button.preview-btn,
+button.nav-toggler,
+button.list-header__create-new-button,
+button.default-cell__first-cell {
+  border: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #5c5a5a;
+}
+
+.rs__control, 
+.dropzone
+.checkbox-input__input {
+  border: 1px solid rgb(199, 199, 199);
+}
+
+.search-filter__input {
+  padding-left: 36px;
+}
+
+.nav__link {
+  padding: 2px 8px;
+  margin-top: 5px;
+}
+.nav__link-indicator {
+  width: 12px;
+  margin-top: 8px;
+  margin-bottom: 3px;
+}

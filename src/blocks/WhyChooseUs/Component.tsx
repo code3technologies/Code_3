@@ -12,9 +12,9 @@ type Props = {
 
 export const WhyChooseUsBlock: React.FC<Props> = ({
   className,
-  badge = 'WHY CHOOSE US',
-  title = 'Why Businesses Trust Us',
-  subtitle = "Designing the right technology partner isn't just about products — it's about reliability, capabilities, and support that never stops.",
+  badge,
+  title,
+  subtitle,
   features = [],
 }) => {
   return (
@@ -58,7 +58,7 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
                   <div className="relative h-full flex flex-col justify-between overflow-hidden">
                     <Media
                       resource={feature.image}
-                      imgClassName="w-full h-full object-cover"
+                      imgClassName="object-fit absolute w-full h-full"
                     />
 
                     {/* Gradient Overlay */}
@@ -85,8 +85,7 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
                       <p
                         className={cn(
                           'text-md lg:text-xl leading-6 font-medium',
-                          feature.colSpan === '4' ? 'max-w-sm' : 'max-w-sm lg:max-w-xs',
-                          feature.colSpan === '5' && index === 2 && 'lg:max-w-[12rem]',
+                          feature.colSpan === '4' ? 'max-w-sm' : 'max-w-sm lg:max-w-md',
                         )}
                       >
                         {feature.description}

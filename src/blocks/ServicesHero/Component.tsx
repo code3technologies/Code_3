@@ -11,8 +11,8 @@ type Props = {
 
 export const ServicesHeroBlock: React.FC<Props> = ({
   className,
-  title = 'OUR SERVICES',
-  subtitle = 'Your Technology, Secured & Simplified',
+  title,
+  subtitle,
   image1,
   image2,
 }) => {
