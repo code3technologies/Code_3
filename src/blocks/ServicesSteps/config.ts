@@ -14,14 +14,12 @@ export const ServicesSteps: Block = {
       name: 'title',
       type: 'text',
       label: 'Title',
-      defaultValue: 'Simple Steps to Stress-Free IT',
       required: true,
     },
     {
       name: 'subtitle',
       type: 'textarea',
       label: 'Subtitle',
-      defaultValue: 'We handle the technical hassles so you can focus on growing your business.',
       required: true,
     },
     {

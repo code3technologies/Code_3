@@ -11,8 +11,8 @@ type Props = {
 
 export const WhyChooseUsAboutBlock: React.FC<Props> = ({
   className,
-  title = 'why businesses like yours switch to us and stay.',
-  subtitle = 'From managing your IT to securing your data, from connecting your spaces to equipping your meeting rooms',
+  title,
+  subtitle,
   features = [],
 }) => {
   // Type guard to check if icon is a Media object

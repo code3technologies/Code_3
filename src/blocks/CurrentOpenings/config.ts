@@ -7,22 +7,18 @@ export const CurrentOpenings: Block = {
       name: 'badge',
       type: 'text',
       label: 'Badge Text',
-      defaultValue: 'JOIN US',
       required: true,
     },
     {
       name: 'title',
       type: 'text',
       label: 'Main Title',
-      defaultValue: 'Current Openings',
       required: true,
     },
     {
       name: 'subtitle',
       type: 'textarea',
       label: 'Subtitle',
-      defaultValue:
-        "At CODE3, you'll innovate, grow, and make an impact—shaping the future of technology through IT, AV, and security solutions.",
       required: true,
     },
     {

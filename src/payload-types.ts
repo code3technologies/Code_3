@@ -469,7 +469,7 @@ export interface CallToActionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline' | 'buttonWithGradientOnHover') | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
@@ -866,7 +866,6 @@ export interface WhyChooseUsBlock {
         title: string;
         description: string;
         image: string | Media;
-        alt: string;
         colSpan: '4' | '5';
         hasGradient?: boolean | null;
         textColor?: ('white' | 'black') | null;
@@ -927,7 +926,6 @@ export interface CareersBlock {
   subtitle: string;
   description?: string | null;
   buttonText?: string | null;
-  buttonLink?: string | null;
   teamImages?:
     | {
         image: string | Media;
@@ -950,8 +948,30 @@ export interface AboutUsBannerBlock {
   title: string;
   subtitle: string;
   description: string;
-  buttonText: string;
-  buttonLink?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   mobileImages?:
     | {
         image: string | Media;
@@ -1092,8 +1112,9 @@ export interface ServicesStepsBlock {
  * via the `definition` "ServiceDetailBannerBlock".
  */
 export interface ServiceDetailBannerBlock {
+  serviceBadge?: string | null;
   serviceName: string;
-  title: string;
+  title?: string | null;
   description: string;
   showGradientLine?: boolean | null;
   id?: string | null;
@@ -1632,7 +1653,6 @@ export interface WhyChooseUsBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
-        alt?: T;
         colSpan?: T;
         hasGradient?: T;
         textColor?: T;
@@ -1692,7 +1712,6 @@ export interface CareersBlockSelect<T extends boolean = true> {
   subtitle?: T;
   description?: T;
   buttonText?: T;
-  buttonLink?: T;
   teamImages?:
     | T
     | {
@@ -1714,8 +1733,21 @@ export interface AboutUsBannerBlockSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   description?: T;
-  buttonText?: T;
-  buttonLink?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   mobileImages?:
     | T
     | {
@@ -1838,6 +1870,7 @@ export interface ServicesStepsBlockSelect<T extends boolean = true> {
  * via the `definition` "ServiceDetailBannerBlock_select".
  */
 export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
+  serviceBadge?: T;
   serviceName?: T;
   title?: T;
   description?: T;

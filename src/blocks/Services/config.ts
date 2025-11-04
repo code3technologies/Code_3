@@ -14,15 +14,12 @@ export const Services: Block = {
       name: 'title',
       type: 'text',
       label: 'Main Title',
-      defaultValue: 'Your Technology Partner in Every Step',
       required: true,
     },
     {
       name: 'subtitle',
       type: 'textarea',
       label: 'Subtitle',
-      defaultValue:
-        'Whether you need a secure IT backbone or a strong digital presence, we provide tailored solutions under one roof.',
       required: true,
     },
     {

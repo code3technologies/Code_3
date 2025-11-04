@@ -5,21 +5,17 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/utilities/ui"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background hover:scale-105 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-foreground text-primary-foreground hover:bg-primary   hover:border hover:border-accent", 
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-foreground bg-background hover:bg-accent hover:border-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        default: "transform bg-black text-white duration-300 active:scale-[.95] hover:bg-gradient-to-br outline-none hover:from-black hover:to-white/40 hover:via-black sm:text-base", 
+        outline: "border border-foreground bg-background hover:bg-[#FCFCFC] hover:border-[#b9b7b7] duration-300 active:scale-[.95]",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "hover:scale-105 bg-destructive text-destructive-foreground hover:bg-destructive/90",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        buttonWithGradientOnHover: "transform transition-all cursor-pointer rounded-full bg-black text-sm font-medium text-white duration-300 active:scale-[99] hover:bg-gradient-to-br outline-none hover:from-black hover:to-white/40 hover:via-black sm:text-base",
-        exploreLink: "text-primary_red/85 hover:text-primary_red/90 hover:cursor-pointer font-medium transition-all duration-200 flex items-start gap-3 group p-0 h-auto justify-start w-max",
+        link: "hover:scale-105 active:scale-100 text-primary underline-offset-4 hover:underline",
+        exploreLink: "text-primary_red/85 hover:text-primary_red/90 hover hover:scale-105 active:scale-100 duration-200 flex items-start gap-3 group p-0 h-auto justify-start w-max",
       },
       size: {
         default: "h-10 px-4 py-2",

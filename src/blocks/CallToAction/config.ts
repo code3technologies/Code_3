@@ -25,7 +25,7 @@ export const CallToAction: Block = {
       required: false,
     },
     linkGroup({
-      appearances: ['default', 'outline', 'buttonWithGradientOnHover'],
+      appearances: ['default', 'outline'],
       overrides: {
         maxRows: 2,
       },

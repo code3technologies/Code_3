@@ -11,7 +11,6 @@ export const ServiceSolutions: Block = {
         { label: 'Infrastructure Services', value: 'infrastructure' },
         { label: 'Digital Services', value: 'digital' },
       ],
-      defaultValue: 'infrastructure',
       required: true,
       admin: {
         description: 'Select which type of services to display in this block',

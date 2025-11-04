@@ -12,7 +12,7 @@ type Props = {
 
 export const TrustedBrandsBlock: React.FC<Props> = ({
   className,
-  title = 'Trusted by Leading Brands & Certified for Excellence',
+  title,
   brands = [],
   animationSpeed = 'normal',
   pauseOnHover = true,

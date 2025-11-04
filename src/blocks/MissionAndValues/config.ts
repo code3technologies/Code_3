@@ -14,15 +14,12 @@ export const MissionAndValues: Block = {
       name: 'title',
       type: 'text',
       label: 'Main Title',
-      defaultValue: 'What Drives Us Forward',
       required: true,
     },
     {
       name: 'subtitle',
       type: 'textarea',
       label: 'Subtitle',
-      defaultValue:
-        "Choosing the right technology partner isn't just about products — it's about reliability, expertise, and support that never stops",
       required: true,
     },
     {

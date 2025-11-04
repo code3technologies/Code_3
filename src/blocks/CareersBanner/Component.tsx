@@ -2,7 +2,7 @@
 
 import type { CareersBlock as CareersBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
-import React from 'react'
+import React, { useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
 
@@ -12,14 +12,12 @@ type Props = CareersBlockProps & {
 
 export const CareersBlock: React.FC<Props> = ({
   className,
-  title = 'CAREERS',
-  subtitle = 'Join Us. Build the Future.',
-  description = 'At CODE3, we believe in people who push boundaries, embrace challenges, and create impactful solutions.',
-  buttonText = 'See Open Positions',
-  buttonLink = '',
+  title,
+  subtitle,
+  description,
+  buttonText,
   teamImages,
 }) => {
-  // Helper function to generate responsive classes for each team member
   const getResponsiveClasses = (member: NonNullable<typeof teamImages>[number]) => {
     return cn(
       member.hasTopMargin && 'sm:mt-8 xl:mt-10',
@@ -27,6 +25,16 @@ export const CareersBlock: React.FC<Props> = ({
       member.isVisibleOnTablet ? 'sm:block' : 'sm:hidden',
       member.isVisibleOnDesktop ? 'lg:block' : 'lg:hidden'
     )
+  }
+
+  const handleScrollToOpenings = () => {
+    const openingsElement = document.getElementById('current-openings')
+    if (openingsElement) {
+      openingsElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
   }
 
   if (!teamImages || teamImages.length === 0) return null
@@ -53,13 +61,9 @@ export const CareersBlock: React.FC<Props> = ({
           </p>
           {buttonText && (
             <Button
-              variant="buttonWithGradientOnHover"
+              variant="default"
               size="alignLeft"
-              onClick={() => {
-                if (buttonLink && buttonLink !== '#') {
-                  window.open(buttonLink, '_self')
-                }
-              }}
+              onClick={handleScrollToOpenings}
             >
               {buttonText}
             </Button>

@@ -9,9 +9,9 @@ type Props = {
 
 export const MissionAndValuesBlock: React.FC<Props> = ({
   className,
-  badge = 'MISSION & VALUES',
-  title = 'What Drives Us Forward',
-  subtitle = "Choosing the right technology partner isn't just about products — it's about reliability, expertise, and support that never stops",
+  badge,
+  title,
+  subtitle,
   missionCard,
   valuesCard,
 }) => {

@@ -14,7 +14,6 @@ export const ServicesHero: Block = {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle',
-      defaultValue: 'Your Technology, Secured & Simplified',
       required: true,
     },
     {

@@ -10,9 +10,9 @@ interface ServiceOverviewProps {
 }
 
 const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
-  badge = 'SERVICES OVERVIEW',
-  title = 'Why IT AMC Matters for Your Business',
-  description = "Downtime can cost your business both time and money. With our AMC, you'll get preventive care, real-time monitoring, and expert support whenever you need it. Our team ensures that your IT environment stays healthy, secure, and ready for growth.",
+  badge,
+  title,
+  description,
   image,
 }) => {
   return (

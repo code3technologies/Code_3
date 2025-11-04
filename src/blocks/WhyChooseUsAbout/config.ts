@@ -14,15 +14,12 @@ export const WhyChooseUsAbout: Block = {
       name: 'title',
       type: 'text',
       label: 'Main Title',
-      defaultValue: 'why businesses like yours switch to us and stay.',
       required: true,
     },
     {
       name: 'subtitle',
       type: 'textarea',
       label: 'Subtitle',
-      defaultValue:
-        'From managing your IT to securing your data, from connecting your spaces to equipping your meeting rooms',
       required: true,
     },
     {

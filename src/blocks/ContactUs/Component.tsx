@@ -14,9 +14,9 @@ type Props = ContactUsBlockProps & {
 
 export const ContactUsBlock: React.FC<Props> = ({
   className,
-  heading = 'CONTACT US',
-  subtitle = "Let's Talk Solutions",
-  description = "We're here to help you with your IT, ICT & ELV, AV, and Solutions needs. Choose the way that works best for you.",
+  heading,
+  subtitle,
+  description,
   formFields = {
     fullNameLabel: 'Full name',
     fullNamePlaceholder: 'Enter your full name',
@@ -32,9 +32,9 @@ export const ContactUsBlock: React.FC<Props> = ({
     submitButtonText: 'Send message',
   },
   countryOptions = [
+    { value: 'UAE', label: 'UAE' },
     { value: 'UK', label: 'UK' },
-    { value: 'US', label: 'US' },
-    { value: 'CA', label: 'CA' },
+    { value: 'IND', label: 'IND' },
   ],
   subjectOptions = [
     { value: 'general', label: 'General Inquiry' },
@@ -47,7 +47,7 @@ export const ContactUsBlock: React.FC<Props> = ({
     defaultValues: {
       fullname: '',
       email: '',
-      country: countryOptions?.[0]?.value || 'US',
+      country: countryOptions?.[0]?.value || 'UAE',
       phone: '',
       subject: subjectOptions?.[0]?.value || 'general',
       message: '',
