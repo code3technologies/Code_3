@@ -17,23 +17,14 @@ export const Careers: Block = {
       name: 'subtitle',
       type: 'text',
       required: true,
-      defaultValue: 'Join Us. Build the Future.',
     },
     {
       name: 'description',
       type: 'textarea',
-      defaultValue:
-        'At CODE3, we believe in people who push boundaries, embrace challenges, and create impactful solutions.',
     },
     {
       name: 'buttonText',
       type: 'text',
-      defaultValue: 'See Open Positions',
-    },
-    {
-      name: 'buttonLink',
-      type: 'text',
-      defaultValue: '#',
     },
     {
       name: 'teamImages',
@@ -44,10 +35,6 @@ export const Careers: Block = {
           type: 'upload',
           relationTo: 'media',
           required: true,
-        },
-        {
-          name: 'alt',
-          type: 'text',
         },
         {
           name: 'hasTopMargin',

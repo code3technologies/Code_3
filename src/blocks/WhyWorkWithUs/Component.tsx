@@ -2,6 +2,7 @@ import type { WhyWorkWithUsBlock as WhyWorkWithUsBlockProps } from 'src/payload-
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -9,9 +10,9 @@ type Props = {
 
 export const WhyWorkWithUsBlock: React.FC<Props> = ({
   className,
-  badge = 'WHY WORK WITH US',
-  title = 'Why Businesses Trust Us',
-  subtitle = "Choosing the right technology partner isn't just about products — it's about reliability, expertise, and support that never stops",
+  badge,
+  title,
+  subtitle,
   features = [],
 }) => {
   return (
@@ -20,7 +21,7 @@ export const WhyWorkWithUsBlock: React.FC<Props> = ({
         {/* Header Section */}
         <div className="text-center mb-12 lg:mb-16">
           {/* Red Badge */}
-          <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+          <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
             {badge}
           </div>
 
@@ -61,10 +62,12 @@ export const WhyWorkWithUsBlock: React.FC<Props> = ({
                   feature.iconAlignment === 'right' ? 'md:ml-auto' : '',
                 )}
               >
-                <div
-                  dangerouslySetInnerHTML={{ __html: feature.icon || '' }}
-                  className="w-[88px] h-[87px] flex items-center justify-center"
-                />
+                {feature.icon && typeof feature.icon === 'object' && (
+                  <Media
+                    resource={feature.icon}
+                    imgClassName="w-[62px] h-[62px] object-contain"
+                  />
+                )}
               </div>
 
               <div>

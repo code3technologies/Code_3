@@ -1,19 +1,19 @@
 import type { Block } from 'payload'
 
-export const WhyChooseUsAbout: Block = {
-  slug: 'whyChooseUsAbout',
+export const ServicesSteps: Block = {
+  slug: 'servicesSteps',
   fields: [
     {
       name: 'badge',
       type: 'text',
       label: 'Badge Text',
-      defaultValue: 'WHY CHOOSE US',
+      defaultValue: 'Steps',
       required: true,
     },
     {
       name: 'title',
       type: 'text',
-      label: 'Main Title',
+      label: 'Title',
       required: true,
     },
     {
@@ -23,33 +23,39 @@ export const WhyChooseUsAbout: Block = {
       required: true,
     },
     {
-      name: 'features',
+      name: 'steps',
       type: 'array',
-      label: 'Features',
+      label: 'Steps',
       minRows: 1,
-      maxRows: 4,
+      maxRows: 10,
       fields: [
         {
-          name: 'icon',
-          type: 'upload',
-          relationTo: 'media',
-          label: 'Icon Image',
+          name: 'stepNumber',
+          type: 'text',
+          label: 'Step Number',
           required: true,
         },
         {
           name: 'title',
           type: 'text',
-          label: 'Feature Title',
+          label: 'Step Title',
           required: true,
         },
         {
           name: 'description',
           type: 'textarea',
-          label: 'Feature Description',
+          label: 'Step Description',
+          required: true,
+        },
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Image Icon',
           required: true,
         },
       ],
     },
   ],
-  interfaceName: 'WhyChooseUsAboutBlock',
+  interfaceName: 'ServicesStepsBlock',
 }

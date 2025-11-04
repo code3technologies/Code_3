@@ -2,7 +2,9 @@
 
 import type { CareersBlock as CareersBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
-import React from 'react'
+import React, { useRef } from 'react'
+import { Button } from '@/components/ui/button'
+import { Media } from '@/components/Media'
 
 type Props = CareersBlockProps & {
   className?: string
@@ -10,24 +12,29 @@ type Props = CareersBlockProps & {
 
 export const CareersBlock: React.FC<Props> = ({
   className,
-  title = 'CAREERS',
-  subtitle = 'Join Us. Build the Future.',
-  description = 'At CODE3, we believe in people who push boundaries, embrace challenges, and create impactful solutions.',
-  buttonText = 'See Open Positions',
-  buttonLink = '#',
+  title,
+  subtitle,
+  description,
+  buttonText,
   teamImages,
 }) => {
-  // Helper function to generate responsive classes for each team member
   const getResponsiveClasses = (member: NonNullable<typeof teamImages>[number]) => {
     return cn(
-      `aspect-[1/1]`,
-      `sm:aspect-[2/3]`,
-      `lg:aspect-[2/3]`,
       member.hasTopMargin && 'sm:mt-8 xl:mt-10',
       member.isVisibleOnMobile ? 'block' : 'hidden',
       member.isVisibleOnTablet ? 'sm:block' : 'sm:hidden',
       member.isVisibleOnDesktop ? 'lg:block' : 'lg:hidden'
     )
+  }
+
+  const handleScrollToOpenings = () => {
+    const openingsElement = document.getElementById('current-openings')
+    if (openingsElement) {
+      openingsElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
   }
 
   if (!teamImages || teamImages.length === 0) return null
@@ -42,7 +49,7 @@ export const CareersBlock: React.FC<Props> = ({
       {/* Header Section */}
       <div className="px-8 grid grid-cols-1 sm:grid-cols-2 max-w-[1400px] mx-auto md:grid-cols-3 gap-4 sm:gap-x-26 sm:gap-y-20 md:gap-x-0">
         {/* Left Side - Title and Content */}
-        <h1 className="text-6xl md:text-[5.5rem] md:col-span-2 lg:text-[8rem] xl:text-[10rem] font-semibold text-[#C90E1D] mb-6 lg:mb-8">
+        <h1 className="text-6xl md:text-[5.5rem] md:col-span-2 lg:text-[8rem] xl:text-[10rem] font-semibold text-primary_red mb-6 lg:mb-8">
           {title}
         </h1>
         <div className="space-y-4 sm:mt-3 md:mt-6 lg:mt-8 xl:mt-10">
@@ -52,16 +59,15 @@ export const CareersBlock: React.FC<Props> = ({
           <p className="text-sm lg:text-base xl:text-xl text-gray-800 max-w-sm xl:max-w-2xl">
             {description}
           </p>
-          <button
-            className="bg-black md:mt-3 text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:cursor-pointer active:scale-95"
-            onClick={() => {
-              if (buttonLink && buttonLink !== '#') {
-                window.open(buttonLink, '_blank')
-              }
-            }}
-          >
-            {buttonText}
-          </button>
+          {buttonText && (
+            <Button
+              variant="default"
+              size="alignLeft"
+              onClick={handleScrollToOpenings}
+            >
+              {buttonText}
+            </Button>
+          )}
         </div>
 
         {/* Team Images */}
@@ -69,19 +75,11 @@ export const CareersBlock: React.FC<Props> = ({
           {teamImages.map((teamMember, index) => {
             if (!teamMember || !teamMember.image) return null
 
-            const imageUrl =
-              typeof teamMember.image === 'string' ? teamMember.image : teamMember.image.url || ''
-
             return (
               <div key={index} className={getResponsiveClasses(teamMember)}>
-                <img
-                  src={imageUrl}
-                  alt={teamMember.alt || 'Team member'}
-                  className="w-full h-full object-cover object-top rounded-[2rem]"
-                  onError={(e) => {
-                    console.error('Team image failed to load:', e.currentTarget.src)
-                    e.currentTarget.style.display = 'none'
-                  }}
+                <Media
+                  resource={teamMember.image}
+                  imgClassName="aspect-square md:aspect-[2/3] w-full h-full object-cover object-top rounded-[2rem]"
                 />
               </div>
             )

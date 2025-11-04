@@ -1,12 +1,5 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { linkGroup } from '../../fields/linkGroup'
 
 export const CallToAction: Block = {
@@ -14,19 +7,22 @@ export const CallToAction: Block = {
   interfaceName: 'CallToActionBlock',
   fields: [
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
+      name: 'showLogo',
+      type: 'checkbox',
+      label: 'Show Badge',
+      defaultValue: true,
+    },
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      required: false,
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'Description',
+      required: false,
     },
     linkGroup({
       appearances: ['default', 'outline'],
@@ -34,6 +30,12 @@ export const CallToAction: Block = {
         maxRows: 2,
       },
     }),
+    {
+      name: 'backgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background Image',
+    },
   ],
   labels: {
     plural: 'Calls to Action',

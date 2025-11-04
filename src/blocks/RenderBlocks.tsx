@@ -9,7 +9,6 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { FAQBlock } from './FAQ/Component'
 import { ServicesBlock } from './Services/Component'
-import { HeroBannerBlock } from './HeroBanner/Component'
 import { MissionAndValuesBlock } from './MissionAndValues/Component'
 import { WhyWorkWithUsBlock } from './WhyWorkWithUs/Component'
 import { WhyChooseUsAboutBlock } from './WhyChooseUsAbout/Component'
@@ -19,6 +18,17 @@ import { WhyChooseUsBlock } from './WhyChooseUs/Component'
 import { CurrentOpeningsBlock } from './CurrentOpenings/Component'
 import { CareersBlock } from './CareersBanner/Component'
 import { TrustedBrandsBlock } from './TrustedBrands/Component'
+import { ServicesHeroBlock } from './ServicesHero/Component'
+import { ServicesStepsBlock } from './ServicesSteps/Component'
+import { ServiceDetailBannerBlock } from './ServiceDetailBanner/Component'
+import { ServiceOverviewBlock } from './ServiceOverview/Component'
+import { ServiceSolutionsBlock } from './ServiceSolutions/Components'
+
+interface BlockProps {
+  disableInnerContainer?: boolean
+  currentPage?: Page | null
+  [key: string]: unknown
+}
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -28,7 +38,6 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   faq: FAQBlock,
   services: ServicesBlock,
-  heroBanner: HeroBannerBlock,
   missionAndValues: MissionAndValuesBlock,
   whyWorkWithUs: WhyWorkWithUsBlock,
   whyChooseUsAbout: WhyChooseUsAboutBlock,
@@ -37,13 +46,19 @@ const blockComponents = {
   careers: CareersBlock,
   aboutUsBanner: AboutUsBannerBlock,
   trustedBrands: TrustedBrandsBlock,
-  currentOpenings: CurrentOpeningsBlock
+  currentOpenings: CurrentOpeningsBlock,
+  serviceSolutions: ServiceSolutionsBlock,
+  servicesHero: ServicesHeroBlock,
+  servicesSteps: ServicesStepsBlock,
+  serviceDetailBanner: ServiceDetailBannerBlock,
+  serviceOverview: ServiceOverviewBlock,
 }
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
+  currentPage?: Page | null
 }> = (props) => {
-  const { blocks } = props
+  const { blocks, currentPage } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -54,13 +69,12 @@ export const RenderBlocks: React.FC<{
           const { blockType } = block
 
           if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+            const Block = blockComponents[blockType] as React.ComponentType<BlockProps>
 
             if (Block) {
               return (
                 <div className="" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                  <Block {...block} disableInnerContainer />
+                  <Block {...block} disableInnerContainer={true} currentPage={currentPage} />
                 </div>
               )
             }

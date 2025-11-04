@@ -4,6 +4,7 @@ import type { WhyChooseUsBlock as WhyChooseUsBlockProps } from 'src/payload-type
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Media } from '@/components/Media'
 
 type Props = {
   className?: string
@@ -11,9 +12,9 @@ type Props = {
 
 export const WhyChooseUsBlock: React.FC<Props> = ({
   className,
-  badge = 'WHY CHOOSE US',
-  title = 'Why Businesses Trust Us',
-  subtitle = "Designing the right technology partner isn't just about products — it's about reliability, capabilities, and support that never stops.",
+  badge,
+  title,
+  subtitle,
   features = [],
 }) => {
   return (
@@ -21,7 +22,7 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="text-center mb-[64px]">
-          <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+          <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
             {badge}
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -36,9 +37,6 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9 gap-6 lg:gap-8">
           {features?.map((feature, index) => {
             if (!feature.image) return null
-
-            const imageUrl =
-              typeof feature.image === 'string' ? feature.image : feature.image.url || ''
 
             const colSpanClass = feature.colSpan === '5' ? 'md:col-span-5' : 'md:col-span-4'
             const heightClass =
@@ -58,17 +56,9 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
                   )}
                 >
                   <div className="relative h-full flex flex-col justify-between overflow-hidden">
-                    <img
-                      src={imageUrl}
-                      alt={feature.alt || 'Feature image'}
-                      className={cn(
-                        'rounded-3xl w-full h-full object-cover',
-                        feature.colSpan === '5' && index === 2 && 'lg:h-auto object-[left_0%]',
-                      )}
-                      onError={(e) => {
-                        console.error('Feature image failed to load:', e.currentTarget.src)
-                        e.currentTarget.style.display = 'none'
-                      }}
+                    <Media
+                      resource={feature.image}
+                      imgClassName="object-fit absolute w-full h-full"
                     />
 
                     {/* Gradient Overlay */}
@@ -95,8 +85,7 @@ export const WhyChooseUsBlock: React.FC<Props> = ({
                       <p
                         className={cn(
                           'text-md lg:text-xl leading-6 font-medium',
-                          feature.colSpan === '4' ? 'max-w-sm' : 'max-w-sm lg:max-w-xs',
-                          feature.colSpan === '5' && index === 2 && 'lg:max-w-[12rem]',
+                          feature.colSpan === '4' ? 'max-w-sm' : 'max-w-sm lg:max-w-md',
                         )}
                       >
                         {feature.description}

@@ -148,6 +148,14 @@ export interface UserAuthOperations {
 export interface Page {
   id: string;
   title: string;
+  /**
+   * Categorize this page as Infrastructure or Digital to link it from Services.
+   */
+  serviceCategory?: ('none' | 'infrastructure' | 'digital') | null;
+  /**
+   * Select a parent service if this is a sub-service. The parent must be a service page (Infrastructure or Digital).
+   */
+  parentService?: (string | null) | Page;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -219,7 +227,6 @@ export interface Page {
         blockType: 'faq';
       }
     | ServicesBlock
-    | HeroBannerBlock
     | MissionAndValuesBlock
     | WhyWorkWithUsBlock
     | WhyChooseUsAboutBlock
@@ -229,6 +236,11 @@ export interface Page {
     | AboutUsBannerBlock
     | TrustedBrandsBlock
     | CurrentOpeningsBlock
+    | ServiceSolutionsBlock
+    | ServicesHeroBlock
+    | ServicesStepsBlock
+    | ServiceDetailBannerBlock
+    | ServiceOverviewBlock
   )[];
   meta?: {
     title?: string | null;
@@ -435,21 +447,9 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  showLogo?: boolean | null;
+  title?: string | null;
+  description?: string | null;
   links?:
     | {
         link: {
@@ -474,6 +474,7 @@ export interface CallToActionBlock {
         id?: string | null;
       }[]
     | null;
+  backgroundImage?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -780,36 +781,13 @@ export interface ServicesBlock {
   badge: string;
   title: string;
   subtitle: string;
-  infraService: {
-    label: string;
-    title: string;
-    description: string;
-    image?: (string | null) | Media;
-  };
-  digitalService: {
-    label: string;
-    title: string;
-    description: string;
-    image?: (string | null) | Media;
-  };
+  /**
+   * Maximum number of service pages to display (pages with serviceCategory set)
+   */
+  maxServices?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'services';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroBannerBlock".
- */
-export interface HeroBannerBlock {
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  buttonLink?: string | null;
-  backgroundImage?: (string | null) | Media;
-  showLogo?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'heroBanner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -820,12 +798,12 @@ export interface MissionAndValuesBlock {
   title: string;
   subtitle: string;
   missionCard: {
-    icon: string;
+    icon: string | Media;
     title: string;
     content: string;
   };
   valuesCard: {
-    icon: string;
+    icon: string | Media;
     title: string;
     content: string;
   };
@@ -843,7 +821,7 @@ export interface WhyWorkWithUsBlock {
   subtitle: string;
   features?:
     | {
-        icon: string;
+        icon: string | Media;
         title: string;
         description: string;
         colSpan: '4' | '5';
@@ -865,7 +843,7 @@ export interface WhyChooseUsAboutBlock {
   subtitle: string;
   features?:
     | {
-        icon: string;
+        icon: string | Media;
         title: string;
         description: string;
         id?: string | null;
@@ -888,7 +866,6 @@ export interface WhyChooseUsBlock {
         title: string;
         description: string;
         image: string | Media;
-        alt: string;
         colSpan: '4' | '5';
         hasGradient?: boolean | null;
         textColor?: ('white' | 'black') | null;
@@ -949,11 +926,9 @@ export interface CareersBlock {
   subtitle: string;
   description?: string | null;
   buttonText?: string | null;
-  buttonLink?: string | null;
   teamImages?:
     | {
         image: string | Media;
-        alt?: string | null;
         hasTopMargin?: boolean | null;
         isVisibleOnMobile?: boolean | null;
         isVisibleOnTablet?: boolean | null;
@@ -973,8 +948,30 @@ export interface AboutUsBannerBlock {
   title: string;
   subtitle: string;
   description: string;
-  buttonText: string;
-  buttonLink?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   mobileImages?:
     | {
         image: string | Media;
@@ -1058,6 +1055,84 @@ export interface CurrentOpeningsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'currentOpenings';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceSolutionsBlock".
+ */
+export interface ServiceSolutionsBlock {
+  /**
+   * Select which type of services to display in this block
+   */
+  serviceType: 'infrastructure' | 'digital';
+  badge: string;
+  title: string;
+  description: string;
+  headerAlignment: 'left' | 'center' | 'right';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceSolutions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesHeroBlock".
+ */
+export interface ServicesHeroBlock {
+  title: string;
+  subtitle: string;
+  image1: string | Media;
+  image2: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesStepsBlock".
+ */
+export interface ServicesStepsBlock {
+  badge: string;
+  title: string;
+  subtitle: string;
+  steps?:
+    | {
+        stepNumber: string;
+        title: string;
+        description: string;
+        icon: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesSteps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceDetailBannerBlock".
+ */
+export interface ServiceDetailBannerBlock {
+  serviceBadge?: string | null;
+  serviceName: string;
+  title?: string | null;
+  description: string;
+  showGradientLine?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceDetailBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceOverviewBlock".
+ */
+export interface ServiceOverviewBlock {
+  badge: string;
+  title: string;
+  description: string;
+  image: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceOverview';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1320,6 +1395,8 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  serviceCategory?: T;
+  parentService?: T;
   hero?:
     | T
     | {
@@ -1369,7 +1446,6 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         services?: T | ServicesBlockSelect<T>;
-        heroBanner?: T | HeroBannerBlockSelect<T>;
         missionAndValues?: T | MissionAndValuesBlockSelect<T>;
         whyWorkWithUs?: T | WhyWorkWithUsBlockSelect<T>;
         whyChooseUsAbout?: T | WhyChooseUsAboutBlockSelect<T>;
@@ -1379,6 +1455,11 @@ export interface PagesSelect<T extends boolean = true> {
         aboutUsBanner?: T | AboutUsBannerBlockSelect<T>;
         trustedBrands?: T | TrustedBrandsBlockSelect<T>;
         currentOpenings?: T | CurrentOpeningsBlockSelect<T>;
+        serviceSolutions?: T | ServiceSolutionsBlockSelect<T>;
+        servicesHero?: T | ServicesHeroBlockSelect<T>;
+        servicesSteps?: T | ServicesStepsBlockSelect<T>;
+        serviceDetailBanner?: T | ServiceDetailBannerBlockSelect<T>;
+        serviceOverview?: T | ServiceOverviewBlockSelect<T>;
       };
   meta?:
     | T
@@ -1399,7 +1480,9 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
-  richText?: T;
+  showLogo?: T;
+  title?: T;
+  description?: T;
   links?:
     | T
     | {
@@ -1415,6 +1498,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  backgroundImage?: T;
   id?: T;
   blockName?: T;
 }
@@ -1486,36 +1570,7 @@ export interface ServicesBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
-  infraService?:
-    | T
-    | {
-        label?: T;
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  digitalService?:
-    | T
-    | {
-        label?: T;
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroBannerBlock_select".
- */
-export interface HeroBannerBlockSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
-  buttonText?: T;
-  buttonLink?: T;
-  backgroundImage?: T;
-  showLogo?: T;
+  maxServices?: T;
   id?: T;
   blockName?: T;
 }
@@ -1598,7 +1653,6 @@ export interface WhyChooseUsBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
-        alt?: T;
         colSpan?: T;
         hasGradient?: T;
         textColor?: T;
@@ -1658,12 +1712,10 @@ export interface CareersBlockSelect<T extends boolean = true> {
   subtitle?: T;
   description?: T;
   buttonText?: T;
-  buttonLink?: T;
   teamImages?:
     | T
     | {
         image?: T;
-        alt?: T;
         hasTopMargin?: T;
         isVisibleOnMobile?: T;
         isVisibleOnTablet?: T;
@@ -1681,8 +1733,21 @@ export interface AboutUsBannerBlockSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   description?: T;
-  buttonText?: T;
-  buttonLink?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   mobileImages?:
     | T
     | {
@@ -1752,6 +1817,76 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
         viewJobLink?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceSolutionsBlock_select".
+ */
+export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
+  serviceType?: T;
+  badge?: T;
+  title?: T;
+  description?: T;
+  headerAlignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesHeroBlock_select".
+ */
+export interface ServicesHeroBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  image1?: T;
+  image2?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesStepsBlock_select".
+ */
+export interface ServicesStepsBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        stepNumber?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceDetailBannerBlock_select".
+ */
+export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
+  serviceBadge?: T;
+  serviceName?: T;
+  title?: T;
+  description?: T;
+  showGradientLine?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceOverviewBlock_select".
+ */
+export interface ServiceOverviewBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  image?: T;
   id?: T;
   blockName?: T;
 }

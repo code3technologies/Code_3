@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
+import type { Media as MediaTypes } from '@/payload-types'
 import { Media } from '@/components/Media'
 
 interface LogoProps {
@@ -10,7 +11,7 @@ interface LogoProps {
   height?: number
   alt?: string
   href?: string
-  logo?: any // CMS logo object
+  logo?: MediaTypes | string | undefined
   fallbackToDefault?: boolean
 }
 

@@ -5,14 +5,9 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -74,17 +69,6 @@ export const Media: CollectionConfig = {
         width: 1200,
         height: 630,
         crop: 'center',
-      },
-    ],
-  },
-  hooks: {
-    afterChange: [
-      ({ doc }) => {
-        console.log('✅ File uploaded to Blob:', doc.url)
-        if (doc?.sizes) {
-          console.log('Generated sizes:', Object.keys(doc.sizes))
-        }
-        return doc
       },
     ],
   },

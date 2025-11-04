@@ -22,7 +22,6 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { FAQ } from '@/blocks/FAQ/config'
 import { Services } from '@/blocks/Services/config'
-import { HeroBanner } from '@/blocks/HeroBanner/config'
 import { MissionAndValues } from '@/blocks/MissionAndValues/config'
 import { WhyWorkWithUs } from '@/blocks/WhyWorkWithUs/config'
 import { WhyChooseUsAbout } from '@/blocks/WhyChooseUsAbout/config'
@@ -32,6 +31,11 @@ import { AboutUsBanner } from '@/blocks/AboutUsBanner/config'
 import { CurrentOpenings } from '@/blocks/CurrentOpenings/config'
 import { Careers } from '@/blocks/CareersBanner/config'
 import { TrustedBrands } from '@/blocks/TrustedBrands/config'
+import { ServiceSolutions } from '@/blocks/ServiceSolutions/config'
+import { ServicesHero } from '@/blocks/ServicesHero/config'
+import { ServicesSteps } from '@/blocks/ServicesSteps/config'
+import { ServiceDetailBanner } from '@/blocks/ServiceDetailBanner/config'
+import { ServiceOverview } from '@/blocks/ServiceOverview/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -43,7 +47,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
+  // Type safe if the collection slug generic is passed to CollectionConfig - `CollectionConfig<'pages'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -76,6 +80,35 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
+      name: 'serviceCategory',
+      type: 'select',
+      label: 'Service Category',
+      defaultValue: 'none',
+      options: [
+        { label: 'Not a Service Page', value: 'none' },
+        { label: 'Infrastructure Service', value: 'infrastructure' },
+        { label: 'Digital Service', value: 'digital' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Categorize this page as Infrastructure or Digital to link it from Services.',
+      },
+    },
+    {
+      name: 'parentService',
+      type: 'relationship',
+      relationTo: 'pages',
+      label: 'Parent Service',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Select a parent service if this is a sub-service. The parent must be a service page (Infrastructure or Digital).',
+        condition: (data) => {
+          return data?.serviceCategory === 'infrastructure' || data?.serviceCategory === 'digital'
+        },
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
@@ -87,7 +120,29 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, FAQ, Services, HeroBanner, MissionAndValues, WhyWorkWithUs, WhyChooseUsAbout, WhyChooseUs, ContactUs, Careers, AboutUsBanner, TrustedBrands, CurrentOpenings],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                FAQ,
+                Services,
+                MissionAndValues,
+                WhyWorkWithUs,
+                WhyChooseUsAbout,
+                WhyChooseUs,
+                ContactUs,
+                Careers,
+                AboutUsBanner,
+                TrustedBrands,
+                CurrentOpenings,
+                ServiceSolutions,
+                ServicesHero,
+                ServicesSteps,
+                ServiceDetailBanner,
+                ServiceOverview,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
@@ -114,7 +169,7 @@ export const Pages: CollectionConfig<'pages'> = {
 
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
+              // if the generateUrl function is configured
               hasGenerateFn: true,
 
               // field paths to match the target field for data
@@ -146,6 +201,6 @@ export const Pages: CollectionConfig<'pages'> = {
       },
       schedulePublish: true,
     },
-    maxPerDoc: 50,
-  },
+    maxPerDoc: 50,
+  },
 }

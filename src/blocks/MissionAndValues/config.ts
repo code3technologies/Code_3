@@ -1,4 +1,3 @@
-
 import type { Block } from 'payload'
 
 export const MissionAndValues: Block = {
@@ -15,15 +14,12 @@ export const MissionAndValues: Block = {
       name: 'title',
       type: 'text',
       label: 'Main Title',
-      defaultValue: 'What Drives Us Forward',
       required: true,
     },
     {
       name: 'subtitle',
       type: 'textarea',
       label: 'Subtitle',
-      defaultValue:
-        "Choosing the right technology partner isn't just about products — it's about reliability, expertise, and support that never stops",
       required: true,
     },
     {
@@ -33,8 +29,9 @@ export const MissionAndValues: Block = {
       fields: [
         {
           name: 'icon',
-          type: 'textarea',
-          label: 'SVG Icon Code',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image',
           required: true,
         },
         {
@@ -59,8 +56,9 @@ export const MissionAndValues: Block = {
       fields: [
         {
           name: 'icon',
-          type: 'textarea',
-          label: 'SVG Icon Code',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image',
           required: true,
         },
         {

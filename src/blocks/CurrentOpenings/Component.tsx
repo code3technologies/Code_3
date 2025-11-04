@@ -1,13 +1,30 @@
 
 import type { CurrentOpeningsBlock as CurrentOpeningsBlockProps } from 'src/payload-types'
-
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { select } from 'payload/shared'
 
 type Props = {
   className?: string
 } & CurrentOpeningsBlockProps
+
+interface Department {
+  id?: string | null | undefined
+  value: string
+  label: string
+}
+
+interface JobListing {
+  id?: string | null | undefined
+  department: string
+  title: string
+  category: string
+  categoryColor: 'blue' | 'pink' | 'green' | 'orange'
+  description: string
+  location: string
+  type: string
+  viewJobText?: string
+  viewJobLink?: string | null | undefined
+}
 
 const getCategoryColorClasses = (color: string) => {
   const colorMap = {
@@ -31,19 +48,19 @@ const getCategoryDotColor = (color: string) => {
 
 export const CurrentOpeningsBlock: React.FC<Props> = ({
   className,
-  badge = 'JOIN US',
-  title = 'Current Openings',
-  subtitle = "At CODE3, you'll innovate, grow, and make an impact—shaping the future of technology through IT, AV, and security solutions.",
+  badge,
+  title,
+  subtitle,
   showFilter = true,
   departments = [],
   jobListings = [],
 }) => {
   return (
-    <div className={cn('max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8', className)}>
+    <div id="current-openings" className={cn('max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8', className)}>
       {/* Header Section */}
       <div className="text-center mb-8">
         {/* CODE3 Badge */}
-        <div className="inline-block bg-[#C90E1D] border border-[#FF3B4B] text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
+        <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
           {badge}
         </div>
 
@@ -67,7 +84,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
             </label>
 
             <select className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700 w-full sm:w-48">
-              {departments.map((dept: any, index: number) => (
+              {departments.map((dept: Department, index: number) => (
                 <option key={dept.id || index} value={dept.value}>
                   {dept.label}
                 </option>
@@ -79,7 +96,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
 
       {/* Job Listings */}
       <div className="space-y-6">
-        {jobListings?.map((job: any, index: number) => (
+        {jobListings?.map((job: JobListing, index: number) => (
           <div
             key={job.id || index}
             className="bg-[#FAFAFA] border border-[#E0DDDD] rounded-xl p-6 transition-all"
@@ -155,7 +172,7 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
                 </div>
               </div>
               <div className="mt-4 sm:mt-0 sm:ml-6">
-                <button className="text-[#C90E1D]/70 gap-2 text-sm font-medium hover:text-red-600 flex items-center">
+                <button className="text-primary_red/80 gap-2 text-sm font-medium hover:text-red-600 flex items-center">
                   {job.viewJobText || 'View Job'}
                   <svg
                     width="10"

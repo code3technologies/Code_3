@@ -10,23 +10,57 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 
+// Define the simplified data structure for navigation pages
+interface NavigationPageData {
+  id: string
+  slug: string | null | undefined
+  title: string
+  serviceCategory: 'none' | 'infrastructure' | 'digital' | null | undefined
+  parentService: string | null
+  isSubService: boolean
+}
+
 interface HeaderClientProps {
   data: Header
-  navigationPages?: any[]
+  navigationPages?: NavigationPageData[]
+}
+
+interface NavigationItem {
+  id?: string | null
+  label: string
+  link: string
+  type?: 'link' | 'dropdown' | 'mega' | 'anchor' | 'internal' | 'external' | null
+  icon?: string | null
+  cssClass?: string | null
+  openInNewTab?: boolean | null
+  showInDesktop?: boolean | null
+  showInMobile?: boolean | null
+  order?: number | null
+  subItems?: SubNavigationItem[] | null
+}
+
+interface SubNavigationItem {
+  label: string
+  link: string
+  icon?: string | null
+  description?: string | null
+  openInNewTab?: boolean | null
 }
 
 // Dynamic icon component
 const DynamicIcon = ({ name, className = 'w-4 h-4' }: { name?: string; className?: string }) => {
   if (!name) return null
 
-  const IconComponent = (LucideIcons as any)[name]
+  const IconComponent = (
+    LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>
+  )[name]
   if (!IconComponent) return null
 
   return <IconComponent className={className} />
 }
 
 // Navigation item component
-const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) => {
+const NavItem = ({ item, isMobile = false }: { item: NavigationItem; isMobile?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const linkProps = {
@@ -60,7 +94,7 @@ const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) 
                 isMobile ? 'bg-transparent space-y-1' : 'bg-white shadow-lg rounded-md border p-2'
               }`}
             >
-              {item.subItems?.map((subItem: any, index: number) => (
+              {item.subItems?.map((subItem: SubNavigationItem, index: number) => (
                 <Link
                   key={index}
                   href={subItem.link}
@@ -95,330 +129,521 @@ const NavItem = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) 
   )
 }
 
-function MenuSection({ title, children }: { title: string; children: React.ReactNode }) {
-  const [open, setOpen] = useState(false)
+// Mobile Service Section Component
+const MobileServiceSection = ({
+  title,
+  pages,
+  subServices,
+  getSubServices,
+  onLinkClick,
+}: {
+  title: string
+  pages: NavigationPageData[]
+  subServices: NavigationPageData[]
+  getSubServices: (parentId: string, subServices: NavigationPageData[]) => NavigationPageData[]
+  onLinkClick: () => void
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [expandedServices, setExpandedServices] = useState<Set<string>>(new Set())
+
+  const toggleService = (serviceId: string) => {
+    const newExpanded = new Set(expandedServices)
+    if (newExpanded.has(serviceId)) {
+      newExpanded.delete(serviceId)
+    } else {
+      newExpanded.add(serviceId)
+    }
+    setExpandedServices(newExpanded)
+  }
+
   return (
-    <div className="w-full">
+    <div className="w-full pb-3">
       <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full text-left font-medium focus:outline-none"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between w-full text-left focus:outline-none transition-all duration-300"
       >
-        <span className="text-base font-semibold text-white">{title}</span>
-        <span className="ml-2 font-bold text-white">{open ? '-' : '+'}</span>
+        <span className="text-lg font-semibold text-white">{title}</span>
+        <span className="ml-2 text-2xl font-bold text-white transition-transform duration-300">
+          {isOpen ? '−' : '+'}
+        </span>
       </button>
-      {open && <div className="pl-4 mt-1 text-sm space-y-1 text-white">{children}</div>}
+
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          isOpen ? 'max-h-[2000px] opacity-100 mt-3' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="space-y-3">
+          {pages
+            .filter((page: NavigationPageData) => page && page.id && page.slug) // Filter out pages without slug
+            .map((page: NavigationPageData) => {
+              const pageSubs = getSubServices(page.id, subServices)
+              const hasSubServices = pageSubs.length > 0
+              const isExpanded = expandedServices.has(page.id)
+
+              return (
+                <div key={page.id} className="space-y-2">
+                  <div className="flex items-center justify-between ml-4">
+                    <Link
+                      href={`/${page.slug || '#'}`}
+                      className="text-white font-medium transition-colors duration-300 flex-1"
+                      onClick={onLinkClick}
+                    >
+                      {page.title}
+                    </Link>
+                    {hasSubServices && (
+                      <button
+                        onClick={() => toggleService(page.id)}
+                        className="ml-2 text-xl font-bold text-white transition-transform duration-300"
+                      >
+                        {isExpanded ? '−' : '+'}
+                      </button>
+                    )}
+                  </div>
+
+                  <div
+                    className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                      isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    {hasSubServices && (
+                      <ul className="ml-8 space-y-2">
+                        {pageSubs
+                          .filter((sub: NavigationPageData) => sub && sub.id && sub.slug) // Filter out subs without slug
+                          .map((sub: NavigationPageData) => (
+                            <li key={sub.id}>
+                              <Link
+                                href={`/${sub.slug || '#'}`}
+                                className="text-white/80 text-md transition-colors duration-300 block"
+                                onClick={onLinkClick}
+                              >
+                                {sub.title}
+                              </Link>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+        </div>
+      </div>
     </div>
   )
 }
 
-function MenuItem({ children }: { children: React.ReactNode }) {
-  return (
-    <a href="#" className="block py-1 text-white">
-      {children}
-    </a>
-  )
-}
-
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPages = [] }) => {
-  /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
-  const [showMegaMenu, setShowMegaMenu] = useState(false)
+  const [showInfraMegaMenu, setShowInfraMegaMenu] = useState(false)
+  const [showDigitalMegaMenu, setShowDigitalMegaMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
 
   // Extract data from CMS
   const logo = data?.logo
   const megaMenu = data?.megaMenu
-  // Access custom CMS fields that may not yet be reflected in generated TS types
-  const megaMenuSettings = data?.megaMenu as any
-  const mobileMenu = data?.mobileMenu
   const ctaButtons = data?.ctaButtons
   const settings = data?.settings
 
   // Sort navigation items by order
   const sortedNavItems = (data?.navItems || [])
-    .sort((a, b) => (a.order || 0) - (b.order || 0))
-    .filter((item) => item.showInDesktop !== false)
+    .sort((a: NavigationItem, b: NavigationItem) => (a.order || 0) - (b.order || 0))
+    .filter((item: NavigationItem) => item.showInDesktop !== false)
 
-  // Merge CMS navigation items with auto-generated ones
-  const allNavItems = [...sortedNavItems, ...navigationPages]
+  const allNavItems = [...sortedNavItems]
+
+  // Convert navigationPages to NavigationPageData[]
+  const servicePages = navigationPages as NavigationPageData[]
+  const infraPages = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && !p.isSubService,
+  )
+  const digitalPages = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'digital' && !p.isSubService,
+  )
+  const infraSubServices = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && p.isSubService,
+  )
+  const digitalSubServices = servicePages.filter(
+    (p: NavigationPageData) => p.serviceCategory === 'digital' && p.isSubService,
+  )
+
+  const getSubServices = (
+    parentId: string,
+    subServices: NavigationPageData[],
+  ): NavigationPageData[] => {
+    return subServices.filter((sub: NavigationPageData) => {
+      return sub.parentService === parentId
+    })
+  }
 
   useEffect(() => {
     setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  }, [pathname, setHeaderTheme])
 
   useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+    if (headerTheme && headerTheme !== theme) {
+      setTheme(headerTheme)
+    }
+  }, [headerTheme, theme])
+
+  // Close mega menus when clicking outside or pressing Escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowInfraMegaMenu(false)
+        setShowDigitalMegaMenu(false)
+      }
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [])
+
+  // Close mega menus when pathname changes
+  useEffect(() => {
+    setShowInfraMegaMenu(false)
+    setShowDigitalMegaMenu(false)
+  }, [pathname])
+
+  const closeMobileMenu = () => {
+    setShowMobileMenu(false)
+  }
+
+  const toggleInfraMegaMenu = () => {
+    setShowInfraMegaMenu(!showInfraMegaMenu)
+    setShowDigitalMegaMenu(false)
+  }
+
+  const toggleDigitalMegaMenu = () => {
+    setShowDigitalMegaMenu(!showDigitalMegaMenu)
+    setShowInfraMegaMenu(false)
+  }
 
   return (
-    <header
-      className={`${settings?.backgroundColor || 'bg-white/80'} w-full backdrop-blur-2xl relative z-50 lg:px-16 lg:py-6 py-4 ${
-        settings?.stickyHeader ? 'sticky top-0' : ''
-      }`}
-      {...(theme ? { 'data-theme': theme } : {})}
-    >
-      <div
-        className={`w-full mx-auto px-4 flex justify-between items-center ${settings?.headerHeight || 'h-auto'}`}
+    <>
+      <header
+        className={`${settings?.backgroundColor || 'bg-white/80'} w-full backdrop-blur-2xl relative z-50 lg:px-16 lg:py-6 py-4 ${
+          settings?.stickyHeader ? 'sticky top-0' : ''
+        }`}
+        {...(theme ? { 'data-theme': theme } : {})}
       >
-        {/* Logo */}
-        <div className="flex items-center flex-shrink-0 w-[8rem] lg:w-[10rem]">
-          <Logo
-            logo={logo}
-            href="/"
-            width={100}
-            height={69}
-            loading="eager"
-            priority="high"
-            alt="Company Logo"
-          />
-        </div>
-
-        {/* Desktop Links */}
-        <div className="hidden md:flex flex-1 justify-center space-x-8 items-center">
-          {/* Dynamic Navigation Items */}
-          {allNavItems.map((item: any, index: number) => (
-            <NavItem key={index} item={item} />
-          ))}
-
-          {/* Fallback Navigation Items */}
-          {allNavItems.length === 0 && (
-            <>
-              <Link href="/about-us" className="hover:text-red-600 transition">
-                About Us
-              </Link>
-              {/* <Link href="/infra-services" className="hover:text-red-600 transition">
-                Infra Services
-              </Link> */}
-              <Link href="/careers" className="hover:text-red-600 transition">
-                Careers
-              </Link>
-            </>
-          )}
-
-          {/* Digital Services Mega Menu */}
-          {/* {(megaMenuSettings?.showMegaMenu ?? true) && (
-            <div
-              className=""
-              onMouseEnter={() => setShowMegaMenu(true)}
-              onMouseLeave={() => setShowMegaMenu(false)}
-            >
-              <button className="hover:text-red-600 flex items-center">
-                {(megaMenuSettings?.megaMenuLabel as string) || 'Digital services'}{' '}
-                <span className="ml-1">+</span>
-              </button>
-              {showMegaMenu && (
-                <div className="absolute left-0 lg:top-24 top-20 w-screen bg-gradient-to-br from-[#b0182a] to-[#45060a] text-white p-12 z-50">
-                  <div className="max-w-7xl mx-auto grid grid-cols-4 gap-12">
-                    <div className="">
-                      <h2 className="text-white font-bold text-xl mb-12">
-                        {megaMenu?.title ||
-                          'Complete IT, Security & Digital Solutions for Businesses in UAE'}
-                      </h2>
-                      <span
-                        className="mt-10 text-6xl font-bold tracking-widest"
-                        style={{ fontFamily: 'monospace' }}
-                      >
-                        {megaMenu?.brandText || 'CODE3'}
-                      </span>
-                    </div>
-                    <div></div>
-                    {megaMenu?.serviceCategories
-                      ?.slice(0, 3)
-                      .map((category: any, index: number) => (
-                        <div key={index}>
-                          <h4 className="font-bold mb-2 text-white">{category.title}</h4>
-                          <ul className="space-y-1 text-sm">
-                            {category.services?.map((service: any, serviceIndex: number) => (
-                              <li key={serviceIndex}>
-                                {service.link ? (
-                                  <a href={service.link} className="hover:text-gray-300">
-                                    {service.name}
-                                  </a>
-                                ) : (
-                                  service.name
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                  </div>
-                  {megaMenu?.serviceCategories && megaMenu.serviceCategories.length > 3 && (
-                    <div className="max-w-7xl mx-auto grid grid-cols-4 gap-12 mt-8">
-                      <div></div>
-                      {megaMenu.serviceCategories
-                        .slice(3, 6)
-                        .map((category: any, index: number) => (
-                          <div key={index}>
-                            <h4 className="font-bold mb-2 text-white">{category.title}</h4>
-                            <ul className="space-y-1 text-sm">
-                              {category.services?.map((service: any, serviceIndex: number) => (
-                                <li key={serviceIndex}>
-                                  {service.link ? (
-                                    <a href={service.link} className="hover:text-gray-300">
-                                      {service.name}
-                                    </a>
-                                  ) : (
-                                    service.name
-                                  )}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )} */}
-        </div>
-        <div className="hidden md:flex items-center space-x-4">
-          {settings?.showSearchIcon && (
-            <Link
-              href={settings?.searchLink || '/search'}
-              className="hover:text-red-600 transition"
-            >
-              <Search className="w-5 h-5" />
-            </Link>
-          )}
-          {ctaButtons?.showContactButton !== false && (
-            <Link
-              href={ctaButtons?.contactLink || '/contact'}
-              className={`${settings?.hoverColor || 'hover:text-red-600'} transition`}
-            >
-              {ctaButtons?.contactText || 'Contact'}
-            </Link>
-          )}
-          {/* {ctaButtons?.showLoginButton !== false && (
-            <Link
-              href={ctaButtons?.loginLink || '/login'}
-              className={`ml-4 bg-black text-white px-4 py-1 ${
-                ctaButtons?.buttonStyle === 'rounded'
-                  ? 'rounded-lg'
-                  : ctaButtons?.buttonStyle === 'pill'
-                    ? 'rounded-full'
-                    : ctaButtons?.buttonStyle === 'outline'
-                      ? 'border border-black bg-transparent text-black hover:bg-black hover:text-white'
-                      : 'rounded'
-              }`}
-            >
-              {ctaButtons?.loginText || 'Login'}
-            </Link>
-          )} */}
-        </div>
-
-        {/* Mobile Hamburger */}
-        <div className="md:hidden flex items-center space-x-2">
-          {settings?.showSearchIcon && (
-            <Link
-              href={settings?.searchLink || '/search'}
-              className="hover:text-red-600 transition"
-            >
-              <Search className="w-5 h-5" />
-            </Link>
-          )}
-          <button onClick={() => setShowMobileMenu(!showMobileMenu)} aria-label="Toggle menu">
-            {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-      {/* Mobile Menu */}
-      {showMobileMenu && (
         <div
-          className="md:hidden fixed inset-0 min-h-screen z-40 flex flex-col "
-          style={{
-            background: 'linear-gradient(135deg,#d7213c 0%,#2d0e0e 100%)',
-          }}
+          className={`w-full mx-auto px-4 flex justify-between items-center ${settings?.headerHeight || 'h-auto'}`}
         >
-          {/* Top bar: logo + close */}
-          <div className="w-full mx-auto px-4 flex justify-between items-center bg-white z-50 h-16">
-            <div className="flex items-center space-x-2">
-              <Link href="/">
-                <Logo loading="eager" priority="high" />
-              </Link>
-            </div>
-            <button
-              aria-label="Close menu"
-              onClick={() => setShowMobileMenu(false)}
-              className="text-gray-700 text-3xl absolute right-4 top-3"
-            >
-              &times;
-            </button>
+          {/* Logo */}
+          <div className="flex items-center flex-shrink-0 w-[8rem] lg:w-[10rem]">
+            <Logo
+              logo={logo}
+              href="/"
+              width={100}
+              height={69}
+              loading="eager"
+              priority="high"
+              alt="Company Logo"
+            />
           </div>
 
-          {/* Menu content */}
-          <div className="flex-1 flex flex-col justify-start px-4 py-6 text-white space-y-2 overflow-auto">
-            {/* Dynamic Navigation Items for Mobile */}
-            {allNavItems
-              .filter((item: any) => item.showInMobile !== false)
-              .map((item: any, index: number) => (
-                <NavItem key={index} item={item} isMobile={true} />
-              ))}
+          {/* Desktop Links */}
+          <div className="hidden md:flex flex-1 justify-center space-x-8 items-center">
+            {/* Dynamic Navigation Items */}
+            {allNavItems.map((item: NavigationItem, index: number) => (
+              <NavItem key={index} item={item} />
+            ))}
 
-            {/* Fallback Navigation Items for Mobile */}
+            {/* Infra Services Button with +/- icon */}
+            {infraPages.length > 0 && (
+              <button
+                onClick={toggleInfraMegaMenu}
+                className="hover:text-red-600 transition flex items-center gap-1"
+              >
+                Infra Services
+                <span className="text-xl font-bold transition-transform duration-300">
+                  {showInfraMegaMenu ? '−' : '+'}
+                </span>
+              </button>
+            )}
+
+            {/* Digital Services Button with +/- icon */}
+            {digitalPages.length > 0 && (
+              <button
+                onClick={toggleDigitalMegaMenu}
+                className="hover:text-red-600 transition flex items-center gap-1"
+              >
+                Digital Services
+                <span className="text-xl font-bold transition-transform duration-300">
+                  {showDigitalMegaMenu ? '−' : '+'}
+                </span>
+              </button>
+            )}
+
+            {/* Fallback Navigation Items */}
             {allNavItems.length === 0 && (
               <>
-                <Link href="/about-us" className="mb-3 text-base font-semibold">
+                <Link href="/about-us" className="hover:text-red-600 transition">
                   About Us
                 </Link>
-                {/* <Link href="/infra-services" className="mb-3 text-base font-semibold">
-                  Infra Services
-                </Link> */}
-                <Link href="/careers" className="mb-3 text-base font-semibold">
+                <Link href="/careers" className="hover:text-red-600 transition">
                   Careers
-                </Link>
-                <Link href="/contact" className="mb-3 text-base font-semibold">
-                  Contact
                 </Link>
               </>
             )}
-
-            {/* Mobile Menu Sections */}
-            {mobileMenu?.sections?.map((section: any, index: number) => (
-              <MenuSection key={index} title={section.title}>
-                {section.items?.map((item: any, itemIndex: number) => (
-                  <MenuItem key={itemIndex}>
-                    {item.link ? <span className="cursor-pointer">{item.name}</span> : item.name}
-                  </MenuItem>
-                ))}
-              </MenuSection>
-            ))}
           </div>
 
-          {/* Buttons */}
-          {/* <div className="flex items-center gap-3 px-4 pb-6 mt-auto">
-            {ctaButtons?.showLoginButton !== false && (
+          <div className="hidden md:flex items-center space-x-4">
+            {settings?.showSearchIcon && (
               <Link
-                href={ctaButtons?.loginLink || '/login'}
-                className={`px-5 py-2 font-semibold shadow ${
-                  ctaButtons?.buttonStyle === 'rounded'
-                    ? 'rounded-lg bg-white text-black'
-                    : ctaButtons?.buttonStyle === 'pill'
-                      ? 'rounded-full bg-white text-black'
-                      : ctaButtons?.buttonStyle === 'outline'
-                        ? 'rounded border border-white text-white hover:bg-white hover:text-black'
-                        : 'rounded-full bg-white text-black'
-                }`}
+                href={settings?.searchLink || '/search'}
+                className="hover:text-red-600 transition"
               >
-                {ctaButtons?.loginText || 'Login'}
+                <Search className="w-5 h-5" />
               </Link>
             )}
             {ctaButtons?.showContactButton !== false && (
               <Link
                 href={ctaButtons?.contactLink || '/contact'}
-                className="px-5 py-2 rounded-full border border-white text-white font-semibold hover:bg-white hover:text-black transition"
+                className={`${settings?.hoverColor || 'hover:text-red-600'} transition`}
               >
                 {ctaButtons?.contactText || 'Contact'}
               </Link>
             )}
-          </div> */}
+          </div>
+
+          {/* Mobile Hamburger */}
+          <div className="md:hidden flex items-center space-x-2">
+            {settings?.showSearchIcon && (
+              <Link
+                href={settings?.searchLink || '/search'}
+                className="hover:text-red-600 transition"
+              >
+                <Search className="w-5 h-5" />
+              </Link>
+            )}
+            <button onClick={() => setShowMobileMenu(!showMobileMenu)} aria-label="Toggle menu">
+              {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {showMobileMenu && (
+          <div className="md:hidden fixed inset-0 min-h-screen z-40 overflow-y-auto">
+            <div className="bg-white space-y-3 flex flex-col h-full">
+              {/* Mobile Logo and Close Button */}
+              <div className="px-6 py-3 flex items-center justify-between">
+                <Logo
+                  logo={logo}
+                  href="/"
+                  width={70}
+                  height={45}
+                  loading="eager"
+                  priority="high"
+                  alt="Company Logo"
+                />
+                <button
+                  onClick={closeMobileMenu}
+                  className="text-black transition-transform duration-300 hover:scale-110"
+                  aria-label="Close menu"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div
+                className="p-6 h-[calc(100vh-5rem)] flex flex-col"
+                style={{
+                  background: 'linear-gradient(-135deg, #8b0f1f 0%, #d7213c 20%, #2d0e0e 100%)',
+                }}
+              >
+                {/* Dynamic Navigation Items for Mobile */}
+                <div className="space-y-2">
+                  {allNavItems.map((item: NavigationItem, index: number) => (
+                    <div key={index} className="pb-2">
+                      <Link
+                        href={item.link}
+                        className="text-white text-lg font-semibold block transition-colors duration-300"
+                        onClick={closeMobileMenu}
+                      >
+                        {item.label}
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Infra Services Section */}
+                {infraPages.length > 0 && (
+                  <MobileServiceSection
+                    title="Infra Services"
+                    pages={infraPages}
+                    subServices={infraSubServices}
+                    getSubServices={getSubServices}
+                    onLinkClick={closeMobileMenu}
+                  />
+                )}
+
+                {/* Digital Services Section */}
+                {digitalPages.length > 0 && (
+                  <MobileServiceSection
+                    title="Digital Services"
+                    pages={digitalPages}
+                    subServices={digitalSubServices}
+                    getSubServices={getSubServices}
+                    onLinkClick={closeMobileMenu}
+                  />
+                )}
+
+                {/* Mobile Contact Button */}
+                {ctaButtons?.showContactButton !== false && (
+                  <div className="pt-4 mt-auto">
+                    <Link
+                      href={ctaButtons?.contactLink || '/contact'}
+                      className="block w-full text-center bg-white text-red-600 py-3 rounded-full font-semibold hover:bg-red-50 transition-all duration-300 transform hover:scale-105"
+                      onClick={closeMobileMenu}
+                    >
+                      {ctaButtons?.contactText || 'Contact'}
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Infra Services Mega Menu */}
+      {showInfraMegaMenu && (
+        <div
+          className="fixed inset-0 top-[5rem] p-16 z-40 h-[calc(100vh-5rem)] overflow-auto text-white"
+          style={{ background: 'linear-gradient(-135deg, #8b0f1f 0%, #d7213c 20%, #2d0e0e 100%)' }}
+        >
+          <div className="max-w-7xl h-full mx-auto flex gap-[6rem] justify-between">
+            {/* Logo and Header */}
+            <div className="mb-12">
+              <p className="text-lg font-semibold mb-6">
+                Complete IT, Security
+                <br />
+                & Infrastructure Solutions for
+                <br />
+                Businesses in UAE
+              </p>
+              <h1 className="text-7xl font-bold" style={{ fontFamily: 'monospace' }}>
+                {megaMenu?.brandText || 'CODE3'}
+              </h1>
+            </div>
+
+            {/* Services Grid */}
+            <div className="h-full max-w-3xl overflow-auto">
+              <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-x-[4rem] gap-y-[4rem]">
+                {infraPages
+                  .filter((page: NavigationPageData) => page && page.id && page.slug)
+                  .map((page: NavigationPageData) => {
+                    const subServices = getSubServices(page.id, infraSubServices).filter(
+                      (sub: NavigationPageData) => sub && sub.id && sub.slug,
+                    )
+                    return (
+                      <div key={page.id}>
+                        {/* Parent Service - Now Clickable */}
+                        <Link
+                          href={`/${page.slug || '#'}`}
+                          className="text-xl font-bold mb-6 uppercase transition block"
+                          onClick={() => setShowInfraMegaMenu(false)}
+                        >
+                          <h2>{page.title}</h2>
+                        </Link>
+
+                        {/* Sub Services */}
+                        {subServices.length > 0 && (
+                          <ul className="space-y-3 text-sm">
+                            {subServices.map((sub: NavigationPageData) => (
+                              <li key={sub.id}>
+                                <Link
+                                  href={`/${sub.slug || '#'}`}
+                                  className="transition"
+                                  onClick={() => setShowInfraMegaMenu(false)}
+                                >
+                                  {sub.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+          </div>
         </div>
       )}
-    </header>
-  )
+
+      {/* Digital Services Mega Menu */}
+      {showDigitalMegaMenu && (
+        <div
+          className="fixed inset-0 top-[5rem] p-16 z-40 h-[calc(100vh-5rem)] overflow-auto text-white"
+          style={{ background: 'linear-gradient(-135deg, #8b0f1f 0%, #d7213c 20%, #2d0e0e 100%)' }}
+        >
+          <div className="max-w-7xl h-full mx-auto flex gap-[6rem] justify-between">
+            {/* Logo and Header */}
+            <div className="mb-12">
+              <p className="text-lg font-semibold mb-6">
+                Complete IT, Security
+                <br />
+                & Digital Solutions for
+                <br />
+                Businesses in UAE
+              </p>
+              <h1
+                className="text-7xl font-bold tracking-widest"
+                style={{ fontFamily: 'monospace' }}
+              >
+                {megaMenu?.brandText || 'CODE3'}
+              </h1>
+            </div>
+
+            {/* Services Grid */}
+            <div className="h-full max-w-3xl overflow-auto">
+              <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-x-[4rem] gap-y-[4rem]">
+                {digitalPages
+                  .filter((page: NavigationPageData) => page && page.id && page.slug)
+                  .map((page: NavigationPageData) => {
+                    const subServices = getSubServices(page.id, digitalSubServices).filter(
+                      (sub: NavigationPageData) => sub && sub.id && sub.slug,
+                    )
+                    return (
+                      <div key={page.id}>
+                        {/* Parent Service - Now Clickable */}
+                        <Link
+                          href={`/${page.slug || '#'}`}
+                          className="text-xl font-bold mb-6 uppercase transition block"
+                          onClick={() => setShowDigitalMegaMenu(false)}
+                        >
+                          <h2>{page.title}</h2>
+                        </Link>
+
+                        {/* Sub Services */}
+                        {subServices.length > 0 && (
+                          <ul className="space-y-3 text-sm">
+                            {subServices.map((sub: NavigationPageData) => (
+                              <li key={sub.id}>
+                                <Link
+                                  href={`/${sub.slug || '#'}`}
+                                  className="transition"
+                                  onClick={() => setShowDigitalMegaMenu(false)}
+                                >
+                                  {sub.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
 }
