@@ -61,7 +61,7 @@ export const CareersBlock: React.FC<Props> = ({
           </p>
           {buttonText && (
             <Button
-              variant="buttonWithGradientOnHover"
+              variant="default"
               size="alignLeft"
               onClick={handleScrollToOpenings}
             >

@@ -472,7 +472,7 @@ export const ServicesBlockClient: React.FC<
 
           <div className="text-center mt-8">
             <Button
-              variant="buttonWithGradientOnHover"
+              variant="default"
               size="alignCenter"
               onClick={() => window.open('/services', '_self')}
             >

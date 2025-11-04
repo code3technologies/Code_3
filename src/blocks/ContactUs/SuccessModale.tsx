@@ -84,7 +84,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
         {/* Footer with action buttons */}
         <div className="px-8 py-6 bg-gray-50 rounded-b-lg border-t border-gray-100 flex justify-center">
           <Button
-            variant="buttonWithGradientOnHover"
+            variant="default"
             size="alignCenter"
             onClick={onClose}
           >

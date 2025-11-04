@@ -24,7 +24,7 @@ export const AboutUsBanner: Block = {
       required: true,
     },
     linkGroup({
-      appearances: ['default', 'outline', 'buttonWithGradientOnHover'],
+      appearances: ['default', 'outline'],
       overrides: {
         maxRows: 1,
       },
