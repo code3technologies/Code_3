@@ -2,7 +2,7 @@
 
 import type { CareersBlock as CareersBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
-import React, { useRef } from 'react'
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
 

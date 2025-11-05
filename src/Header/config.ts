@@ -381,15 +381,6 @@ export const Header: GlobalConfig = {
           defaultValue: 'fullscreen',
         },
         {
-          name: 'headerHeight',
-          type: 'text',
-          label: 'Header Height',
-          defaultValue: 'h-16',
-          admin: {
-            description: 'Tailwind CSS height class (e.g., h-16, h-20)',
-          },
-        },
-        {
           name: 'backgroundColor',
           type: 'text',
           label: 'Background Color',

@@ -2416,10 +2416,6 @@ export interface Header {
     searchLink?: string | null;
     mobileMenuStyle?: ('slide' | 'fullscreen' | 'dropdown') | null;
     /**
-     * Tailwind CSS height class (e.g., h-16, h-20)
-     */
-    headerHeight?: string | null;
-    /**
      * Tailwind CSS background class (e.g., bg-white, bg-gray-100)
      */
     backgroundColor?: string | null;
@@ -2582,7 +2578,6 @@ export interface HeaderSelect<T extends boolean = true> {
         showSearchIcon?: T;
         searchLink?: T;
         mobileMenuStyle?: T;
-        headerHeight?: T;
         backgroundColor?: T;
         textColor?: T;
         hoverColor?: T;

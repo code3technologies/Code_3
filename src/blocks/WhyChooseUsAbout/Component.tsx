@@ -10,6 +10,7 @@ type Props = {
 } & WhyChooseUsAboutBlockProps
 
 export const WhyChooseUsAboutBlock: React.FC<Props> = ({
+  badge,
   className,
   title,
   subtitle,
@@ -27,7 +28,7 @@ export const WhyChooseUsAboutBlock: React.FC<Props> = ({
         <div className="text-center mb-12">
           {/* Red Badge */}
           <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
-            WHY CHOOSE US
+            {badge}
           </div>
 
           {/* Main Title */}
