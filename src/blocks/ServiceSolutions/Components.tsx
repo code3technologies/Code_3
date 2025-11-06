@@ -14,7 +14,6 @@ interface ServiceCard {
   category: 'infrastructure' | 'digital'
 }
 
-// Extended props to include runtime-only properties
 interface ServiceSolutionsBlockExtendedProps extends Omit<ServiceSolutionsBlockProps, 'serviceType'> {
   id?: string
   currentPage?: Page | null
@@ -61,8 +60,6 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
     }
   }
 
-  // Determine if current page is a Service Detail page (top-level service that can have sub-services)
-  // Service Detail page = has serviceCategory AND no parentService
   const isServiceDetailPage =
     (currentPage?.serviceCategory === 'infrastructure' ||
       currentPage?.serviceCategory === 'digital') &&
@@ -71,9 +68,6 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
   let pages: Page[] = []
 
   if (isServiceDetailPage && currentPage?.id) {
-    // CASE 1: On a Service Detail page - show sub-services of the current page
-    console.log(`Fetching sub-services for service detail page: ${currentPage.title}`)
-    
     const result = await payload.find({
       collection: 'pages',
       depth: 1,
@@ -96,10 +90,6 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
     pages = result.docs || []
     console.log(`Found ${pages.length} sub-services`)
   } else {
-    // CASE 2: On "Our Services" page or other listing pages
-    // Show top-level services of the selected type (no parent)
-    console.log(`Fetching top-level ${serviceType} services`)
-    
     const result = await payload.find({
       collection: 'pages',
       depth: 1,

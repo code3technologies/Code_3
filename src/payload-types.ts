@@ -1062,6 +1062,10 @@ export interface CurrentOpeningsBlock {
  */
 export interface ServiceSolutionsBlock {
   /**
+   * e.g., "infrastructure-services" or "digital-services". Used for anchor navigation in footer links.
+   */
+  blockId: string;
+  /**
    * Select which type of services to display in this block
    */
   serviceType: 'infrastructure' | 'digital';
@@ -1825,6 +1829,7 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
  * via the `definition` "ServiceSolutionsBlock_select".
  */
 export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
+  blockId?: T;
   serviceType?: T;
   badge?: T;
   title?: T;
@@ -2323,115 +2328,39 @@ export interface Header {
     | {
         label: string;
         link: string;
-        type: 'internal' | 'external' | 'anchor' | 'dropdown' | 'mega';
+        type: 'internal' | 'external' | 'anchor';
         openInNewTab?: boolean | null;
-        /**
-         * Enter the name of a Lucide React icon (e.g., "home", "user", "settings")
-         */
-        icon?: string | null;
-        showInMobile?: boolean | null;
-        showInDesktop?: boolean | null;
         /**
          * Lower numbers appear first
          */
         order?: number | null;
-        /**
-         * Additional CSS classes for styling
-         */
-        cssClass?: string | null;
-        subItems?:
-          | {
-              label: string;
-              link: string;
-              /**
-               * Optional description for the sub menu item
-               */
-              description?: string | null;
-              icon?: string | null;
-              openInNewTab?: boolean | null;
-              image?: (string | null) | Media;
-              order?: number | null;
-              id?: string | null;
-            }[]
-          | null;
-        megaMenuConfig?: {
-          title?: string | null;
-          description?: string | null;
-          columns?: number | null;
-          backgroundImage?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
           /**
-           * CSS color value (e.g., #ff0000, rgb(255,0,0), red)
+           * Choose how the link should be rendered.
            */
-          backgroundColor?: string | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
     | null;
-  megaMenu?: {
-    showMegaMenu?: boolean | null;
-    megaMenuLabel?: string | null;
-    title?: string | null;
-    brandText?: string | null;
-    serviceCategories?:
-      | {
-          title: string;
-          services?:
-            | {
-                name: string;
-                link?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  mobileMenu?: {
-    sections?:
-      | {
-          title: string;
-          items?:
-            | {
-                name: string;
-                link?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  ctaButtons?: {
-    loginText?: string | null;
-    loginLink?: string | null;
-    contactText?: string | null;
-    contactLink?: string | null;
-    showLoginButton?: boolean | null;
-    showContactButton?: boolean | null;
-    buttonStyle?: ('default' | 'rounded' | 'pill' | 'outline') | null;
-  };
-  settings?: {
-    stickyHeader?: boolean | null;
-    showSearchIcon?: boolean | null;
-    searchLink?: string | null;
-    mobileMenuStyle?: ('slide' | 'fullscreen' | 'dropdown') | null;
-    /**
-     * Tailwind CSS height class (e.g., h-16, h-20)
-     */
-    headerHeight?: string | null;
-    /**
-     * Tailwind CSS background class (e.g., bg-white, bg-gray-100)
-     */
-    backgroundColor?: string | null;
-    /**
-     * Tailwind CSS text color class (e.g., text-gray-900, text-white)
-     */
-    textColor?: string | null;
-    /**
-     * Tailwind CSS hover color class (e.g., hover:text-red-600, hover:text-blue-600)
-     */
-    hoverColor?: string | null;
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2498,94 +2427,23 @@ export interface HeaderSelect<T extends boolean = true> {
         link?: T;
         type?: T;
         openInNewTab?: T;
-        icon?: T;
-        showInMobile?: T;
-        showInDesktop?: T;
         order?: T;
-        cssClass?: T;
-        subItems?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              description?: T;
-              icon?: T;
-              openInNewTab?: T;
-              image?: T;
-              order?: T;
-              id?: T;
-            };
-        megaMenuConfig?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              columns?: T;
-              backgroundImage?: T;
-              backgroundColor?: T;
-            };
         id?: T;
       };
-  megaMenu?:
+  links?:
     | T
     | {
-        showMegaMenu?: T;
-        megaMenuLabel?: T;
-        title?: T;
-        brandText?: T;
-        serviceCategories?:
+        link?:
           | T
           | {
-              title?: T;
-              services?:
-                | T
-                | {
-                    name?: T;
-                    link?: T;
-                    id?: T;
-                  };
-              id?: T;
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
             };
-      };
-  mobileMenu?:
-    | T
-    | {
-        sections?:
-          | T
-          | {
-              title?: T;
-              items?:
-                | T
-                | {
-                    name?: T;
-                    link?: T;
-                    id?: T;
-                  };
-              id?: T;
-            };
-      };
-  ctaButtons?:
-    | T
-    | {
-        loginText?: T;
-        loginLink?: T;
-        contactText?: T;
-        contactLink?: T;
-        showLoginButton?: T;
-        showContactButton?: T;
-        buttonStyle?: T;
-      };
-  settings?:
-    | T
-    | {
-        stickyHeader?: T;
-        showSearchIcon?: T;
-        searchLink?: T;
-        mobileMenuStyle?: T;
-        headerHeight?: T;
-        backgroundColor?: T;
-        textColor?: T;
-        hoverColor?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
