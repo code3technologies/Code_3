@@ -3,12 +3,12 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { ChevronDown, Search, Menu, X } from 'lucide-react'
-import * as LucideIcons from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
+import { CMSLink } from '@/components/Link'
 
 // Define the simplified data structure for navigation pages
 interface NavigationPageData {
@@ -30,11 +30,7 @@ interface NavigationItem {
   label: string
   link: string
   type?: 'link' | 'dropdown' | 'mega' | 'anchor' | 'internal' | 'external' | null
-  icon?: string | null
-  cssClass?: string | null
   openInNewTab?: boolean | null
-  showInDesktop?: boolean | null
-  showInMobile?: boolean | null
   order?: number | null
   subItems?: SubNavigationItem[] | null
 }
@@ -47,83 +43,18 @@ interface SubNavigationItem {
   openInNewTab?: boolean | null
 }
 
-// Dynamic icon component
-const DynamicIcon = ({ name, className = 'w-4 h-4' }: { name?: string; className?: string }) => {
-  if (!name) return null
-
-  const IconComponent = (
-    LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>
-  )[name]
-  if (!IconComponent) return null
-
-  return <IconComponent className={className} />
-}
-
 // Navigation item component
 const NavItem = ({ item, isMobile = false }: { item: NavigationItem; isMobile?: boolean }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
   const linkProps = {
     href: item.link,
     ...(item.openInNewTab && { target: '_blank', rel: 'noopener noreferrer' }),
-    className: `flex items-center gap-2 ${item.cssClass || ''} ${
+    className: `flex items-center gap-2 ${
       isMobile ? 'text-base font-semibold py-2' : 'hover:text-red-600 transition'
     }`,
   }
 
-  if (item.type === 'dropdown' || item.type === 'mega') {
-    return (
-      <div className="relative group">
-        <button
-          className={`flex items-center gap-2 ${item.cssClass || ''} ${
-            isMobile ? 'text-base font-semibold py-2' : 'hover:text-red-600 transition'
-          }`}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {item.icon && <DynamicIcon name={item.icon} />}
-          {item.label}
-          <ChevronDown className="w-4 h-4" />
-        </button>
-
-        {isOpen && (
-          <div
-            className={`absolute top-full left-0 z-50 ${isMobile ? 'relative w-full' : 'min-w-48'}`}
-          >
-            <div
-              className={`${
-                isMobile ? 'bg-transparent space-y-1' : 'bg-white shadow-lg rounded-md border p-2'
-              }`}
-            >
-              {item.subItems?.map((subItem: SubNavigationItem, index: number) => (
-                <Link
-                  key={index}
-                  href={subItem.link}
-                  className={`block ${
-                    isMobile ? 'text-sm py-1' : 'px-3 py-2 text-sm hover:bg-gray-100 rounded'
-                  }`}
-                  {...(subItem.openInNewTab && { target: '_blank', rel: 'noopener noreferrer' })}
-                >
-                  <div className="flex items-center gap-2">
-                    {subItem.icon && <DynamicIcon name={subItem.icon} className="w-3 h-3" />}
-                    <div>
-                      <div className="font-medium">{subItem.label}</div>
-                      {subItem.description && (
-                        <div className="text-xs text-gray-500">{subItem.description}</div>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
-
   return (
     <Link {...linkProps}>
-      {item.icon && <DynamicIcon name={item.icon} />}
       {item.label}
     </Link>
   )
@@ -254,16 +185,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
 
   // Extract data from CMS
   const logo = data?.logo
-  const megaMenu = data?.megaMenu
-  const ctaButtons = data?.ctaButtons
-  const settings = data?.settings
+  const links = data?.links
 
   // Sort navigation items by order
-  const sortedNavItems = (data?.navItems || [])
-    .sort((a: NavigationItem, b: NavigationItem) => (a.order || 0) - (b.order || 0))
-    .filter((item: NavigationItem) => item.showInDesktop !== false)
-
-  const allNavItems = [...sortedNavItems]
+  const allNavItems = (data?.navItems || []).sort((a: NavigationItem, b: NavigationItem) => (a.order || 0) - (b.order || 0))
 
   // Convert navigationPages to NavigationPageData[]
   const servicePages = navigationPages as NavigationPageData[]
@@ -334,13 +259,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
   return (
     <>
       <header
-        className={`${settings?.backgroundColor || 'bg-white/80'} w-full backdrop-blur-sm relative z-50 lg:px-16 lg:py-6 py-4 ${
-          settings?.stickyHeader ? 'sticky top-0' : ''
-        }`}
+        className={`bg-white/80 w-full backdrop-blur-sm max-w-[2000px] mx-auto z-50 lg:py-6 py-4 sticky top-0`}
         {...(theme ? { 'data-theme': theme } : {})}
       >
         <div
-          className={`w-full mx-auto px-4 flex justify-between items-center h-8`}
+          className={`w-full mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-8`}
         >
           {/* Logo */}
           <div className="flex items-center flex-shrink-0 w-[8rem] lg:w-[10rem]">
@@ -356,7 +279,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex flex-1 justify-center space-x-8 items-center">
+          <div className="hidden lg:flex flex-1 justify-center space-x-8 items-center">
             {/* Dynamic Navigation Items */}
             {allNavItems.map((item: NavigationItem, index: number) => (
               <NavItem key={index} item={item} />
@@ -401,35 +324,19 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
             )}
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
-            {settings?.showSearchIcon && (
-              <Link
-                href={settings?.searchLink || '/search'}
-                className="hover:text-red-600 transition"
-              >
-                <Search className="w-5 h-5" />
-              </Link>
+          <div className="hidden lg:flex items-center gap-4">
+            {links && links.length > 0 && (
+              <div className="flex gap-4 items-center">
+                {links.map(({ link }, i) => {
+                  return <CMSLink key={i} {...link} />
+                })}
+              </div>
             )}
-            {ctaButtons?.showContactButton !== false && (
-              <Link
-                href={ctaButtons?.contactLink || '/contact'}
-                className={`${settings?.hoverColor || 'hover:text-red-600'} transition`}
-              >
-                {ctaButtons?.contactText || 'Contact'}
-              </Link>
-            )}
+
           </div>
 
           {/* Mobile Hamburger */}
-          <div className="md:hidden flex items-center space-x-2">
-            {settings?.showSearchIcon && (
-              <Link
-                href={settings?.searchLink || '/search'}
-                className="hover:text-red-600 transition"
-              >
-                <Search className="w-5 h-5" />
-              </Link>
-            )}
+          <div className="lg:hidden flex items-center space-x-2">
             <button onClick={() => setShowMobileMenu(!showMobileMenu)} aria-label="Toggle menu">
               {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -438,7 +345,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
 
         {/* Mobile Menu */}
         {showMobileMenu && (
-          <div className="md:hidden fixed inset-0 h-screen z-40">
+          <div className="lg:hidden fixed inset-0 h-screen z-40">
             <div className="space-y-3 flex flex-col h-full"
               style={{
                   background: 'linear-gradient(-135deg, #8b0f1f 0%, #d7213c 20%, #2d0e0e 100%)',
@@ -508,17 +415,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                 )}
 
                 {/* Mobile Contact Button */}
-                {ctaButtons?.showContactButton !== false && (
-                  <div className="pt-4 mt-auto">
-                    <Link
-                      href={ctaButtons?.contactLink || '/contact'}
-                      className="block w-full text-center bg-white text-red-600 py-3 rounded-full font-semibold hover:bg-red-50 transition-all duration-300 transform hover:scale-105"
-                      onClick={closeMobileMenu}
-                    >
-                      {ctaButtons?.contactText || 'Contact'}
-                    </Link>
-                  </div>
-                )}
+                <div className="pt-4 mt-auto">
+                  {links && links.length > 0 && (
+                    <div className="flex flex-col gap-4 items-center">
+                      {links.map(({ link }, i) => {
+                        return <CMSLink key={i} className='w-full text-center' {...link} />
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -541,8 +446,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                 <br />
                 Businesses in UAE
               </p>
-              <h1 className="text-7xl font-bold" style={{ fontFamily: 'monospace' }}>
-                {megaMenu?.brandText || 'CODE3'}
+              <h1 className="text-7xl font-bold tracking-wide" style={{ fontFamily: 'monospace' }}>
+                CODE3
               </h1>
             </div>
 
@@ -608,10 +513,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                 Businesses in UAE
               </p>
               <h1
-                className="text-7xl font-bold tracking-widest"
+                className="text-7xl font-bold tracking-wide"
                 style={{ fontFamily: 'monospace' }}
               >
-                {megaMenu?.brandText || 'CODE3'}
+                CODE3
               </h1>
             </div>
 

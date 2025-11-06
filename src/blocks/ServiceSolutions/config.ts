@@ -4,6 +4,15 @@ export const ServiceSolutions: Block = {
   slug: 'serviceSolutions',
   fields: [
     {
+      name: 'blockId',
+      type: 'text',
+      label: 'Block ID (for scroll navigation)',
+      admin: {
+        description: 'e.g., "infrastructure-services" or "digital-services". Used for anchor navigation in footer links.',
+      },
+      required: true,
+    },
+    {
       name: 'serviceType',
       type: 'select',
       label: 'Service Type',
