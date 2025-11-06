@@ -35,7 +35,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <div className="pt-24 pb-24">
-        <PageClient />
+      <PageClient />
       <div className="container mb-16">
         <div className="prose dark:prose-invert max-w-none">
           <h1>Posts</h1>
@@ -78,7 +78,7 @@ export async function generateStaticParams() {
     overrideAccess: false,
   })
 
-  const totalPages = Math.ceil(totalDocs / 10)
+  const totalPages = Math.ceil(totalDocs / 12)
 
   const pages: { pageNumber: string }[] = []
 
@@ -86,5 +86,5 @@ export async function generateStaticParams() {
     pages.push({ pageNumber: String(i) })
   }
 
-  return pages
+  return pages
 }

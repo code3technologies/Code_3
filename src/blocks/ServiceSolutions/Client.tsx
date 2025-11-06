@@ -54,7 +54,7 @@ const getAlignmentClass = (alignment: string) => {
 }
 
 export const ServiceSolutionsBlock: React.FC<Props> = ({
-  blockId,
+  blockId = 'service-section',
   className,
   badge,
   title,
