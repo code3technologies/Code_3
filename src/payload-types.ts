@@ -72,9 +72,11 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    complaints: Complaint;
+    'complaint-attachments': ComplaintAttachment;
     redirects: Redirect;
     forms: Form;
-    'form-submissions': FormSubmission;
+    enquiries: Enquiry;
     search: Search;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -88,9 +90,11 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    complaints: ComplaintsSelect<false> | ComplaintsSelect<true>;
+    'complaint-attachments': ComplaintAttachmentsSelect<false> | ComplaintAttachmentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
-    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -103,10 +107,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'register-complaint': RegisterComplaint;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'register-complaint': RegisterComplaintSelect<false> | RegisterComplaintSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1140,6 +1146,70 @@ export interface ServiceOverviewBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaints".
+ */
+export interface Complaint {
+  id: string;
+  form: string | Form;
+  submissionData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  attachments?: (string | ComplaintAttachment)[] | null;
+  status?: ('pending' | 'in_progress' | 'resolved' | 'rejected') | null;
+  adminNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Images and files uploaded with complaint forms
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaint-attachments".
+ */
+export interface ComplaintAttachment {
+  id: string;
+  /**
+   * Description of the image for accessibility
+   */
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1166,9 +1236,9 @@ export interface Redirect {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
+ * via the `definition` "enquiries".
  */
-export interface FormSubmission {
+export interface Enquiry {
   id: string;
   form: string | Form;
   submissionData?:
@@ -1332,6 +1402,14 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
+        relationTo: 'complaints';
+        value: string | Complaint;
+      } | null)
+    | ({
+        relationTo: 'complaint-attachments';
+        value: string | ComplaintAttachment;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -1340,8 +1418,8 @@ export interface PayloadLockedDocument {
         value: string | Form;
       } | null)
     | ({
-        relationTo: 'form-submissions';
-        value: string | FormSubmission;
+        relationTo: 'enquiries';
+        value: string | Enquiry;
       } | null)
     | ({
         relationTo: 'search';
@@ -2064,6 +2142,61 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaints_select".
+ */
+export interface ComplaintsSelect<T extends boolean = true> {
+  form?: T;
+  submissionData?: T;
+  attachments?: T;
+  status?: T;
+  adminNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaint-attachments_select".
+ */
+export interface ComplaintAttachmentsSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -2213,9 +2346,9 @@ export interface FormsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions_select".
+ * via the `definition` "enquiries_select".
  */
-export interface FormSubmissionsSelect<T extends boolean = true> {
+export interface EnquiriesSelect<T extends boolean = true> {
   form?: T;
   submissionData?:
     | T
@@ -2415,6 +2548,17 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Submit a new complaint
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "register-complaint".
+ */
+export interface RegisterComplaint {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2497,6 +2641,15 @@ export interface FooterSelect<T extends boolean = true> {
         exploreServicesText?: T;
         exploreServicesImage?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "register-complaint_select".
+ */
+export interface RegisterComplaintSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

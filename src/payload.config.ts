@@ -17,6 +17,9 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Complaints } from './collections/complaints'
+import { ComplaintAttachments } from './collections/ComplaintAttachments'
+import { RegisterComplaint } from './globals/RegisterComplaint'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,9 +67,9 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, Complaints, ComplaintAttachments],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, RegisterComplaint],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
@@ -75,6 +78,7 @@ export default buildConfig({
       clientUploads: true,
       collections: {
          [Media.slug]: true,
+         'complaint-attachments': true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
     })

@@ -58,6 +58,7 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+      upload: true,
     },
     formOverrides: {
       fields: ({ defaultFields }) => {
@@ -78,6 +79,17 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+      },
+    },
+    formSubmissionOverrides: {
+      slug: 'enquiries',
+      admin: {
+        group: 'Complaints and Enquiries',
+        defaultColumns: ['form', 'createdAt'],
+      },
+      labels: {
+        singular: 'Enquiry',
+        plural: 'Enquiries',
       },
     },
   }),
