@@ -24,8 +24,8 @@ export async function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             {/* Logo */}
-            <div className="flex items-center mb-6">
-              <Logo logo={logo} width={274} height={89} alt="Company Logo" />
+            <div className="flex items-center mb-6 hover:cursor-pointer">
+              <Logo href="/" logo={logo} width={274} height={89} alt="Company Logo" />
             </div>
 
             {/* Description */}
