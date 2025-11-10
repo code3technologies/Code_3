@@ -17,7 +17,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Complaints } from './collections/complaints'
+import { Complaints } from './collections/Complaints'
 import { ComplaintAttachments } from './collections/ComplaintAttachments'
 import { RegisterComplaint } from './globals/RegisterComplaint'
 
@@ -27,12 +27,12 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
+      // The BeforeLogin component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
+      // beforeLogin: ['@/components/BeforeLogin'],
+      // The BeforeDashboard component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      // beforeDashboard: ['@/components/BeforeDashboard'],
     },
     theme: 'light',
     importMap: {
@@ -101,6 +101,6 @@ export default buildConfig({
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
-    tasks: [],
-  },
+    tasks: [],
+  },
 })

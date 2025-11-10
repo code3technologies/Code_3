@@ -14,6 +14,7 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {
@@ -22,5 +23,5 @@ export const Categories: CollectionConfig = {
       required: true,
     },
     ...slugField(),
-  ],
+  ],
 }

@@ -1,3 +1,4 @@
+import { isAdmin } from '@/access/isAdmin'
 import { CollectionConfig } from 'payload'
 
 export const Complaints: CollectionConfig = {
@@ -8,12 +9,43 @@ export const Complaints: CollectionConfig = {
     defaultColumns: ['id', 'createdAt', 'status'],
   },
   access: {
-    read: async ({ req }) => req.user !== undefined,
+    read: ({ req: { user } }) => {
+      if (!user) return false
+      
+      // Admins can see all complaints
+      if (user.role === 'admin') {
+        return true
+      }
+      
+      // Clients can only see their own complaints
+      if (user.role === 'client') {
+        return {
+          createdBy: {
+            equals: user.id,
+          },
+        }
+      }
+      
+      return false
+    },
     create: async ({ req }) => req.user !== undefined,
-    update: async ({ req }) => req.user !== undefined,
-    delete: async ({ req }) => req.user !== undefined,
+    update: isAdmin,
+    delete: isAdmin,
   },
   hooks: {
+    beforeChange: [
+      async ({ req, data, operation }) => {
+        if (operation === 'create') {
+          if (req.user) {
+            data.createdBy = req.user.id
+            console.log('✅ Set createdBy to:', data.createdBy)
+          } else {
+            console.error('No user in request! Cannot set createdBy')
+          }
+        }
+        return data
+      },
+    ],
     beforeDelete: [
       async ({ req, id }) => {
         try {
@@ -92,13 +124,16 @@ export const Complaints: CollectionConfig = {
       },
     },
     {
-      name: 'adminNotes',
-      type: 'textarea',
-      label: 'Admin Notes',
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
+      label: 'Created By',
+      index: true,
       admin: {
         position: 'sidebar',
+        readOnly: true,
       },
     },
   ],
-  timestamps: true,
+  timestamps: true,
 }

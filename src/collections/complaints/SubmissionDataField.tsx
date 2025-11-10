@@ -1,8 +1,13 @@
 import type React from 'react'
 import type { JSONFieldServerComponent } from 'payload'
 
+interface SubmissionDataItem {
+  field: string
+  value: string | number | boolean | object
+}
+
 const SubmissionDataField: JSONFieldServerComponent = ({ data, field }) => {
-  const value = data?.[field.name]
+  const value = data?.[field.name] as SubmissionDataItem[] | undefined
 
   if (!value || !Array.isArray(value) || value.length === 0) {
     return (
@@ -24,7 +29,7 @@ const SubmissionDataField: JSONFieldServerComponent = ({ data, field }) => {
       </div>
       
       <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
-        {value.map((item: any, index: number) => (
+        {value.map((item: SubmissionDataItem, index: number) => (
           <div
             key={index}
             className={`p-4 ${index !== value.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 transition-colors`}
@@ -43,7 +48,7 @@ const SubmissionDataField: JSONFieldServerComponent = ({ data, field }) => {
                   <dd className="text-sm text-gray-900 break-words whitespace-pre-wrap">
                     {typeof item.value === 'object'
                       ? JSON.stringify(item.value, null, 2)
-                      : item.value || '—'}
+                      : String(item.value || '—')}
                   </dd>
                 </div>
               </div>

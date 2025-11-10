@@ -429,7 +429,8 @@ export interface Category {
  */
 export interface User {
   id: string;
-  name?: string | null;
+  name: string;
+  role: 'admin' | 'client';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -808,6 +809,11 @@ export interface MissionAndValuesBlock {
     title: string;
     content: string;
   };
+  visionCard: {
+    icon: string | Media;
+    title: string;
+    content: string;
+  };
   valuesCard: {
     icon: string | Media;
     title: string;
@@ -1162,7 +1168,7 @@ export interface Complaint {
     | null;
   attachments?: (string | ComplaintAttachment)[] | null;
   status?: ('pending' | 'in_progress' | 'resolved' | 'rejected') | null;
-  adminNotes?: string | null;
+  createdBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1671,6 +1677,13 @@ export interface MissionAndValuesBlockSelect<T extends boolean = true> {
         title?: T;
         content?: T;
       };
+  visionCard?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        content?: T;
+      };
   valuesCard?:
     | T
     | {
@@ -2123,6 +2136,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -2149,7 +2163,7 @@ export interface ComplaintsSelect<T extends boolean = true> {
   submissionData?: T;
   attachments?: T;
   status?: T;
-  adminNotes?: T;
+  createdBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }

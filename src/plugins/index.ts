@@ -28,6 +28,9 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
+      admin: {
+        hidden: ({ user }) => user?.role !== 'admin',
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -61,6 +64,9 @@ export const plugins: Plugin[] = [
       upload: true,
     },
     formOverrides: {
+      admin: {
+        hidden: ({ user }) => user?.role !== 'admin',
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -86,6 +92,7 @@ export const plugins: Plugin[] = [
       admin: {
         group: 'Complaints and Enquiries',
         defaultColumns: ['form', 'createdAt'],
+        hidden: ({ user }) => user?.role !== 'admin',
       },
       labels: {
         singular: 'Enquiry',
@@ -97,6 +104,9 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      admin: {
+        hidden: ({ user }) => user?.role !== 'admin',
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },

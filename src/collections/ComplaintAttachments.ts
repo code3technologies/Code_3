@@ -1,3 +1,4 @@
+import { isAdmin } from '@/access/isAdmin'
 import { CollectionConfig } from 'payload'
 
 export const ComplaintAttachments: CollectionConfig = {
@@ -23,13 +24,13 @@ export const ComplaintAttachments: CollectionConfig = {
     group: 'Complaints and Enquiries',
     defaultColumns: ['filename', 'createdAt'],
     description: 'Images and files uploaded with complaint forms',
-    hidden: ({ user }) => !user,
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   access: {
     read: async ({ req }) => req.user !== undefined,
     create: async ({ req }) => req.user !== undefined,
-    update: async ({ req }) => req.user !== undefined,
-    delete: async ({ req }) => req.user !== undefined,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -39,6 +40,6 @@ export const ComplaintAttachments: CollectionConfig = {
       admin: {
         description: 'Description of the image for accessibility',
       },
-    },
-  ],
+    },
+  ],
 }

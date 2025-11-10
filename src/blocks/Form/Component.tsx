@@ -21,11 +21,15 @@ export type FormBlockType = {
   uploadedFiles?: FileList | null
 }
 
+type FormData = Record<string, string | number | boolean>
+
 function hasName(field: FormFieldBlock): field is FormFieldBlock & { name: string } {
   return 'name' in field && typeof field.name === 'string'
 }
 
-function hasDefaultValue(field: FormFieldBlock): field is FormFieldBlock & { defaultValue: any } {
+function hasDefaultValue(
+  field: FormFieldBlock,
+): field is FormFieldBlock & { defaultValue: string | number | boolean } {
   return 'defaultValue' in field
 }
 
@@ -39,23 +43,21 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
     uploadedFiles,
   } = props
 
-  if (!formFromProps || !formFromProps.fields) {
-    return (
-      <div className="p-4 text-center text-red-600 border border-red-200 rounded bg-red-50">
-        <p>Error: Form data is not available. Please check the form configuration.</p>
-      </div>
+  const defaultValues = React.useMemo(() => {
+    if (!formFromProps || !formFromProps.fields) return {}
+    
+    return formFromProps.fields.reduce(
+      (acc, field: FormFieldBlock) => {
+        if (hasName(field)) {
+          acc[field.name] = hasDefaultValue(field) ? field.defaultValue : ''
+        }
+        return acc
+      },
+      {} as FormData,
     )
-  }
+  }, [formFromProps])
 
-  const defaultValues =
-    formFromProps.fields?.reduce((acc, field: FormFieldBlock) => {
-      if (hasName(field)) {
-        acc[field.name] = hasDefaultValue(field) ? field.defaultValue : ''
-      }
-      return acc
-    }, {} as Record<string, any>) || {}
-
-  const formMethods = useForm({
+  const formMethods = useForm<FormData>({
     defaultValues,
     mode: 'onBlur',
   })
@@ -65,7 +67,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
     formState: { errors },
     handleSubmit,
     register,
-    setError: setFormError,
     clearErrors,
   } = formMethods
 
@@ -75,7 +76,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
   const router = useRouter()
 
   const onSubmit = useCallback(
-    async (data: Record<string, any>) => {
+    async (data: FormData) => {
       let loadingTimerID: ReturnType<typeof setTimeout>
 
       const submitForm = async () => {
@@ -83,30 +84,37 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
         clearErrors()
 
         if (uploadedFiles && uploadedFiles.length > 0) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-        
-        for (let i = 0; i < uploadedFiles.length; i++) {
-          const file = uploadedFiles[i]
-          
-          if (!allowedTypes.includes(file.type)) {
-            setError({
-              message: `File "${file.name}" has unsupported format. Please upload only JPG, PNG, GIF, WEBP, PDF, DOC, or DOCX files.`,
-              status: '400',
-            })
-            return
-          }
-          
-          if (file.size > 10 * 1024 * 1024) {
-            setError({
-              message: `File "${file.name}" exceeds 10MB limit.`,
-              status: '400',
-            })
-            return
+          const allowedTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          ]
+
+          for (let i = 0; i < uploadedFiles.length; i++) {
+            const file = uploadedFiles[i]
+
+            if (!allowedTypes.includes(file.type)) {
+              setError({
+                message: `File "${file.name}" has unsupported format. Please upload only JPG, PNG, GIF, WEBP, PDF, DOC, or DOCX files.`,
+                status: '400',
+              })
+              return
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+              setError({
+                message: `File "${file.name}" exceeds 10MB limit.`,
+                status: '400',
+              })
+              return
+            }
           }
         }
-      }
-      
-        // Format form data
+
         const dataToSend = Object.entries(data)
           .filter(([, value]) => value !== undefined && value !== null && value !== '')
           .map(([name, value]) => ({
@@ -119,7 +127,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
         }, 1000)
 
         try {
-          // Step 1: Upload files to complaint-attachments collection
           const attachmentIds: string[] = []
 
           if (uploadedFiles && uploadedFiles.length > 0) {
@@ -129,6 +136,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
 
               const uploadRes = await fetch(`${getClientSideURL()}/api/complaint-attachments`, {
                 method: 'POST',
+                credentials: 'include',
                 body: fileFormData,
               })
 
@@ -141,7 +149,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
             }
           }
 
-          // Step 2: Submit complaint with file IDs
           const endpoint = isComplaintForm
             ? `${getClientSideURL()}/api/complaints`
             : `${getClientSideURL()}/api/enquiries`
@@ -149,7 +156,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
           const payload = {
             form: formID,
             submissionData: dataToSend,
-            attachments: attachmentIds, // ✅ Include uploaded file IDs
+            attachments: attachmentIds,
             ...(isComplaintForm && { status: 'pending' }),
           }
 
@@ -158,6 +165,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
             headers: {
               'Content-Type': 'application/json',
             },
+            credentials: 'include',
             method: 'POST',
           })
 
@@ -195,6 +203,14 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
     [router, formID, redirect, confirmationType, isComplaintForm, uploadedFiles, clearErrors],
   )
 
+  if (!formFromProps || !formFromProps.fields) {
+    return (
+      <div className="p-4 text-center text-red-600 border border-red-200 rounded bg-red-50">
+        <p>Error: Form data is not available. Please check the form configuration.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="lg:max-w-[48rem] bg-[#FCFCFC]">
       {enableIntro && introContent && !hasSubmitted && (
@@ -215,7 +231,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
                 {formFromProps.fields?.map((field, index) => {
-                  const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const Field = fields?.[field.blockType as keyof typeof fields] as React.ComponentType<any>
                   if (Field) {
                     return (
                       <div className="mb-6 last:mb-0" key={index}>
@@ -234,7 +251,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
                 })}
               </div>
 
-              <Button form={formID} type="submit" className='w-full' variant="default">
+              <Button form={formID} type="submit" className="w-full" variant="default">
                 {submitButtonLabel}
               </Button>
             </form>

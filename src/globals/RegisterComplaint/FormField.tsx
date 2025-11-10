@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -21,6 +22,17 @@ const ALLOWED_FILE_TYPES = {
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const MAX_FILES = 5
 
+type FormFieldType = {
+  name: string
+  label?: string | null | undefined
+  blockType: string
+  required?: boolean
+  rows?: number
+  options?: Array<{ label: string; value: string }>
+}
+
+type FormDataType = Record<string, string | number | boolean>
+
 const FormField: React.FC = () => {
   const [form, setForm] = useState<Form | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
@@ -30,7 +42,7 @@ const FormField: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string>('')
-  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [formData, setFormData] = useState<FormDataType>({})
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
@@ -62,13 +74,13 @@ const FormField: React.FC = () => {
 
       if (!Object.keys(ALLOWED_FILE_TYPES).includes(file.type)) {
         setFileError(
-          `File "${file.name}" has unsupported format. Allowed: JPG, PNG, GIF, WEBP, PDF, DOC, DOCX`,
+          `File &quot;${file.name}&quot; has unsupported format. Allowed: JPG, PNG, GIF, WEBP, PDF, DOC, DOCX`,
         )
         return false
       }
 
       if (file.size > MAX_FILE_SIZE) {
-        setFileError(`File "${file.name}" exceeds 5MB limit`)
+        setFileError(`File &quot;${file.name}&quot; exceeds 5MB limit`)
         return false
       }
     }
@@ -107,9 +119,8 @@ const FormField: React.FC = () => {
     })
   }
 
-  const handleInputChange = (name: string, value: any) => {
+  const handleInputChange = (name: string, value: string | number | boolean) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
-    // Clear error for this field
     setFormErrors((prev) => {
       const newErrors = { ...prev }
       delete newErrors[name]
@@ -120,9 +131,10 @@ const FormField: React.FC = () => {
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {}
 
-    form?.fields?.forEach((field: any) => {
-      if (field.required && !formData[field.name]) {
-        errors[field.name] = `${field.label} is required`
+    form?.fields?.forEach((field) => {
+      const f = field as unknown as FormFieldType
+      if (f.required && !formData[f.name]) {
+        errors[f.name] = `${f.label || f.name} is required`
       }
     })
 
@@ -140,7 +152,6 @@ const FormField: React.FC = () => {
     setSubmitError('')
 
     try {
-      // Upload files
       const attachmentIds: string[] = []
 
       if (files && files.length > 0) {
@@ -150,6 +161,7 @@ const FormField: React.FC = () => {
 
           const uploadRes = await fetch(`${getClientSideURL()}/api/complaint-attachments`, {
             method: 'POST',
+            credentials: 'include',
             body: fileFormData,
           })
 
@@ -160,7 +172,6 @@ const FormField: React.FC = () => {
         }
       }
 
-      // Submit complaint
       const dataToSend = Object.entries(formData)
         .filter(([, value]) => value !== undefined && value !== null && value !== '')
         .map(([name, value]) => ({
@@ -173,6 +184,7 @@ const FormField: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           form: form?.id,
           submissionData: dataToSend,
@@ -191,7 +203,6 @@ const FormField: React.FC = () => {
       setFiles(null)
       setPreviews([])
 
-      // Reset after 5 seconds
       setTimeout(() => {
         setSubmitSuccess(false)
       }, 5000)
@@ -202,13 +213,15 @@ const FormField: React.FC = () => {
     }
   }
 
-  const renderField = (field: any) => {
+  const renderField = (field: FormFieldType) => {
+    const fieldLabel = field.label || field.name  // ✅ Fallback to name if label is null
+    
     const commonProps = {
       id: field.name,
-      value: formData[field.name] || '',
+      value: String(formData[field.name] || ''),
       onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
         handleInputChange(field.name, e.target.value),
-      required: field.required,
+      required: field.required ?? false,
     }
 
     switch (field.blockType) {
@@ -218,10 +231,10 @@ const FormField: React.FC = () => {
         return (
           <div key={field.name} className="space-y-2">
             <Label htmlFor={field.name}>
-              {field.label}
+              {fieldLabel}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </Label>
-            <Input {...commonProps} type={field.blockType} placeholder={field.label} />
+            <Input {...commonProps} type={field.blockType} placeholder={fieldLabel} />
             {formErrors[field.name] && (
               <p className="text-red-500 text-sm">{formErrors[field.name]}</p>
             )}
@@ -233,10 +246,10 @@ const FormField: React.FC = () => {
         return (
           <div key={field.name} className="space-y-2">
             <Label htmlFor={field.name}>
-              {field.label}
+              {fieldLabel}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </Label>
-            <Textarea {...commonProps} rows={field.rows || 4} placeholder={field.label} />
+            <Textarea {...commonProps} rows={field.rows || 4} placeholder={fieldLabel} />
             {formErrors[field.name] && (
               <p className="text-red-500 text-sm">{formErrors[field.name]}</p>
             )}
@@ -247,15 +260,15 @@ const FormField: React.FC = () => {
         return (
           <div key={field.name} className="space-y-2">
             <Label htmlFor={field.name}>
-              {field.label}
+              {fieldLabel}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </Label>
             <select
               {...commonProps}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <option value="">Select {field.label}</option>
-              {field.options?.map((option: any) => (
+              <option value="">Select {fieldLabel}</option>
+              {field.options?.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -273,12 +286,12 @@ const FormField: React.FC = () => {
             <input
               type="checkbox"
               id={field.name}
-              checked={formData[field.name] || false}
+              checked={Boolean(formData[field.name])}
               onChange={(e) => handleInputChange(field.name, e.target.checked)}
               className="h-4 w-4 rounded border-gray-300"
             />
             <Label htmlFor={field.name} className="font-normal">
-              {field.label}
+              {fieldLabel}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </Label>
           </div>
@@ -288,6 +301,7 @@ const FormField: React.FC = () => {
         return null
     }
   }
+
 
   if (loading) {
     return (
@@ -305,8 +319,8 @@ const FormField: React.FC = () => {
       <div className="p-6 border border-red-200 rounded-lg bg-red-50">
         <h2 className="text-lg font-semibold text-red-900 mb-2">Form Not Found</h2>
         <p className="text-red-700">
-          No complaint form is currently available. Please create a form with the title "Complaint
-          Form" in the Forms collection.
+          No complaint form is currently available. Please create a form with the title &quot;Complaint
+          Form&quot; in the Forms collection.
         </p>
       </div>
     )
@@ -342,7 +356,7 @@ const FormField: React.FC = () => {
           )}
         </div>
 
-        {form.fields?.map((field: any) => renderField(field))}
+        {form.fields?.map((field) => renderField(field as FormFieldType))}
       </div>
 
       <div className="p-6 border border-gray-200 rounded-lg bg-white">
@@ -373,11 +387,15 @@ const FormField: React.FC = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {previews.map((preview, index) => (
                 <div key={index} className="relative border rounded-lg overflow-hidden">
-                  <img
-                    src={preview}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-32 object-cover"
-                  />
+                  <div className="relative w-full h-32">
+                    <Image
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                    />
+                  </div>
                   <p className="text-xs text-center p-1 bg-gray-100 truncate">
                     {files?.[index]?.name}
                   </p>

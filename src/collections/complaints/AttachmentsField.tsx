@@ -3,18 +3,31 @@
 import type React from 'react'
 import { useFormFields } from '@payloadcms/ui'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
-const AttachmentsField: React.FC<any> = (props) => {
+interface AttachmentFieldProps {
+  path: string
+}
+
+interface Attachment {
+  id: string
+  filename: string
+  mimeType: string
+  filesize: number
+  url: string
+  width?: number
+  height?: number
+}
+
+const AttachmentsField: React.FC<AttachmentFieldProps> = (props) => {
   const { path } = props
   
-  // Get the field value from form state
   const field = useFormFields(([fields]) => fields?.[path])
   const value = field?.value
 
-  const [attachments, setAttachments] = useState<any[]>([])
+  const [attachments, setAttachments] = useState<Attachment[]>([])
   const [loading, setLoading] = useState(false)
 
-  // Fetch attachment data if we only have IDs
   useEffect(() => {
     const fetchAttachments = async () => {
       if (!value || (Array.isArray(value) && value.length === 0)) {
@@ -24,16 +37,13 @@ const AttachmentsField: React.FC<any> = (props) => {
 
       const attachmentList = Array.isArray(value) ? value : [value]
       
-      // Check if we have IDs (strings) or already populated objects
       const hasOnlyIds = attachmentList.every(item => typeof item === 'string')
       
       if (!hasOnlyIds) {
-        // Already populated
-        setAttachments(attachmentList)
+        setAttachments(attachmentList as Attachment[])
         return
       }
 
-      // Fetch the full attachment data
       setLoading(true)
       try {
         const fetchedAttachments = await Promise.all(
@@ -41,12 +51,12 @@ const AttachmentsField: React.FC<any> = (props) => {
             const res = await fetch(`/api/complaint-attachments/${id}`)
             if (res.ok) {
               const data = await res.json()
-              return data
+              return data as Attachment
             }
             return null
           })
         )
-        setAttachments(fetchedAttachments.filter(Boolean))
+        setAttachments(fetchedAttachments.filter((item): item is Attachment => item !== null))
       } catch (error) {
         console.error('Error fetching attachments:', error)
       } finally {
@@ -57,7 +67,6 @@ const AttachmentsField: React.FC<any> = (props) => {
     fetchAttachments()
   }, [value])
 
-  // Show empty state if no attachments
   if (!value || (Array.isArray(value) && value.length === 0)) {
     return (
       <div className="field-type upload">
@@ -71,7 +80,6 @@ const AttachmentsField: React.FC<any> = (props) => {
     )
   }
 
-  // Show loading state
   if (loading) {
     return (
       <div className="field-type upload">
@@ -85,7 +93,6 @@ const AttachmentsField: React.FC<any> = (props) => {
     )
   }
 
-  // Show attachments
   return (
     <div className="field-type upload">
       <label className="block text-base font-semibold text-gray-900 mb-3">
@@ -95,7 +102,7 @@ const AttachmentsField: React.FC<any> = (props) => {
         Files uploaded by the user with their complaint
       </p>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {attachments.map((attachment: any, index: number) => {
+        {attachments.map((attachment, index) => {
           if (!attachment) return null
 
           const isImage = attachment.mimeType?.startsWith('image/')
@@ -117,13 +124,15 @@ const AttachmentsField: React.FC<any> = (props) => {
                   rel="noopener noreferrer"
                   className="block"
                 >
-                  <div className="relative">
-                    <img
+                  <div className="relative w-full h-40">
+                    <Image
                       src={url}
                       alt={filename}
-                      className="w-full h-40 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                      fill
+                      className="object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
-                    <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                    <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded z-10">
                       🔍
                     </div>
                   </div>
