@@ -22,6 +22,17 @@ const ALLOWED_FILE_TYPES = {
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const MAX_FILES = 5
 
+const COUNTRY_CODES = [
+  { code: '+971', country: 'UAE', flag: '🇦🇪', digits: 9 },
+  { code: '+91', country: 'India', flag: '🇮🇳', digits: 10 },
+  { code: '+1', country: 'USA', flag: '🇺🇸', digits: 10 },
+  { code: '+44', country: 'UK', flag: '🇬🇧', digits: 10 },
+  { code: '+966', country: 'Saudi Arabia', flag: '🇸🇦', digits: 9 },
+  { code: '+974', country: 'Qatar', flag: '🇶🇦', digits: 8 },
+  { code: '+965', country: 'Kuwait', flag: '🇰🇼', digits: 8 },
+  { code: '+968', country: 'Oman', flag: '🇴🇲', digits: 8 },
+]
+
 type FormFieldType = {
   name: string
   label?: string | null | undefined
@@ -32,6 +43,58 @@ type FormFieldType = {
 }
 
 type FormDataType = Record<string, string | number | boolean>
+
+const getValidationForField = (field: FormFieldType, value: string, countryCode?: string): string | null => {
+  if (!value || value === '') return null
+
+  switch (field.blockType) {
+    case 'email':
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailPattern.test(value)) {
+        return 'Please enter a valid email address'
+      }
+      break
+
+    case 'number':
+      const numberPattern = /^[0-9]+$/
+      if (!numberPattern.test(value)) {
+        return 'Please enter only numbers'
+      }
+      break
+
+    case 'text':
+      const fieldName = field.name.toLowerCase()
+      
+      // Phone validation with country code
+      if (fieldName.includes('phone') || fieldName.includes('mobile') || fieldName.includes('contact')) {
+        // Get expected digits for country
+        const country = COUNTRY_CODES.find(c => c.code === countryCode)
+        const expectedDigits = country?.digits || 10
+
+        if (value.length !== expectedDigits) {
+          return `Phone number must be exactly ${expectedDigits} digits for ${country?.country || 'this country'}`
+        }
+        
+        const phonePattern = /^[0-9]+$/
+        if (!phonePattern.test(value)) {
+          return 'Phone number must contain only digits'
+        }
+      } else if (fieldName.includes('pincode') || fieldName.includes('zip')) {
+        const pincodePattern = /^[0-9]{1,6}$/
+        if (!pincodePattern.test(value)) {
+          return 'Please enter a valid pincode'
+        }
+      } else if (fieldName.includes('customernumber') || fieldName.includes('customer_number')) {
+        const customerPattern = /^[A-Za-z0-9-]+$/
+        if (!customerPattern.test(value)) {
+          return 'Customer number can only contain letters, numbers, and hyphens'
+        }
+      }
+      break
+  }
+
+  return null
+}
 
 const FormField: React.FC = () => {
   const [form, setForm] = useState<Form | null>(null)
@@ -44,6 +107,7 @@ const FormField: React.FC = () => {
   const [submitError, setSubmitError] = useState<string>('')
   const [formData, setFormData] = useState<FormDataType>({})
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  const [countryCodes, setCountryCodes] = useState<Record<string, string>>({})
 
   useEffect(() => {
     const fetchForm = async () => {
@@ -119,8 +183,21 @@ const FormField: React.FC = () => {
     })
   }
 
-  const handleInputChange = (name: string, value: string | number | boolean) => {
+  const handleCountryCodeChange = (fieldName: string, code: string) => {
+    setCountryCodes((prev) => ({ ...prev, [fieldName]: code }))
+  }
+
+  const handleInputChange = (name: string, value: string | number | boolean, field: FormFieldType) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
+
+    if (typeof value === 'string') {
+      const error = getValidationForField(field, value, countryCodes[name])
+      if (error) {
+        setFormErrors((prev) => ({ ...prev, [name]: error }))
+        return
+      }
+    }
+
     setFormErrors((prev) => {
       const newErrors = { ...prev }
       delete newErrors[name]
@@ -133,8 +210,18 @@ const FormField: React.FC = () => {
 
     form?.fields?.forEach((field) => {
       const f = field as unknown as FormFieldType
-      if (f.required && !formData[f.name]) {
+      const value = formData[f.name]
+
+      if (f.required && !value) {
         errors[f.name] = `${f.label || f.name} is required`
+        return
+      }
+
+      if (value && typeof value === 'string') {
+        const error = getValidationForField(f, value, countryCodes[f.name])
+        if (error) {
+          errors[f.name] = error
+        }
       }
     })
 
@@ -174,10 +261,23 @@ const FormField: React.FC = () => {
 
       const dataToSend = Object.entries(formData)
         .filter(([, value]) => value !== undefined && value !== null && value !== '')
-        .map(([name, value]) => ({
-          field: name,
-          value,
-        }))
+        .map(([name, value]) => {
+          // If it's a phone field, combine with country code
+          const fieldName = name.toLowerCase()
+          const isPhoneField = fieldName.includes('phone') || fieldName.includes('mobile') || fieldName.includes('contact')
+          
+          if (isPhoneField && countryCodes[name]) {
+            return {
+              field: name,
+              value: `${countryCodes[name]} ${value}`,
+            }
+          }
+          
+          return {
+            field: name,
+            value,
+          }
+        })
 
       const response = await fetch(`${getClientSideURL()}/api/complaints`, {
         method: 'POST',
@@ -200,6 +300,7 @@ const FormField: React.FC = () => {
 
       setSubmitSuccess(true)
       setFormData({})
+      setCountryCodes({})
       setFiles(null)
       setPreviews([])
 
@@ -214,13 +315,62 @@ const FormField: React.FC = () => {
   }
 
   const renderField = (field: FormFieldType) => {
-    const fieldLabel = field.label || field.name  // ✅ Fallback to name if label is null
+    const fieldLabel = field.label || field.name
+    const fieldName = field.name.toLowerCase()
+
+    const isPhoneField = fieldName.includes('phone') || fieldName.includes('mobile') || fieldName.includes('contact')
     
+    const handleNumericInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (
+        e.key === 'Backspace' ||
+        e.key === 'Delete' ||
+        e.key === 'Tab' ||
+        e.key === 'Escape' ||
+        e.key === 'Enter' ||
+        e.key === 'ArrowLeft' ||
+        e.key === 'ArrowRight' ||
+        e.key === 'ArrowUp' ||
+        e.key === 'ArrowDown' ||
+        e.key === 'Home' ||
+        e.key === 'End'
+      ) return
+      
+      if (!/[0-9]/.test(e.key)) e.preventDefault()
+    }
+
+    const handleNumericPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+      const pastedData = e.clipboardData.getData('text')
+      if (!/^[0-9]+$/.test(pastedData)) {
+        e.preventDefault()
+      }
+    }
+
     const commonProps = {
       id: field.name,
       value: String(formData[field.name] || ''),
-      onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-        handleInputChange(field.name, e.target.value),
+      onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const value = e.target.value
+        if (isPhoneField) {
+          const numericValue = value.replace(/[^0-9]/g, '')
+          handleInputChange(field.name, numericValue, field)
+          
+          const country = COUNTRY_CODES.find(c => c.code === (countryCodes[field.name] || '+971'))
+          if (numericValue && numericValue.length !== country?.digits) {
+            setFormErrors((prev) => ({
+              ...prev,
+              [field.name]: `Must be exactly ${country?.digits} digits`
+            }))
+          } else {
+            setFormErrors((prev) => {
+              const newErrors = { ...prev }
+              delete newErrors[field.name]
+              return newErrors
+            })
+          }
+        } else {
+          handleInputChange(field.name, value, field)
+        }
+      },
       required: field.required ?? false,
     }
 
@@ -234,7 +384,36 @@ const FormField: React.FC = () => {
               {fieldLabel}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </Label>
-            <Input {...commonProps} type={field.blockType} placeholder={fieldLabel} />
+            
+            {isPhoneField ? (
+              <div className="flex gap-2">
+                <select 
+                  className="w-32 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  value={countryCodes[field.name] || '+971'}
+                  onChange={(e) => handleCountryCodeChange(field.name, e.target.value)}
+                >
+                  {COUNTRY_CODES.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.flag} {country.code}
+                    </option>
+                  ))}
+                </select>
+                <Input 
+                  {...commonProps} 
+                  type="tel"
+                  placeholder={countryCodes[field.name] === '+971' ? '501234567' : '9876543210'}
+                  className="flex-1"
+                  maxLength={COUNTRY_CODES.find(c => c.code === (countryCodes[field.name] || '+971'))?.digits || 10}
+                  onKeyDown={handleNumericInput}
+                  onPaste={handleNumericPaste}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                />
+              </div>
+            ) : (
+              <Input {...commonProps} type={field.blockType} placeholder={fieldLabel} />
+            )}
+
             {formErrors[field.name] && (
               <p className="text-red-500 text-sm">{formErrors[field.name]}</p>
             )}
@@ -287,7 +466,7 @@ const FormField: React.FC = () => {
               type="checkbox"
               id={field.name}
               checked={Boolean(formData[field.name])}
-              onChange={(e) => handleInputChange(field.name, e.target.checked)}
+              onChange={(e) => handleInputChange(field.name, e.target.checked, field)}
               className="h-4 w-4 rounded border-gray-300"
             />
             <Label htmlFor={field.name} className="font-normal">
@@ -341,7 +520,7 @@ const FormField: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-4xl bg-slate-50">
       {submitError && (
         <div className="p-4 bg-red-50 border border-red-200 rounded text-red-600">
           {submitError}
@@ -351,9 +530,6 @@ const FormField: React.FC = () => {
       <div className="p-6 border border-gray-200 rounded-lg bg-white space-y-6">
         <div>
           <h3 className="text-xl font-semibold mb-1">{form.title}</h3>
-          {form.confirmationMessage && (
-            <p className="text-gray-600 text-sm">{form.submitButtonLabel}</p>
-          )}
         </div>
 
         {form.fields?.map((field) => renderField(field as FormFieldType))}
