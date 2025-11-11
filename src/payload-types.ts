@@ -1254,6 +1254,13 @@ export interface Enquiry {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Current status of this enquiry
+   */
+  status: 'pending' | 'reviewed' | 'resolved' | 'rejected';
+  submittedBy?: string | null;
+  email?: string | null;
+  phone?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2371,6 +2378,10 @@ export interface EnquiriesSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  status?: T;
+  submittedBy?: T;
+  email?: T;
+  phone?: T;
   updatedAt?: T;
   createdAt?: T;
 }

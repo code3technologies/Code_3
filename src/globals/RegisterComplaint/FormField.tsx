@@ -520,14 +520,14 @@ const FormField: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl bg-slate-50">
+    <div className="space-y-6 max-w-4xl">
       {submitError && (
         <div className="p-4 bg-red-50 border border-red-200 rounded text-red-600">
           {submitError}
         </div>
       )}
 
-      <div className="p-6 border border-gray-200 rounded-lg bg-white space-y-6">
+      <div className="p-6 border border-gray-200 rounded-lg bg-gray-50 space-y-6">
         <div>
           <h3 className="text-xl font-semibold mb-1">{form.title}</h3>
         </div>
@@ -535,7 +535,7 @@ const FormField: React.FC = () => {
         {form.fields?.map((field) => renderField(field as FormFieldType))}
       </div>
 
-      <div className="p-6 border border-gray-200 rounded-lg bg-white">
+      <div className="p-6 border border-gray-200 rounded-lg bg-gray-50">
         <Label htmlFor="attachments" className="text-base font-semibold block mb-2">
           Attachments (Optional)
         </Label>

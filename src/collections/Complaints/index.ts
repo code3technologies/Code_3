@@ -6,7 +6,7 @@ export const Complaints: CollectionConfig = {
   admin: {
     useAsTitle: 'id',
     group: 'Complaints and Enquiries',
-    defaultColumns: ['id', 'createdAt', 'status'],
+    defaultColumns: ['createdBy', 'createdAt', 'status'],
   },
   access: {
     read: ({ req: { user } }) => {

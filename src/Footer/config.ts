@@ -51,7 +51,7 @@ export const Footer: GlobalConfig = {
           name: 'phone',
           type: 'text',
           label: 'Phone Number',
-          defaultValue: '‪+971 54 360 4546‬',
+          defaultValue: '+971 54 360 4546',
           required: true,
         },
         {

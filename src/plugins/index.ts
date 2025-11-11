@@ -13,6 +13,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { isAdmin } from '@/access/isAdmin'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -91,13 +92,111 @@ export const plugins: Plugin[] = [
       slug: 'enquiries',
       admin: {
         group: 'Complaints and Enquiries',
-        defaultColumns: ['form', 'createdAt'],
+        defaultColumns: ['submittedBy', 'email', 'phone', 'status', 'createdAt'],
         hidden: ({ user }) => user?.role !== 'admin',
+      },
+      access: {
+        read: isAdmin,
+        update: isAdmin,
+        create: () => true,
+        delete: isAdmin,
       },
       labels: {
         singular: 'Enquiry',
         plural: 'Enquiries',
       },
+      hooks: {
+        beforeChange: [
+          ({ data }) => {
+            const submissionData = data?.submissionData || []
+            
+            const nameField = submissionData.find((item: any) => item.field === 'fullname' || item.field === 'name')
+            const emailField = submissionData.find((item: any) => item.field === 'email')
+            const phoneField = submissionData.find((item: any) => item.field === 'phone' || item.field === 'mobile' || item.field === 'contact')
+            
+            data.submittedBy = nameField?.value || 'Anonymous'
+            data.email = emailField?.value || ''
+            data.phone = phoneField?.value || ''
+
+            return data
+          }
+        ]
+      },
+      fields: ({ defaultFields }) => {
+        return [
+          ...defaultFields.map((field) => {
+            if ('name' in field && field.name === 'form') {
+              return {
+                ...field,
+                admin: {
+                  ...field.admin,
+                  readOnly: true,
+                  position: 'sidebar',
+                },
+              } as typeof field
+            }
+
+            if ('name' in field && field.name === 'submissionData') {
+              return {
+                ...field,
+                admin: {
+                  components: {
+                    Field: 'src/collections/Enquiries/SubmissionDataView#SubmissionDataView',
+                  },
+                },
+              } as typeof field
+            }
+            return field
+          }),
+          {
+            name: 'status',
+            type: 'select',
+            label: 'Status',
+            required: true,
+            defaultValue: 'pending',
+            options: [
+              { label: 'Pending', value: 'pending' },
+              { label: 'Reviewed', value: 'reviewed' },
+              { label: 'Resolved', value: 'resolved' },
+              { label: 'Rejected', value: 'rejected' },
+            ],
+            admin: {
+              position: 'sidebar',
+              description: 'Current status of this enquiry',
+            },
+          },
+          {
+            name: 'submittedBy',
+            type: 'text',
+            label: 'Name',
+            admin: {
+              position: 'sidebar',
+              readOnly: true,
+              condition: (_, { operation }) => operation === 'create',
+            },
+          },
+          {
+            name: 'email',
+            type: 'email',
+            label: 'Email',
+            admin: {
+              position: 'sidebar',
+              readOnly: true,
+              condition: (_, { operation }) => operation === 'create',
+            },
+          },
+          {
+            name: 'phone',
+            type: 'text',
+            label: 'Phone',
+            admin: {
+              position: 'sidebar',
+              readOnly: true,
+              condition: (_, { operation }) => operation === 'create',
+            },
+          }
+        ]
+      }
     },
   }),
   searchPlugin({
