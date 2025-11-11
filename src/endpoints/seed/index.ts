@@ -16,7 +16,7 @@ const collections: CollectionSlug[] = [
   'pages',
   'posts',
   'forms',
-  'form-submissions',
+  'complaints',
   'search',
 ]
 const globals: GlobalSlug[] = ['header', 'footer']
@@ -45,9 +45,7 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        },
+        data: {},
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -102,6 +100,7 @@ export const seed = async ({
         name: 'Demo Author',
         email: 'demo-author@example.com',
         password: 'password',
+        role: 'admin',
       },
     }),
     payload.create({
@@ -292,16 +291,12 @@ export const seed = async ({
             label: 'Posts',
             link: '/posts',
             type: 'internal',
-            showInMobile: true,
-            showInDesktop: true,
             order: 1,
           },
           {
             label: 'Contact',
             link: '/contact',
             type: 'internal', 
-            showInMobile: true,
-            showInDesktop: true,
             order: 2,
           },
         ],

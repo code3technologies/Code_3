@@ -142,7 +142,7 @@ export const ServicesBlockClient: React.FC<
         }
       }, 0)
     }
-  }, [activeCategory])
+  }, [activeCategory, servicePages, maxServices])
 
   useEffect(() => {
     if (!mounted || !sectionRef.current) return

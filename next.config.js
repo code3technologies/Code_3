@@ -22,6 +22,14 @@ const nextConfig = {
         hostname: 'localhost',
         protocol: 'http',
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.blob.vercel-storage.com',
+      },
     ],
   },
   webpack: (webpackConfig) => {
@@ -37,4 +45,4 @@ const nextConfig = {
   redirects,
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withPayload(nextConfig, { devBundleServerPackages: false })

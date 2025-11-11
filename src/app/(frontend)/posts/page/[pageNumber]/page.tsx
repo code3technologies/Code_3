@@ -5,7 +5,7 @@ import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
+import React, { Suspense } from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 
@@ -51,7 +51,9 @@ export default async function Page({ params: paramsPromise }: Args) {
         />
       </div>
 
-      <CollectionArchive posts={posts.docs} />
+      <Suspense fallback={<div className="container py-8">Loading posts...</div>}>
+        <CollectionArchive posts={posts.docs} />
+      </Suspense>
 
       <div className="container">
         {posts?.page && posts?.totalPages > 1 && (
@@ -76,7 +78,7 @@ export async function generateStaticParams() {
     overrideAccess: false,
   })
 
-  const totalPages = Math.ceil(totalDocs / 10)
+  const totalPages = Math.ceil(totalDocs / 12)
 
   const pages: { pageNumber: string }[] = []
 
@@ -84,5 +86,5 @@ export async function generateStaticParams() {
     pages.push({ pageNumber: String(i) })
   }
 
-  return pages
+  return pages
 }

@@ -74,7 +74,7 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <div className="" key={index}>
-                  <Block {...block} disableInnerContainer={true} currentPage={currentPage} />
+                  <Block {...block} blockId={(block as any).blockId} disableInnerContainer={true} currentPage={currentPage} />
                 </div>
               )
             }

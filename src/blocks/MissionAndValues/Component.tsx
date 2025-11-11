@@ -13,6 +13,7 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
   title,
   subtitle,
   missionCard,
+  visionCard,
   valuesCard,
 }) => {
   return (  
@@ -33,11 +34,11 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
         </p>
       </div>
 
-      {/* Two Cards Container */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:flex md:justify-end gap-6 max-w-[76.5rem]">
-        {/* Left Card - MISSION */}
+      {/* Three Cards Container */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[76.5rem] mx-auto">
+        {/* Mission Card */}
         {missionCard && (
-          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left max-w-[330px] lg:max-w-[400px] mx-auto md:mx-0">
+          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left">
             {/* Icon */}
             <div className="w-12 h-12 flex items-center justify-center mb-6">
               {missionCard.icon && (
@@ -58,14 +59,37 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
           </div>
         )}
 
-        {/* Right Card - VALUES */}
+        {/* Vision Card */}
+        {visionCard && (
+          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left">
+            {/* Icon */}
+            <div className="w-12 h-12 flex items-center justify-center mb-6">
+              {visionCard.icon && (
+                <Media
+                  resource={visionCard.icon}
+                  imgClassName="w-[62px] h-[62px] object-contain"
+                />
+              )}
+            </div>
+
+            {/* Title */}
+            <h2 className="text-primary_red text-2xl lg:text-3xl font-semibold pb-[72px] uppercase tracking-wider">
+              {visionCard.title}
+            </h2>
+
+            {/* Content */}
+            <p className="text-gray-800 lg:text-lg leading-6">{visionCard.content}</p>
+          </div>
+        )}
+
+        {/* Values Card */}
         {valuesCard && (
-          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left max-w-[330px] lg:max-w-[400px] mx-auto md:mx-0">
+          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left">
             {/* Icon */}
             <div className="w-12 h-12 flex items-center justify-center mb-6">
               {valuesCard.icon && (
                 <Media
-                  resource={missionCard.icon}
+                  resource={valuesCard.icon}
                   imgClassName="w-[62px] h-[62px] object-contain"
                 />
               )}
@@ -82,5 +106,5 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
         )}
       </div>
     </section>
-  )
+  )
 }

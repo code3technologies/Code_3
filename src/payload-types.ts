@@ -72,9 +72,11 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    complaints: Complaint;
+    'complaint-attachments': ComplaintAttachment;
     redirects: Redirect;
     forms: Form;
-    'form-submissions': FormSubmission;
+    enquiries: Enquiry;
     search: Search;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -88,9 +90,11 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    complaints: ComplaintsSelect<false> | ComplaintsSelect<true>;
+    'complaint-attachments': ComplaintAttachmentsSelect<false> | ComplaintAttachmentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
-    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -103,10 +107,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'register-complaint': RegisterComplaint;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'register-complaint': RegisterComplaintSelect<false> | RegisterComplaintSelect<true>;
   };
   locale: null;
   user: User & {
@@ -423,7 +429,8 @@ export interface Category {
  */
 export interface User {
   id: string;
-  name?: string | null;
+  name: string;
+  role: 'admin' | 'client';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -802,6 +809,11 @@ export interface MissionAndValuesBlock {
     title: string;
     content: string;
   };
+  visionCard: {
+    icon: string | Media;
+    title: string;
+    content: string;
+  };
   valuesCard: {
     icon: string | Media;
     title: string;
@@ -1062,6 +1074,10 @@ export interface CurrentOpeningsBlock {
  */
 export interface ServiceSolutionsBlock {
   /**
+   * e.g., "infrastructure-services" or "digital-services". Used for anchor navigation in footer links.
+   */
+  blockId: string;
+  /**
    * Select which type of services to display in this block
    */
   serviceType: 'infrastructure' | 'digital';
@@ -1136,6 +1152,70 @@ export interface ServiceOverviewBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaints".
+ */
+export interface Complaint {
+  id: string;
+  form: string | Form;
+  submissionData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  attachments?: (string | ComplaintAttachment)[] | null;
+  status?: ('pending' | 'in_progress' | 'resolved' | 'rejected') | null;
+  createdBy?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Images and files uploaded with complaint forms
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaint-attachments".
+ */
+export interface ComplaintAttachment {
+  id: string;
+  /**
+   * Description of the image for accessibility
+   */
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1162,9 +1242,9 @@ export interface Redirect {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
+ * via the `definition` "enquiries".
  */
-export interface FormSubmission {
+export interface Enquiry {
   id: string;
   form: string | Form;
   submissionData?:
@@ -1328,6 +1408,14 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
+        relationTo: 'complaints';
+        value: string | Complaint;
+      } | null)
+    | ({
+        relationTo: 'complaint-attachments';
+        value: string | ComplaintAttachment;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -1336,8 +1424,8 @@ export interface PayloadLockedDocument {
         value: string | Form;
       } | null)
     | ({
-        relationTo: 'form-submissions';
-        value: string | FormSubmission;
+        relationTo: 'enquiries';
+        value: string | Enquiry;
       } | null)
     | ({
         relationTo: 'search';
@@ -1589,6 +1677,13 @@ export interface MissionAndValuesBlockSelect<T extends boolean = true> {
         title?: T;
         content?: T;
       };
+  visionCard?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        content?: T;
+      };
   valuesCard?:
     | T
     | {
@@ -1825,6 +1920,7 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
  * via the `definition` "ServiceSolutionsBlock_select".
  */
 export interface ServiceSolutionsBlockSelect<T extends boolean = true> {
+  blockId?: T;
   serviceType?: T;
   badge?: T;
   title?: T;
@@ -2040,6 +2136,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -2055,6 +2152,61 @@ export interface UsersSelect<T extends boolean = true> {
         id?: T;
         createdAt?: T;
         expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaints_select".
+ */
+export interface ComplaintsSelect<T extends boolean = true> {
+  form?: T;
+  submissionData?: T;
+  attachments?: T;
+  status?: T;
+  createdBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaint-attachments_select".
+ */
+export interface ComplaintAttachmentsSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
       };
 }
 /**
@@ -2208,9 +2360,9 @@ export interface FormsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions_select".
+ * via the `definition` "enquiries_select".
  */
-export interface FormSubmissionsSelect<T extends boolean = true> {
+export interface EnquiriesSelect<T extends boolean = true> {
   form?: T;
   submissionData?:
     | T
@@ -2323,115 +2475,39 @@ export interface Header {
     | {
         label: string;
         link: string;
-        type: 'internal' | 'external' | 'anchor' | 'dropdown' | 'mega';
+        type: 'internal' | 'external' | 'anchor';
         openInNewTab?: boolean | null;
-        /**
-         * Enter the name of a Lucide React icon (e.g., "home", "user", "settings")
-         */
-        icon?: string | null;
-        showInMobile?: boolean | null;
-        showInDesktop?: boolean | null;
         /**
          * Lower numbers appear first
          */
         order?: number | null;
-        /**
-         * Additional CSS classes for styling
-         */
-        cssClass?: string | null;
-        subItems?:
-          | {
-              label: string;
-              link: string;
-              /**
-               * Optional description for the sub menu item
-               */
-              description?: string | null;
-              icon?: string | null;
-              openInNewTab?: boolean | null;
-              image?: (string | null) | Media;
-              order?: number | null;
-              id?: string | null;
-            }[]
-          | null;
-        megaMenuConfig?: {
-          title?: string | null;
-          description?: string | null;
-          columns?: number | null;
-          backgroundImage?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
           /**
-           * CSS color value (e.g., #ff0000, rgb(255,0,0), red)
+           * Choose how the link should be rendered.
            */
-          backgroundColor?: string | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
     | null;
-  megaMenu?: {
-    showMegaMenu?: boolean | null;
-    megaMenuLabel?: string | null;
-    title?: string | null;
-    brandText?: string | null;
-    serviceCategories?:
-      | {
-          title: string;
-          services?:
-            | {
-                name: string;
-                link?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  mobileMenu?: {
-    sections?:
-      | {
-          title: string;
-          items?:
-            | {
-                name: string;
-                link?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  ctaButtons?: {
-    loginText?: string | null;
-    loginLink?: string | null;
-    contactText?: string | null;
-    contactLink?: string | null;
-    showLoginButton?: boolean | null;
-    showContactButton?: boolean | null;
-    buttonStyle?: ('default' | 'rounded' | 'pill' | 'outline') | null;
-  };
-  settings?: {
-    stickyHeader?: boolean | null;
-    showSearchIcon?: boolean | null;
-    searchLink?: string | null;
-    mobileMenuStyle?: ('slide' | 'fullscreen' | 'dropdown') | null;
-    /**
-     * Tailwind CSS height class (e.g., h-16, h-20)
-     */
-    headerHeight?: string | null;
-    /**
-     * Tailwind CSS background class (e.g., bg-white, bg-gray-100)
-     */
-    backgroundColor?: string | null;
-    /**
-     * Tailwind CSS text color class (e.g., text-gray-900, text-white)
-     */
-    textColor?: string | null;
-    /**
-     * Tailwind CSS hover color class (e.g., hover:text-red-600, hover:text-blue-600)
-     */
-    hoverColor?: string | null;
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2486,6 +2562,17 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Submit a new complaint
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "register-complaint".
+ */
+export interface RegisterComplaint {
+  id: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2498,94 +2585,23 @@ export interface HeaderSelect<T extends boolean = true> {
         link?: T;
         type?: T;
         openInNewTab?: T;
-        icon?: T;
-        showInMobile?: T;
-        showInDesktop?: T;
         order?: T;
-        cssClass?: T;
-        subItems?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              description?: T;
-              icon?: T;
-              openInNewTab?: T;
-              image?: T;
-              order?: T;
-              id?: T;
-            };
-        megaMenuConfig?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              columns?: T;
-              backgroundImage?: T;
-              backgroundColor?: T;
-            };
         id?: T;
       };
-  megaMenu?:
+  links?:
     | T
     | {
-        showMegaMenu?: T;
-        megaMenuLabel?: T;
-        title?: T;
-        brandText?: T;
-        serviceCategories?:
+        link?:
           | T
           | {
-              title?: T;
-              services?:
-                | T
-                | {
-                    name?: T;
-                    link?: T;
-                    id?: T;
-                  };
-              id?: T;
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
             };
-      };
-  mobileMenu?:
-    | T
-    | {
-        sections?:
-          | T
-          | {
-              title?: T;
-              items?:
-                | T
-                | {
-                    name?: T;
-                    link?: T;
-                    id?: T;
-                  };
-              id?: T;
-            };
-      };
-  ctaButtons?:
-    | T
-    | {
-        loginText?: T;
-        loginLink?: T;
-        contactText?: T;
-        contactLink?: T;
-        showLoginButton?: T;
-        showContactButton?: T;
-        buttonStyle?: T;
-      };
-  settings?:
-    | T
-    | {
-        stickyHeader?: T;
-        showSearchIcon?: T;
-        searchLink?: T;
-        mobileMenuStyle?: T;
-        headerHeight?: T;
-        backgroundColor?: T;
-        textColor?: T;
-        hoverColor?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2639,6 +2655,15 @@ export interface FooterSelect<T extends boolean = true> {
         exploreServicesText?: T;
         exploreServicesImage?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "register-complaint_select".
+ */
+export interface RegisterComplaintSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

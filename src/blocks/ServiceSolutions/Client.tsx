@@ -16,6 +16,7 @@ interface Service {
 }
 
 interface ServiceSolutionsBlockProps {
+  blockId?: string
   badge?: string
   title?: string
   description?: string
@@ -53,16 +54,17 @@ const getAlignmentClass = (alignment: string) => {
 }
 
 export const ServiceSolutionsBlock: React.FC<Props> = ({
+  blockId = 'service-section',
   className,
-  badge = 'Services',
-  title = 'Solutions We Deliver',
-  description = 'We go beyond technology—we create future-ready solutions that empower businesses to perform better, stay secure, and grow faster.',
+  badge,
+  title,
+  description,
   headerAlignment = 'left',
   services = [],
-  serviceType = 'infrastructure',
+  serviceType,
 }) => {
   return (
-    <section className={cn('py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden', className)}>
+    <section id={blockId} className={cn('py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden', className)}>
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <div className={cn('mb-10', getAlignmentClass(headerAlignment))}>

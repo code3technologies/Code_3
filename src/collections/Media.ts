@@ -17,6 +17,9 @@ export const Media: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  admin: {
+    hidden: ({ user }) => user?.role !== 'admin',
+  },
   fields: [
     {
       name: 'alt',
@@ -70,6 +73,6 @@ export const Media: CollectionConfig = {
         height: 630,
         crop: 'center',
       },
-    ],
-  },
+    ],
+  },
 }

@@ -5,6 +5,7 @@ import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { Media } from '@/components/Media'
 import { ScrollToTopButton, ScrollToTopButtonMobile } from './ScrollToTopButton'
+import Link from 'next/link'
 
 export async function Footer() {
   const footerData = (await getCachedGlobal('footer', 1)()) as Footer
@@ -23,8 +24,8 @@ export async function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             {/* Logo */}
-            <div className="flex items-center mb-6">
-              <Logo logo={logo} width={274} height={89} alt="Company Logo" />
+            <div className="flex items-center mb-6 hover:cursor-pointer">
+              <Logo href="/" logo={logo} width={274} height={89} alt="Company Logo" />
             </div>
 
             {/* Description */}
@@ -119,31 +120,33 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="w-full relative overflow-hidden">
-          {bottomBar?.exploreServicesImage ? (
-            <Media
-              resource={bottomBar.exploreServicesImage}
-              imgClassName="w-full h-[80px] lg:max-h-[160px] lg:h-[160px] rounded-xl object-cover"
-            />
-          ) : (
-            <div className="w-full h-26 rounded-xl bg-red-800"></div>
-          )}
+        <Link href="/services">
+          <div className="w-full relative overflow-hidden active:scale-[0.995] transition-all">
+            {bottomBar?.exploreServicesImage ? (
+              <Media
+                resource={bottomBar.exploreServicesImage}
+                imgClassName="w-full h-[80px] lg:h-[120px] rounded-xl object-cover"
+              />
+            ) : (
+              <div className="w-full h-26 rounded-xl bg-red-800"></div>
+            )}
 
-          <div className="absolute inset-0 flex items-center justify-between gap-5 px-5 sm:px-10 xl:px-14">
-            <span>{bottomBar?.exploreServicesText}</span>
-            <div className="rotate-45">
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 14 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M7 16L7 2M7 2L1 8M7 2L13 8" stroke="#ECEEEC" strokeWidth="1.5" />
-              </svg>
+            <div className="absolute inset-0 flex items-center justify-between gap-5 px-5 sm:px-10 xl:px-14">
+              <span>{bottomBar?.exploreServicesText}</span>
+              <div className="rotate-45">
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 14 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M7 16L7 2M7 2L1 8M7 2L13 8" stroke="#ECEEEC" strokeWidth="1.5" />
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
 
         <div className="md:hidden flex justify-between">
           <div className="text-gray-300 mt-auto text-sm">{bottomBar?.copyrightText}</div>
