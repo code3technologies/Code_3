@@ -7,6 +7,7 @@ import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { getClientSideURL } from '@/utilities/getURL'
 import { SuccessModal } from './SuccessModale'
+import { Button } from '@/components/ui/button'
 
 type Props = ContactUsBlockProps & {
   className?: string
@@ -108,7 +109,7 @@ export const ContactUsBlock: React.FC<Props> = ({
       }
 
       // Now submit with the actual form ID
-      const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+      const req = await fetch(`${getClientSideURL()}/api/enquiries`, {
         body: JSON.stringify({
           form: formId,
           submissionData: dataToSend,
@@ -341,13 +342,15 @@ export const ContactUsBlock: React.FC<Props> = ({
                     )}
 
                     {/* Submit Button */}
-                    <button
+                    <Button
+                      variant="default"
                       type="submit"
+                      size="alignCenter"
                       disabled={isLoading}
-                      className="w-full bg-black text-white font-semibold py-4 rounded-full transition-all duration-300 active:scale-95 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isLoading ? 'Sending...' : formFields.submitButtonText}
-                    </button>
+                    </Button>
                   </form>
                 )}
               </FormProvider>

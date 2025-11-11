@@ -54,6 +54,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    hidden: ({ user }) => user?.role !== 'admin',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({

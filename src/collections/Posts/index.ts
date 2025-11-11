@@ -37,7 +37,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
+  // Type safe if the collection slug generic is passed to CollectionConfig - `CollectionConfig<'posts'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -49,6 +49,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    hidden: ({ user }) => user?.role !== 'admin',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -153,7 +154,7 @@ export const Posts: CollectionConfig<'posts'> = {
 
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
+              // if the generateUrl function is configured
               hasGenerateFn: true,
 
               // field paths to match the target field for data
@@ -193,8 +194,8 @@ export const Posts: CollectionConfig<'posts'> = {
       hasMany: true,
       relationTo: 'users',
     },
-    // This field is only used to populate the user data via the `populateAuthors` hook
-    // This is because the `user` collection has access control locked to protect user privacy
+    // This field is only used to populate the user data via the populateAuthors hook
+    // This is because the user collection has access control locked to protect user privacy
     // GraphQL will also not return mutated user data that differs from the underlying schema
     {
       name: 'populatedAuthors',
@@ -231,6 +232,6 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       schedulePublish: true,
     },
-    maxPerDoc: 50,
-  },
+    maxPerDoc: 50,
+  },
 }

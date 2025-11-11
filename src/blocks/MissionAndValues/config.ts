@@ -7,7 +7,7 @@ export const MissionAndValues: Block = {
       name: 'badge',
       type: 'text',
       label: 'Badge Text',
-      defaultValue: 'MISSION & VALUES',
+      defaultValue: 'MISSION, VISION & VALUES',
       required: true,
     },
     {
@@ -45,6 +45,33 @@ export const MissionAndValues: Block = {
           name: 'content',
           type: 'textarea',
           label: 'Mission Content',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'visionCard',
+      type: 'group',
+      label: 'Vision Card',
+      fields: [
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image',
+          required: true,
+        },
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Card Title',
+          defaultValue: 'OUR VISION',
+          required: true,
+        },
+        {
+          name: 'content',
+          type: 'textarea',
+          label: 'Vision Content',
           required: true,
         },
       ],

@@ -259,7 +259,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
   return (
     <>
       <header
-        className={`bg-white/80 w-full backdrop-blur-sm max-w-[2000px] mx-auto z-50 lg:py-6 py-4 sticky top-0`}
+        className={`bg-white/80 w-full backdrop-blur-lg max-w-[2000px] mx-auto z-50 lg:py-6 py-4 sticky top-0`}
         {...(theme ? { 'data-theme': theme } : {})}
       >
         <div

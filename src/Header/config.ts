@@ -8,6 +8,9 @@ export const Header: GlobalConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    hidden: ({ user }) => user?.role !== 'admin',
+  },
   fields: [
     {
       name: 'logo',
@@ -73,5 +76,5 @@ export const Header: GlobalConfig = {
   ],
   hooks: {
     afterChange: [revalidateHeader],
-  },
+  },
 }
