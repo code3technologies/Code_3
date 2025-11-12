@@ -438,8 +438,6 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
   sessions?:
     | {
         id: string;
@@ -2151,8 +2149,6 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
   sessions?:
     | T
     | {
@@ -2565,8 +2561,7 @@ export interface Footer {
   };
   bottomBar: {
     copyrightText: string;
-    madeBy: string;
-    exploreServicesText: string;
+    exploreServicesText?: string | null;
     exploreServicesImage?: (string | null) | Media;
   };
   updatedAt?: string | null;
@@ -2662,7 +2657,6 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         copyrightText?: T;
-        madeBy?: T;
         exploreServicesText?: T;
         exploreServicesImage?: T;
       };

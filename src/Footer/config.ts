@@ -125,18 +125,10 @@ export const Footer: GlobalConfig = {
           required: true,
         },
         {
-          name: 'madeBy',
-          type: 'text',
-          label: 'Made By',
-          defaultValue: 'mirrorfolio.com',
-          required: true,
-        },
-        {
           name: 'exploreServicesText',
           type: 'text',
           label: 'Explore Services Text',
           defaultValue: 'Explore our services',
-          required: true,
         },
         {
           name: 'exploreServicesImage',

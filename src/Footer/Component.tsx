@@ -89,7 +89,7 @@ export async function Footer() {
           </div>
 
           {/* Email */}
-          <div className="md:col-start-2 lg:col-start-auto lg:my-auto lg:ml-18">
+          <div className="md:col-start-2 lg:col-start-auto lg:mt-auto lg:ml-18">
             <div className="space-y-3 text-sm text-gray-300">
               <div className="pt-4">
                 <h4 className="text-gray-600 uppercase tracking-wide text-xs mb-2">Email</h4>
@@ -112,11 +112,6 @@ export async function Footer() {
 
           <div className="hidden md:block text-gray-300 mt-auto text-sm">
             {bottomBar?.copyrightText}
-          </div>
-
-          <div className="lg:ml-18">
-            <h4 className="text-gray-400 tracking-wide mt-auto text-[10px]">Made with love by</h4>
-            <p className="text-gray-300">{bottomBar?.madeBy}</p>
           </div>
         </div>
 

@@ -2,7 +2,7 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
-import sharp from 'sharp' // sharp-import
+import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
@@ -20,6 +20,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { Complaints } from './collections/Complaints'
 import { ComplaintAttachments } from './collections/ComplaintAttachments'
 import { RegisterComplaint } from './globals/RegisterComplaint'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -89,16 +90,17 @@ export default buildConfig({
   jobs: {
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
         if (req.user) return true
 
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
         const authHeader = req.headers.get('authorization')
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
-    tasks: [],
-  },
+    tasks: [],
+  },
+  email: resendAdapter({
+    defaultFromAddress: process.env.E_MAIL || '',
+    defaultFromName: process.env.COMPANY_NAME || '',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
 })
