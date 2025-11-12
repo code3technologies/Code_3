@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
           <Footer />
         </Providers>
-       // <script src='https://www.noupe.com/embed/019a772cff0d72b89ca3ea658835385a5a5a.js' async ></script>
+       
       </body>
     </html>
   )
