@@ -327,3 +327,7 @@ select:focus {
 .template-minimal__wrap {
   @apply p-8 border rounded-2xl bg-gray-50 shadow-md;
 }
+
+.forgot-password .template-minimal__wrap a {
+  @apply w-full flex justify-center items-center rounded-full mt-5 py-3 border hover:bg-[#FCFCFC] border-[#b9b7b7] duration-300 active:scale-[.95];
+}

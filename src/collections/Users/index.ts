@@ -1,6 +1,15 @@
-import type { CollectionConfig } from 'payload'
-
+import type { CollectionConfig, PayloadRequest } from 'payload'
 import { authenticated } from '../../access/authenticated'
+
+// Match Payload’s expected structure
+interface ForgotPasswordArgs {
+  req?: PayloadRequest
+  token?: string
+  user?: {
+    name?: string
+    email?: string
+  }
+}
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -20,11 +29,11 @@ export const Users: CollectionConfig = {
   auth: {
     maxLoginAttempts: 0,
     forgotPassword: {
-      generateEmailHTML: (args) => {
-        const token = args?.token || ''
-        const user = args?.user as any
+      generateEmailHTML: (args?: ForgotPasswordArgs) => {
+        const token = args?.token ?? ''
+        const user = args?.user
         const resetURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/reset/${token}`
-        
+
         return `
           <!DOCTYPE html>
           <html>
@@ -47,7 +56,7 @@ export const Users: CollectionConfig = {
             <body>
               <div class="container">
                 <h1>Reset Your Password</h1>
-                <p>Hello ${user.name || user.email},</p>
+                <p>Hello ${user?.name || user?.email || 'User'},</p>
                 <p>You requested to reset your password for CODE3 Admin Panel.</p>
                 <p>Click the button below to reset your password:</p>
                 <a href="${resetURL}" class="button">Reset Password</a>
@@ -78,18 +87,10 @@ export const Users: CollectionConfig = {
       required: true,
       defaultValue: 'client',
       options: [
-        {
-          label: 'Admin',
-          value: 'admin',
-        },
-        {
-          label: 'Client',
-          value: 'client',
-        },
+        { label: 'Admin', value: 'admin' },
+        { label: 'Client', value: 'client' },
       ],
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
       access: {
         read: ({ req }) => req.user?.role === 'admin',
         update: ({ req }) => req.user?.role === 'admin',
@@ -107,5 +108,5 @@ export const Users: CollectionConfig = {
       },
     },
   ],
-  timestamps: true,
+  timestamps: true,
 }

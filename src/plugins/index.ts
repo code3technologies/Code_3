@@ -108,11 +108,16 @@ export const plugins: Plugin[] = [
       hooks: {
         beforeChange: [
           ({ data }) => {
-            const submissionData = data?.submissionData || []
+            interface SubmissionItem {
+              field: string
+              value: string
+            }
+
+            const submissionData = (data?.submissionData || []) as SubmissionItem[]
             
-            const nameField = submissionData.find((item: any) => item.field === 'fullname' || item.field === 'name')
-            const emailField = submissionData.find((item: any) => item.field === 'email')
-            const phoneField = submissionData.find((item: any) => item.field === 'phone' || item.field === 'mobile' || item.field === 'contact')
+            const nameField = submissionData.find((item) => item.field === 'fullname' || item.field === 'name')
+            const emailField = submissionData.find((item) => item.field === 'email')
+            const phoneField = submissionData.find((item) => item.field === 'phone' || item.field === 'mobile' || item.field === 'contact')
             
             data.submittedBy = nameField?.value || 'Anonymous'
             data.email = emailField?.value || ''

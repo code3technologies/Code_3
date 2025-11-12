@@ -1,9 +1,20 @@
 import React from 'react'
 
-export const SubmissionDataView: React.FC<any> = ({ value }) => {
+interface SubmissionField {
+  field: string
+  value: string
+  country?: string
+  phone?: string
+}
+
+interface SubmissionDataViewProps {
+  value?: SubmissionField[]
+}
+
+export const SubmissionDataView: React.FC<SubmissionDataViewProps> = ({ value }) => {
   if (!value || !Array.isArray(value)) return <p>No data submitted.</p>
 
-    const dataMap = Object.fromEntries(value.map((item: any) => [item.field, item.value]))
+    const dataMap = Object.fromEntries(value.map((item: SubmissionField) => [item.field, item.value])) as Record<string, string>
 
     const labelMap: Record<string, string> = {
         fullname: 'Full Name',
