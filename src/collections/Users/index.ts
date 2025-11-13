@@ -1,6 +1,15 @@
-import type { CollectionConfig } from 'payload'
-
+import type { CollectionConfig, PayloadRequest } from 'payload'
 import { authenticated } from '../../access/authenticated'
+
+// Match Payload’s expected structure
+interface ForgotPasswordArgs {
+  req?: PayloadRequest
+  token?: string
+  user?: {
+    name?: string
+    email?: string
+  }
+}
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -8,15 +17,64 @@ export const Users: CollectionConfig = {
     admin: authenticated,
     create: authenticated,
     delete: authenticated,
-    read: authenticated,
+    read: () => true,
     update: authenticated,
+    unlock: () => true,
   },
   admin: {
     defaultColumns: ['name', 'email', 'role'],
     useAsTitle: 'name',
     hidden: ({ user }) => user?.role !== 'admin',
   },
-  auth: true,
+  auth: {
+    maxLoginAttempts: 0,
+    forgotPassword: {
+      generateEmailHTML: (args?: ForgotPasswordArgs) => {
+        const token = args?.token ?? ''
+        const user = args?.user
+        const resetURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/reset/${token}`
+
+        return `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .button { 
+                  display: inline-block; 
+                  padding: 12px 24px; 
+                  background-color: #d7213c; 
+                  color: white; 
+                  text-decoration: none; 
+                  border-radius: 5px; 
+                  margin: 20px 0;
+                }
+                .footer { color: #666; font-size: 12px; margin-top: 30px; }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>Reset Your Password</h1>
+                <p>Hello ${user?.name || user?.email || 'User'},</p>
+                <p>You requested to reset your password for CODE3 Admin Panel.</p>
+                <p>Click the button below to reset your password:</p>
+                <a href="${resetURL}" class="button">Reset Password</a>
+                <p>Or copy and paste this link in your browser:</p>
+                <p style="word-break: break-all; color: #666;">${resetURL}</p>
+                <p class="footer">
+                  This link will expire in 1 hour.<br>
+                  If you didn't request this, please ignore this email.
+                </p>
+              </div>
+            </body>
+          </html>
+        `
+      },
+      generateEmailSubject: () => 'Reset Your Password - CODE3',
+    },
+    tokenExpiration: 3600,
+  },
   fields: [
     {
       name: 'name',
@@ -29,18 +87,10 @@ export const Users: CollectionConfig = {
       required: true,
       defaultValue: 'client',
       options: [
-        {
-          label: 'Admin',
-          value: 'admin',
-        },
-        {
-          label: 'Client',
-          value: 'client',
-        },
+        { label: 'Admin', value: 'admin' },
+        { label: 'Client', value: 'client' },
       ],
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
       access: {
         read: ({ req }) => req.user?.role === 'admin',
         update: ({ req }) => req.user?.role === 'admin',
@@ -58,5 +108,5 @@ export const Users: CollectionConfig = {
       },
     },
   ],
-  timestamps: true,
+  timestamps: true,
 }

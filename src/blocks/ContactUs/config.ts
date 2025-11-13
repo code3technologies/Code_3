@@ -108,9 +108,8 @@ export const ContactUs: Block = {
         },
       ],
       defaultValue: [
-        { value: 'UK', label: 'UK' },
-        { value: 'US', label: 'US' },
-        { value: 'CA', label: 'CA' },
+        { value: '+971', label: 'UAE' },
+        { value: '+91', label: 'IND' },
       ],
     },
     {
