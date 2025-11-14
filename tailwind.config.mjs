@@ -124,6 +124,7 @@ const config = {
       fontFamily: {
         sans: ['"Open Sauce Sans"', 'sans-serif'],
         mono: ['var(--font-geist-mono)'],
+        mechano: ['var(--font-ca-mechano)', 'sans-serif'],
       },
       fontSize: {
         h1: ['56px', { lineHeight: '130%', fontWeight: '500' }],
