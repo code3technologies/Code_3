@@ -128,7 +128,6 @@ export const ServicesBlockClient: React.FC<
     setScrollProgress(0)
 
     if (contentRef.current && window.innerWidth >= 640) {
-      // Use setTimeout to ensure DOM has updated
       setTimeout(() => {
         if (contentRef.current) {
           const contentHeight = contentRef.current.offsetHeight
@@ -237,21 +236,19 @@ export const ServicesBlockClient: React.FC<
         : 'animate-slide-in-from-top opacity-100'
       : !isMobile ? 'opacity-0' : 'opacity-100'
 
-    // CHANGED: Use real-time scroll progress instead of card index
     const progressPercentage = !isMobile ? scrollProgress : 100
 
     return (
       <div 
         className={cn(
-          'flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8',
+          'flex flex-col xl:flex-row gap-4 sm:gap-6 min-h-full md:gap-8',
           isMobile && 'mb-12 sm:mb-16 last:mb-8 pb-6 sm:pb-8 border-b border-gray-100 last:border-b-0 last:pb-0',
-          !isMobile && 'h-full transition-all duration-1000 ease-in-out transform',
+          !isMobile && 'h-full w-full transition-all duration-1000 ease-in-out transform',
           !isMobile && slideAnimationClass,
           !isMobile && (isActive ? 'translate-y-0' : 'translate-y-4')
         )}
       >
-        <div className="relative flex flex-col justify-between w-full sm:w-1/2">
-          {/* CHANGED: Smooth real-time progress bar */}
+        <div className="relative flex flex-col justify-between w-full xl:w-1/2">
           <div className="absolute sm:block hidden left-0 top-0 bottom-0 w-1 rounded-full bg-gray-200 overflow-hidden">
             <div 
               className="absolute top-0 left-0 w-full rounded-full bg-gradient-to-b from-[#BE251F] via-[#FF1800] to-[#FF3B4B]"
@@ -261,7 +258,6 @@ export const ServicesBlockClient: React.FC<
               }}
             />
             
-            {/* Optional: Glowing dot that follows scroll */}
             {!isMobile && progressPercentage > 0 && progressPercentage < 100 && (
               <div 
                 className="absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-[#FF1800] rounded-full"
@@ -274,7 +270,7 @@ export const ServicesBlockClient: React.FC<
             )}
           </div>
 
-          <div className="flex flex-col justify-between gap-4 sm:gap-5 h-full sm:ml-6">
+          <div className="flex flex-col justify-around gap-4 sm:gap-16 h-full sm:ml-6">
             <div className={cn(
               'w-12 h-12 sm:w-14 sm:h-14 bg-[#FF1800] border border-[#FF919A] rounded-full flex items-center justify-center',
               !isMobile && 'transition-all duration-1000',
@@ -308,7 +304,7 @@ export const ServicesBlockClient: React.FC<
                 </Link>
               ) : (
                 <h2 className={cn(
-                  'text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#0D121C] mb-3 sm:mb-4',
+                  'text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#0D121C] mb-3 sm:mb-4 max-w-xl',
                   !isMobile && 'transition-all duration-1000',
                   !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-2')
                 )}>
@@ -317,7 +313,7 @@ export const ServicesBlockClient: React.FC<
               )}
 
               <p className={cn(
-                'text-gray-600 text-sm sm:text-base leading-relaxed',
+                'text-gray-600 text-sm sm:text-base leading-relaxed max-w-xl',
                 !isMobile && 'transition-all duration-1000 delay-100',
                 !isMobile && (isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-3')
               )}>
@@ -328,7 +324,10 @@ export const ServicesBlockClient: React.FC<
         </div>
 
         <div className={cn(
-          'relative w-full sm:w-1/2 rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[3/2]',
+          'relative w-full rounded-2xl overflow-hidden',
+          'md:flex-1 md:self-stretch xl:w-1/2',
+          'aspect-[4/3] md:aspect-auto',
+          'md:min-h-[400px] w-full',
           !isMobile && 'transition-all duration-1000 ease-in-out',
           !isMobile && (isActive ? 'opacity-100 scale-100 translate-x-0' : 'opacity-100 scale-95 translate-x-4')
         )}>
@@ -336,6 +335,7 @@ export const ServicesBlockClient: React.FC<
             <Media
               resource={serviceImage}
               fill
+              size="(max-width: 768px) 100vw, 50vw"
               imgClassName={cn(
                 'object-cover w-full h-full',
                 !isMobile && 'transition-all duration-1000 ease-in-out',
@@ -344,15 +344,12 @@ export const ServicesBlockClient: React.FC<
               priority={index === 0}
             />
           ) : (
-            <div className={cn(
-              'w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center',
-              !isMobile && 'transition-all duration-1000',
-              !isMobile && (isActive ? 'opacity-100' : 'opacity-100')
-            )}>
+            <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
               <span className="text-gray-500 text-sm">No image available</span>
             </div>
           )}
         </div>
+
       </div>
     )
   }
@@ -376,10 +373,10 @@ export const ServicesBlockClient: React.FC<
       style={{ height: sectionHeight }}
     >
       {/* Desktop Version */}
-      <div className="hidden sm:block sticky top-[-13.5rem] bg-white z-10">
+      <div className="hidden h-[calc(100vh+13rem)] sm:block sticky md:top-[-13.5rem] xl:top-[-13.5rem] 3xl:top-[6rem] z-10">
         <div 
           ref={contentRef}
-          className="flex flex-col justify-center h-auto max-h-[1200px] py-12 sm:py-16 md:py-20"
+          className="flex flex-col h-full justify-center py-12 sm:py-16 md:py-20"
         >
           <div className="text-center mb-8 sm:mb-12 px-4">
             <button className="bg-primary_red text-white px-3 border border-secondary_red py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
@@ -411,13 +408,14 @@ export const ServicesBlockClient: React.FC<
             </div>
           </div>
 
-          <div className="max-w-7xl mx-auto w-full px-4">
-            <div className="relative w-full min-h-[350px] sm:min-h-[450px] flex items-center justify-center">
+          {/* Changed this container */}
+          <div className="max-w-7xl mx-auto flex-1 w-full px-4">
+            <div className="relative w-full h-full flex items-center justify-center">
               {filteredServices.map((page, index) => (
                 <div
                   key={page.id}
                   className={cn(
-                    'absolute w-full h-full',
+                    'absolute inset-0 w-full h-full',
                     index === activeIndex ? 'z-10' : 'z-0'
                   )}
                 >
@@ -482,5 +480,6 @@ export const ServicesBlockClient: React.FC<
         </div>
       </div>
     </section>
+
   )
 }
