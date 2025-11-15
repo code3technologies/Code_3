@@ -24,7 +24,6 @@ export const ContactUsBlock: React.FC<Props> = ({
     emailLabel: 'Email',
     emailPlaceholder: 'you@company.com',
     phoneLabel: 'Phone number',
-    phonePlaceholder: '+1 (555) 000-0000',
     subjectLabel: 'Subject',
     messageLabel: 'Message',
     messagePlaceholder: 'Leave us a message...',
@@ -33,9 +32,8 @@ export const ContactUsBlock: React.FC<Props> = ({
     submitButtonText: 'Send message',
   },
   countryOptions = [
-    { value: 'UAE', label: 'UAE' },
-    { value: 'UK', label: 'UK' },
-    { value: 'IND', label: 'IND' },
+    { value: '+971', label: 'UAE' },
+    { value: '+91', label: 'IND' },
   ],
   subjectOptions = [
     { value: 'general', label: 'General Inquiry' },
@@ -155,7 +153,7 @@ export const ContactUsBlock: React.FC<Props> = ({
             {/* Left Side - Header (Mobile: Top, Desktop: Left) */}
             <div className="flex flex-col justify-center py-[2rem] px-[2rem] xl:pl-[8rem]">
               {/* Large Contact Us Heading */}
-              <h1 className="text-[4rem] text-primary_red lg:text-[6rem] font-bold leading-tight mb-6 z-[2]">
+              <h1 className="text-[4rem] md:text-[7rem] 2xl:text-[9rem] font-regular tracking-wider leading-[1] font-mechano text-primary_red mb-6 z-[2]">
                 {heading.split(' ').map((word, index) => (
                   <React.Fragment key={index}>
                     {word}
@@ -240,7 +238,6 @@ export const ContactUsBlock: React.FC<Props> = ({
 
                     {/* Row 2: Phone Number and Subject (Desktop: Side by side, Mobile: Stacked) */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Phone Number */}
                       <div>
                         <label
                           htmlFor="phone"
@@ -262,8 +259,45 @@ export const ContactUsBlock: React.FC<Props> = ({
                           <input
                             type="tel"
                             id="phone"
-                            {...register('phone', { required: 'Phone number is required' })}
-                            placeholder={formFields.phonePlaceholder || '+1 (555) 000-000'}
+                            maxLength={12}
+                            {...register('phone', { 
+                              required: 'Phone number is required',
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: 'Phone number must contain only digits'
+                              },
+                              minLength: {
+                                value: 8,
+                                message: 'Phone number must be at least 8 digits'
+                              },
+                              maxLength: {
+                                value: 12,
+                                message: 'Phone number cannot exceed 12 digits'
+                              }
+                            })}
+                            placeholder={formFields.phonePlaceholder || '555 000 000'}
+                            onKeyDown={(e) => {
+                              if (
+                                e.key === 'Backspace' ||
+                                e.key === 'Delete' ||
+                                e.key === 'Tab' ||
+                                e.key === 'Escape' ||
+                                e.key === 'Enter' ||
+                                e.key === 'ArrowLeft' ||
+                                e.key === 'ArrowRight' ||
+                                e.key === 'ArrowUp' ||
+                                e.key === 'ArrowDown'
+                              ) return
+                              if (!/[0-9]/.test(e.key)) e.preventDefault()
+                            }}
+                            onPaste={(e) => {
+                              const pastedData = e.clipboardData.getData('text')
+                              if (!/^[0-9]+$/.test(pastedData)) {
+                                e.preventDefault()
+                              }
+                            }}
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             className="flex-1 px-4 py-3 border-b outline-none bg-[#F7F7F7] border-[#E0DDDD] text-gray-900 placeholder-gray-500 transition-colors"
                           />
                         </div>
@@ -274,7 +308,6 @@ export const ContactUsBlock: React.FC<Props> = ({
                         )}
                       </div>
 
-                      {/* Subject */}
                       <div>
                         <label
                           htmlFor="subject"

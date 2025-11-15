@@ -6,7 +6,7 @@ export const Complaints: CollectionConfig = {
   admin: {
     useAsTitle: 'id',
     group: 'Complaints and Enquiries',
-    defaultColumns: ['id', 'createdAt', 'status'],
+    defaultColumns: ['createdBy', 'createdAt', 'status'],
   },
   access: {
     read: ({ req: { user } }) => {
@@ -38,7 +38,6 @@ export const Complaints: CollectionConfig = {
         if (operation === 'create') {
           if (req.user) {
             data.createdBy = req.user.id
-            console.log('✅ Set createdBy to:', data.createdBy)
           } else {
             console.error('No user in request! Cannot set createdBy')
           }

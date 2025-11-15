@@ -22,14 +22,14 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
   return (
     <div className={cn('', className)}>
       {/* Mobile Layout */}
-      <div className="md:hidden pt-10 pb-8 bg-[linear-gradient(-70deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
+      <div className="md:hidden overflow-hidden pt-10 pb-8 bg-[linear-gradient(-70deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
         <div className="mx-auto px-4 pb-8">
           {/* Header Section */}
           <div className="mb-8">
-            <h1 className="text-7xl md:text-[6rem] md:col-span-2 font-semibold text-primary_red">
+            <h1 className="text-[7rem] font-regular tracking-wider leading-[1] text-primary_red font-mechano">
               ABOUT
               <br />
-              US
+              <span className="">US</span>
             </h1>
             <div className="space-y-3 mt-8">
               <h2 className="text-3xl font-semibold text-gray-800">{subtitle}</h2>
@@ -74,7 +74,7 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
       <div className="hidden md:block max-w-[2000px] mx-auto xl:min-h-[760px] bg-[linear-gradient(-30deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]">
         <div className="container mx-auto px-4 py-16 max-w-[1400px]">
           <div className="flex justify-between items-end">
-            <h1 className="text-[7rem] xl:text-[9rem] font-bold text-primary_red">ABOUT</h1>
+            <h1 className="text-primary_red text-[7rem] xl:text-[9rem] font-regular tracking-wider font-mechano">ABOUT</h1>
             <div className="pb-4">
               {links && links.length > 0 && (
                 <div>
@@ -87,7 +87,7 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
           </div>
           <div className="grid grid-cols-4 gap-4">
             <div className="flex flex-col justify-between">
-              <h1 className="text-[7rem] translate-y-[-52px] xl:text-[9rem] font-bold text-primary_red">
+              <h1 className="text-[7rem] translate-y-[-52px] xl:text-[9rem] font-regular tracking-wider text-primary_red font-mechano">
                 US
               </h1>
               <p className="md:text-sm lg:text-lg text-gray-600">{description}</p>

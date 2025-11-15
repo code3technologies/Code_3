@@ -418,9 +418,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                 <div className="pt-4 mt-auto">
                   {links && links.length > 0 && (
                     <div className="flex flex-col gap-4 items-center">
-                      {links.map(({ link }, i) => {
-                        return <CMSLink key={i} className='w-full text-center' {...link} />
-                      })}
+                      {links.map(({ link }, i) => (
+                        <div key={i} onClick={closeMobileMenu} className="w-full">
+                          <CMSLink className="w-full text-center" {...link} />
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

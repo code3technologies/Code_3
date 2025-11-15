@@ -51,7 +51,7 @@ export const Footer: GlobalConfig = {
           name: 'phone',
           type: 'text',
           label: 'Phone Number',
-          defaultValue: '‪+971 54 360 4546‬',
+          defaultValue: '+971 54 360 4546',
           required: true,
         },
         {
@@ -125,18 +125,10 @@ export const Footer: GlobalConfig = {
           required: true,
         },
         {
-          name: 'madeBy',
-          type: 'text',
-          label: 'Made By',
-          defaultValue: 'mirrorfolio.com',
-          required: true,
-        },
-        {
           name: 'exploreServicesText',
           type: 'text',
           label: 'Explore Services Text',
           defaultValue: 'Explore our services',
-          required: true,
         },
         {
           name: 'exploreServicesImage',
