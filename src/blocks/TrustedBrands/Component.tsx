@@ -3,8 +3,9 @@
 import type { TrustedBrandsBlock as TrustedBrandsBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import type { Media as MediaType } from 'src/payload-types'
+import type { Media as MediaType, Page } from 'src/payload-types'
 import { Media } from '@/components/Media'
+import Link from 'next/link'
 
 type Props = {
   className?: string
@@ -29,11 +30,32 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
   interface Brand {
     name: string
     logo: string | MediaType
+    linkType?: 'none' | 'external' | 'service' | null
     url?: string | null
+    servicePage?: string | Page | null
     id?: string | null
   }
 
-  const BrandLogo = ({ brand }: { brand: Brand; index: number }) => {
+  const getBrandLink = (brand: Brand): string | null => {
+    if (!brand.linkType || brand.linkType === 'none') {
+      return null
+    }
+
+    if (brand.linkType === 'external' && brand.url && brand.url.trim() !== '') {
+      return brand.url
+    }
+
+    if (brand.linkType === 'service' && brand.servicePage) {
+      const pageSlug = typeof brand.servicePage === 'string' 
+        ? brand.servicePage 
+        : brand.servicePage?.slug
+      return pageSlug ? `/${pageSlug}` : null
+    }
+
+    return null
+  }
+
+  const BrandLogo = ({ brand, index }: { brand: Brand; index: number }) => {
     const logoContent = brand.logo ? (
       <Media
         resource={brand.logo}
@@ -45,20 +67,35 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
       </div>
     )
 
-    if (brand.url && brand.url.trim() !== '') {
+    const brandLink = getBrandLink(brand)
+
+    if (brandLink) {
+      const isExternal = brand.linkType === 'external'
+      
+      if (isExternal) {
+        return (
+          <a
+            href={brandLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block transition-transform duration-300 hover:scale-110 cursor-pointer"
+          >
+            {logoContent}
+          </a>
+        )
+      }
+
       return (
-        <a
-          href={brand.url}
-          target="_self"
-          rel="noopener noreferrer"
-          className="block transition-transform duration-300 cursor-pointer"
+        <Link
+          href={brandLink}
+          className="block transition-transform duration-300 hover:scale-110 cursor-pointer"
         >
           {logoContent}
-        </a>
+        </Link>
       )
     }
 
-    return logoContent
+    return <div className="opacity-90">{logoContent}</div>
   }
 
   if (duplicatedBrands.length === 0) {

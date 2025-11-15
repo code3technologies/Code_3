@@ -1,4 +1,4 @@
-  import type { Block } from 'payload'
+import type { Block } from 'payload'
 
 export const TrustedBrands: Block = {
   slug: 'trustedBrands',
@@ -67,26 +67,67 @@ export const TrustedBrands: Block = {
           required: true,
         },
         {
+          name: 'linkType',
+          type: 'select',
+          label: 'Link Type',
+          options: [
+            {
+              label: 'No Link',
+              value: 'none',
+            },
+            {
+              label: 'External URL',
+              value: 'external',
+            },
+            {
+              label: 'Service Page',
+              value: 'service',
+            },
+          ],
+          defaultValue: 'none',
+          admin: {
+            description: 'Choose where this brand logo should link to',
+          },
+        },
+        {
           name: 'url',
           type: 'text',
-          label: 'Brand Website URL',
+          label: 'External Website URL',
           admin: {
-            description: 'Optional: Link to brand website',
+            description: 'External link (only used if Link Type is "External URL")',
+            condition: (data, siblingData) => siblingData?.linkType === 'external',
+          },
+        },
+        {
+          name: 'servicePage',
+          type: 'relationship',
+          relationTo: 'pages',
+          label: 'Service Page',
+          admin: {
+            description: 'Select a service or sub-service page to link to',
+            condition: (data, siblingData) => siblingData?.linkType === 'service',
+          },
+          filterOptions: ({ relationTo }) => {
+            return {
+              serviceCategory: {
+                not_equals: 'none',
+              },
+            }
           },
         },
       ],
       defaultValue: [
         {
           name: 'Microsoft',
-          url: '',
+          linkType: 'none',
         },
         {
           name: 'Wolfvision',
-          url: '',
+          linkType: 'none',
         },
         {
           name: 'Ubiquiti',
-          url: '',
+          linkType: 'none',
         },
       ],
     },
