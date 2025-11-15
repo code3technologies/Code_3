@@ -42,14 +42,14 @@ export const CareersBlock: React.FC<Props> = ({
   return (
     <div
       className={cn(
-        'py-8 lg:py-16 max-w-[2000px] mx-auto bg-[linear-gradient(-70deg,#000000f1_0%,#C90E1D_12%,transparent_35%)] md:bg-[linear-gradient(-50deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]',
+        'py-8 lg:py-16 overflow-hidden max-w-[2000px] mx-auto bg-[linear-gradient(-70deg,#000000f1_0%,#C90E1D_12%,transparent_35%)] md:bg-[linear-gradient(-50deg,#000000f1_0%,#C90E1D_12%,transparent_35%)]',
         className
       )}
     >
       {/* Header Section */}
-      <div className="px-8 grid grid-cols-1 sm:grid-cols-2 max-w-[1400px] mx-auto md:grid-cols-3 gap-4 sm:gap-x-26 sm:gap-y-20 md:gap-x-0">
+      <div className="px-8 grid overflow-hidden grid-cols-1 sm:grid-cols-2 max-w-[1400px] mx-auto md:grid-cols-3 gap-4 sm:gap-x-26 sm:gap-y-20 md:gap-x-0">
         {/* Left Side - Title and Content */}
-        <h1 className="text-6xl md:text-[5.5rem] md:col-span-2 lg:text-[8rem] xl:text-[10rem] font-semibold text-primary_red mb-6 lg:mb-8">
+        <h1 className="text-[5rem] xl:text-[12rem] font-mechano font-regular tracking-wider md:col-span-2 lg:text-[8rem] text-primary_red mb-6 lg:mb-8">
           {title}
         </h1>
         <div className="space-y-4 sm:mt-3 md:mt-6 lg:mt-8 xl:mt-10">
