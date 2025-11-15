@@ -12,12 +12,10 @@ export const Complaints: CollectionConfig = {
     read: ({ req: { user } }) => {
       if (!user) return false
       
-      // Admins can see all complaints
       if (user.role === 'admin') {
         return true
       }
       
-      // Clients can only see their own complaints
       if (user.role === 'client') {
         return {
           createdBy: {

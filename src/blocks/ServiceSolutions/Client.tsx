@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/utilities/ui'
@@ -107,46 +108,46 @@ export const ServiceSolutionsBlock: React.FC<Props> = ({
                     <h3 className="text-md max-w-lg md:text-xl font-semibold text-gray-900 mb-4">
                       {service.description}
                     </h3>
-                    {service.showButton && (
-                      <Button
-                        variant="exploreLink"
-                        size="link"
-                        onClick={() => {
-                          if (service.buttonLink && service.buttonLink !== '#') {
-                            window.open(service.buttonLink, '_self')
-                          }
-                        }}
-                      >
-                        {service.buttonText || 'Explore Service'}
-                        <svg
-                          width="6"
-                          height="6"
-                          viewBox="0 0 10 10"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                    {service.showButton && service.buttonLink && service.buttonLink !== '#' && (
+                      <Link href={service.buttonLink}>
+                        <Button
+                          variant="exploreLink"
+                          size="link"
+                          asChild
                         >
-                          <path
-                            d="M0.833252 9.16732L9.16659 0.833984M9.16659 0.833984H0.833252M9.16659 0.833984V9.16732"
-                            stroke="url(#paint0_linear_864_7934)"
-                            strokeWidth="1.66667"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <defs>
-                            <linearGradient
-                              id="paint0_linear_864_7934"
-                              x1="3.3963"
-                              y1="11.8317"
-                              x2="-1.83432"
-                              y2="3.96613"
-                              gradientUnits="userSpaceOnUse"
+                          <span>
+                            {service.buttonText || 'Explore Service'}
+                            <svg
+                              width="6"
+                              height="6"
+                              viewBox="0 0 10 10"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
                             >
-                              <stop stopColor="#C90E1D" />
-                              <stop offset="1" stopColor="#F0B4AC" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </Button>
+                              <path
+                                d="M0.833252 9.16732L9.16659 0.833984M9.16659 0.833984H0.833252M9.16659 0.833984V9.16732"
+                                stroke="url(#paint0_linear_864_7934)"
+                                strokeWidth="1.66667"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <defs>
+                                <linearGradient
+                                  id="paint0_linear_864_7934"
+                                  x1="3.3963"
+                                  y1="11.8317"
+                                  x2="-1.83432"
+                                  y2="3.96613"
+                                  gradientUnits="userSpaceOnUse"
+                                >
+                                  <stop stopColor="#C90E1D" />
+                                  <stop offset="1" stopColor="#F0B4AC" />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                          </span>
+                        </Button>
+                      </Link>
                     )}
                   </CardContent>
                 </Card>

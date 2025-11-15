@@ -95,7 +95,7 @@ export const TrustedBrands: Block = {
           label: 'External Website URL',
           admin: {
             description: 'External link (only used if Link Type is "External URL")',
-            condition: (data, siblingData) => siblingData?.linkType === 'external',
+            condition: (_data, siblingData) => siblingData?.linkType === 'external',
           },
         },
         {
@@ -105,9 +105,9 @@ export const TrustedBrands: Block = {
           label: 'Service Page',
           admin: {
             description: 'Select a service or sub-service page to link to',
-            condition: (data, siblingData) => siblingData?.linkType === 'service',
+            condition: (_data, siblingData) => siblingData?.linkType === 'service',
           },
-          filterOptions: ({ relationTo }) => {
+          filterOptions: () => {
             return {
               serviceCategory: {
                 not_equals: 'none',

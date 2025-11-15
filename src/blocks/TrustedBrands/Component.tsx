@@ -46,16 +46,23 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
     }
 
     if (brand.linkType === 'service' && brand.servicePage) {
-      const pageSlug = typeof brand.servicePage === 'string' 
-        ? brand.servicePage 
-        : brand.servicePage?.slug
-      return pageSlug ? `/${pageSlug}` : null
+      if (typeof brand.servicePage === 'string') {
+        return null
+      }
+      
+      const page = brand.servicePage
+      
+      if (!page.slug) {
+        return null
+      }
+      
+      return `/service/${page.slug}`
     }
 
     return null
   }
 
-  const BrandLogo = ({ brand, index }: { brand: Brand; index: number }) => {
+  const BrandLogo = ({ brand }: { brand: Brand; index: number }) => {
     const logoContent = brand.logo ? (
       <Media
         resource={brand.logo}
