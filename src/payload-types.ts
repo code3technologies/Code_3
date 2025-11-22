@@ -1022,9 +1022,17 @@ export interface TrustedBrandsBlock {
         name: string;
         logo: string | Media;
         /**
-         * Optional: Link to brand website
+         * Choose where this brand logo should link to
+         */
+        linkType?: ('none' | 'external' | 'service') | null;
+        /**
+         * External link (only used if Link Type is "External URL")
          */
         url?: string | null;
+        /**
+         * Select a service or sub-service page to link to
+         */
+        servicePage?: (string | null) | Page;
         id?: string | null;
       }[]
     | null;
@@ -1881,7 +1889,9 @@ export interface TrustedBrandsBlockSelect<T extends boolean = true> {
     | {
         name?: T;
         logo?: T;
+        linkType?: T;
         url?: T;
+        servicePage?: T;
         id?: T;
       };
   id?: T;

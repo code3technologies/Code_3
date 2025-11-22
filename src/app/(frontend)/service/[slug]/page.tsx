@@ -1,13 +1,10 @@
-// app/(frontend)/[slug]/page.tsx
+// app/(frontend)/service/[slug]/page.tsx
 import type { Metadata } from 'next'
-
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
-
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -27,53 +24,33 @@ export async function generateStaticParams() {
       slug: true,
     },
     where: {
-      or: [
-        {
-          serviceCategory: {
-            equals: 'none',
-          },
-        },
-        {
-          serviceCategory: {
-            exists: false,
-          },
-        },
-      ],
+      serviceCategory: {
+        not_equals: 'none',
+      },
     },
   })
 
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
+  const params = pages.docs.map(({ slug }) => {
+    return { slug }
+  })
 
   return params
 }
 
 type Args = {
   params: Promise<{
-    slug?: string
+    slug: string
   }>
 }
 
-export default async function Page({ params: paramsPromise }: Args) {
+export default async function ServicePage({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
-  const url = '/' + slug
+  const { slug } = await paramsPromise
+  const url = '/service/' + slug
 
-  let page: Page | null
-
-  page = await queryPageBySlug({
+  const page = await queryServicePageBySlug({
     slug,
   })
-
-  // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
-    page = homeStatic as Page
-  }
 
   if (!page) {
     return <PayloadRedirects url={url} />
@@ -96,22 +73,22 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
-  const page = await queryPageBySlug({
+  const { slug } = await paramsPromise
+  const page = await queryServicePageBySlug({
     slug,
   })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }): Promise<Page | null> => {
+const queryServicePageBySlug = cache(async ({ slug }: { slug: string }): Promise<Page | null> => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'pages',
-    depth: 1,
+    depth: 2,
     draft,
     limit: 1,
     pagination: false,
@@ -124,18 +101,9 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }): Promise<Page |
           },
         },
         {
-          or: [
-            {
-              serviceCategory: {
-                equals: 'none',
-              },
-            },
-            {
-              serviceCategory: {
-                exists: false,
-              },
-            },
-          ],
+          serviceCategory: {
+            not_equals: 'none',
+          },
         },
       ],
     },

@@ -1,3 +1,4 @@
+// Component.tsx (Server Component)
 import type { ServiceSolutionsBlock as ServiceSolutionsBlockProps, Page } from 'src/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -22,9 +23,18 @@ interface ServiceSolutionsBlockExtendedProps extends Omit<ServiceSolutionsBlockP
 }
 
 function mapPageToServiceCard(page: Page): ServiceCard {
-  const slug = page.slug ? `/${page.slug}` : '#'
+  let slug = '#'
+  if (page.slug) {
+    if (page.serviceCategory && page.serviceCategory !== 'none') {
+      slug = `/service/${page.slug}`
+    } else {
+      slug = `/${page.slug}`
+    }
+  }
+
   const heroTitle = page?.hero?.HeroText
   const heroSub = page?.hero?.subText || ''
+  
   return {
     title: page.title || 'Service',
     description: heroTitle || heroSub || 'Professional service tailored to your business needs.',
@@ -43,7 +53,6 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
 
   const payload = await getPayload({ config: configPromise })
 
-  // Extract parentService information if it exists
   const currentPageWithParent = currentPage as Page & {
     parentService?: string | { id: string } | null
   }
@@ -127,7 +136,6 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
     console.log(`Found ${pages.length} top-level services`)
   }
 
-  // Ensure we never include the current page itself
   const filteredPages = pages.filter((p) => p.id !== currentPage?.id)
   const services = filteredPages.map(mapPageToServiceCard)
 

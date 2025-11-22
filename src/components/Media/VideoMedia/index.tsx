@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import type { Props as MediaProps } from '../types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { shimmer, toBase64 } from '@/utilities/shimmer'
+import Image from 'next/image'
 
 export const VideoMedia: React.FC<MediaProps> = (props) => {
   const { onClick, resource, videoClassName } = props
@@ -47,10 +48,12 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
               aspectRatio: width && height ? `${width}/${height}` : '16/9',
             }}
           >
-            <img
+            <Image
               src={shimmerDataURL}
               alt="Loading video..."
-              className="w-full h-full object-cover"
+              layout="fill"
+              className="object-cover w-full h-full"
+              draggable={false}
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center animate-pulse">

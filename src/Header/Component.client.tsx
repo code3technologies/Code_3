@@ -10,7 +10,6 @@ import type { Header } from '@/payload-types'
 import { Logo } from '@/components/Logo/Logo'
 import { CMSLink } from '@/components/Link'
 
-// Define the simplified data structure for navigation pages
 interface NavigationPageData {
   id: string
   slug: string | null | undefined
@@ -43,7 +42,16 @@ interface SubNavigationItem {
   openInNewTab?: boolean | null
 }
 
-// Navigation item component
+const getServiceLink = (page: NavigationPageData): string => {
+  if (!page.slug) return '#'
+  
+  if (page.serviceCategory && page.serviceCategory !== 'none') {
+    return `/service/${page.slug}`
+  }
+  
+  return `/${page.slug}`
+}
+
 const NavItem = ({ item, isMobile = false }: { item: NavigationItem; isMobile?: boolean }) => {
   const linkProps = {
     href: item.link,
@@ -60,7 +68,6 @@ const NavItem = ({ item, isMobile = false }: { item: NavigationItem; isMobile?: 
   )
 }
 
-// Mobile Service Section Component
 const MobileServiceSection = ({
   title,
   pages,
@@ -87,7 +94,7 @@ const MobileServiceSection = ({
     if (currentSectionServices.has(serviceId)) {
       currentSectionServices.delete(serviceId)
     } else {
-      // Close all other services in this section
+  
       currentSectionServices.clear()
       currentSectionServices.add(serviceId)
     }
@@ -126,7 +133,7 @@ const MobileServiceSection = ({
                 <div key={page.id} className="space-y-2">
                   <div className="flex items-center justify-between ml-4">
                     <Link
-                      href={`/${page.slug || '#'}`}
+                      href={getServiceLink(page)}
                       className="text-white font-medium transition-colors duration-300 flex-1"
                       onClick={onLinkClick}
                     >
@@ -154,7 +161,7 @@ const MobileServiceSection = ({
                           .map((sub: NavigationPageData) => (
                             <li key={sub.id}>
                               <Link
-                                href={`/${sub.slug || '#'}`}
+                                href={getServiceLink(sub)}
                                 className="text-white/80 text-md transition-colors duration-300 block"
                                 onClick={onLinkClick}
                               >
@@ -183,14 +190,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [expandedServices, setExpandedServices] = useState<Map<string, Set<string>>>(new Map())
 
-  // Extract data from CMS
   const logo = data?.logo
   const links = data?.links
 
-  // Sort navigation items by order
   const allNavItems = (data?.navItems || []).sort((a: NavigationItem, b: NavigationItem) => (a.order || 0) - (b.order || 0))
 
-  // Convert navigationPages to NavigationPageData[]
   const servicePages = navigationPages as NavigationPageData[]
   const infraPages = servicePages.filter(
     (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && !p.isSubService,
@@ -224,7 +228,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
     }
   }, [headerTheme, theme])
 
-  // Close mega menus when clicking outside or pressing Escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -236,7 +239,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
-  // Close mega menus when pathname changes
   useEffect(() => {
     setShowInfraMegaMenu(false)
     setShowDigitalMegaMenu(false)
@@ -464,9 +466,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                     )
                     return (
                       <div key={page.id}>
-                        {/* Parent Service - Now Clickable */}
+                        {/* Parent Service - Now with /service prefix */}
                         <Link
-                          href={`/${page.slug || '#'}`}
+                          href={getServiceLink(page)}
                           className="text-xl font-bold mb-6 uppercase transition block"
                           onClick={() => setShowInfraMegaMenu(false)}
                         >
@@ -479,7 +481,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                             {subServices.map((sub: NavigationPageData) => (
                               <li key={sub.id}>
                                 <Link
-                                  href={`/${sub.slug || '#'}`}
+                                  href={getServiceLink(sub)}
                                   className="transition"
                                   onClick={() => setShowInfraMegaMenu(false)}
                                 >
@@ -533,9 +535,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                     )
                     return (
                       <div key={page.id}>
-                        {/* Parent Service - Now Clickable */}
+                        {/* Parent Service - Now with /service prefix */}
                         <Link
-                          href={`/${page.slug || '#'}`}
+                          href={getServiceLink(page)}
                           className="text-xl font-bold mb-6 uppercase transition block"
                           onClick={() => setShowDigitalMegaMenu(false)}
                         >
@@ -548,7 +550,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
                             {subServices.map((sub: NavigationPageData) => (
                               <li key={sub.id}>
                                 <Link
-                                  href={`/${sub.slug || '#'}`}
+                                  href={getServiceLink(sub)}
                                   className="transition"
                                   onClick={() => setShowDigitalMegaMenu(false)}
                                 >
@@ -566,6 +568,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, navigationPage
           </div>
         </div>
       )}
-    </>
-  )
+    </>
+  )
 }
