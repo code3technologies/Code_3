@@ -61,4 +61,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     creator: '@payloadcms',
   },
+  verification: {
+    google: '3weeUMiLT2YYr4-b07O4UECbKv9pc19Jlh5lbvha_-0',
+  },
 }
