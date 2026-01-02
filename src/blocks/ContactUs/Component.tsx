@@ -132,6 +132,15 @@ export const ContactUsBlock: React.FC<Props> = ({
       setIsLoading(false)
       setShowSuccessModal(true)
       setHasSubmitted(true)
+
+      // Push success event to Google Tag Manager dataLayer
+      if (typeof window !== 'undefined' && window.dataLayer) {
+        window.dataLayer.push({
+          event: 'form_submission_success',
+          form_type: 'contact_form',
+          page_url: window.location.href,
+        })
+      }
     } catch (err) {
       console.warn(err)
       setIsLoading(false)
@@ -260,20 +269,20 @@ export const ContactUsBlock: React.FC<Props> = ({
                             type="tel"
                             id="phone"
                             maxLength={12}
-                            {...register('phone', { 
+                            {...register('phone', {
                               required: 'Phone number is required',
                               pattern: {
                                 value: /^[0-9]+$/,
-                                message: 'Phone number must contain only digits'
+                                message: 'Phone number must contain only digits',
                               },
                               minLength: {
                                 value: 8,
-                                message: 'Phone number must be at least 8 digits'
+                                message: 'Phone number must be at least 8 digits',
                               },
                               maxLength: {
                                 value: 12,
-                                message: 'Phone number cannot exceed 12 digits'
-                              }
+                                message: 'Phone number cannot exceed 12 digits',
+                              },
                             })}
                             placeholder={formFields.phonePlaceholder || '555 000 000'}
                             onKeyDown={(e) => {
@@ -287,7 +296,8 @@ export const ContactUsBlock: React.FC<Props> = ({
                                 e.key === 'ArrowRight' ||
                                 e.key === 'ArrowUp' ||
                                 e.key === 'ArrowDown'
-                              ) return
+                              )
+                                return
                               if (!/[0-9]/.test(e.key)) e.preventDefault()
                             }}
                             onPaste={(e) => {
@@ -356,7 +366,9 @@ export const ContactUsBlock: React.FC<Props> = ({
                       <input
                         type="checkbox"
                         id="privacy"
-                        {...register('privacy', { required: 'You must agree to the privacy policy' })}
+                        {...register('privacy', {
+                          required: 'You must agree to the privacy policy',
+                        })}
                         className="mt-1 h-4 w-4 text-primary_red border-gray-300 rounded"
                       />
                       <label htmlFor="privacy" className="ml-3 text-sm text-gray-600">
@@ -404,6 +416,5 @@ export const ContactUsBlock: React.FC<Props> = ({
         buttonText="Done"
       />
     </>
-  )
+  )
 }
-
