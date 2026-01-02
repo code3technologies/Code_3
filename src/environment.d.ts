@@ -1,4 +1,7 @@
 declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[]
+  }
   namespace NodeJS {
     interface ProcessEnv {
       PAYLOAD_SECRET: string
