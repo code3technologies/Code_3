@@ -15,7 +15,8 @@ interface ServiceCard {
   category: 'infrastructure' | 'digital'
 }
 
-interface ServiceSolutionsBlockExtendedProps extends Omit<ServiceSolutionsBlockProps, 'serviceType'> {
+interface ServiceSolutionsBlockExtendedProps
+  extends Omit<ServiceSolutionsBlockProps, 'serviceType'> {
   id?: string
   currentPage?: Page | null
   disableInnerContainer?: boolean
@@ -34,7 +35,7 @@ function mapPageToServiceCard(page: Page): ServiceCard {
 
   const heroTitle = page?.hero?.HeroText
   const heroSub = page?.hero?.subText || ''
-  
+
   return {
     title: page.title || 'Service',
     description: heroTitle || heroSub || 'Professional service tailored to your business needs.',
@@ -97,7 +98,6 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
       },
     })
     pages = result.docs || []
-    console.log(`Found ${pages.length} sub-services`)
   } else {
     const result = await payload.find({
       collection: 'pages',
@@ -133,13 +133,10 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
       },
     })
     pages = result.docs || []
-    console.log(`Found ${pages.length} top-level services`)
   }
 
   const filteredPages = pages.filter((p) => p.id !== currentPage?.id)
   const services = filteredPages.map(mapPageToServiceCard)
-
-  console.log(`Final services count: ${services.length}`)
 
   return (
     <div className="" id={`block-${id}`}>

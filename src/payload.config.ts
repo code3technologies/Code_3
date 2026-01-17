@@ -20,7 +20,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { Complaints } from './collections/Complaints'
 import { ComplaintAttachments } from './collections/ComplaintAttachments'
 import { RegisterComplaint } from './globals/RegisterComplaint'
-import { resendAdapter } from '@payloadcms/email-resend'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -76,11 +76,11 @@ export default buildConfig({
       enabled: true,
       clientUploads: true,
       collections: {
-         [Media.slug]: true,
-         'complaint-attachments': true,
+        [Media.slug]: true,
+        'complaint-attachments': true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
-    })
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
@@ -98,9 +98,20 @@ export default buildConfig({
     },
     tasks: [],
   },
-  email: resendAdapter({
-    defaultFromAddress: process.env.E_MAIL || '',
-    defaultFromName: process.env.COMPANY_NAME || '',
-    apiKey: process.env.RESEND_API_KEY || '',
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_USER || 'enquiries@code3.ae',
+    defaultFromName: 'Code 3',
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: 587,
+      secure: false, // Use STARTTLS
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      tls: {
+        rejectUnauthorized: true, // Verify certificates
+      },
+    },
   }),
 })
