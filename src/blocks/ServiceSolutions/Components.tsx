@@ -39,7 +39,7 @@ function mapPageToServiceCard(page: Page): ServiceCard {
   return {
     title: page.title || 'Service',
     description: heroTitle || heroSub || 'Professional service tailored to your business needs.',
-    showButton: true,
+    showButton: false,
     buttonText: 'Explore Service',
     buttonLink: slug,
     gridSpan: '2',
@@ -136,7 +136,48 @@ export const ServiceSolutionsBlock: React.FC<ServiceSolutionsBlockExtendedProps>
   }
 
   const filteredPages = pages.filter((p) => p.id !== currentPage?.id)
-  const services = filteredPages.map(mapPageToServiceCard)
+  const services: ServiceCard[] = [
+  {
+    title: 'IT Consulting',
+    description:
+      'Align technology strategies with business objectives through expert guidance and strategic planning.',
+    showButton: false,
+    buttonText: '',
+    buttonLink: '',
+    gridSpan: '2',
+    category: 'infrastructure',
+  },
+  {
+    title: 'Cloud Migration Services',
+    description:
+      'Seamlessly migrate applications, workloads, and data to the cloud with minimal disruption.',
+    showButton: false,
+    buttonText: '',
+    buttonLink: '',
+    gridSpan: '2',
+    category: 'infrastructure',
+  },
+  {
+    title: 'IT Outsourcing',
+    description:
+      'Extend your IT capabilities with dedicated professionals who provide proactive support and management.',
+    showButton: false,
+    buttonText: '',
+    buttonLink: '',
+    gridSpan: '2',
+    category: 'infrastructure',
+  },
+  {
+    title: 'New Office IT Setup',
+    description:
+      'Design and deploy complete IT infrastructure solutions for new office environments.',
+    showButton: false,
+    buttonText: '',
+    buttonLink: '',
+    gridSpan: '2',
+    category: 'infrastructure',
+  },
+]
 
   return (
     <div className="" id={`block-${id}`}>
