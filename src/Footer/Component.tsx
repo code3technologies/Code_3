@@ -20,7 +20,7 @@ export async function Footer() {
     <footer className="bg-black text-white relative">
       {/* Main Footer Content */}
       <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Company Info */}
           <div className="lg:col-span-2">
             {/* Logo */}
@@ -33,8 +33,22 @@ export async function Footer() {
               {description}
             </p>
 
+            <div className="flex gap-5 mb-10">
+  <a href="#" className="text-gray-300 hover:text-white">
+    LinkedIn
+  </a>
+
+  <a href="#" className="text-gray-300 hover:text-white">
+    Instagram
+  </a>
+
+  <a href="#" className="text-gray-300 hover:text-white">
+    Facebook
+  </a>
+</div>
+
             {/* Navigation Links */}
-            <nav className="flex flex-wrap gap-x-6 gap-y-5 md:gap-y-3 max-w-[15rem] sm:max-w-sm text-sm text-gray-700 mb-8">
+            <nav className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm mb-8">
               {navItems.map(({ link }, i) => (
                 <React.Fragment key={i}>
                   <CMSLink
@@ -46,6 +60,50 @@ export async function Footer() {
               ))}
             </nav>
           </div>
+
+          {/* Our Services */}
+<div>
+  <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-4">
+    Our Services
+  </h3>
+
+  <nav className="flex flex-col gap-3 text-sm">
+    <Link
+      href="/service/it-amc"
+      className="text-gray-300 hover:text-white transition-colors"
+    >
+      IT AMC Services
+    </Link>
+
+    <Link
+      href="/service/cybersecurity-solutions"
+      className="text-gray-300 hover:text-white transition-colors"
+    >
+      Cybersecurity Solutions
+    </Link>
+
+    <Link
+      href="/service/managed-it-cloud-services"
+      className="text-gray-300 hover:text-white transition-colors"
+    >
+      Managed IT & Cloud Services
+    </Link>
+
+    <Link
+      href="/service/ict-elv-solutions"
+      className="text-gray-300 hover:text-white transition-colors"
+    >
+      ICT & ELV Solutions
+    </Link>
+
+    <Link
+      href="/service/audio-visual-solutions"
+      className="text-gray-300 hover:text-white transition-colors"
+    >
+      Audio Visual Solutions
+    </Link>
+  </nav>
+</div>
 
           {/* Contact Info */}
           <div className="flex flex-col gap-12">
@@ -71,7 +129,7 @@ export async function Footer() {
               <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-4">
                 Location
               </h3>
-              <div className="space-y-1 text-sm text-gray-300">
+              <div className="space-y-2 text-sm text-gray-300 leading-7">
                 <p>{contactInfo?.address?.companyName}</p>
                 <p>{contactInfo?.address?.building}</p>
                 <p>{contactInfo?.address?.poBox}</p>
@@ -110,7 +168,7 @@ export async function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <ScrollToTopButton />
 
-          <div className="hidden md:block text-gray-300 mt-auto text-sm">
+          <div className="hidden md:flex items-end text-gray-400 text-sm">
             {bottomBar?.copyrightText}
           </div>
         </div>
