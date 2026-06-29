@@ -20,7 +20,7 @@ export default function CTABanner() {
         </h2>
         <p className="text-white/80 text-lg mb-10">
           Partner with CODE3 to build a secure, scalable, and future-ready
-          technology environment. Our experts are ready to help — no obligation.
+          technology environment. Our experts are ready to help &mdash; no obligation.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link

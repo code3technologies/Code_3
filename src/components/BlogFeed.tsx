@@ -10,7 +10,7 @@ const posts = [
     readTime: "5 min read",
     title: "Top 5 Cybersecurity Threats Facing UAE Businesses in 2026",
     excerpt:
-      "Ransomware, phishing, and supply chain attacks are on the rise. Here's how to stay ahead with layered defences.",
+      "Ransomware, phishing, and supply chain attacks are on the rise. Here&apos;s how to stay ahead with layered defences.",
     color: "from-[#1A2E44] to-[#0D1B2A]",
     href: "/blogs/cybersecurity-threats-2026",
   },
@@ -20,7 +20,7 @@ const posts = [
     readTime: "4 min read",
     title: "Why UAE SMBs Are Moving to Managed Cloud in 2026",
     excerpt:
-      "The benefits of cloud migration go beyond cost — flexibility, security, and compliance are reshaping how businesses operate.",
+      "The benefits of cloud migration go beyond cost &mdash; flexibility, security, and compliance are reshaping how businesses operate.",
     color: "from-[#0f6e56] to-[#1d9e75]",
     href: "/blogs/managed-cloud-uae-smb",
   },
@@ -30,7 +30,7 @@ const posts = [
     readTime: "6 min read",
     title: "How Modern AV Systems Are Transforming UAE Boardrooms",
     excerpt:
-      "From wireless conferencing to intelligent room automation — a guide to building the ideal hybrid meeting environment.",
+      "From wireless conferencing to intelligent room automation &mdash; a guide to building the ideal hybrid meeting environment.",
     color: "from-[#533489] to-[#7F77DD]",
     href: "/blogs/av-systems-uae-boardrooms",
   },

@@ -46,7 +46,7 @@ export default function Process() {
             A proven approach to technology excellence
           </h2>
           <p className="text-gray-500 text-base leading-relaxed">
-            From initial consultation to ongoing support — every project follows
+            From initial consultation to ongoing support &mdash; every project follows
             a structured, transparent delivery process.
           </p>
         </div>

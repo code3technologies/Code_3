@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "How do we get started with CODE3?",
-    a: "Simply reach out via our contact form, call us at +971 50 504 2547, or email info@code3.ae. We'll schedule a free consultation and get back to you within 24 hours.",
+    a: "Simply reach out via our contact form, call us at +971 50 504 2547, or email info@code3.ae. We&apos;ll schedule a free consultation and get back to you within 24 hours.",
   },
 ];
 

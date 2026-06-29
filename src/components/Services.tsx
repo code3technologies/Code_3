@@ -35,13 +35,13 @@ const infraServices = [
   {
     icon: Video,
     title: "Audio Visual (AV) Solutions",
-    desc: "Seamless AV setups for hybrid workplaces — conferencing, presentations, and smart room automation.",
+    desc: "Seamless AV setups for hybrid workplaces &mdash; conferencing, presentations, and smart room automation.",
     href: "/services/audio-visual",
   },
   {
     icon: Globe,
     title: "Network Solutions",
-    desc: "Wi-Fi, switching, routing, VPN — reliable and secure network infrastructure tailored to your environment.",
+    desc: "Wi-Fi, switching, routing, VPN &mdash; reliable and secure network infrastructure tailored to your environment.",
     href: "/services/network",
   },
 ];

@@ -15,12 +15,12 @@ const whyPoints = [
   {
     icon: Users,
     title: "Certified Expertise",
-    desc: "Our engineers hold industry certifications from Microsoft, Cisco, Fortinet, and more — delivering globally-standardised solutions locally.",
+    desc: "Our engineers hold industry certifications from Microsoft, Cisco, Fortinet, and more &mdash; delivering globally-standardised solutions locally.",
   },
   {
     icon: CheckCircle2,
     title: "End-to-End Delivery",
-    desc: "From consultation to deployment and ongoing support — one partner, one point of contact for your entire technology environment.",
+    desc: "From consultation to deployment and ongoing support &mdash; one partner, one point of contact for your entire technology environment.",
   },
   {
     icon: Zap,
@@ -33,7 +33,7 @@ export default function WhyCode3() {
   return (
     <section className="py-20 lg:py-24 bg-gray-50">
       <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-        {/* Left — dark card */}
+        {/* Left &mdash; dark card */}
         <div className="relative">
           <div className="bg-[#0D1B2A] rounded-2xl p-8 text-white">
             <h3 className="text-xl font-bold mb-6">Why businesses choose CODE3</h3>
@@ -55,7 +55,7 @@ export default function WhyCode3() {
           </div>
         </div>
 
-        {/* Right — text + points */}
+        {/* Right &mdash; text + points */}
         <div>
           <div className="flex items-center gap-3 mb-4">
             <span className="w-5 h-0.5 bg-[#C0272D] rounded-full" />
@@ -68,8 +68,8 @@ export default function WhyCode3() {
           </h2>
           <p className="text-gray-500 text-base leading-relaxed mb-10">
             We combine technical expertise, proactive support, and
-            industry-leading partnerships to deliver solutions that don't just
-            work today — they scale with you.
+            industry-leading partnerships to deliver solutions that don&apos;t just
+            work today &mdash; they scale with you.
           </p>
 
           <div className="flex flex-col gap-7">

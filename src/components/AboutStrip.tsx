@@ -14,7 +14,7 @@ export default function AboutStrip() {
   return (
     <section className="bg-[#0D1B2A] py-20">
       <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-        {/* Left — text */}
+        {/* Left &mdash; text */}
         <div>
           <div className="flex items-center gap-3 mb-5">
             <span className="w-5 h-0.5 bg-red-400 rounded-full" />
@@ -23,7 +23,7 @@ export default function AboutStrip() {
             </span>
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight tracking-tight mb-5">
-            Dubai Silicon Oasis'{" "}
+            Dubai Silicon Oasis&apos;{" "}
             <span className="text-red-400">most trusted</span> technology
             partner
           </h2>
@@ -36,7 +36,7 @@ export default function AboutStrip() {
           </p>
           <p className="text-white/65 text-base leading-loose mb-8">
             Our certified engineers and partnerships with 50+ global technology
-            vendors ensure every solution meets international standards — with
+            vendors ensure every solution meets international standards &mdash; with
             the personalised service of a local team.
           </p>
           <div className="flex flex-wrap gap-3">
@@ -55,7 +55,7 @@ export default function AboutStrip() {
           </div>
         </div>
 
-        {/* Right — stat cards */}
+        {/* Right &mdash; stat cards */}
         <div className="grid grid-cols-2 gap-3">
           {aboutStats.map(({ value, label }) => (
             <div
