@@ -67,7 +67,7 @@ export default function Testimonials() {
 
               {/* Quote mark */}
               <div className="text-5xl leading-none text-[#C0272D] opacity-30 font-serif mb-3">
-                "
+                &ldquo;
               </div>
 
               <p className="text-sm text-gray-500 leading-relaxed italic flex-1 mb-6">
