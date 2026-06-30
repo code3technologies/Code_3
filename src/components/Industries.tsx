@@ -43,7 +43,7 @@ export default function Industries() {
           </h2>
           <p className="text-gray-500 text-base leading-relaxed">
             We understand that every sector has unique challenges. Our solutions
-            are tailored for your industry&apos;s specific operational needs.
+            are tailored for your industry's specific operational needs.
           </p>
         </div>
 

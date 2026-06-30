@@ -47,7 +47,7 @@ export default function Hero() {
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 bg-red-900/30 border border-red-700/40 rounded-full px-4 py-1.5 text-xs font-bold tracking-widest uppercase text-red-300 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-red-300" />
-              UAE&apos;s Trusted IT Partner
+              UAE's Trusted IT Partner
             </div>
 
             <h1 className="text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight mb-5">
@@ -57,7 +57,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-white/70 text-lg leading-relaxed mb-9 max-w-lg">
-              From secure IT backbones to powerful digital presence &mdash; CODE3
+              From secure IT backbones to powerful digital presence — CODE3
               delivers end-to-end technology solutions that help UAE businesses
               run smarter and grow faster.
             </p>
@@ -102,7 +102,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right &mdash; cards */}
+          {/* Right — cards */}
           <div className="grid grid-cols-2 gap-3">
             {heroCards.map(({ icon: Icon, title, desc, stats, wide }) => (
               <div
