@@ -1,12 +1,9 @@
 import type { Metadata } from 'next'
-
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 import { GoogleTagManager } from '@next/third-parties/google'
-import { WhatsAppButton } from '@/components/WhatsAppButton'
-
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
@@ -15,13 +12,12 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { caMechano } from '@/fonts'
-
+import { WhatsAppButton } from '@/components/WhatsAppButton'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-
   return (
     <html
       className={cn(GeistSans.variable, GeistMono.variable, caMechano.variable)}
@@ -29,27 +25,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
-
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-
       <body>
-        
         <GoogleTagManager gtmId="GTM-WSS42XRC" />
-
         <Providers>
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
           />
-
           <Header />
           {children}
           <Footer />
-          <Header />
           <WhatsAppButton />
         </Providers>
       </body>
