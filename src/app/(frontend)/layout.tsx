@@ -5,6 +5,7 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 import { GoogleTagManager } from '@next/third-parties/google'
+import { WhatsAppButton } from '@/components/WhatsAppButton'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
@@ -48,6 +49,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
+          <Header />
+          <WhatsAppButton />
         </Providers>
       </body>
     </html>
