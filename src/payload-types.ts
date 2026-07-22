@@ -316,6 +316,7 @@ export interface Post {
  */
 export interface Media {
   id: string;
+  externalUrl?: string | null;
   alt?: string | null;
   caption?: {
     root: {
@@ -2037,6 +2038,7 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  externalUrl?: T;
   alt?: T;
   caption?: T;
   updatedAt?: T;
