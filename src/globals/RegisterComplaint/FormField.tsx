@@ -138,13 +138,13 @@ const FormField: React.FC = () => {
 
       if (!Object.keys(ALLOWED_FILE_TYPES).includes(file.type)) {
         setFileError(
-          `File &quot;${file.name}&quot; has unsupported format. Allowed: JPG, PNG, GIF, WEBP, PDF, DOC, DOCX`,
+          `File "${file.name}" has unsupported format. Allowed: JPG, PNG, GIF, WEBP, PDF, DOC, DOCX`,
         )
         return false
       }
 
       if (file.size > MAX_FILE_SIZE) {
-        setFileError(`File &quot;${file.name}&quot; exceeds 5MB limit`)
+        setFileError(`File "${file.name}" exceeds 5MB limit`)
         return false
       }
     }
