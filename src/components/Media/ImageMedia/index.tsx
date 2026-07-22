@@ -29,6 +29,37 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let alt = altFromProps
   let src: StaticImageData | string = srcFromProps || ''
 
+  // Image referenced by an external URL (no uploaded file). Rendered with a plain
+  // <img> so it bypasses blob storage and Next's remote-image allowlist, and works
+  // without known dimensions.
+  const externalUrl =
+    resource && typeof resource === 'object' && typeof resource.externalUrl === 'string'
+      ? resource.externalUrl.trim()
+      : ''
+
+  const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
+
+  if (!srcFromProps && externalUrl) {
+    const externalAlt =
+      altFromProps ||
+      (resource && typeof resource === 'object' ? resource.alt || '' : '') ||
+      'alt text not provided'
+
+    return (
+      <picture className={cn(pictureClassName)}>
+        <img
+          alt={externalAlt}
+          className={cn(imgClassName)}
+          loading={loading}
+          src={externalUrl}
+          style={
+            fill ? { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' } : undefined
+          }
+        />
+      </picture>
+    )
+  }
+
   if (!src && resource && typeof resource === 'object') {
     const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
 
@@ -39,8 +70,6 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     const cacheTag = resource.updatedAt
     src = getMediaUrl(url, cacheTag)
   }
-
-  const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
   const sizes = sizeFromProps
     ? sizeFromProps

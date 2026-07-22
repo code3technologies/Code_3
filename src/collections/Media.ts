@@ -22,6 +22,20 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'externalUrl',
+      type: 'text',
+      label: 'External Image URL',
+      admin: {
+        description:
+          'Paste a full image URL (https://…) to use an image hosted elsewhere instead of uploading a file. When set, this is used everywhere this media is displayed. Leave the file upload empty when using this.',
+      },
+      validate: (value: string | null | undefined) => {
+        if (!value) return true
+        if (/^https?:\/\/.+/i.test(value)) return true
+        return 'Enter a valid URL starting with http:// or https://'
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
       //required: true,
@@ -40,6 +54,12 @@ export const Media: CollectionConfig = {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Allow creating a Media entry with no uploaded file (URL-only images via `externalUrl`).
+    filesRequiredOnCreate: false,
+    // Disable "paste URL" into the dropzone — it re-downloads and re-uploads the
+    // image to blob storage, which fails without blob write access. Use the
+    // `externalUrl` field instead to reference an image without uploading.
+    pasteURL: false,
     mimeTypes: ['image/*'],
     imageSizes: [
       {

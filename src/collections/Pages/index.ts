@@ -60,6 +60,7 @@ export const Pages: CollectionConfig<'pages'> = {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'pages',
+          serviceCategory: typeof data?.serviceCategory === 'string' ? data.serviceCategory : null,
           req,
         })
 
@@ -70,6 +71,7 @@ export const Pages: CollectionConfig<'pages'> = {
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'pages',
+        serviceCategory: typeof data?.serviceCategory === 'string' ? data.serviceCategory : null,
         req,
       }),
     useAsTitle: 'title',
