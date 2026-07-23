@@ -11,8 +11,8 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
-import { caMechano } from '@/fonts'
-import { WhatsAppButton } from '@/components/WhatsAppButton'
+import { caMechano, spaceGrotesk, inter, jetbrainsMono } from '@/fonts'
+import { FloatingButtons } from '@/components/FloatingButtons'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
@@ -20,7 +20,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
   return (
     <html
-      className={cn(GeistSans.variable, GeistMono.variable, caMechano.variable)}
+      className={cn(
+        GeistSans.variable,
+        GeistMono.variable,
+        caMechano.variable,
+        spaceGrotesk.variable,
+        inter.variable,
+        jetbrainsMono.variable,
+      )}
       lang="en"
       suppressHydrationWarning
     >
@@ -40,7 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
-          <WhatsAppButton />
+          <FloatingButtons />
         </Providers>
       </body>
     </html>

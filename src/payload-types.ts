@@ -247,6 +247,20 @@ export interface Page {
     | ServicesStepsBlock
     | ServiceDetailBannerBlock
     | ServiceOverviewBlock
+    | Code3HeroBlock
+    | Code3ServicesBlock
+    | Code3WhyBlock
+    | Code3StatsBlock
+    | Code3TestimonialsBlock
+    | Code3ClientsBlock
+    | Code3AccreditationsBlock
+    | Code3IndustriesBlock
+    | Code3ProcessBlock
+    | Code3AboutTeaserBlock
+    | Code3BlogPreviewBlock
+    | Code3FAQBlock
+    | Code3ContactBlock
+    | Code3CTABannerBlock
   )[];
   meta?: {
     title?: string | null;
@@ -316,7 +330,6 @@ export interface Post {
  */
 export interface Media {
   id: string;
-  externalUrl?: string | null;
   alt?: string | null;
   caption?: {
     root: {
@@ -1159,6 +1172,310 @@ export interface ServiceOverviewBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3HeroBlock".
+ */
+export interface Code3HeroBlock {
+  slides: {
+    image: string | Media;
+    eyebrow: string;
+    headlineText: string;
+    headlineHighlight: string;
+    subtext: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ServicesBlock".
+ */
+export interface Code3ServicesBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  categories: {
+    label: string;
+    icon:
+      | 'managed-it'
+      | 'it-infra'
+      | 'cyber-security'
+      | 'network'
+      | 'cloud-ms'
+      | 'backup-bc'
+      | 'unified-comm'
+      | 'av'
+      | 'security-surveillance'
+      | 'hw-sw'
+      | 'professional';
+    services: {
+      title: string;
+      description: string;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Services';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3WhyBlock".
+ */
+export interface Code3WhyBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  cards: {
+    /**
+     * e.g. "01 / EXPERTISE"
+     */
+    indexLabel: string;
+    title: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Why';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3StatsBlock".
+ */
+export interface Code3StatsBlock {
+  stats: {
+    value: number;
+    suffix?: string | null;
+    label: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Stats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3TestimonialsBlock".
+ */
+export interface Code3TestimonialsBlock {
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Requires GOOGLE_PLACES_API_KEY and GOOGLE_PLACES_ID env vars. Falls back to the quotes below if not configured or the fetch fails.
+   */
+  useGoogleReviews?: boolean | null;
+  fallbackQuotes?:
+    | {
+        quote: string;
+        name: string;
+        role: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ClientsBlock".
+ */
+export interface Code3ClientsBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  clients: {
+    name: string;
+    /**
+     * Optional — shows as a bold text wordmark until a logo is uploaded.
+     */
+    logo?: (string | null) | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Clients';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3AccreditationsBlock".
+ */
+export interface Code3AccreditationsBlock {
+  eyebrow?: string | null;
+  partners: {
+    name: string;
+    /**
+     * Optional — shows as a bold text wordmark until a logo is uploaded.
+     */
+    logo?: (string | null) | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Accreditations';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3IndustriesBlock".
+ */
+export interface Code3IndustriesBlock {
+  eyebrow?: string | null;
+  title: string;
+  industries: {
+    title: string;
+    /**
+     * Pick the preset icon closest to this industry.
+     */
+    iconPreset:
+      | 'Corporate Offices'
+      | 'Government'
+      | 'Healthcare'
+      | 'Education'
+      | 'Hospitality'
+      | 'Retail'
+      | 'Banking & Finance'
+      | 'Manufacturing'
+      | 'Logistics & Warehousing'
+      | 'Construction'
+      | 'Real Estate'
+      | 'Residential'
+      | 'Small & Medium Businesses (SMBs)'
+      | 'Enterprise Organizations';
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Industries';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ProcessBlock".
+ */
+export interface Code3ProcessBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  steps: {
+    /**
+     * e.g. "STEP 01"
+     */
+    stepLabel: string;
+    title: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Process';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3AboutTeaserBlock".
+ */
+export interface Code3AboutTeaserBlock {
+  eyebrow?: string | null;
+  heading: string;
+  body: string;
+  /**
+   * Optional button (defaults to "Read our full story" → #contact if left empty).
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3AboutTeaser';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3BlogPreviewBlock".
+ */
+export interface Code3BlogPreviewBlock {
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * How many recent posts to show.
+   */
+  limit?: number | null;
+  /**
+   * Optional — leave empty to show the most recent posts from any category.
+   */
+  categories?: (string | Category)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3BlogPreview';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3FAQBlock".
+ */
+export interface Code3FAQBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  faqs: {
+    question: string;
+    answer: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ContactBlock".
+ */
+export interface Code3ContactBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  phone: string;
+  email: string;
+  location: string;
+  hours: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3Contact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3CTABannerBlock".
+ */
+export interface Code3CTABannerBlock {
+  title: string;
+  buttonLabel?: string | null;
+  buttonHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code3CtaBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "complaints".
  */
 export interface Complaint {
@@ -1562,6 +1879,20 @@ export interface PagesSelect<T extends boolean = true> {
         servicesSteps?: T | ServicesStepsBlockSelect<T>;
         serviceDetailBanner?: T | ServiceDetailBannerBlockSelect<T>;
         serviceOverview?: T | ServiceOverviewBlockSelect<T>;
+        code3Hero?: T | Code3HeroBlockSelect<T>;
+        code3Services?: T | Code3ServicesBlockSelect<T>;
+        code3Why?: T | Code3WhyBlockSelect<T>;
+        code3Stats?: T | Code3StatsBlockSelect<T>;
+        code3Testimonials?: T | Code3TestimonialsBlockSelect<T>;
+        code3Clients?: T | Code3ClientsBlockSelect<T>;
+        code3Accreditations?: T | Code3AccreditationsBlockSelect<T>;
+        code3Industries?: T | Code3IndustriesBlockSelect<T>;
+        code3Process?: T | Code3ProcessBlockSelect<T>;
+        code3AboutTeaser?: T | Code3AboutTeaserBlockSelect<T>;
+        code3BlogPreview?: T | Code3BlogPreviewBlockSelect<T>;
+        code3Faq?: T | Code3FAQBlockSelect<T>;
+        code3Contact?: T | Code3ContactBlockSelect<T>;
+        code3CtaBanner?: T | Code3CTABannerBlockSelect<T>;
       };
   meta?:
     | T
@@ -2004,6 +2335,255 @@ export interface ServiceOverviewBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3HeroBlock_select".
+ */
+export interface Code3HeroBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        image?: T;
+        eyebrow?: T;
+        headlineText?: T;
+        headlineHighlight?: T;
+        subtext?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ServicesBlock_select".
+ */
+export interface Code3ServicesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  categories?:
+    | T
+    | {
+        label?: T;
+        icon?: T;
+        services?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3WhyBlock_select".
+ */
+export interface Code3WhyBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  cards?:
+    | T
+    | {
+        indexLabel?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3StatsBlock_select".
+ */
+export interface Code3StatsBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3TestimonialsBlock_select".
+ */
+export interface Code3TestimonialsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  useGoogleReviews?: T;
+  fallbackQuotes?:
+    | T
+    | {
+        quote?: T;
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ClientsBlock_select".
+ */
+export interface Code3ClientsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  clients?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3AccreditationsBlock_select".
+ */
+export interface Code3AccreditationsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  partners?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3IndustriesBlock_select".
+ */
+export interface Code3IndustriesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  industries?:
+    | T
+    | {
+        title?: T;
+        iconPreset?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ProcessBlock_select".
+ */
+export interface Code3ProcessBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  steps?:
+    | T
+    | {
+        stepLabel?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3AboutTeaserBlock_select".
+ */
+export interface Code3AboutTeaserBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  body?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3BlogPreviewBlock_select".
+ */
+export interface Code3BlogPreviewBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  limit?: T;
+  categories?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3FAQBlock_select".
+ */
+export interface Code3FAQBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3ContactBlock_select".
+ */
+export interface Code3ContactBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  phone?: T;
+  email?: T;
+  location?: T;
+  hours?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Code3CTABannerBlock_select".
+ */
+export interface Code3CTABannerBlockSelect<T extends boolean = true> {
+  title?: T;
+  buttonLabel?: T;
+  buttonHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -2038,7 +2618,6 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  externalUrl?: T;
   alt?: T;
   caption?: T;
   updatedAt?: T;

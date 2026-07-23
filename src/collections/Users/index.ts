@@ -98,7 +98,14 @@ export const Users: CollectionConfig = {
       },
       hooks: {
         beforeChange: [
-          async ({ req, value, originalDoc }) => {
+          async ({ req, value, originalDoc, operation }) => {
+            // The very first user ever created has no admin yet to grant them
+            // the role, so they're automatically made admin.
+            if (operation === 'create') {
+              const { totalDocs } = await req.payload.count({ collection: 'users' })
+              if (totalDocs === 0) return 'admin'
+            }
+
             if (req.user?.role !== 'admin') {
               return originalDoc?.role || 'client'
             }
