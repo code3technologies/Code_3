@@ -1,36 +1,49 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
+import { Eyebrow } from '@/components/site/Eyebrow'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, HeroText, subText }) => {
+  const [imageFailed, setImageFailed] = useState(false)
+
   return (
-    <section className="max-w-7xl w-full px-4 sm:px-6 mx-auto flex flex-col flex-1 mt-10 md:mt-14 lg:mt-20 items-center relative">
-      <div className="font-sans w-full ">
-        <div className="max-w-5xl text-center md:text-start">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl leading-tight">{HeroText}</h1>
-          {subText && <p className="my-6 text-md  md:text-xl leading-relaxed text-balance text-gray-700">{subText}</p>}
-        </div>
-        <div>
+    <section className="w-full bg-white">
+      <div className="container mx-auto px-4 sm:px-6 pt-16 pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20">
+        <div className="max-w-3xl">
+          <Eyebrow>IT Infrastructure · Cybersecurity · Digital Growth</Eyebrow>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-tight text-foreground">
+            {HeroText}
+          </h1>
+          {subText && (
+            <p className="mt-5 text-base md:text-lg leading-relaxed text-gray-600 max-w-2xl">
+              {subText}
+            </p>
+          )}
           {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex w-full flex-col-reverse md:flex-row gap-4">
-              {links.map(({ link }, i) => {
-                return (
-                  <li key={i}>
-                    <CMSLink {...link} size="full" className="md:w-auto" />
-                  </li>
-                )
-              })}
+            <ul className="mt-8 flex w-full flex-col sm:flex-row gap-3">
+              {links.map(({ link }, i) => (
+                <li key={i}>
+                  <CMSLink {...link} size="default" className="w-full sm:w-auto" />
+                </li>
+              ))}
             </ul>
           )}
         </div>
-      </div>
-      <div className="w-full flex flex-col min-h-[20vh] h-max mt-10 mb-4 lg: my-0 md:min-h-[30vh] xl:min-h-[60vh] object-fill relative items-center justify-center text-foreground animate-gentle-pulse">
-        {media && typeof media === 'object' && (
-          <Media fill imgClassName="object-fill" priority resource={media} />
+
+        {media && typeof media === 'object' && !imageFailed && (
+          <div className="mt-12 md:mt-16 w-full rounded-2xl overflow-hidden relative aspect-[16/7] border border-border">
+            <Media
+              fill
+              imgClassName="object-cover"
+              priority
+              resource={media}
+              onError={() => setImageFailed(true)}
+            />
+          </div>
         )}
       </div>
     </section>

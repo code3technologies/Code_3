@@ -162,6 +162,47 @@ export interface Page {
    * Select a parent service if this is a sub-service. The parent must be a service page (Infrastructure or Digital).
    */
   parentService?: (string | null) | Page;
+  /**
+   * Used when this page appears as a card in a Services block. Leave unset to auto-match based on the page title.
+   */
+  icon?:
+    | (
+        | 'shield'
+        | 'server'
+        | 'cloud'
+        | 'network'
+        | 'phone'
+        | 'monitor'
+        | 'wrench'
+        | 'refresh'
+        | 'chart'
+        | 'users'
+        | 'layout'
+        | 'code'
+        | 'search'
+        | 'smartphone'
+        | 'palette'
+        | 'truck'
+        | 'camera'
+        | 'lock'
+        | 'box'
+        | 'lightbulb'
+        | 'headset'
+        | 'building'
+        | 'pin'
+        | 'database'
+        | 'settings'
+        | 'document'
+        | 'graduation'
+        | 'printer'
+        | 'tv'
+        | 'mic'
+        | 'wifi'
+        | 'handshake'
+        | 'check'
+        | 'smile'
+      )
+    | null;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -247,6 +288,8 @@ export interface Page {
     | ServicesStepsBlock
     | ServiceDetailBannerBlock
     | ServiceOverviewBlock
+    | ServiceCatalogBlock
+    | StatsBlock
   )[];
   meta?: {
     title?: string | null;
@@ -316,6 +359,9 @@ export interface Post {
  */
 export interface Media {
   id: string;
+  /**
+   * Paste a full image URL (https://…) to use an image hosted elsewhere instead of uploading a file. When set, this is used everywhere this media is displayed. Leave the file upload empty when using this.
+   */
   externalUrl?: string | null;
   alt?: string | null;
   caption?: {
@@ -1159,6 +1205,71 @@ export interface ServiceOverviewBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceCatalogBlock".
+ */
+export interface ServiceCatalogBlock {
+  titleHighlight: string;
+  title: string;
+  /**
+   * Tabs are built from your published top-level pages of this category; cards under each tab come from that page's sub-services (Parent Service field).
+   */
+  serviceType: 'infrastructure' | 'digital';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceCatalog';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock".
+ */
+export interface StatsBlock {
+  stats: {
+    icon:
+      | 'shield'
+      | 'server'
+      | 'cloud'
+      | 'network'
+      | 'phone'
+      | 'monitor'
+      | 'wrench'
+      | 'refresh'
+      | 'chart'
+      | 'users'
+      | 'layout'
+      | 'code'
+      | 'search'
+      | 'smartphone'
+      | 'palette'
+      | 'truck'
+      | 'camera'
+      | 'lock'
+      | 'box'
+      | 'lightbulb'
+      | 'headset'
+      | 'building'
+      | 'pin'
+      | 'database'
+      | 'settings'
+      | 'document'
+      | 'graduation'
+      | 'printer'
+      | 'tv'
+      | 'mic'
+      | 'wifi'
+      | 'handshake'
+      | 'check'
+      | 'smile';
+    value: number;
+    suffix?: string | null;
+    label: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "complaints".
  */
 export interface Complaint {
@@ -1499,6 +1610,7 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   serviceCategory?: T;
   parentService?: T;
+  icon?: T;
   hero?:
     | T
     | {
@@ -1562,6 +1674,8 @@ export interface PagesSelect<T extends boolean = true> {
         servicesSteps?: T | ServicesStepsBlockSelect<T>;
         serviceDetailBanner?: T | ServiceDetailBannerBlockSelect<T>;
         serviceOverview?: T | ServiceOverviewBlockSelect<T>;
+        serviceCatalog?: T | ServiceCatalogBlockSelect<T>;
+        stats?: T | StatsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1999,6 +2113,34 @@ export interface ServiceOverviewBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceCatalogBlock_select".
+ */
+export interface ServiceCatalogBlockSelect<T extends boolean = true> {
+  titleHighlight?: T;
+  title?: T;
+  serviceType?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock_select".
+ */
+export interface StatsBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        icon?: T;
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

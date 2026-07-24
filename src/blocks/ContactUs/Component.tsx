@@ -8,6 +8,8 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { getClientSideURL } from '@/utilities/getURL'
 import { SuccessModal } from './SuccessModale'
 import { Button } from '@/components/ui/button'
+import { Eyebrow } from '@/components/site/Eyebrow'
+import { Reveal } from '@/components/site/Reveal'
 
 type Props = ContactUsBlockProps & {
   className?: string
@@ -149,57 +151,42 @@ export const ContactUsBlock: React.FC<Props> = ({
       })
     }
   }, [])
+
+  const fieldClassName =
+    'w-full px-4 py-3 rounded-lg outline-none border border-border bg-white text-gray-900 placeholder-gray-400 transition-colors focus:border-primary_red'
+
   return (
     <>
-      <section
-        className={cn(
-          'flex items-center max-w-[2000px] mx-auto bg-[linear-gradient(50deg,black,#C90E1D,transparent,transparent,transparent,transparent,transparent,transparent,transparent,transparent,transparent,transparent,transparent)]',
-          className,
-        )}
-      >
-        <div className="w-full">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-0 overflow-hidden">
-            {/* Left Side - Header (Mobile: Top, Desktop: Left) */}
-            <div className="flex flex-col justify-center py-[2rem] px-[2rem] xl:pl-[8rem]">
-              {/* Large Contact Us Heading */}
-              <h1 className="text-[4rem] md:text-[7rem] 2xl:text-[9rem] font-regular tracking-wider leading-[1] font-mechano text-primary_red mb-6 z-[2]">
-                {heading.split(' ').map((word, index) => (
-                  <React.Fragment key={index}>
-                    {word}
-                    {index === 0 && <br />}
-                  </React.Fragment>
-                ))}
+      <section className={cn('bg-white py-16 md:py-24', className)}>
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+            {/* Left: heading */}
+            <Reveal>
+              {heading && <Eyebrow>{heading}</Eyebrow>}
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
+                {subtitle}
               </h1>
+              {description && (
+                <p className="mt-4 max-w-md text-gray-600 leading-relaxed">{description}</p>
+              )}
+            </Reveal>
 
-              {/* Subtitle */}
-              <h2 className="text-2xl sm:text-3xl font-semibold text-black mb-4">{subtitle}</h2>
-
-              {/* Description */}
-              <p className="text-black text-base sm:text-lg leading-relaxed max-w-sm">
-                {description}
-              </p>
-            </div>
-
-            {/* Right Side - Form (Mobile: Bottom, Desktop: Right) */}
-            <div className="bg-[#F7F7F7] py-[3rem] px-[2rem] md:px-[3rem] relative">
-              <div className="absolute left-0 top-[20%] bg-gradient-to-b from-transparent via-primary_red to-transparent h-[60%] w-[1px]"></div>
+            {/* Right: form */}
+            <Reveal delayMs={100}>
               <FormProvider {...formMethods}>
                 {error && (
-                  <div className="text-primary_red mb-4">
+                  <div className="mb-4 rounded-lg border border-primary_red/20 bg-[#FDEBEC] px-4 py-3 text-sm text-primary_red">
                     {error.status || '500'}: {error.message || 'Something went wrong.'}
                   </div>
                 )}
-                {isLoading && !hasSubmitted && <p className="mb-4">Loading, please wait...</p>}
+                {isLoading && !hasSubmitted && (
+                  <p className="mb-4 text-sm text-gray-500">Loading, please wait...</p>
+                )}
                 {!hasSubmitted && (
-                  <form className="space-y-6 lg:max-w-[36rem]" onSubmit={handleSubmit(onSubmit)}>
-                    {/* Row 1: Full Name and Email (Desktop: Side by side, Mobile: Stacked) */}
+                  <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Full Name */}
                       <div>
-                        <label
-                          htmlFor="fullname"
-                          className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-2">
                           {formFields.fullNameLabel}
                         </label>
                         <input
@@ -207,21 +194,15 @@ export const ContactUsBlock: React.FC<Props> = ({
                           id="fullname"
                           {...register('fullname', { required: 'Full name is required' })}
                           placeholder={formFields.fullNamePlaceholder || 'Enter your full name'}
-                          className="w-[94%] px-4 py-3 outline-none border-b bg-[#F7F7F7] border-[#E0DDDD] text-gray-900 placeholder-gray-500 transition-colors"
+                          className={fieldClassName}
                         />
                         {errors.fullname && (
-                          <div className="mt-2 text-primary_red text-sm">
-                            {errors.fullname.message as string}
-                          </div>
+                          <div className="mt-2 text-primary_red text-sm">{errors.fullname.message as string}</div>
                         )}
                       </div>
 
-                      {/* Email */}
                       <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                           {formFields.emailLabel}
                         </label>
                         <input
@@ -235,29 +216,23 @@ export const ContactUsBlock: React.FC<Props> = ({
                             },
                           })}
                           placeholder={formFields.emailPlaceholder || 'you@company.com'}
-                          className="w-full px-4 py-3 outline-none border-b bg-[#F7F7F7] border-[#E0DDDD] text-gray-900 placeholder-gray-500 transition-colors"
+                          className={fieldClassName}
                         />
                         {errors.email && (
-                          <div className="mt-2 text-primary_red text-sm">
-                            {errors.email.message as string}
-                          </div>
+                          <div className="mt-2 text-primary_red text-sm">{errors.email.message as string}</div>
                         )}
                       </div>
                     </div>
 
-                    {/* Row 2: Phone Number and Subject (Desktop: Side by side, Mobile: Stacked) */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label
-                          htmlFor="phone"
-                          className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                           {formFields.phoneLabel}
                         </label>
-                        <div className="flex lg:">
+                        <div className="flex gap-2">
                           <select
                             {...register('country')}
-                            className="px-3 py-3 border-b bg-[#F7F7F7] text-gray-700 border-[#E0DDDD]"
+                            className="rounded-lg border border-border bg-white px-3 py-3 text-gray-700 outline-none focus:border-primary_red"
                           >
                             {countryOptions?.map((option) => (
                               <option key={option.value} value={option.value}>
@@ -308,28 +283,19 @@ export const ContactUsBlock: React.FC<Props> = ({
                             }}
                             inputMode="numeric"
                             pattern="[0-9]*"
-                            className="flex-1 px-4 py-3 border-b outline-none bg-[#F7F7F7] border-[#E0DDDD] text-gray-900 placeholder-gray-500 transition-colors"
+                            className={cn(fieldClassName, 'flex-1')}
                           />
                         </div>
                         {errors.phone && (
-                          <div className="mt-2 text-primary_red text-sm">
-                            {errors.phone.message as string}
-                          </div>
+                          <div className="mt-2 text-primary_red text-sm">{errors.phone.message as string}</div>
                         )}
                       </div>
 
                       <div>
-                        <label
-                          htmlFor="subject"
-                          className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                           {formFields.subjectLabel}
                         </label>
-                        <select
-                          id="subject"
-                          {...register('subject')}
-                          className="w-full px-4 py-3 outline-none border-b bg-[#F7F7F7] border-[#E0DDDD] text-gray-900 transition-colors appearance-none cursor-pointer"
-                        >
+                        <select id="subject" {...register('subject')} className={cn(fieldClassName, 'cursor-pointer')}>
                           {subjectOptions?.map((option) => (
                             <option key={option.value} value={option.value}>
                               {option.label}
@@ -339,29 +305,22 @@ export const ContactUsBlock: React.FC<Props> = ({
                       </div>
                     </div>
 
-                    {/* Row 3: Message (Full Width) */}
                     <div>
-                      <label
-                        htmlFor="message"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                         {formFields.messageLabel}
                       </label>
                       <textarea
                         id="message"
                         {...register('message', { required: 'Message is required' })}
-                        rows={6}
+                        rows={5}
                         placeholder={formFields.messagePlaceholder || 'Leave us a message...'}
-                        className="w-full px-4 py-3 outline-none border-b bg-[#F7F7F7] border-[#E0DDDD] text-gray-900 placeholder-gray-500 transition-colors resize-none"
+                        className={cn(fieldClassName, 'resize-none')}
                       ></textarea>
                       {errors.message && (
-                        <div className="mt-2 text-primary_red text-sm">
-                          {errors.message.message as string}
-                        </div>
+                        <div className="mt-2 text-primary_red text-sm">{errors.message.message as string}</div>
                       )}
                     </div>
 
-                    {/* Privacy Policy Checkbox */}
                     <div className="flex items-start">
                       <input
                         type="checkbox"
@@ -369,28 +328,23 @@ export const ContactUsBlock: React.FC<Props> = ({
                         {...register('privacy', {
                           required: 'You must agree to the privacy policy',
                         })}
-                        className="mt-1 h-4 w-4 text-primary_red border-gray-300 rounded"
+                        className="mt-1 h-4 w-4 rounded border-gray-300 text-primary_red"
                       />
                       <label htmlFor="privacy" className="ml-3 text-sm text-gray-600">
-                        {formFields.privacyText?.split('privacy policy')[0] ||
-                          'You agree to our friendly '}
-                        <a href={formFields.privacyLink || '#'} className="text-black underline">
+                        {formFields.privacyText?.split('privacy policy')[0] || 'You agree to our friendly '}
+                        <a href={formFields.privacyLink || '#'} className="text-foreground underline">
                           privacy policy
                         </a>
                         {formFields.privacyText?.split('privacy policy')[1] || '.'}
                       </label>
                     </div>
                     {errors.privacy && (
-                      <div className="mt-2 text-primary_red text-sm">
-                        {errors.privacy.message as string}
-                      </div>
+                      <div className="mt-2 text-primary_red text-sm">{errors.privacy.message as string}</div>
                     )}
 
-                    {/* Submit Button */}
                     <Button
                       variant="default"
                       type="submit"
-                      size="alignCenter"
                       disabled={isLoading}
                       className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -399,7 +353,7 @@ export const ContactUsBlock: React.FC<Props> = ({
                   </form>
                 )}
               </FormProvider>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

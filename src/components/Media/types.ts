@@ -12,6 +12,7 @@ export interface Props {
   imgClassName?: string
   onClick?: () => void
   onLoad?: () => void
+  onError?: () => void
   loading?: 'lazy' | 'eager' // for NextImage only
   priority?: boolean // for NextImage only
   ref?: Ref<HTMLImageElement | HTMLVideoElement | null>

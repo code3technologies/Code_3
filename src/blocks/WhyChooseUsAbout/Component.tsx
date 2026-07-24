@@ -1,9 +1,10 @@
 import type { WhyChooseUsAboutBlock as WhyChooseUsAboutBlockProps } from 'src/payload-types'
-import type { Media as MediaType } from 'src/payload-types'
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { Media } from '@/components/Media'
+import { IconMedia } from '@/components/site/IconMedia'
+import { Eyebrow } from '@/components/site/Eyebrow'
+import { Reveal } from '@/components/site/Reveal'
 
 type Props = {
   className?: string
@@ -16,75 +17,35 @@ export const WhyChooseUsAboutBlock: React.FC<Props> = ({
   subtitle,
   features = [],
 }) => {
-  // Type guard to check if icon is a Media object
-  const isMediaObject = (icon: string | MediaType): icon is MediaType => {
-    return typeof icon === 'object' && icon !== null && 'url' in icon
-  }
-
   return (
-    <section className={cn('py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto', className)}>
-      <div className="bg-[#FAFAFA] border border-[#E0DDDD] rounded-[32px] max-w-7xl mx-auto py-12 md:py-16 lg:py-20 px-5 w-full">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          {/* Red Badge */}
-          <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-6 uppercase tracking-wider">
-            {badge}
-          </div>
+    <section className={cn('bg-white py-16 md:py-24', className)}>
+      <div className="container mx-auto px-4 sm:px-6">
+        <Reveal className="max-w-2xl mb-10">
+          {badge && <Eyebrow>{badge}</Eyebrow>}
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{title}</h2>
+          {subtitle && <p className="mt-4 text-gray-600 leading-relaxed">{subtitle}</p>}
+        </Reveal>
 
-          {/* Main Title */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold max-w-xl lg:max-w-2xl mx-auto text-gray-900 mb-6 leading-tight">
-            {title}
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-gray-600 text-base sm:text-lg max-w-lg lg:max-w-2xl mx-auto leading-relaxed">
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto relative">
-          {features?.map((feature, index) => (
-            <React.Fragment key={feature.id || index}>
-              {/* Feature Card */}
-              <div className="rounded-2xl p-6 sm:p-8 text-center">
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6">
-                  {feature.icon && isMediaObject(feature.icon) && (
-                    <Media
-                      resource={feature.icon}
-                      imgClassName="w-[62px] h-[62px] object-contain"
-                    />
+        {features && features.length > 0 && (
+          <Reveal
+            delayMs={100}
+            className="grid grid-cols-1 sm:grid-cols-2 border-t border-l border-border"
+          >
+            {features.map((feature, index) => (
+              <div key={feature.id || index} className="border-r border-b border-border p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  {feature.icon && (
+                    <span className="h-11 w-11 flex-none rounded-full bg-[#FDEBEC] flex items-center justify-center overflow-hidden">
+                      <IconMedia resource={feature.icon} className="w-6 h-6 object-contain" />
+                    </span>
                   )}
+                  <h3 className="text-base font-semibold text-foreground">{feature.title}</h3>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-
-                {/* Description */}
-                <p className="text-gray-600 leading-relaxed max-w-xs mx-auto">
-                  {feature.description}
-                </p>
+                <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
-
-              {/* Divider Lines - Only show between cards */}
-              {index < (features?.length || 0) - 1 && (
-                <>
-                  {/* Horizontal line for mobile, vertical for desktop */}
-                  {index === 0 && (
-                    <div className="sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:w-[50%] h-[1px] w-4/5 mx-auto bg-gradient-to-r from-transparent via-primary_red to-transparent"></div>
-                  )}
-                  {index === 1 && (
-                    <div className="sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 h-[1px] w-4/5 sm:w-[40%] sm:rotate-90 mx-auto bg-gradient-to-r from-transparent via-primary_red to-transparent"></div>
-                  )}
-                  {index === 2 && (
-                    <div className="sm:hidden h-[1px] w-4/5 mx-auto bg-gradient-to-r from-transparent via-primary_red to-transparent"></div>
-                  )}
-                </>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+            ))}
+          </Reveal>
+        )}
       </div>
     </section>
   )

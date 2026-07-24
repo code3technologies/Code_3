@@ -1,11 +1,32 @@
-import type { MissionAndValuesBlock as MissionAndValuesBlockProps } from 'src/payload-types'
+import type { MissionAndValuesBlock as MissionAndValuesBlockProps, Media as MediaType } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { Media } from '@/components/Media'
+import { IconMedia } from '@/components/site/IconMedia'
+import { Eyebrow } from '@/components/site/Eyebrow'
+import { Reveal } from '@/components/site/Reveal'
 
 type Props = {
   className?: string
 } & MissionAndValuesBlockProps
+
+type CardData = { icon?: string | MediaType | null; title?: string | null; content?: string | null } | undefined | null
+
+function Card({ card }: { card: CardData }) {
+  if (!card) return null
+  return (
+    <div className="border-r border-b border-border p-6">
+      <div className="flex items-center gap-3 mb-3">
+        {card.icon ? (
+          <span className="h-11 w-11 flex-none rounded-full bg-[#FDEBEC] flex items-center justify-center overflow-hidden">
+            <IconMedia resource={card.icon} className="w-6 h-6 object-contain" />
+          </span>
+        ) : null}
+        <h3 className="text-base font-semibold text-foreground">{card.title}</h3>
+      </div>
+      {card.content && <p className="text-sm text-gray-600 leading-relaxed">{card.content}</p>}
+    </div>
+  )
+}
 
 export const MissionAndValuesBlock: React.FC<Props> = ({
   className,
@@ -16,95 +37,24 @@ export const MissionAndValuesBlock: React.FC<Props> = ({
   visionCard,
   valuesCard,
 }) => {
-  return (  
-    <section className={cn('py-12 px-6 max-w-7xl mx-auto', className)}>
-      {/* Header Section - Centered */}
-      <div className="text-center sm:text-start mb-12">
-        {/* Red Badge */}
-        <div className="inline-block bg-primary_red border border-secondary_red text-white text-xs font-semibold px-5 py-2 rounded-full mb-4 uppercase tracking-wider">
-          {badge}
-        </div>
+  return (
+    <section className={cn('bg-white py-16 md:py-24', className)}>
+      <div className="container mx-auto px-4 sm:px-6">
+        <Reveal className="max-w-2xl mb-10">
+          {badge && <Eyebrow>{badge}</Eyebrow>}
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{title}</h2>
+          {subtitle && <p className="mt-4 text-gray-600 leading-relaxed">{subtitle}</p>}
+        </Reveal>
 
-        {/* Main Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-black mb-4 leading-tight">{title}</h1>
-
-        {/* Subtitle */}
-        <p className="text-gray-600 text-base md:text-lg max-w-sm sm:max-w-2xl mx-auto sm:mx-0">
-          {subtitle}
-        </p>
-      </div>
-
-      {/* Three Cards Container */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[76.5rem] mx-auto">
-        {/* Mission Card */}
-        {missionCard && (
-          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left">
-            {/* Icon */}
-            <div className="w-12 h-12 flex items-center justify-center mb-6">
-              {missionCard.icon && (
-                <Media
-                  resource={missionCard.icon}
-                  imgClassName="w-[62px] h-[62px] object-contain"
-                />
-              )}
-            </div>
-
-            {/* Title */}
-            <h2 className="text-primary_red text-2xl lg:text-3xl font-semibold pb-[72px] uppercase tracking-wider">
-              {missionCard.title}
-            </h2>
-
-            {/* Content */}
-            <p className="text-gray-800 lg:text-lg leading-6">{missionCard.content}</p>
-          </div>
-        )}
-
-        {/* Vision Card */}
-        {visionCard && (
-          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left">
-            {/* Icon */}
-            <div className="w-12 h-12 flex items-center justify-center mb-6">
-              {visionCard.icon && (
-                <Media
-                  resource={visionCard.icon}
-                  imgClassName="w-[62px] h-[62px] object-contain"
-                />
-              )}
-            </div>
-
-            {/* Title */}
-            <h2 className="text-primary_red text-2xl lg:text-3xl font-semibold pb-[72px] uppercase tracking-wider">
-              {visionCard.title}
-            </h2>
-
-            {/* Content */}
-            <p className="text-gray-800 lg:text-lg leading-6">{visionCard.content}</p>
-          </div>
-        )}
-
-        {/* Values Card */}
-        {valuesCard && (
-          <div className="bg-[#FAFAFA] flex flex-col justify-between border border-[#E0DDDD] rounded-[32px] p-8 text-left">
-            {/* Icon */}
-            <div className="w-12 h-12 flex items-center justify-center mb-6">
-              {valuesCard.icon && (
-                <Media
-                  resource={valuesCard.icon}
-                  imgClassName="w-[62px] h-[62px] object-contain"
-                />
-              )}
-            </div>
-
-            {/* Title */}
-            <h2 className="text-primary_red text-2xl lg:text-3xl font-semibold pb-[72px] uppercase tracking-wider">
-              {valuesCard.title}
-            </h2>
-
-            {/* Values Content */}
-            <div className="text-gray-800 leading-6 lg:text-lg space-y-1">{valuesCard.content}</div>
-          </div>
-        )}
+        <Reveal
+          delayMs={100}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-border"
+        >
+          <Card card={missionCard} />
+          <Card card={visionCard} />
+          <Card card={valuesCard} />
+        </Reveal>
       </div>
     </section>
-  )
+  )
 }

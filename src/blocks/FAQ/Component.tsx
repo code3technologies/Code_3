@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Eyebrow } from '@/components/site/Eyebrow'
+import { Reveal } from '@/components/site/Reveal'
 
 interface FAQItem {
   question: string
@@ -27,43 +29,22 @@ const FaqItem = ({
   onClick: () => void
 }) => {
   return (
-    <div className="border bg-[#FCFCFC] rounded-lg my-2 px-2 border-[#E0DDDD] py-4">
+    <div className="border-b border-border">
       <button
         onClick={onClick}
-        className="w-full flex justify-between items-center text-left  p-2 rounded transition-colors"
+        className="w-full flex justify-between items-center gap-4 text-left py-5"
       >
-        <span className="text-lg font-medium text-gray-800 pr-4">{faq.question}</span>
-        <span className="text-xl text-gray-500 flex-shrink-0">
-          {isOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 border rounded-full p-1 border-[#E0DDDD] font-semibold border-b-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12H6" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 border rounded-full p-1 border-[#E0DDDD] font-semibold border-b-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-          )}
+        <span className="font-medium text-foreground">{faq.question}</span>
+        <span className="relative h-4 w-4 flex-none text-gray-400">
+          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
+          <span
+            className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current transition-transform duration-300"
+            style={{ transform: isOpen ? 'scaleY(0)' : 'scaleY(1)' }}
+          />
         </span>
       </button>
       {isOpen && (
-        <div className="mt-2  text-gray-600 px-2">
+        <div className="pb-5 pr-8 text-sm text-gray-600 leading-relaxed">
           <p>{faq.answer}</p>
         </div>
       )}
@@ -71,48 +52,33 @@ const FaqItem = ({
   )
 }
 
-export const FAQBlock: React.FC<FAQBlockProps> = ({
-  title,
-  subtitle,
-  badge = 'FAQS',
-  faqs = [],
-}) => {
-  const [openIndex, setOpenIndex] = useState(0) // First item is open by default
+export const FAQBlock: React.FC<FAQBlockProps> = ({ title, subtitle, badge = 'FAQS', faqs = [] }) => {
+  const [openIndex, setOpenIndex] = useState(0)
 
   const handleItemClick = (index: number) => {
-    setOpenIndex(openIndex === index ? -1 : index) // Allows toggling
+    setOpenIndex(openIndex === index ? -1 : index)
   }
 
   return (
-    <div className="bg-white py-6 lg:py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 justify-start">
-          {/* Left Column: Title Section */}
-          <div className="text-center md:text-left max-w-sm mx-auto">
-            {badge && (
-              <span className="inline-block bg-primary_red border border-secondary_red text-white text-sm font-semibold px-3 py-2 rounded-full uppercase">
-                {badge}
-              </span>
-            )}
-            <h1 className="mt-4 text-3xl leading-[130%] md:text-5xl font-semibold text-gray-900 tracking-tight">
-              {title}
-            </h1>
-            {subtitle && <p className="mt-4 text-lg text-gray-600">{subtitle}</p>}
-          </div>
+    <div className="bg-white py-16 md:py-24">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <Reveal className="md:col-span-1">
+            {badge && <Eyebrow>{badge}</Eyebrow>}
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{title}</h2>
+            {subtitle && <p className="mt-4 text-gray-600 leading-relaxed">{subtitle}</p>}
+          </Reveal>
 
-          {/* Right Column: Accordion Section */}
-          <div className="col-span-2">
-            <div className="p-4 sm:p-8 rounded-lg">
-              {faqs.map((faq, index) => (
-                <FaqItem
-                  key={index}
-                  faq={faq}
-                  isOpen={openIndex === index}
-                  onClick={() => handleItemClick(index)}
-                />
-              ))}
-            </div>
-          </div>
+          <Reveal delayMs={100} className="md:col-span-2">
+            {faqs.map((faq, index) => (
+              <FaqItem
+                key={index}
+                faq={faq}
+                isOpen={openIndex === index}
+                onClick={() => handleItemClick(index)}
+              />
+            ))}
+          </Reveal>
         </div>
       </div>
     </div>

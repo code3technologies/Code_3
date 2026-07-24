@@ -2,7 +2,7 @@
 
 import type { TrustedBrandsBlock as TrustedBrandsBlockProps } from 'src/payload-types'
 import { cn } from '@/utilities/ui'
-import React from 'react'
+import React, { useState } from 'react'
 import type { Media as MediaType, Page } from 'src/payload-types'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
@@ -63,10 +63,12 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
   }
 
   const BrandLogo = ({ brand }: { brand: Brand; index: number }) => {
-    const logoContent = brand.logo ? (
+    const [logoFailed, setLogoFailed] = useState(false)
+    const logoContent = brand.logo && !logoFailed ? (
       <Media
         resource={brand.logo}
         imgClassName="h-5 md:h-[35px] w-auto object-contain transition-all duration-300"
+        onError={() => setLogoFailed(true)}
       />
     ) : (
       <div className="h-8 md:h-10 w-24 md:w-32 bg-gray-200 rounded flex items-center justify-center">

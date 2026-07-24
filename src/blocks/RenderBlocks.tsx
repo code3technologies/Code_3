@@ -23,6 +23,8 @@ import { ServicesStepsBlock } from './ServicesSteps/Component'
 import { ServiceDetailBannerBlock } from './ServiceDetailBanner/Component'
 import { ServiceOverviewBlock } from './ServiceOverview/Component'
 import { ServiceSolutionsBlock } from './ServiceSolutions/Components'
+import { ServiceCatalogBlock } from './ServiceCatalog/Component'
+import { StatsBlock } from './Stats/Component'
 
 interface BlockProps {
   disableInnerContainer?: boolean
@@ -52,6 +54,8 @@ const blockComponents = {
   servicesSteps: ServicesStepsBlock,
   serviceDetailBanner: ServiceDetailBannerBlock,
   serviceOverview: ServiceOverviewBlock,
+  serviceCatalog: ServiceCatalogBlock,
+  stats: StatsBlock,
 }
 
 export const RenderBlocks: React.FC<{
