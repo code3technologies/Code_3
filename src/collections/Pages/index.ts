@@ -36,20 +36,6 @@ import { ServicesHero } from '@/blocks/ServicesHero/config'
 import { ServicesSteps } from '@/blocks/ServicesSteps/config'
 import { ServiceDetailBanner } from '@/blocks/ServiceDetailBanner/config'
 import { ServiceOverview } from '@/blocks/ServiceOverview/config'
-import { Code3Hero } from '@/blocks/Code3Hero/config'
-import { Code3Services } from '@/blocks/Code3Services/config'
-import { Code3Why } from '@/blocks/Code3Why/config'
-import { Code3Stats } from '@/blocks/Code3Stats/config'
-import { Code3Testimonials } from '@/blocks/Code3Testimonials/config'
-import { Code3Clients } from '@/blocks/Code3Clients/config'
-import { Code3Accreditations } from '@/blocks/Code3Accreditations/config'
-import { Code3Industries } from '@/blocks/Code3Industries/config'
-import { Code3Process } from '@/blocks/Code3Process/config'
-import { Code3AboutTeaser } from '@/blocks/Code3AboutTeaser/config'
-import { Code3BlogPreview } from '@/blocks/Code3BlogPreview/config'
-import { Code3FAQ } from '@/blocks/Code3FAQ/config'
-import { Code3Contact } from '@/blocks/Code3Contact/config'
-import { Code3CTABanner } from '@/blocks/Code3CTABanner/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -74,6 +60,7 @@ export const Pages: CollectionConfig<'pages'> = {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'pages',
+          serviceCategory: typeof data?.serviceCategory === 'string' ? data.serviceCategory : null,
           req,
         })
 
@@ -84,6 +71,7 @@ export const Pages: CollectionConfig<'pages'> = {
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'pages',
+        serviceCategory: typeof data?.serviceCategory === 'string' ? data.serviceCategory : null,
         req,
       }),
     useAsTitle: 'title',
@@ -157,20 +145,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 ServicesSteps,
                 ServiceDetailBanner,
                 ServiceOverview,
-                Code3Hero,
-                Code3Services,
-                Code3Why,
-                Code3Stats,
-                Code3Testimonials,
-                Code3Clients,
-                Code3Accreditations,
-                Code3Industries,
-                Code3Process,
-                Code3AboutTeaser,
-                Code3BlogPreview,
-                Code3FAQ,
-                Code3Contact,
-                Code3CTABanner,
               ],
               required: true,
               admin: {

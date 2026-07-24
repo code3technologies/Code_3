@@ -120,30 +120,11 @@ const config = {
         warning: 'hsl(var(--warning))',
         primary_red: '#C90E1D',
         secondary_red: '#FF3B4B',
-        code3: {
-          ink: '#0B0B0C',
-          ink2: '#161617',
-          ink3: '#1F1F21',
-          paper: '#F5F5F6',
-          signal: '#DF3341',
-          'signal-dim': '#8B0F1F',
-          amber: '#C90E1D',
-          coral: '#DF3341',
-          'coral-light': '#FF6B76',
-          slate: '#71717A',
-          'slate-light': '#A3A3A8',
-          'line-dark': 'rgba(255,255,255,0.10)',
-          'line-light': '#E4E4E7',
-          text: '#0B0B0C',
-        },
       },
       fontFamily: {
         sans: ['"Open Sauce Sans"', 'sans-serif'],
         mono: ['var(--font-geist-mono)'],
         mechano: ['var(--font-ca-mechano)', 'sans-serif'],
-        grotesk: ['var(--font-space-grotesk)', 'sans-serif'],
-        inter: ['var(--font-inter)', 'sans-serif'],
-        jetmono: ['var(--font-jetbrains-mono)', 'monospace'],
       },
       fontSize: {
         h1: ['56px', { lineHeight: '130%', fontWeight: '500' }],
@@ -187,41 +168,13 @@ const config = {
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         scroll: {
-          '0%': {
-            transform: 'translateX(0)'
+          '0%': { 
+            transform: 'translateX(0)' 
           },
-          '100%': {
-            transform: 'translateX(-100%)'
+          '100%': { 
+            transform: 'translateX(-100%)' 
           },
-        },
-        c3KenBurns: {
-          from: { transform: 'scale(1.06)' },
-          to: { transform: 'scale(1.14)' },
-        },
-        c3StreakDrift: {
-          '0%': { transform: 'rotate(20deg) translateX(-6vw)' },
-          '50%': { transform: 'rotate(20deg) translateX(6vw)' },
-          '100%': { transform: 'rotate(20deg) translateX(-6vw)' },
-        },
-        c3StatusPulse: {
-          '0%': { transform: 'scale(0.6)', opacity: '0.9' },
-          '100%': { transform: 'scale(1.8)', opacity: '0' },
-        },
-        c3CueMove: {
-          '0%': { opacity: '0', transform: 'translateY(-6px)' },
-          '40%': { opacity: '1' },
-          '100%': { opacity: '0', transform: 'translateY(10px)' },
-        },
-        c3SubsvcIn: {
-          to: { opacity: '1', transform: 'translateY(0)' },
-        },
-        c3ScrollX: {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(-50%)' },
-        },
-      },
-      transitionTimingFunction: {
-        c3: 'cubic-bezier(.22,1,.36,1)',
+        }
       },
     },
   },

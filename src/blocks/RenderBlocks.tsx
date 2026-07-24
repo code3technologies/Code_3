@@ -22,20 +22,6 @@ import { ServicesHeroBlock } from './ServicesHero/Component'
 import { ServicesStepsBlock } from './ServicesSteps/Component'
 import { ServiceDetailBannerBlock } from './ServiceDetailBanner/Component'
 import { ServiceOverviewBlock } from './ServiceOverview/Component'
-import { Code3HeroBlock } from './Code3Hero/Component'
-import { Code3ServicesBlock } from './Code3Services/Component'
-import { Code3WhyBlock } from './Code3Why/Component'
-import { Code3StatsBlock } from './Code3Stats/Component'
-import { Code3TestimonialsBlock } from './Code3Testimonials/Component'
-import { Code3ClientsBlock } from './Code3Clients/Component'
-import { Code3AccreditationsBlock } from './Code3Accreditations/Component'
-import { Code3IndustriesBlock } from './Code3Industries/Component'
-import { Code3ProcessBlock } from './Code3Process/Component'
-import { Code3AboutTeaserBlock } from './Code3AboutTeaser/Component'
-import { Code3BlogPreviewBlock } from './Code3BlogPreview/Component'
-import { Code3FAQBlock } from './Code3FAQ/Component'
-import { Code3ContactBlock } from './Code3Contact/Component'
-import { Code3CTABannerBlock } from './Code3CTABanner/Component'
 import { ServiceSolutionsBlock } from './ServiceSolutions/Components'
 
 interface BlockProps {
@@ -66,20 +52,6 @@ const blockComponents = {
   servicesSteps: ServicesStepsBlock,
   serviceDetailBanner: ServiceDetailBannerBlock,
   serviceOverview: ServiceOverviewBlock,
-  code3Hero: Code3HeroBlock,
-  code3Services: Code3ServicesBlock,
-  code3Why: Code3WhyBlock,
-  code3Stats: Code3StatsBlock,
-  code3Testimonials: Code3TestimonialsBlock,
-  code3Clients: Code3ClientsBlock,
-  code3Accreditations: Code3AccreditationsBlock,
-  code3Industries: Code3IndustriesBlock,
-  code3Process: Code3ProcessBlock,
-  code3AboutTeaser: Code3AboutTeaserBlock,
-  code3BlogPreview: Code3BlogPreviewBlock,
-  code3Faq: Code3FAQBlock,
-  code3Contact: Code3ContactBlock,
-  code3CtaBanner: Code3CTABannerBlock,
 }
 
 export const RenderBlocks: React.FC<{

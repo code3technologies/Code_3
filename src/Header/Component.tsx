@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 
-import type { Footer, Header, Page } from '@/payload-types'
+import type { Header, Page } from '@/payload-types'
 
 // Define the simplified data structure for navigation pages
 interface NavigationPageData {
@@ -18,7 +18,6 @@ interface NavigationPageData {
 
 export async function Header() {
   const headerData = await getCachedGlobal('header', 1)()
-  const footerData = (await getCachedGlobal('footer', 1)()) as Footer
 
   // Fetch service pages for header menus (infra & digital)
   const payload = await getPayload({ config: configPromise })
@@ -60,11 +59,5 @@ export async function Header() {
       }
     })
 
-  return (
-    <HeaderClient
-      data={(headerData as Header) || null}
-      navigationPages={navigationPages}
-      contactInfo={footerData?.contactInfo || null}
-    />
-  )
+  return <HeaderClient data={(headerData as Header) || null} navigationPages={navigationPages} />
 }
