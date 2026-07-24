@@ -1224,41 +1224,48 @@ export interface ServiceCatalogBlock {
  */
 export interface StatsBlock {
   stats: {
-    icon:
-      | 'shield'
-      | 'server'
-      | 'cloud'
-      | 'network'
-      | 'phone'
-      | 'monitor'
-      | 'wrench'
-      | 'refresh'
-      | 'chart'
-      | 'users'
-      | 'layout'
-      | 'code'
-      | 'search'
-      | 'smartphone'
-      | 'palette'
-      | 'truck'
-      | 'camera'
-      | 'lock'
-      | 'box'
-      | 'lightbulb'
-      | 'headset'
-      | 'building'
-      | 'pin'
-      | 'database'
-      | 'settings'
-      | 'document'
-      | 'graduation'
-      | 'printer'
-      | 'tv'
-      | 'mic'
-      | 'wifi'
-      | 'handshake'
-      | 'check'
-      | 'smile';
+    /**
+     * Used only when no icon image is uploaded below.
+     */
+    icon?:
+      | (
+          | 'shield'
+          | 'server'
+          | 'cloud'
+          | 'network'
+          | 'phone'
+          | 'monitor'
+          | 'wrench'
+          | 'refresh'
+          | 'chart'
+          | 'users'
+          | 'layout'
+          | 'code'
+          | 'search'
+          | 'smartphone'
+          | 'palette'
+          | 'truck'
+          | 'camera'
+          | 'lock'
+          | 'box'
+          | 'lightbulb'
+          | 'headset'
+          | 'building'
+          | 'pin'
+          | 'database'
+          | 'settings'
+          | 'document'
+          | 'graduation'
+          | 'printer'
+          | 'tv'
+          | 'mic'
+          | 'wifi'
+          | 'handshake'
+          | 'check'
+          | 'smile'
+        )
+      | null;
+    iconMedia?: (string | null) | Media;
     value: number;
     suffix?: string | null;
     label: string;
@@ -2136,6 +2143,7 @@ export interface StatsBlockSelect<T extends boolean = true> {
     | T
     | {
         icon?: T;
+        iconMedia?: T;
         value?: T;
         suffix?: T;
         label?: T;

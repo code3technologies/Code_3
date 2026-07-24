@@ -20,7 +20,16 @@ export const Stats: Block = {
           name: 'icon',
           type: 'select',
           options: [...ICON_PRESET_OPTIONS],
-          required: true,
+          defaultValue: 'check',
+          admin: {
+            description: 'Used only when no icon image is uploaded below.',
+          },
+        },
+        {
+          name: 'iconMedia',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon Image (overrides preset)',
         },
         {
           name: 'value',

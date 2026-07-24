@@ -4,6 +4,7 @@ import type { StatsBlock as StatsBlockProps } from 'src/payload-types'
 import React, { useEffect, useRef, useState } from 'react'
 import { cn } from '@/utilities/ui'
 import { ServiceIcon } from '@/components/site/icons'
+import { IconMedia } from '@/components/site/IconMedia'
 
 type Props = {
   className?: string
@@ -63,8 +64,12 @@ export const StatsBlock: React.FC<Props> = ({ className, stats = [] }) => {
         >
           {safeStats.map((stat, i) => (
             <div key={stat.id || i} className="flex flex-col items-center gap-3 px-6 py-10 text-center">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/40">
-                <ServiceIcon preset={stat.icon} className="h-5 w-5 text-white" />
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/40 overflow-hidden">
+                {stat.iconMedia ? (
+                  <IconMedia resource={stat.iconMedia} className="h-6 w-6 object-contain" />
+                ) : (
+                  <ServiceIcon preset={stat.icon || 'check'} className="h-5 w-5 text-white" />
+                )}
               </span>
               <Counter target={stat.value} suffix={stat.suffix} />
               <div className="text-sm text-white/80">{stat.label}</div>
