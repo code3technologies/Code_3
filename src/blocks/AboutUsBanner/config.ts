@@ -10,18 +10,21 @@ export const AboutUsBanner: Block = {
       label: 'Main Title',
       defaultValue: 'ABOUT US',
       required: true,
+      localized: true,
     },
     {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle',
       required: true,
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
       required: true,
+      localized: true,
     },
     linkGroup({
       appearances: ['default', 'outline'],
@@ -48,6 +51,7 @@ export const AboutUsBanner: Block = {
           type: 'text',
           label: 'Alt Text',
           required: true,
+          localized: true,
         },
         {
           name: 'aspectRatio',
@@ -91,6 +95,7 @@ export const AboutUsBanner: Block = {
           type: 'text',
           label: 'Alt Text',
           required: true,
+          localized: true,
         },
         {
           name: 'aspectRatio',

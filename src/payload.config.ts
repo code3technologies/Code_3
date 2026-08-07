@@ -20,6 +20,8 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Complaints } from './collections/Complaints'
 import { ComplaintAttachments } from './collections/ComplaintAttachments'
+import { JobApplications } from './collections/JobApplications'
+import { JobApplicationAttachments } from './collections/JobApplicationAttachments'
 import { RegisterComplaint } from './globals/RegisterComplaint'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 
@@ -67,7 +69,18 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Devices, Users, Complaints, ComplaintAttachments],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Devices,
+    Users,
+    Complaints,
+    ComplaintAttachments,
+    JobApplications,
+    JobApplicationAttachments,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, RegisterComplaint],
   localization: {
@@ -94,14 +107,15 @@ export default buildConfig({
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
-    // Separate private store: files customers attach to complaint forms. Kept on its own
-    // token/store so this data isn't reachable by direct URL the way public media is —
-    // deliberately NOT the same store as Media above.
+    // Separate private store: files customers attach to complaint forms, and now resumes/cover
+    // letters from job applications. Kept on its own token/store so this data isn't reachable
+    // by direct URL the way public media is — deliberately NOT the same store as Media above.
     vercelBlobStorage({
       enabled: Boolean(process.env.COMPLAINTS_BLOB_TOKEN),
       clientUploads: true,
       collections: {
         'complaint-attachments': true,
+        'job-application-attachments': true,
       },
       token: process.env.COMPLAINTS_BLOB_TOKEN,
     }),

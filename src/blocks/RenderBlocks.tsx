@@ -40,6 +40,9 @@ import { SpecComparisonTableBlock } from './SpecComparisonTable/Component'
 import { RoomPanelDemoBlock } from './RoomPanelDemo/Component'
 import { CategorizedIntegrationsBlock } from './CategorizedIntegrations/Component'
 import { DeviceBrandShowcaseBlock } from './DeviceBrandShowcase/Component'
+import { BrandDeviceGridBlock } from './BrandDeviceGrid/Component'
+import { DeviceEnquiryBlock } from './DeviceEnquiry/Component'
+import { ImageContentBlock } from './ImageContent/Component'
 import { RoomSizeCardsBlock } from './RoomSizeCards/Component'
 import { TestimonialsBlock } from './Testimonials/Component'
 import { AccreditationsBlock } from './Accreditations/Component'
@@ -93,6 +96,9 @@ const blockComponents = {
   roomPanelDemo: RoomPanelDemoBlock,
   categorizedIntegrations: CategorizedIntegrationsBlock,
   deviceBrandShowcase: DeviceBrandShowcaseBlock,
+  brandDeviceGrid: BrandDeviceGridBlock,
+  deviceEnquiry: DeviceEnquiryBlock,
+  imageContent: ImageContentBlock,
   roomSizeCards: RoomSizeCardsBlock,
   testimonials: TestimonialsBlock,
   accreditations: AccreditationsBlock,

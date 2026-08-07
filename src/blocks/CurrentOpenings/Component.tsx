@@ -5,12 +5,78 @@ import { cn } from '@/utilities/ui'
 import React, { useMemo, useState } from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
+import { Button } from '@/components/ui/button'
+import { JobApplicationModal } from './JobApplicationModal'
 
-type Props = {
-  className?: string
-} & CurrentOpeningsBlockProps
+type Job = NonNullable<CurrentOpeningsBlockProps['jobListings']>[number]
 
-export const CurrentOpeningsBlock: React.FC<Props> = ({
+function toLines(text?: string | null): string[] {
+  return (text || '').split('\n').map((line) => line.trim()).filter(Boolean)
+}
+
+function JobDetailsModal({ job, onClose, onApply }: { job: Job; onClose: () => void; onApply: () => void }) {
+  const responsibilities = toLines(job.responsibilitiesText)
+  const requirements = toLines(job.requirementsText)
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto px-4 py-8">
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} aria-hidden="true" />
+
+      <div className="relative z-50 my-auto max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 text-gray-400 transition-colors hover:text-gray-600"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        <span className="font-medium text-xs uppercase tracking-wide text-primary_red">{job.department}</span>
+        <h3 className="mt-1 text-xl font-semibold text-foreground">{job.title}</h3>
+        <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
+          <span>{job.location}</span>
+          <span>{job.type}</span>
+        </div>
+
+        <p className="mt-4 text-sm leading-relaxed text-gray-600">{job.description}</p>
+
+        {responsibilities.length > 0 && (
+          <div className="mt-5">
+            <h4 className="text-sm font-semibold text-foreground">Key Responsibilities</h4>
+            <ul className="mt-2 space-y-1.5">
+              {responsibilities.map((line, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-primary_red" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {requirements.length > 0 && (
+          <div className="mt-5">
+            <h4 className="text-sm font-semibold text-foreground">Requirements</h4>
+            <ul className="mt-2 space-y-1.5">
+              {requirements.map((line, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-primary_red" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <Button onClick={onApply} variant="default" className="mt-6 w-full">
+          Apply Now
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+export const CurrentOpeningsBlock: React.FC<CurrentOpeningsBlockProps & { className?: string }> = ({
   className,
   badge,
   title,
@@ -20,6 +86,8 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
   jobListings = [],
 }) => {
   const [activeDept, setActiveDept] = useState('all')
+  const [detailsJob, setDetailsJob] = useState<Job | null>(null)
+  const [applyJobTitle, setApplyJobTitle] = useState<string | null>(null)
 
   const filteredJobs = useMemo(() => {
     if (activeDept === 'all') return jobListings || []
@@ -69,44 +137,63 @@ export const CurrentOpeningsBlock: React.FC<Props> = ({
           {filteredJobs.length === 0 && (
             <p className="text-sm text-gray-500">No open roles in this department right now.</p>
           )}
-          {filteredJobs.map((job, index) => {
-            const href = job.viewJobLink || `mailto:info@code3.ae?subject=${encodeURIComponent(`Application: ${job.title}`)}`
-            return (
-              <Reveal key={job.id || index} delayMs={Math.min(index, 5) * 60}>
-                <div className="rounded-2xl border border-border p-6 transition-colors hover:border-gray-300">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-                    <div className="flex-1">
-                      <span className="font-medium text-xs uppercase tracking-wide text-primary_red">
-                        {job.department}
+          {filteredJobs.map((job, index) => (
+            <Reveal key={job.id || index} delayMs={Math.min(index, 5) * 60}>
+              <div className="rounded-2xl border border-border p-6 transition-colors hover:border-gray-300">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                  <div className="flex-1">
+                    <span className="font-medium text-xs uppercase tracking-wide text-primary_red">
+                      {job.department}
+                    </span>
+                    <div className="flex flex-wrap items-center gap-2 mt-1 mb-3">
+                      <h3 className="text-lg font-semibold text-foreground">{job.title}</h3>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs bg-[#F5F5F6] text-gray-600">
+                        {job.category}
                       </span>
-                      <div className="flex flex-wrap items-center gap-2 mt-1 mb-3">
-                        <h3 className="text-lg font-semibold text-foreground">{job.title}</h3>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs bg-[#F5F5F6] text-gray-600">
-                          {job.category}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-600 leading-relaxed mb-3">{job.description}</p>
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <span>{job.location}</span>
-                        <span>{job.type}</span>
-                      </div>
                     </div>
-                    <a
-                      href={href}
-                      className="inline-flex flex-none items-center gap-1.5 self-start rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary_red hover:text-primary_red"
+                    <p className="text-sm text-gray-600 leading-relaxed mb-3">{job.description}</p>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <span>{job.location}</span>
+                      <span>{job.type}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-none flex-col gap-2 self-start sm:flex-row">
+                    <button
+                      onClick={() => setDetailsJob(job)}
+                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary_red hover:text-primary_red"
                     >
-                      {job.viewJobText || 'View Job'}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
-                        <path d="M5 12h14M13 6l6 6-6 6" />
-                      </svg>
-                    </a>
+                      View More Details
+                    </button>
+                    <Button
+                      onClick={() => setApplyJobTitle(job.title)}
+                      variant="default"
+                      size="sm"
+                      className="rounded-full"
+                    >
+                      Apply Now
+                    </Button>
                   </div>
                 </div>
-              </Reveal>
-            )
-          })}
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
+
+      {detailsJob && (
+        <JobDetailsModal
+          job={detailsJob}
+          onClose={() => setDetailsJob(null)}
+          onApply={() => {
+            setApplyJobTitle(detailsJob.title)
+            setDetailsJob(null)
+          }}
+        />
+      )}
+
+      {applyJobTitle && (
+        <JobApplicationModal jobTitle={applyJobTitle} onClose={() => setApplyJobTitle(null)} />
+      )}
     </section>
   )
 }

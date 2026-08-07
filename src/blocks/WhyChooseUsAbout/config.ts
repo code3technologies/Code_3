@@ -31,7 +31,7 @@ export const WhyChooseUsAbout: Block = {
       type: 'array',
       label: 'Features',
       minRows: 1,
-      maxRows: 4,
+      maxRows: 8,
       fields: [
         {
           name: 'icon',

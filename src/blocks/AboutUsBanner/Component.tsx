@@ -2,7 +2,6 @@ import type { AboutUsBannerBlock as AboutUsBannerBlockProps } from 'src/payload-
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
@@ -11,19 +10,11 @@ type Props = {
   className?: string
 } & AboutUsBannerBlockProps
 
-export const AboutUsBannerBlock: React.FC<Props> = ({
-  className,
-  title,
-  subtitle,
-  description,
-  links,
-  mobileImages = [],
-  desktopImages = [],
-}) => {
+export const AboutUsBannerBlock: React.FC<Props> = ({ className, title, subtitle, description, links }) => {
   return (
     <section className={cn('bg-white py-8 md:py-10', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mb-12">
+        <Reveal className="max-w-2xl">
           {title && <Eyebrow>{title}</Eyebrow>}
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground">
             {subtitle}
@@ -36,55 +27,6 @@ export const AboutUsBannerBlock: React.FC<Props> = ({
               ))}
             </div>
           )}
-        </Reveal>
-
-        {/* Desktop images */}
-        <Reveal delayMs={100} className="hidden md:grid grid-cols-2 gap-6">
-          {desktopImages?.map((imageData, index) => {
-            if (!imageData.image) return null
-            return (
-              <div
-                key={index}
-                className={cn(
-                  'relative w-full overflow-hidden rounded-2xl border border-border',
-                  imageData.aspectRatio || 'aspect-6/3',
-                  imageData.hasMarginBottom && 'self-start',
-                )}
-              >
-                <Media
-                  resource={imageData.image}
-                  fill
-                  size="50vw"
-                  imgClassName="object-cover"
-                  priority={index === 0}
-                />
-              </div>
-            )
-          })}
-        </Reveal>
-
-        {/* Mobile images */}
-        <Reveal delayMs={100} className="md:hidden flex flex-col gap-4">
-          {mobileImages?.map((imageData, index) => {
-            if (!imageData.image) return null
-            return (
-              <div
-                key={index}
-                className={cn(
-                  'relative w-full overflow-hidden rounded-2xl border border-border',
-                  imageData.aspectRatio || 'aspect-4/3',
-                )}
-              >
-                <Media
-                  resource={imageData.image}
-                  fill
-                  size="100vw"
-                  imgClassName="object-cover"
-                  priority={index === 0}
-                />
-              </div>
-            )
-          })}
         </Reveal>
       </div>
     </section>

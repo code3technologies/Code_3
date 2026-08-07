@@ -75,6 +75,8 @@ export interface Config {
     users: User;
     complaints: Complaint;
     'complaint-attachments': ComplaintAttachment;
+    'job-applications': JobApplication;
+    'job-application-attachments': JobApplicationAttachment;
     redirects: Redirect;
     forms: Form;
     enquiries: Enquiry;
@@ -94,6 +96,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     complaints: ComplaintsSelect<false> | ComplaintsSelect<true>;
     'complaint-attachments': ComplaintAttachmentsSelect<false> | ComplaintAttachmentsSelect<true>;
+    'job-applications': JobApplicationsSelect<false> | JobApplicationsSelect<true>;
+    'job-application-attachments': JobApplicationAttachmentsSelect<false> | JobApplicationAttachmentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
@@ -334,6 +338,9 @@ export interface Page {
     | RoomPanelDemoBlock
     | CategorizedIntegrationsBlock
     | DeviceBrandShowcaseBlock
+    | BrandDeviceGridBlock
+    | DeviceEnquiryBlock
+    | ImageContentBlock
     | RoomSizeCardsBlock
     | TestimonialsBlock
     | AccreditationsBlock
@@ -910,11 +917,58 @@ export interface MissionAndValuesBlock {
     title: string;
     content: string;
   };
-  valuesCard: {
-    icon: string | Media;
-    title: string;
-    content: string;
-  };
+  valuesBadge?: string | null;
+  valuesTitle?: string | null;
+  values?:
+    | {
+        iconPreset?:
+          | (
+              | 'shield'
+              | 'server'
+              | 'cloud'
+              | 'network'
+              | 'phone'
+              | 'monitor'
+              | 'wrench'
+              | 'refresh'
+              | 'chart'
+              | 'users'
+              | 'layout'
+              | 'code'
+              | 'search'
+              | 'smartphone'
+              | 'palette'
+              | 'truck'
+              | 'camera'
+              | 'lock'
+              | 'box'
+              | 'lightbulb'
+              | 'headset'
+              | 'building'
+              | 'pin'
+              | 'database'
+              | 'settings'
+              | 'document'
+              | 'graduation'
+              | 'printer'
+              | 'tv'
+              | 'mic'
+              | 'wifi'
+              | 'handshake'
+              | 'check'
+              | 'smile'
+              | 'health'
+              | 'home'
+              | 'shoppingBag'
+              | 'factory'
+              | 'bed'
+            )
+          | null;
+        title: string;
+        itemsText: string;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'missionAndValues';
@@ -1049,6 +1103,11 @@ export interface CareersBlock {
   subtitle: string;
   description?: string | null;
   buttonText?: string | null;
+  cultureBadge?: string | null;
+  cultureHeading?: string | null;
+  cultureDescription?: string | null;
+  cultureLinkText?: string | null;
+  cultureLinkHref?: string | null;
   teamImages?:
     | {
         image: string | Media;
@@ -1257,8 +1316,14 @@ export interface CurrentOpeningsBlock {
         description: string;
         location: string;
         type: string;
-        viewJobText: string;
-        viewJobLink?: string | null;
+        /**
+         * Shown in the "View More Details" modal, one bullet point per line.
+         */
+        responsibilitiesText?: string | null;
+        /**
+         * Shown in the "View More Details" modal, one bullet point per line.
+         */
+        requirementsText?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1809,6 +1874,63 @@ export interface DeviceBrandShowcaseBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandDeviceGridBlock".
+ */
+export interface BrandDeviceGridBlock {
+  /**
+   * Which brand's devices (from the Devices collection) to list here.
+   */
+  brand: 'Yealink' | 'Logitech' | 'Jabra' | 'Cisco' | 'Poly';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'brandDeviceGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DeviceEnquiryBlock".
+ */
+export interface DeviceEnquiryBlock {
+  heading: string;
+  /**
+   * Included in the submitted enquiry, e.g. "Yealink Video Conferencing Devices".
+   */
+  deviceLabel: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'deviceEnquiry';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageContentBlock".
+ */
+export interface ImageContentBlock {
+  image: string | Media;
+  imagePosition?: ('left' | 'right') | null;
+  /**
+   * Optional H1 rendered above the text column, e.g. for the first section on a page.
+   */
+  heading?: string | null;
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RoomSizeCardsBlock".
  */
 export interface RoomSizeCardsBlock {
@@ -2169,6 +2291,44 @@ export interface ComplaintAttachment {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-applications".
+ */
+export interface JobApplication {
+  id: string;
+  jobTitle: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  employmentStatus: 'employed' | 'unemployed' | 'freelancer' | 'student';
+  resume: string | JobApplicationAttachment;
+  coverLetter?: (string | null) | JobApplicationAttachment;
+  status?: ('new' | 'reviewed' | 'shortlisted' | 'rejected') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Resumes and cover letters uploaded with job applications
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-application-attachments".
+ */
+export interface JobApplicationAttachment {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -2389,6 +2549,14 @@ export interface PayloadLockedDocument {
         value: string | ComplaintAttachment;
       } | null)
     | ({
+        relationTo: 'job-applications';
+        value: string | JobApplication;
+      } | null)
+    | ({
+        relationTo: 'job-application-attachments';
+        value: string | JobApplicationAttachment;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -2549,6 +2717,9 @@ export interface PagesSelect<T extends boolean = true> {
         roomPanelDemo?: T | RoomPanelDemoBlockSelect<T>;
         categorizedIntegrations?: T | CategorizedIntegrationsBlockSelect<T>;
         deviceBrandShowcase?: T | DeviceBrandShowcaseBlockSelect<T>;
+        brandDeviceGrid?: T | BrandDeviceGridBlockSelect<T>;
+        deviceEnquiry?: T | DeviceEnquiryBlockSelect<T>;
+        imageContent?: T | ImageContentBlockSelect<T>;
         roomSizeCards?: T | RoomSizeCardsBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         accreditations?: T | AccreditationsBlockSelect<T>;
@@ -2692,12 +2863,15 @@ export interface MissionAndValuesBlockSelect<T extends boolean = true> {
         title?: T;
         content?: T;
       };
-  valuesCard?:
+  valuesBadge?: T;
+  valuesTitle?: T;
+  values?:
     | T
     | {
-        icon?: T;
+        iconPreset?: T;
         title?: T;
-        content?: T;
+        itemsText?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -2818,6 +2992,11 @@ export interface CareersBlockSelect<T extends boolean = true> {
   subtitle?: T;
   description?: T;
   buttonText?: T;
+  cultureBadge?: T;
+  cultureHeading?: T;
+  cultureDescription?: T;
+  cultureLinkText?: T;
+  cultureLinkHref?: T;
   teamImages?:
     | T
     | {
@@ -2968,8 +3147,8 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
         description?: T;
         location?: T;
         type?: T;
-        viewJobText?: T;
-        viewJobLink?: T;
+        responsibilitiesText?: T;
+        requirementsText?: T;
         id?: T;
       };
   id?: T;
@@ -3362,6 +3541,37 @@ export interface DeviceBrandShowcaseBlockSelect<T extends boolean = true> {
         cisco?: T;
         poly?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandDeviceGridBlock_select".
+ */
+export interface BrandDeviceGridBlockSelect<T extends boolean = true> {
+  brand?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DeviceEnquiryBlock_select".
+ */
+export interface DeviceEnquiryBlockSelect<T extends boolean = true> {
+  heading?: T;
+  deviceLabel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageContentBlock_select".
+ */
+export interface ImageContentBlockSelect<T extends boolean = true> {
+  image?: T;
+  imagePosition?: T;
+  heading?: T;
+  richText?: T;
   id?: T;
   blockName?: T;
 }
@@ -3760,6 +3970,40 @@ export interface ComplaintAttachmentsSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-applications_select".
+ */
+export interface JobApplicationsSelect<T extends boolean = true> {
+  jobTitle?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  location?: T;
+  employmentStatus?: T;
+  resume?: T;
+  coverLetter?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-application-attachments_select".
+ */
+export interface JobApplicationAttachmentsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -73,7 +73,7 @@ export const AboutTeaserBlock: React.FC<Props> = ({
           {hasImage && (
             <Reveal
               delayMs={100}
-              className="relative w-full aspect-4/3 md:aspect-6/5 overflow-hidden rounded-2xl border border-border"
+              className="relative w-full aspect-[4/3] md:aspect-[6/5] overflow-hidden rounded-2xl border border-border"
             >
               <Media
                 resource={image!}
