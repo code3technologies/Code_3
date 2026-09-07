@@ -7,10 +7,15 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
   ArrowRight,
+  Camera,
   ChevronsDown,
+  Cloud,
   Hand,
+  Laptop,
   MonitorPlay,
+  Network,
   PenLine,
+  ShieldCheck,
   Sparkles,
   Users,
   Video,
@@ -21,6 +26,14 @@ import {
 // Best-effort icon per capability step, matched by keyword.
 function getCapabilityIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  if (t.includes('cyber')) return ShieldCheck
+  // Word-boundary match: bare `includes('it')` would false-positive on
+  // "wait", "quit", "unit", etc.
+  if (/\bit\b/.test(t)) return Laptop
+  if (t.includes('network')) return Network
+  if (t.includes('cloud')) return Cloud
+  if (/\bav\b/.test(t)) return Video
+  if (t.includes('security')) return Camera
   if (t.includes('touch')) return Hand
   if (t.includes('wireless')) return Wifi
   if (t.includes('annotate')) return PenLine
