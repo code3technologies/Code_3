@@ -138,6 +138,11 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('remote support')) return Headset
   if (t.includes('on-site deployment') || t.includes('on site deployment')) return Wrench
   if (t.includes('project management')) return ListChecks
+  if (t.includes('customer first')) return Users
+  if (/^integrity$/.test(t.trim())) return ShieldCheck
+  if (t.includes('technical excellence')) return Settings2
+  if (t.includes('continuous improvement')) return RefreshCw
+  if (t.includes('reliable service')) return Headset
   if (t.includes('night surveillance')) return Moon
   if (t.includes('parking')) return Car
   if (t.includes('warehouse')) return Warehouse
