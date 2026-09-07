@@ -1990,6 +1990,52 @@ export interface ProcessTimelineBlock {
   emphasizeFinalStep?: boolean | null;
   steps?:
     | {
+        /**
+         * Optional — shows this icon in the step marker instead of the step number.
+         */
+        icon?:
+          | (
+              | 'shield'
+              | 'server'
+              | 'cloud'
+              | 'network'
+              | 'phone'
+              | 'monitor'
+              | 'wrench'
+              | 'refresh'
+              | 'chart'
+              | 'users'
+              | 'layout'
+              | 'code'
+              | 'search'
+              | 'smartphone'
+              | 'palette'
+              | 'truck'
+              | 'camera'
+              | 'lock'
+              | 'box'
+              | 'lightbulb'
+              | 'headset'
+              | 'building'
+              | 'pin'
+              | 'database'
+              | 'settings'
+              | 'document'
+              | 'graduation'
+              | 'printer'
+              | 'tv'
+              | 'mic'
+              | 'wifi'
+              | 'handshake'
+              | 'check'
+              | 'smile'
+              | 'health'
+              | 'home'
+              | 'shoppingBag'
+              | 'factory'
+              | 'bed'
+            )
+          | null;
         title: string;
         description: string;
         id?: string | null;
@@ -4961,6 +5007,7 @@ export interface ProcessTimelineBlockSelect<T extends boolean = true> {
   steps?:
     | T
     | {
+        icon?: T;
         title?: T;
         description?: T;
         id?: T;
