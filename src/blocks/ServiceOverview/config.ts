@@ -35,6 +35,20 @@ export const ServiceOverview: Block = {
       },
     },
     {
+      name: 'highlights',
+      type: 'array',
+      label: 'Highlight Stats (optional)',
+      maxRows: 4,
+      admin: {
+        description:
+          'Optional — shown as a stat panel on the right instead of an image (e.g. real figures like "30+ Experienced Professionals"). Ignored if an image is set.',
+      },
+      fields: [
+        { name: 'value', type: 'text', required: true, localized: true, admin: { description: 'e.g. "30+"' } },
+        { name: 'label', type: 'text', required: true, localized: true, admin: { description: 'e.g. "Experienced Professionals"' } },
+      ],
+    },
+    {
       name: 'reserveSidebarSpace',
       type: 'checkbox',
       label: 'Reserve space for a floating sidebar form (e.g. Quick Enquiry)',

@@ -1,4 +1,5 @@
 import React from 'react'
+import { CheckCircle2, Handshake, Smile, Users, type LucideIcon } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
@@ -9,6 +10,7 @@ interface ServiceOverviewProps {
   title?: string
   description?: string
   image?: string | MediaType | null
+  highlights?: { value?: string | null; label?: string | null; id?: string | null }[] | null
   // Most service pages pair this block with a QuickEnquiry form that floats
   // absolutely over the top-right of the page, so the text column normally
   // needs to stay narrow even without an image to avoid running under it.
@@ -18,24 +20,38 @@ interface ServiceOverviewProps {
   className?: string
 }
 
+// Best-effort icon per highlight label, matched by keyword - mirrors the
+// same real stats and icon choices already used in the site's heroes.
+function getHighlightIcon(label?: string | null): LucideIcon {
+  const t = (label || '').toLowerCase()
+  if (t.includes('partner')) return Handshake
+  if (t.includes('project')) return CheckCircle2
+  if (t.includes('customer') || t.includes('client')) return Smile
+  return Users
+}
+
 const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
   className,
   badge,
   title,
   description,
   image,
+  highlights,
   reserveSidebarSpace = true,
 }) => {
   const hasImage = !!image && typeof image === 'object'
+  const safeHighlights = !hasImage ? highlights || [] : []
+  const hasHighlights = safeHighlights.length > 0
+  const hasSideContent = hasImage || hasHighlights
 
   return (
     <section className={cn('bg-white pt-2 pb-8 md:pt-3 md:pb-10', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <div className={cn('flex flex-col items-start gap-6', hasImage && 'md:flex-row md:gap-8')}>
+        <div className={cn('flex flex-col items-start gap-6', hasSideContent && 'md:flex-row md:gap-8')}>
           <Reveal
             className={cn(
               'flex flex-1 flex-col items-start gap-4 text-left',
-              !hasImage && reserveSidebarSpace && 'lg:max-w-[calc(100%-420px)]',
+              !hasSideContent && reserveSidebarSpace && 'lg:max-w-[calc(100%-420px)]',
             )}
           >
             {badge && (
@@ -45,7 +61,13 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
             )}
             <h2 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl">{title}</h2>
             {description && (
-              <div className={cn('max-w-3xl space-y-4 text-base text-gray-600 md:text-lg', hasImage && 'max-w-lg', !hasImage && 'max-w-none')}>
+              <div
+                className={cn(
+                  'max-w-3xl space-y-4 text-base text-gray-600 md:text-lg',
+                  hasSideContent && 'max-w-lg',
+                  !hasSideContent && 'max-w-none',
+                )}
+              >
                 {/* Blank-line-separated paragraphs render as distinct <p> tags
                     instead of one run-on block - a single-paragraph
                     description (the common case) still renders exactly as
@@ -60,6 +82,26 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
           {hasImage && (
             <Reveal delayMs={100} className="flex-1">
               <Media resource={image!} imgClassName="w-full h-full rounded-[2rem] object-cover" />
+            </Reveal>
+          )}
+
+          {!hasImage && hasHighlights && (
+            <Reveal delayMs={100} className="grid w-full flex-none grid-cols-2 gap-4 md:w-auto">
+              {safeHighlights.map((stat, i) => {
+                const Icon = getHighlightIcon(stat.label)
+                return (
+                  <div
+                    key={stat.id || i}
+                    className="flex w-full flex-col items-start gap-2 rounded-2xl border border-border bg-[#FDEBEC]/40 p-5 md:w-40"
+                  >
+                    <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-primary_red/10 text-primary_red">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div className="text-2xl font-bold leading-none text-gray-900">{stat.value}</div>
+                    <div className="text-xs font-medium leading-snug text-gray-500">{stat.label}</div>
+                  </div>
+                )
+              })}
             </Reveal>
           )}
         </div>

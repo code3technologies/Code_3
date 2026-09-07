@@ -1548,6 +1548,22 @@ export interface ServiceOverviewBlock {
    */
   image?: (string | null) | Media;
   /**
+   * Optional — shown as a stat panel on the right instead of an image (e.g. real figures like "30+ Experienced Professionals"). Ignored if an image is set.
+   */
+  highlights?:
+    | {
+        /**
+         * e.g. "30+"
+         */
+        value: string;
+        /**
+         * e.g. "Experienced Professionals"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Keep checked on service pages that also have a Quick Enquiry block, so text doesn't run under it. Uncheck for standalone pages with no such sidebar, so the text uses the full width.
    */
   reserveSidebarSpace?: boolean | null;
@@ -4695,6 +4711,13 @@ export interface ServiceOverviewBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   image?: T;
+  highlights?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
   reserveSidebarSpace?: T;
   id?: T;
   blockName?: T;
