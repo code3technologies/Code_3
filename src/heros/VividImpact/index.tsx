@@ -28,6 +28,26 @@ export const VividImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTe
         className="relative flex min-h-[28rem] w-full items-center md:min-h-[36rem]"
         style={{ background: 'linear-gradient(160deg, #b3121f 0%, #d7213c 45%, #6e0d17 100%)' }}
       >
+        {/* Slow-drifting ambient glow - the same animate-drift utility used
+            elsewhere on the site, just applied more sparingly here (no
+            floating icons or streaks) so the background feels alive without
+            turning into a copy of Home's busier hero. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 -top-32 h-[30rem] w-[30rem] animate-drift rounded-full bg-white/10 blur-[120px]"
+          style={{ animationDuration: '18s' }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 animate-drift rounded-full bg-black/20 blur-[110px]"
+          style={{ animationDuration: '22s', animationDelay: '-8s' }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-1/4 top-1/2 h-72 w-72 animate-drift rounded-full bg-white/[0.06] blur-[100px]"
+          style={{ animationDuration: '26s', animationDelay: '-4s' }}
+        />
+
         <div className="container relative z-10 mx-auto flex flex-1 items-center px-4 py-14 sm:px-6 md:py-20">
           <div className="flex w-full flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-xl">
