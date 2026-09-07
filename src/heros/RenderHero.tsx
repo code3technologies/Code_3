@@ -7,6 +7,7 @@ import { LowImpactHero } from '@/heros/LowImpact'
 import { MediumImpactHero } from '@/heros/MediumImpact'
 import { PhotoImpactHero } from '@/heros/PhotoImpact'
 import { SoftImpactHero } from '@/heros/SoftImpact'
+import { SplitImpactHero } from '@/heros/SplitImpact'
 import { VividImpactHero } from '@/heros/VividImpact'
 
 const heroes = {
@@ -16,6 +17,7 @@ const heroes = {
   photoImpact: PhotoImpactHero,
   softImpact: SoftImpactHero,
   vividImpact: VividImpactHero,
+  splitImpact: SplitImpactHero,
 }
 
 export const RenderHero: React.FC<Page['hero']> = (props) => {

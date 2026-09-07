@@ -47,6 +47,10 @@ export const hero: Field = {
           label: 'Vivid Impact',
           value: 'vividImpact',
         },
+        {
+          label: 'Split Impact',
+          value: 'splitImpact',
+        },
       ],
       required: true,
     },
