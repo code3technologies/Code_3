@@ -33,6 +33,15 @@ export const RoomSizeGuide: Block = {
         { name: 'recommended', type: 'text', required: true, localized: true },
       ],
     },
+    {
+      name: 'note',
+      type: 'textarea',
+      label: 'Closing Guidance (optional)',
+      localized: true,
+      admin: {
+        description: 'Shown centered below the table, e.g. "The right method depends on your workforce, environment, and existing infrastructure."',
+      },
+    },
     ...ctaFields('Talk to Our Experts'),
   ],
 }

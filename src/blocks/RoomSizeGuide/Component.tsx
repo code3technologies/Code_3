@@ -11,12 +11,18 @@ import {
   Building2,
   Camera,
   Car,
+  CreditCard,
   DoorOpen,
   Factory,
+  Fingerprint,
   Globe,
   GraduationCap,
+  KeySquare,
+  Layers,
   Monitor,
   Presentation,
+  ScanFace,
+  Smartphone,
   Sparkles,
   Store,
   Sun,
@@ -50,6 +56,13 @@ function getRoomIcon(text?: string | null): LucideIcon {
   if (t.includes('open-ceiling') || t.includes('open ceiling')) return Warehouse
   if (t.includes('outdoor')) return Sun
   if (t.includes('office')) return Briefcase
+  if (t.includes('simple') || t.includes('employee access')) return CreditCard
+  if (t.includes('high-security') || t.includes('high security')) return Fingerprint
+  if (t.includes('touchless')) return ScanFace
+  if (t.includes('low-cost') || t.includes('low cost')) return KeySquare
+  if (t.includes('workforce')) return Users
+  if (t.includes('modern workplace')) return Smartphone
+  if (t.includes('mixed')) return Layers
   return Presentation
 }
 
@@ -63,6 +76,7 @@ export const RoomSizeGuideBlock: React.FC<Props> = ({
   title,
   subtitle,
   rows = [],
+  note,
   ctaLabel,
   ctaUrl,
 }) => {
@@ -103,6 +117,12 @@ export const RoomSizeGuideBlock: React.FC<Props> = ({
             )
           })}
         </Reveal>
+
+        {note && (
+          <Reveal delayMs={150} className="mx-auto mt-6 max-w-2xl text-center">
+            <p className="text-sm text-gray-500">{note}</p>
+          </Reveal>
+        )}
 
         {ctaLabel && ctaUrl && (
           <div className="mt-6 flex justify-center md:mt-7">

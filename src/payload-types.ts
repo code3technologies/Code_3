@@ -3122,6 +3122,10 @@ export interface RoomSizeGuideBlock {
       }[]
     | null;
   /**
+   * Shown centered below the table, e.g. "The right method depends on your workforce, environment, and existing infrastructure."
+   */
+  note?: string | null;
+  /**
    * Short line shown next to the button.
    */
   ctaText?: string | null;
@@ -5764,6 +5768,7 @@ export interface RoomSizeGuideBlockSelect<T extends boolean = true> {
         recommended?: T;
         id?: T;
       };
+  note?: T;
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
