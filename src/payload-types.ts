@@ -366,6 +366,7 @@ export interface Page {
     | SubServicesNavBlock
     | RoomClassificationBlock
     | ScenarioFlowsBlock
+    | TransformationListBlock
     | RoomSizeEstimatorBlock
     | ReactiveProactiveFlowBlock
     | SetupEstimatorBlock
@@ -2764,6 +2765,39 @@ export interface ScenarioFlowsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TransformationListBlock".
+ */
+export interface TransformationListBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  fromLabel?: string | null;
+  toLabel?: string | null;
+  /**
+   * One row per point, e.g. "Sign-in sheets" → "Digital records" - a unified list rather than two separate boxes.
+   */
+  pairs?:
+    | {
+        from: string;
+        to: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'transformationList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RoomSizeEstimatorBlock".
  */
 export interface RoomSizeEstimatorBlock {
@@ -4314,6 +4348,7 @@ export interface PagesSelect<T extends boolean = true> {
         subServicesNav?: T | SubServicesNavBlockSelect<T>;
         roomClassification?: T | RoomClassificationBlockSelect<T>;
         scenarioFlows?: T | ScenarioFlowsBlockSelect<T>;
+        transformationList?: T | TransformationListBlockSelect<T>;
         roomSizeEstimator?: T | RoomSizeEstimatorBlockSelect<T>;
         reactiveProactiveFlow?: T | ReactiveProactiveFlowBlockSelect<T>;
         setupEstimator?: T | SetupEstimatorBlockSelect<T>;
@@ -5589,6 +5624,29 @@ export interface ScenarioFlowsBlockSelect<T extends boolean = true> {
               icon?: T;
               id?: T;
             };
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TransformationListBlock_select".
+ */
+export interface TransformationListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  fromLabel?: T;
+  toLabel?: T;
+  pairs?:
+    | T
+    | {
+        from?: T;
+        to?: T;
         id?: T;
       };
   ctaText?: T;

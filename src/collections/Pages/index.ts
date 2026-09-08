@@ -55,6 +55,7 @@ import { BusinessNeeds } from '@/blocks/BusinessNeeds/config'
 import { SubServicesNav } from '@/blocks/SubServicesNav/config'
 import { RoomClassification } from '@/blocks/RoomClassification/config'
 import { ScenarioFlows } from '@/blocks/ScenarioFlows/config'
+import { TransformationList } from '@/blocks/TransformationList/config'
 import { RoomSizeEstimator } from '@/blocks/RoomSizeEstimator/config'
 import { ReactiveProactiveFlow } from '@/blocks/ReactiveProactiveFlow/config'
 import { SetupEstimator } from '@/blocks/SetupEstimator/config'
@@ -272,6 +273,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 SubServicesNav,
                 RoomClassification,
                 ScenarioFlows,
+                TransformationList,
                 RoomSizeEstimator,
                 ReactiveProactiveFlow,
                 SetupEstimator,

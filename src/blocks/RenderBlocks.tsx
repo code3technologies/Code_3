@@ -60,6 +60,7 @@ import { BusinessNeedsBlock } from './BusinessNeeds/Component'
 import { SubServicesNavBlock } from './SubServicesNav/Component'
 import { RoomClassificationBlock } from './RoomClassification/Component'
 import { ScenarioFlowsBlock } from './ScenarioFlows/Component'
+import { TransformationListBlock } from './TransformationList/Component'
 import { RoomSizeEstimatorBlock } from './RoomSizeEstimator/Component'
 import { ReactiveProactiveFlowBlock } from './ReactiveProactiveFlow/Component'
 import { SetupEstimatorBlock } from './SetupEstimator/Component'
@@ -142,6 +143,7 @@ const blockComponents = {
   subServicesNav: SubServicesNavBlock,
   roomClassification: RoomClassificationBlock,
   scenarioFlows: ScenarioFlowsBlock,
+  transformationList: TransformationListBlock,
   roomSizeEstimator: RoomSizeEstimatorBlock,
   reactiveProactiveFlow: ReactiveProactiveFlowBlock,
   setupEstimator: SetupEstimatorBlock,
