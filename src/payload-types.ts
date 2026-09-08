@@ -3118,6 +3118,10 @@ export interface RoomSizeGuideBlock {
     | {
         room: string;
         recommended: string;
+        /**
+         * Optional — briefly explains why this is the right fit. Shown below the recommendation once any row has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5766,6 +5770,7 @@ export interface RoomSizeGuideBlockSelect<T extends boolean = true> {
     | {
         room?: T;
         recommended?: T;
+        description?: T;
         id?: T;
       };
   note?: T;

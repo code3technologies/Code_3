@@ -113,6 +113,9 @@ export const RoomSizeGuideBlock: React.FC<Props> = ({
                 <span className="inline-flex items-center rounded-full bg-primary_red px-3.5 py-1.5 text-sm font-bold text-white">
                   {row.recommended}
                 </span>
+                {row.description && (
+                  <p className="text-xs leading-relaxed text-gray-500">{row.description}</p>
+                )}
               </div>
             )
           })}

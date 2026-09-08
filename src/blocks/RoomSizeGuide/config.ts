@@ -31,6 +31,13 @@ export const RoomSizeGuide: Block = {
       fields: [
         { name: 'room', type: 'text', required: true, localized: true },
         { name: 'recommended', type: 'text', required: true, localized: true },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: { description: 'Optional — briefly explains why this is the right fit. Shown below the recommendation once any row has one.' },
+        },
       ],
     },
     {
