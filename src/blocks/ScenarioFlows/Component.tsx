@@ -33,7 +33,7 @@ export const ScenarioFlowsBlock: React.FC<Props> = ({
           {subtitle && <p className="mt-2 text-gray-600 leading-relaxed">{subtitle}</p>}
         </Reveal>
 
-        <Reveal delayMs={100} className="mx-auto grid max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
+        <Reveal delayMs={100} className="mx-auto flex max-w-4xl flex-col gap-4">
           {safeScenarios.map((scenario, index) => {
             const steps = scenario.steps || []
             return (
@@ -47,13 +47,13 @@ export const ScenarioFlowsBlock: React.FC<Props> = ({
                   </span>
                   <h3 className="text-base font-semibold text-foreground">{scenario.label}</h3>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-1">
                   {steps.map((step, stepIndex) => (
-                    <span key={step.id || stepIndex} className="inline-flex items-center gap-2">
+                    <span key={step.id || stepIndex} className="inline-flex flex-none items-center gap-2">
                       {stepIndex > 0 && (
                         <ArrowRight className="h-3.5 w-3.5 flex-none text-primary_red/40" strokeWidth={2.5} />
                       )}
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary_red/20 bg-white px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+                      <span className="inline-flex flex-none items-center gap-1.5 whitespace-nowrap rounded-full border border-primary_red/20 bg-white px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
                         {step.icon && (
                           <span className="flex h-4 w-4 flex-none items-center justify-center text-primary_red">
                             <ServiceIcon preset={step.icon} className="h-3.5 w-3.5" />
@@ -64,6 +64,9 @@ export const ScenarioFlowsBlock: React.FC<Props> = ({
                     </span>
                   ))}
                 </div>
+                {scenario.description && (
+                  <p className="mt-3 text-sm leading-relaxed text-gray-500">{scenario.description}</p>
+                )}
               </div>
             )
           })}

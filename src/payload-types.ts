@@ -2693,6 +2693,10 @@ export interface ScenarioFlowsBlock {
          * e.g. "Main Office"
          */
         label: string;
+        /**
+         * One line summarizing the outcome, shown below the flow, e.g. "Every employee entry is authenticated and logged automatically."
+         */
+        description?: string | null;
         steps?:
           | {
               text: string;
@@ -5577,6 +5581,7 @@ export interface ScenarioFlowsBlockSelect<T extends boolean = true> {
     | T
     | {
         label?: T;
+        description?: T;
         steps?:
           | T
           | {

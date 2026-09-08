@@ -41,6 +41,13 @@ export const ScenarioFlows: Block = {
       fields: [
         { name: 'label', type: 'text', label: 'Scenario Label', required: true, localized: true, admin: { description: 'e.g. "Main Office"' } },
         {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: { description: 'One line summarizing the outcome, shown below the flow, e.g. "Every employee entry is authenticated and logged automatically."' },
+        },
+        {
           name: 'steps',
           type: 'array',
           label: 'Flow Steps',
