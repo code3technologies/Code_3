@@ -365,6 +365,7 @@ export interface Page {
     | BusinessNeedsBlock
     | SubServicesNavBlock
     | RoomClassificationBlock
+    | ScenarioFlowsBlock
     | RoomSizeEstimatorBlock
     | ReactiveProactiveFlowBlock
     | SetupEstimatorBlock
@@ -2677,6 +2678,88 @@ export interface RoomClassificationBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScenarioFlowsBlock".
+ */
+export interface ScenarioFlowsBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Each scenario is a short, real-world flow through the system, e.g. "Main Office: Employee enters → biometric authentication → attendance recorded."
+   */
+  scenarios?:
+    | {
+        /**
+         * e.g. "Main Office"
+         */
+        label: string;
+        steps?:
+          | {
+              text: string;
+              icon?:
+                | (
+                    | 'shield'
+                    | 'server'
+                    | 'cloud'
+                    | 'network'
+                    | 'phone'
+                    | 'monitor'
+                    | 'wrench'
+                    | 'refresh'
+                    | 'chart'
+                    | 'users'
+                    | 'layout'
+                    | 'code'
+                    | 'search'
+                    | 'smartphone'
+                    | 'palette'
+                    | 'truck'
+                    | 'camera'
+                    | 'lock'
+                    | 'box'
+                    | 'lightbulb'
+                    | 'headset'
+                    | 'building'
+                    | 'pin'
+                    | 'database'
+                    | 'settings'
+                    | 'document'
+                    | 'graduation'
+                    | 'printer'
+                    | 'tv'
+                    | 'mic'
+                    | 'wifi'
+                    | 'handshake'
+                    | 'check'
+                    | 'smile'
+                    | 'health'
+                    | 'home'
+                    | 'shoppingBag'
+                    | 'factory'
+                    | 'bed'
+                  )
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scenarioFlows';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RoomSizeEstimatorBlock".
  */
 export interface RoomSizeEstimatorBlock {
@@ -4226,6 +4309,7 @@ export interface PagesSelect<T extends boolean = true> {
         businessNeeds?: T | BusinessNeedsBlockSelect<T>;
         subServicesNav?: T | SubServicesNavBlockSelect<T>;
         roomClassification?: T | RoomClassificationBlockSelect<T>;
+        scenarioFlows?: T | ScenarioFlowsBlockSelect<T>;
         roomSizeEstimator?: T | RoomSizeEstimatorBlockSelect<T>;
         reactiveProactiveFlow?: T | ReactiveProactiveFlowBlockSelect<T>;
         setupEstimator?: T | SetupEstimatorBlockSelect<T>;
@@ -5478,6 +5562,33 @@ export interface RoomClassificationBlockSelect<T extends boolean = true> {
         caption?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScenarioFlowsBlock_select".
+ */
+export interface ScenarioFlowsBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  scenarios?:
+    | T
+    | {
+        label?: T;
+        steps?:
+          | T
+          | {
+              text?: T;
+              icon?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }
