@@ -21,10 +21,12 @@ import {
   Cloud,
   CloudMoon,
   Columns3,
+  CreditCard,
   Crosshair,
   DoorOpen,
   Fence,
   FileText,
+  Fingerprint,
   Footprints,
   Frame,
   GraduationCap,
@@ -36,7 +38,9 @@ import {
   Headset,
   Home,
   Image as ImageIcon,
+  KeySquare,
   Laptop,
+  Layers,
   LayoutGrid,
   Lightbulb,
   ListChecks,
@@ -60,6 +64,7 @@ import {
   RefreshCw,
   Ruler,
   ScanEye,
+  ScanFace,
   ScanLine,
   Server,
   Settings2,
@@ -148,6 +153,12 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('warehouse')) return Warehouse
   if (t.includes('loading')) return Truck
   if (t.includes('entry') || t.includes('exit')) return DoorOpen
+  if (t.includes('fingerprint')) return Fingerprint
+  if (t.includes('facial recognition')) return ScanFace
+  if (t.includes('rfid') || t.includes('access card')) return CreditCard
+  if (t.includes('pin authentication') || t.includes('pin code')) return KeySquare
+  if (t.includes('mobile credential')) return Smartphone
+  if (t.includes('multi-factor') || t.includes('multi factor')) return Layers
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
   if (t.includes('printer') || t.includes('peripheral')) return Printer
   if (t.includes('present')) return Presentation
