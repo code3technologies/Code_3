@@ -63,6 +63,12 @@ function getRoomIcon(text?: string | null): LucideIcon {
   if (t.includes('workforce')) return Users
   if (t.includes('modern workplace')) return Smartphone
   if (t.includes('mixed')) return Layers
+  if (t.includes('fingerprint')) return Fingerprint
+  if (t.includes('face recognition') || t.includes('facial recognition')) return ScanFace
+  if (t.includes('rfid')) return CreditCard
+  if (/\bpin\b/.test(t)) return KeySquare
+  if (/\bmobile\b/.test(t)) return Smartphone
+  if (t.includes('combined')) return Layers
   return Presentation
 }
 
