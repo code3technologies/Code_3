@@ -1,5 +1,6 @@
 import type { Block } from 'payload'
 import { FixedToolbarFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { ICON_PRESET_OPTIONS } from '@/components/site/icons'
 
 export const RoomClassification: Block = {
   slug: 'roomClassification',
@@ -44,7 +45,26 @@ export const RoomClassification: Block = {
       maxRows: 6,
       fields: [
         { name: 'label', type: 'text', label: 'Tab Label', localized: true, required: true, admin: { description: 'e.g. "Standard Meeting Room"' } },
-        { name: 'image', type: 'upload', relationTo: 'media', label: 'Room Photo', required: true },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Room Photo (optional)',
+          admin: { description: 'Leave empty to show the fallback icon panel below instead.' },
+        },
+        {
+          name: 'icon',
+          type: 'select',
+          label: 'Fallback Icon (used when no photo is set)',
+          options: [...ICON_PRESET_OPTIONS],
+        },
+        {
+          name: 'caption',
+          type: 'textarea',
+          label: 'Caption (optional)',
+          localized: true,
+          admin: { description: 'Short line shown under the visual, e.g. "Best for huddle rooms · 55″–75″".' },
+        },
       ],
     },
   ],

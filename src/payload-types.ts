@@ -2596,7 +2596,57 @@ export interface RoomClassificationBlock {
          * e.g. "Standard Meeting Room"
          */
         label: string;
-        image: string | Media;
+        /**
+         * Leave empty to show the fallback icon panel below instead.
+         */
+        image?: (string | null) | Media;
+        icon?:
+          | (
+              | 'shield'
+              | 'server'
+              | 'cloud'
+              | 'network'
+              | 'phone'
+              | 'monitor'
+              | 'wrench'
+              | 'refresh'
+              | 'chart'
+              | 'users'
+              | 'layout'
+              | 'code'
+              | 'search'
+              | 'smartphone'
+              | 'palette'
+              | 'truck'
+              | 'camera'
+              | 'lock'
+              | 'box'
+              | 'lightbulb'
+              | 'headset'
+              | 'building'
+              | 'pin'
+              | 'database'
+              | 'settings'
+              | 'document'
+              | 'graduation'
+              | 'printer'
+              | 'tv'
+              | 'mic'
+              | 'wifi'
+              | 'handshake'
+              | 'check'
+              | 'smile'
+              | 'health'
+              | 'home'
+              | 'shoppingBag'
+              | 'factory'
+              | 'bed'
+            )
+          | null;
+        /**
+         * Short line shown under the visual, e.g. "Best for huddle rooms · 55″–75″".
+         */
+        caption?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5383,6 +5433,8 @@ export interface RoomClassificationBlockSelect<T extends boolean = true> {
     | {
         label?: T;
         image?: T;
+        icon?: T;
+        caption?: T;
         id?: T;
       };
   id?: T;
