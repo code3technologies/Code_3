@@ -2934,6 +2934,10 @@ export interface CustodyChainBlock {
   steps?:
     | {
         text: string;
+        /**
+         * Optional — explains how this step is actually done. Shown as a detail list below the chain once any step has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5611,6 +5615,7 @@ export interface CustodyChainBlockSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        description?: T;
         id?: T;
       };
   ctaText?: T;

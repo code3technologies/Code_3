@@ -63,6 +63,7 @@ export const CustodyChainBlock: React.FC<Props> = ({
 }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
+  const hasDescriptions = safeSteps.some((step) => step.description)
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -97,6 +98,25 @@ export const CustodyChainBlock: React.FC<Props> = ({
             })}
           </div>
         </Reveal>
+
+        {hasDescriptions && (
+          <Reveal
+            delayMs={150}
+            className="mx-auto mt-6 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
+          >
+            {safeSteps.map((step, index) => (
+              <div key={step.id || index} className="flex flex-col gap-1.5 rounded-xl border border-border bg-white p-4">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-primary_red/10 text-[11px] font-bold text-primary_red">
+                    {index + 1}
+                  </span>
+                  <span className="text-sm font-semibold text-foreground">{step.text}</span>
+                </div>
+                {step.description && <p className="text-xs leading-relaxed text-gray-600">{step.description}</p>}
+              </div>
+            ))}
+          </Reveal>
+        )}
 
         {ctaLabel && ctaUrl && (
           <div className="mt-6 flex justify-center md:mt-7">
