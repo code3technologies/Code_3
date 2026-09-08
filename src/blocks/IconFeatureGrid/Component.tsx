@@ -158,6 +158,9 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('parking')) return Car
   if (t.includes('warehouse')) return Warehouse
   if (t.includes('loading')) return Truck
+  if (t.includes('gate communication')) return Mic
+  if (t.includes('tenant')) return Building2
+  if (t.includes('visitor')) return Users
   if (t.includes('entry') || t.includes('exit')) return DoorOpen
   if (t.includes('fingerprint')) return Fingerprint
   if (t.includes('facial recognition')) return ScanFace
