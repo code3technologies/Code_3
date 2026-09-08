@@ -124,6 +124,11 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('nvr')) return Server
   if (t.includes('dome')) return Building2
   if (t.includes('bullet')) return Sun
+  if (t.includes('restricted')) return Lock
+  if (t.includes('delivery')) return Truck
+  if (t.includes('resident')) return Home
+  if (t.includes('staff')) return Users
+  if (t.includes('multi-lane') || t.includes('multi lane')) return Columns3
   if (t.includes('vehicle') || t.includes('anpr')) return Car
   if (t.includes('people detection') || t.includes('people counting')) return Users
   if (t.includes('intrusion')) return AlertTriangle
@@ -135,7 +140,6 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('low-light') || t.includes('low light')) return CloudMoon
   if (t.includes('lighting-assisted') || t.includes('lighting assisted')) return Lightbulb
   if (t.includes('unauthorized')) return DoorOpen
-  if (t.includes('restricted')) return Lock
   if (t.includes('perimeter breach') || t.includes('perimeter')) return Fence
   if (t.includes('occupancy')) return Users
   if (t.includes('certified')) return BadgeCheck
@@ -170,6 +174,7 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
   if (t.includes('remote authorization') || t.includes('remote authorisation')) return Smartphone
   if (t.includes('intercom')) return Mic
+  if (t.includes('contractor')) return Wrench
   if (t.includes('printer') || t.includes('peripheral')) return Printer
   if (t.includes('present')) return Presentation
   if (t.includes('collaborate')) return Users
