@@ -11,7 +11,9 @@ import {
   CheckCircle2,
   Cpu,
   Database,
+  Handshake,
   LayoutDashboard,
+  Lock,
   MapPin,
   Network,
   PenTool,
@@ -30,9 +32,11 @@ function getStepIcon(text?: string | null): LucideIcon {
   if (t.includes('tag')) return Tag
   if (t.includes('photo')) return Camera
   if (t.includes('disconnect')) return Unplug
+  if (t.includes('secure')) return Lock
   if (t.includes('transport')) return Truck
   if (t.includes('reinstall') || t.includes('install')) return Plug
   if (t.includes('verify') || t.includes('test')) return CheckCircle2
+  if (t.includes('handover') || t.includes('hand over')) return Handshake
   if (t.includes('creation') || t.includes('create')) return PenTool
   if (t.includes('management system') || t.includes('cms')) return Database
   if (t.includes('player')) return Cpu
