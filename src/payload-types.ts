@@ -1738,11 +1738,32 @@ export interface ComparisonTableBlock {
   middleEnabled?: boolean | null;
   middleLabel?: string | null;
   rightLabel: string;
+  /**
+   * Use when the left and right lists are paired point-for-point (same length). Leave empty and use the independent lists below instead when the two lists differ in length.
+   */
   rows?:
     | {
         left: string;
         middle?: string | null;
         right: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Use instead of Comparison Rows when the left and right lists don't need to be the same length.
+   */
+  leftItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Use instead of Comparison Rows when the left and right lists don't need to be the same length.
+   */
+  rightItems?:
+    | {
+        text: string;
         id?: string | null;
       }[]
     | null;
@@ -4895,6 +4916,18 @@ export interface ComparisonTableBlockSelect<T extends boolean = true> {
         left?: T;
         middle?: T;
         right?: T;
+        id?: T;
+      };
+  leftItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  rightItems?:
+    | T
+    | {
+        text?: T;
         id?: T;
       };
   ctaText?: T;

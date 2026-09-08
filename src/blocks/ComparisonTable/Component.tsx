@@ -45,12 +45,21 @@ export const ComparisonTableBlock: React.FC<Props> = ({
   middleLabel,
   rightLabel,
   rows = [],
+  leftItems = [],
+  rightItems = [],
   ctaText,
   ctaLabel,
   ctaUrl,
 }) => {
-  if (!rows || rows.length === 0) return null
-  const showMiddle = Boolean(middleEnabled && middleLabel)
+  // Independent lists (different lengths) take priority when present;
+  // otherwise fall back to the original paired-rows layout.
+  const safeRows = rows || []
+  const hasIndependentLists = (leftItems && leftItems.length > 0) || (rightItems && rightItems.length > 0)
+  const safeLeftItems = hasIndependentLists ? leftItems || [] : safeRows.map((row) => ({ id: row.id, text: row.left }))
+  const safeRightItems = hasIndependentLists ? rightItems || [] : safeRows.map((row) => ({ id: row.id, text: row.right }))
+
+  if (!hasIndependentLists && safeRows.length === 0) return null
+  const showMiddle = Boolean(!hasIndependentLists && middleEnabled && middleLabel)
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -72,23 +81,23 @@ export const ComparisonTableBlock: React.FC<Props> = ({
           <div className="rounded-2xl bg-gray-100 p-6 md:rounded-none md:p-8">
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-gray-500">{leftLabel}</h3>
             <ul className="space-y-4">
-              {rows.map((row, index) => (
-                <li key={row.id || index} className="flex items-start gap-3 text-sm text-gray-500">
+              {safeLeftItems.map((item, index) => (
+                <li key={item.id || index} className="flex items-start gap-3 text-sm text-gray-500">
                   <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-gray-300 text-gray-600">
                     <XIcon />
                   </span>
-                  {row.left}
+                  {item.text}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Middle - partial credit (optional) */}
+          {/* Middle - partial credit (optional, paired-rows mode only) */}
           {showMiddle && (
             <div className="rounded-2xl bg-amber-50 p-6 md:rounded-none md:p-8">
               <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-amber-700">{middleLabel}</h3>
               <ul className="space-y-4">
-                {rows.map((row, index) => (
+                {safeRows.map((row, index) => (
                   <li key={row.id || index} className="flex items-start gap-3 text-sm text-amber-800">
                     <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-amber-200 text-amber-700">
                       <DashIcon />
@@ -104,12 +113,12 @@ export const ComparisonTableBlock: React.FC<Props> = ({
           <div className="rounded-2xl bg-primary_red p-6 md:rounded-none md:p-8">
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-white/80">{rightLabel}</h3>
             <ul className="space-y-4">
-              {rows.map((row, index) => (
-                <li key={row.id || index} className="flex items-start gap-3 text-sm font-medium text-white">
+              {safeRightItems.map((item, index) => (
+                <li key={item.id || index} className="flex items-start gap-3 text-sm font-medium text-white">
                   <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-white text-primary_red">
                     <CheckIcon />
                   </span>
-                  {row.right}
+                  {item.text}
                 </li>
               ))}
             </ul>
