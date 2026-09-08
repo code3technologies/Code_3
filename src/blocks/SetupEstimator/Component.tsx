@@ -47,9 +47,11 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('wi-fi') || t.includes('wifi')) return Wifi
   if (t.includes('network')) return Network
   if (t.includes('computer')) return Monitor
+  if (t.includes('server room')) return Building2
   if (t.includes('server') || t.includes('cloud')) return Cloud
   if (t.includes('cctv') || t.includes('camera')) return Camera
-  if (t.includes('access control')) return KeyRound
+  if (t.includes('access control') || t.includes('restricted')) return KeyRound
+  if (t.includes('warehouse')) return Building2
   if (t.includes('meeting')) return Presentation
   if (t.includes('365') || t.includes('microsoft')) return Mail
   if (t.includes('security') || t.includes('cyber')) return ShieldCheck
