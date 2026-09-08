@@ -14,6 +14,7 @@ import {
   CreditCard,
   DoorOpen,
   Factory,
+  Fence,
   Fingerprint,
   Globe,
   GraduationCap,
@@ -57,7 +58,12 @@ function getRoomIcon(text?: string | null): LucideIcon {
   if (t.includes('outdoor')) return Sun
   if (t.includes('office')) return Briefcase
   if (t.includes('simple') || t.includes('employee access')) return CreditCard
+  if (t.includes('perimeter')) return Fence
   if (t.includes('high-security') || t.includes('high security')) return Fingerprint
+  if (t.includes('pedestrian')) return DoorOpen
+  if (t.includes('visitor')) return Users
+  if (t.includes('sliding')) return DoorOpen
+  if (t.includes('parking') || t.includes('vehicle')) return Car
   if (t.includes('touchless')) return ScanFace
   if (t.includes('low-cost') || t.includes('low cost')) return KeySquare
   if (t.includes('workforce')) return Users
