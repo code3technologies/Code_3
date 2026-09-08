@@ -2085,6 +2085,10 @@ export interface ProcessTimelineBlock {
           | null;
         title: string;
         description: string;
+        /**
+         * If set, this step links to the given URL, e.g. "/service/cctv-installations-dubai-uae" - for an internal-linking timeline.
+         */
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5259,6 +5263,7 @@ export interface ProcessTimelineBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        url?: T;
         id?: T;
       };
   ctaText?: T;

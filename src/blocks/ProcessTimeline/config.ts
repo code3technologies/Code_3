@@ -78,6 +78,12 @@ export const ProcessTimeline: Block = {
           required: true,
           localized: true,
         },
+        {
+          name: 'url',
+          type: 'text',
+          label: 'Link URL (optional)',
+          admin: { description: 'If set, this step links to the given URL, e.g. "/service/cctv-installations-dubai-uae" - for an internal-linking timeline.' },
+        },
       ],
     },
     ...ctaFields('Talk to Our Team'),
