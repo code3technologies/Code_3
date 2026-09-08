@@ -11,6 +11,7 @@ import {
   AppWindow,
   Aperture,
   ArrowRight,
+  ArrowRightLeft,
   BadgeCheck,
   Briefcase,
   Building2,
@@ -24,6 +25,7 @@ import {
   CreditCard,
   Crosshair,
   DoorOpen,
+  Factory,
   Fence,
   FileText,
   Fingerprint,
@@ -159,6 +161,11 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('pin authentication') || t.includes('pin code')) return KeySquare
   if (t.includes('mobile credential')) return Smartphone
   if (t.includes('multi-factor') || t.includes('multi factor')) return Layers
+  if (t.includes('boom barrier')) return Fence
+  if (t.includes('sliding gate')) return DoorOpen
+  if (t.includes('swing gate')) return ArrowRightLeft
+  if (t.includes('bollard')) return Lock
+  if (t.includes('industrial')) return Factory
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
   if (t.includes('printer') || t.includes('peripheral')) return Printer
   if (t.includes('present')) return Presentation
