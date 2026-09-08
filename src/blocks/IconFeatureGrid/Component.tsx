@@ -166,7 +166,10 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('swing gate')) return ArrowRightLeft
   if (t.includes('bollard')) return Lock
   if (t.includes('industrial')) return Factory
+  if (t.includes('integrated access control')) return Network
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
+  if (t.includes('remote authorization') || t.includes('remote authorisation')) return Smartphone
+  if (t.includes('intercom')) return Mic
   if (t.includes('printer') || t.includes('peripheral')) return Printer
   if (t.includes('present')) return Presentation
   if (t.includes('collaborate')) return Users
