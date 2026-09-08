@@ -75,59 +75,36 @@ export const CustodyChainBlock: React.FC<Props> = ({
         </Reveal>
 
         {hasDescriptions ? (
-          // With descriptions, render a literal connected chain of icon nodes
-          // rather than a flat card grid - it leans into the "chain of
-          // custody" name itself, and keeps captions short instead of dense
-          // paragraph cards.
-          <>
-            <Reveal delayMs={100} className="relative mx-auto hidden max-w-6xl pt-6 md:block">
-              <div className="absolute left-0 right-0 top-[52px] h-[6px] rounded-full bg-gradient-to-r from-primary_red/20 via-primary_red to-primary_red/20" />
-              <div className="relative flex justify-between">
-                {safeSteps.map((step, index) => {
-                  const Icon = getStepIcon(step.text)
-                  return (
-                    <div key={step.id || index} className="flex w-[11%] flex-col items-center text-center">
-                      <div className="relative flex h-[72px] w-[72px] flex-none items-center justify-center rounded-full border-4 border-white bg-primary_red text-white shadow-[0_6px_16px_rgba(220,38,38,0.3)] ring-2 ring-primary_red/25 transition-transform duration-300 hover:scale-105">
-                        <Icon className="h-7 w-7" />
-                        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-foreground text-[10px] font-bold text-white">
-                          {index + 1}
-                        </span>
-                      </div>
-                      <h3 className="mt-3 text-sm font-semibold text-foreground">{step.text}</h3>
-                      {step.description && (
-                        <p className="mt-1 text-xs leading-snug text-gray-500">{step.description}</p>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            </Reveal>
-
-            <Reveal delayMs={100} className="relative mx-auto max-w-sm md:hidden">
-              <div className="absolute bottom-2 left-[23px] top-2 w-[4px] rounded-full bg-gradient-to-b from-primary_red/20 via-primary_red to-primary_red/20" />
-              <div className="flex flex-col gap-5">
-                {safeSteps.map((step, index) => {
-                  const Icon = getStepIcon(step.text)
-                  return (
-                    <div key={step.id || index} className="relative flex items-center gap-4">
-                      <div className="relative flex h-12 w-12 flex-none items-center justify-center rounded-full border-4 border-white bg-primary_red text-white shadow-[0_4px_10px_rgba(220,38,38,0.3)] ring-2 ring-primary_red/25">
-                        <Icon className="h-5 w-5" />
-                        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-foreground text-[9px] font-bold text-white">
-                          {index + 1}
-                        </span>
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground">{step.text}</h3>
-                        {step.description && (
-                          <p className="text-xs leading-snug text-gray-500">{step.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </Reveal>
-          </>
+          // With descriptions, one set of richer cards replaces the compact
+          // chip flow below - showing the same 8 steps twice (once as bare
+          // chips, once as a detail grid) read as cluttered and repetitive.
+          <Reveal
+            delayMs={100}
+            className="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {safeSteps.map((step, index) => {
+              const Icon = getStepIcon(step.text)
+              return (
+                <div
+                  key={step.id || index}
+                  className="group relative flex flex-col gap-3 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red transition-transform duration-300 group-hover:scale-105">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red text-xs font-bold text-white">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-semibold text-foreground">{step.text}</h3>
+                  {step.description && (
+                    <p className="text-sm leading-relaxed text-gray-600">{step.description}</p>
+                  )}
+                </div>
+              )
+            })}
+          </Reveal>
         ) : (
           <Reveal
             delayMs={100}
