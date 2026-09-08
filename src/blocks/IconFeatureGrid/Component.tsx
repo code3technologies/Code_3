@@ -173,6 +173,10 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('integrated access control')) return Network
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
   if (t.includes('remote authorization') || t.includes('remote authorisation')) return Smartphone
+  if (t.includes('video intercom')) return Video
+  if (t.includes('multi-unit') || t.includes('multi unit')) return Building2
+  if (t.includes('gate intercom')) return DoorOpen
+  if (t.includes('ip intercom')) return Network
   if (t.includes('intercom')) return Mic
   if (t.includes('contractor')) return Wrench
   if (t.includes('printer') || t.includes('peripheral')) return Printer
