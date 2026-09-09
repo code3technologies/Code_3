@@ -12,8 +12,11 @@ import {
   Building2,
   Camera,
   Car,
+  CloudSun,
   Footprints,
   Grid2x2,
+  Home,
+  Moon,
   Radar,
   ScanEye,
   ScanLine,
@@ -36,6 +39,9 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('ai camera') || t.includes('ai-camera')) return Sparkles
   if (t.includes('anpr')) return Car
   if (t.includes('thermal')) return Thermometer
+  if (t.includes('low-light') || t.includes('low light')) return Moon
+  if (t.includes('outdoor')) return CloudSun
+  if (t.includes('indoor')) return Home
   if (t.includes('intrusion')) return AlertTriangle
   if (t.includes('loiter')) return Footprints
   if (t.includes('people counting')) return Users
