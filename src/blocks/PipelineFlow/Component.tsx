@@ -2,6 +2,7 @@ import type { PipelineFlowBlock as PipelineFlowBlockProps } from 'src/payload-ty
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import RichText from '@/components/RichText'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { Bell, Camera, ChevronDown, HardDrive, Monitor, Network, Server, type LucideIcon } from 'lucide-react'
@@ -68,7 +69,12 @@ export const PipelineFlowBlock: React.FC<Props> = ({ className, badge, title, in
 
         {footer && (
           <Reveal delayMs={150} className="mx-auto mt-8 max-w-2xl text-center md:mt-10">
-            <p className="text-sm text-gray-500">{footer}</p>
+            <RichText
+              data={footer}
+              enableGutter={false}
+              enableProse={false}
+              className="text-sm text-gray-500 [&_a]:font-semibold [&_a]:text-primary_red [&_a]:underline [&_a]:decoration-primary_red/30 [&_a]:underline-offset-2 hover:[&_a]:decoration-primary_red"
+            />
           </Reveal>
         )}
       </div>

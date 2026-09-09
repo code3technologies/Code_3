@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { FixedToolbarFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const PipelineFlow: Block = {
   slug: 'pipelineFlow',
@@ -43,10 +44,16 @@ export const PipelineFlow: Block = {
     },
     {
       name: 'footer',
-      type: 'textarea',
+      type: 'richText',
       label: 'Footer Note (optional)',
       localized: true,
-      admin: { description: 'e.g. a closing line about optional integrations with other systems.' },
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()],
+      }),
+      admin: {
+        description:
+          'e.g. a closing line about optional integrations with other systems — link individual service names to their pages via the toolbar.',
+      },
     },
   ],
 }

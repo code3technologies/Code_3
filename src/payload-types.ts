@@ -3067,9 +3067,23 @@ export interface PipelineFlowBlock {
       }[]
     | null;
   /**
-   * e.g. a closing line about optional integrations with other systems.
+   * e.g. a closing line about optional integrations with other systems — link individual service names to their pages via the toolbar.
    */
-  footer?: string | null;
+  footer?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pipelineFlow';
