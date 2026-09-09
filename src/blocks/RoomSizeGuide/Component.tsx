@@ -18,9 +18,12 @@ import {
   Fingerprint,
   Globe,
   GraduationCap,
+  Home,
   KeySquare,
   Layers,
+  Lock,
   Monitor,
+  Network,
   Presentation,
   ScanFace,
   Smartphone,
@@ -64,6 +67,11 @@ function getRoomIcon(text?: string | null): LucideIcon {
   if (t.includes('visitor')) return Users
   if (t.includes('sliding')) return DoorOpen
   if (t.includes('parking') || t.includes('vehicle')) return Car
+  if (t.includes('apartment')) return Building2
+  if (t.includes('villa')) return Home
+  if (t.includes('gate')) return Fence
+  if (t.includes('controlled')) return Lock
+  if (t.includes('security systems') || t.includes('multiple security')) return Network
   if (t.includes('touchless')) return ScanFace
   if (t.includes('low-cost') || t.includes('low cost')) return KeySquare
   if (t.includes('workforce')) return Users
