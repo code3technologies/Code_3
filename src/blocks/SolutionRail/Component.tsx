@@ -1,7 +1,9 @@
+'use client'
+
 import type { SolutionRailBlock as SolutionRailBlockProps } from 'src/payload-types'
 
 import { cn } from '@/utilities/ui'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { Briefcase, Building2, Fence, Globe, Layers, RefreshCw, Warehouse, type LucideIcon } from 'lucide-react'
@@ -23,10 +25,52 @@ type Props = {
 } & SolutionRailBlockProps
 
 // A horizontally scrolling card rail — a deliberately different browsing
-// pattern from the grid/list blocks used everywhere else on the site.
+// pattern from the grid/list blocks used everywhere else on the site. The
+// native scrollbar is hidden in favor of dot pagination that tracks scroll
+// position and can also drive it (click a dot to jump to that card).
 export const SolutionRailBlock: React.FC<Props> = ({ className, badge, title, intro, items = [], footer }) => {
   const safeItems = items || []
+  const railRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  useEffect(() => {
+    const rail = railRef.current
+    if (!rail) return
+
+    let raf = 0
+    const handleScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const railLeft = rail.scrollLeft
+        let closest = 0
+        let closestDistance = Infinity
+        cardRefs.current.forEach((card, index) => {
+          if (!card) return
+          const distance = Math.abs(card.offsetLeft - railLeft)
+          if (distance < closestDistance) {
+            closestDistance = distance
+            closest = index
+          }
+        })
+        setActiveIndex(closest)
+      })
+    }
+
+    rail.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      rail.removeEventListener('scroll', handleScroll)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
   if (safeItems.length === 0) return null
+
+  const goToCard = (index: number) => {
+    const card = cardRefs.current[index]
+    if (!card || !railRef.current) return
+    railRef.current.scrollTo({ left: card.offsetLeft, behavior: 'smooth' })
+  }
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -39,12 +83,18 @@ export const SolutionRailBlock: React.FC<Props> = ({ className, badge, title, in
       </div>
 
       <Reveal delayMs={100} className="container mx-auto">
-        <div className="flex gap-5 overflow-x-auto px-4 pb-4 sm:px-6 [scroll-snap-type:x_mandatory]">
+        <div
+          ref={railRef}
+          className="flex gap-5 overflow-x-auto px-4 pb-1 sm:px-6 [-ms-overflow-style:none] [scroll-snap-type:x_mandatory] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {safeItems.map((item, index) => {
             const Icon = getSolutionIcon(item.title)
             return (
               <div
                 key={item.id || index}
+                ref={(el) => {
+                  cardRefs.current[index] = el
+                }}
                 className="flex w-[260px] flex-none snap-start flex-col gap-3 rounded-2xl border-t-4 border-t-primary_red bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_16px_32px_-16px_rgba(0,0,0,0.18)] sm:w-[300px]"
               >
                 <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
@@ -58,9 +108,26 @@ export const SolutionRailBlock: React.FC<Props> = ({ className, badge, title, in
         </div>
       </Reveal>
 
+      {safeItems.length > 1 && (
+        <div className="mt-5 flex items-center justify-center gap-2">
+          {safeItems.map((item, index) => (
+            <button
+              key={item.id || index}
+              type="button"
+              aria-label={`Go to ${item.title}`}
+              onClick={() => goToCard(index)}
+              className={cn(
+                'h-2 rounded-full transition-all duration-300',
+                index === activeIndex ? 'w-6 bg-primary_red' : 'w-2 bg-gray-300 hover:bg-gray-400',
+              )}
+            />
+          ))}
+        </div>
+      )}
+
       {footer && (
         <div className="container mx-auto px-4 sm:px-6">
-          <Reveal delayMs={150} className="mx-auto mt-2 max-w-2xl text-center">
+          <Reveal delayMs={150} className="mx-auto mt-4 max-w-2xl text-center">
             <p className="text-sm text-gray-500">{footer}</p>
           </Reveal>
         </div>
