@@ -72,6 +72,7 @@ import { FeatureListBlock } from './FeatureList/Component'
 import { SolutionRailBlock } from './SolutionRail/Component'
 import { ChecklistCardBlock } from './ChecklistCard/Component'
 import { EcosystemDiagramBlock } from './EcosystemDiagram/Component'
+import { TileShowcaseBlock } from './TileShowcase/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -161,6 +162,7 @@ const blockComponents = {
   solutionRail: SolutionRailBlock,
   checklistCard: ChecklistCardBlock,
   ecosystemDiagram: EcosystemDiagramBlock,
+  tileShowcase: TileShowcaseBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,

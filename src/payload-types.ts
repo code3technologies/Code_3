@@ -378,6 +378,7 @@ export interface Page {
     | SolutionRailBlock
     | ChecklistCardBlock
     | EcosystemDiagramBlock
+    | TileShowcaseBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3195,6 +3196,28 @@ export interface EcosystemDiagramBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TileShowcaseBlock".
+ */
+export interface TileShowcaseBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a bold, alternating dark/red checkerboard tile grid — a deliberately different, high-contrast look from the white-card grids used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tileShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4552,6 +4575,7 @@ export interface PagesSelect<T extends boolean = true> {
         solutionRail?: T | SolutionRailBlockSelect<T>;
         checklistCard?: T | ChecklistCardBlockSelect<T>;
         ecosystemDiagram?: T | EcosystemDiagramBlockSelect<T>;
+        tileShowcase?: T | TileShowcaseBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6112,6 +6136,24 @@ export interface EcosystemDiagramBlockSelect<T extends boolean = true> {
     | {
         label?: T;
         url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TileShowcaseBlock_select".
+ */
+export interface TileShowcaseBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
         id?: T;
       };
   id?: T;
