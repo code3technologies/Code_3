@@ -5,12 +5,25 @@ import Link from 'next/link'
 import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { ArrowRight, Building2, Check, ClipboardList, Headset, Laptop, Wrench, type LucideIcon } from 'lucide-react'
+import {
+  ArrowRight,
+  Building2,
+  Check,
+  ClipboardList,
+  Headset,
+  Laptop,
+  PackageCheck,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react'
 
 // Best-effort icon per phase, matched by keyword — falls back sensibly for
 // any future phase set, not just "Before / During / After".
 function getPhaseIcon(label?: string | null): LucideIcon {
   const l = (label || '').toLowerCase()
+  // Checked before the "before" rule below, since "Before Handover" also
+  // contains "before" and would otherwise collide with "Before Installation".
+  if (l.includes('handover')) return PackageCheck
   if (l.includes('before')) return ClipboardList
   if (l.includes('during')) return Wrench
   if (l.includes('after')) return Headset
@@ -34,6 +47,7 @@ export const ProcessPhasesBlock: React.FC<Props> = ({
 }) => {
   const safePhases = phases || []
   if (safePhases.length === 0) return null
+  const hasDescriptions = safePhases.some((phase) => (phase.items || []).some((item) => item.description))
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -67,13 +81,18 @@ export const ProcessPhasesBlock: React.FC<Props> = ({
                     {!isLast && <ArrowRight className="hidden h-3.5 w-3.5 flex-none text-gray-300 md:block" />}
                   </h3>
                 </div>
-                <ul className="space-y-2.5">
+                <ul className={cn(hasDescriptions ? 'space-y-4' : 'space-y-2.5')}>
                   {(phase.items || []).map((item, iIndex) => (
                     <li key={item.id || iIndex} className="flex items-start gap-2.5 text-sm text-gray-700">
                       <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-primary_red/10 text-primary_red">
                         <Check className="h-3 w-3" />
                       </span>
-                      {item.text}
+                      <div>
+                        <div className={cn(hasDescriptions && 'font-semibold text-foreground')}>{item.text}</div>
+                        {hasDescriptions && item.description && (
+                          <p className="mt-1 text-sm leading-relaxed text-gray-500">{item.description}</p>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>

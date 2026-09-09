@@ -3237,6 +3237,10 @@ export interface ProcessPhasesBlock {
         items?:
           | {
               text: string;
+              /**
+               * Optional — switches every item across every phase to a larger row with this detail line, once any item has one.
+               */
+              description?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -6180,6 +6184,7 @@ export interface ProcessPhasesBlockSelect<T extends boolean = true> {
           | T
           | {
               text?: T;
+              description?: T;
               id?: T;
             };
         id?: T;
