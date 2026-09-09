@@ -1929,6 +1929,10 @@ export interface ScopeChecklistBlock {
     | {
         text: string;
         /**
+         * Optional — switches every item in this list to a larger card with this detail line, once any item has one.
+         */
+        description?: string | null;
+        /**
          * If set, this item links to the given URL, e.g. "/service/cyber-security".
          */
         url?: string | null;
@@ -5187,6 +5191,7 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        description?: T;
         url?: T;
         id?: T;
       };

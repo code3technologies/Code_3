@@ -48,6 +48,9 @@ function getMonthlyItemIcon(text?: string | null): LucideIcon {
 }
 
 function ChecklistGrid({ badge, title, subtitle, items, note }: ScopeChecklistBlockProps) {
+  const safeItems = items || []
+  const hasDescriptions = safeItems.some((item) => item.description)
+
   return (
     <>
       <Reveal className="max-w-2xl mb-6">
@@ -56,34 +59,49 @@ function ChecklistGrid({ badge, title, subtitle, items, note }: ScopeChecklistBl
         {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
       </Reveal>
 
-      <Reveal delayMs={100} className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {(items || []).map((item, index) => {
+      <Reveal
+        delayMs={100}
+        className={cn(
+          'grid gap-3 md:gap-4',
+          hasDescriptions ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+        )}
+      >
+        {safeItems.map((item, index) => {
+          const cardClassName = cn(
+            'rounded-xl border border-border bg-gray-50/60 transition-colors',
+            hasDescriptions
+              ? 'flex flex-col gap-3 p-5 text-left hover:border-primary_red/40 hover:bg-[#FDEBEC]/40'
+              : 'flex items-center gap-2.5 px-4 py-3 hover:border-primary_red/40 hover:bg-[#FDEBEC]/40',
+          )
           const content = (
             <>
-              <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
+              <span
+                className={cn(
+                  'flex flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red',
+                  hasDescriptions ? 'h-10 w-10' : 'h-7 w-7',
+                )}
+              >
                 <CheckIcon />
               </span>
-              <span className="text-sm font-medium text-foreground">{item.text}</span>
+              <span className={cn(hasDescriptions ? 'text-base font-semibold text-foreground' : 'text-sm font-medium text-foreground')}>
+                {item.text}
+              </span>
+              {hasDescriptions && item.description && (
+                <span className="text-sm leading-relaxed text-gray-600">{item.description}</span>
+              )}
             </>
           )
 
           if (item.url) {
             return (
-              <Link
-                key={item.id || index}
-                href={item.url}
-                className="flex items-center gap-2.5 rounded-xl border border-border bg-gray-50/60 px-4 py-3 transition-colors hover:border-primary_red/40 hover:bg-[#FDEBEC]/40"
-              >
+              <Link key={item.id || index} href={item.url} className={cardClassName}>
                 {content}
               </Link>
             )
           }
 
           return (
-            <div
-              key={item.id || index}
-              className="flex items-center gap-2.5 rounded-xl border border-border bg-gray-50/60 px-4 py-3"
-            >
+            <div key={item.id || index} className={cardClassName}>
               {content}
             </div>
           )
