@@ -5,7 +5,25 @@ import Link from 'next/link'
 import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { Aperture, ArrowRight, Building2, Camera, Car, Sparkles, Sun, Thermometer, ZoomIn, type LucideIcon } from 'lucide-react'
+import {
+  AlertTriangle,
+  Aperture,
+  ArrowRight,
+  Building2,
+  Camera,
+  Car,
+  Footprints,
+  Grid2x2,
+  Radar,
+  ScanEye,
+  ScanLine,
+  Sparkles,
+  Sun,
+  Thermometer,
+  Users,
+  ZoomIn,
+  type LucideIcon,
+} from 'lucide-react'
 
 // Best-effort icon per item, matched by keyword — mirrors RoomSizeGuide's
 // camera-type mapping so the same item reads consistently across blocks.
@@ -18,6 +36,14 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('ai camera') || t.includes('ai-camera')) return Sparkles
   if (t.includes('anpr')) return Car
   if (t.includes('thermal')) return Thermometer
+  if (t.includes('intrusion')) return AlertTriangle
+  if (t.includes('loiter')) return Footprints
+  if (t.includes('people counting')) return Users
+  if (t.includes('object detection')) return ScanEye
+  if (t.includes('line crossing')) return ScanLine
+  if (t.includes('area') || t.includes('zone monitoring')) return Grid2x2
+  if (t.includes('vehicle detection')) return Car
+  if (t.includes('unusual activity')) return Radar
   if (t.includes('fisheye')) return Aperture
   return Camera
 }
