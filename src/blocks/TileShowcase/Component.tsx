@@ -7,12 +7,16 @@ import { Reveal } from '@/components/site/Reveal'
 import {
   Briefcase,
   Building2,
+  Car,
   Factory,
+  Fence,
   GraduationCap,
   Home,
   Hotel,
+  Lock,
   ShieldCheck,
   Store,
+  Truck,
   Warehouse,
   type LucideIcon,
 } from 'lucide-react'
@@ -28,6 +32,10 @@ function getEnvironmentIcon(text?: string | null): LucideIcon {
   if (t.includes('commercial')) return Building2
   if (t.includes('school') || t.includes('educational')) return GraduationCap
   if (t.includes('hospitality')) return Hotel
+  if (t.includes('perimeter')) return Fence
+  if (t.includes('restricted')) return Lock
+  if (t.includes('parking')) return Car
+  if (t.includes('logistics')) return Truck
   return ShieldCheck
 }
 
