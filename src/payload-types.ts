@@ -372,6 +372,7 @@ export interface Page {
     | SetupEstimatorBlock
     | OfficeBlueprintBlock
     | IconFeatureGridBlock
+    | DetailedFeatureGridBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3011,6 +3012,40 @@ export interface IconFeatureGridBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DetailedFeatureGridBlock".
+ */
+export interface DetailedFeatureGridBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  items?:
+    | {
+        title: string;
+        description: string;
+        /**
+         * Optional short bullet list shown under the description, e.g. specific locations or use cases this item is suited for.
+         */
+        applications?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. "Explore: AI Camera Solutions" — shown as a link at the bottom of this card.
+         */
+        ctaLabel?: string | null;
+        ctaUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'detailedFeatureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4362,6 +4397,7 @@ export interface PagesSelect<T extends boolean = true> {
         setupEstimator?: T | SetupEstimatorBlockSelect<T>;
         officeBlueprint?: T | OfficeBlueprintBlockSelect<T>;
         iconFeatureGrid?: T | IconFeatureGridBlockSelect<T>;
+        detailedFeatureGrid?: T | DetailedFeatureGridBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -5802,6 +5838,33 @@ export interface IconFeatureGridBlockSelect<T extends boolean = true> {
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DetailedFeatureGridBlock_select".
+ */
+export interface DetailedFeatureGridBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        applications?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaUrl?: T;
+        id?: T;
+      };
+  footer?: T;
   id?: T;
   blockName?: T;
 }

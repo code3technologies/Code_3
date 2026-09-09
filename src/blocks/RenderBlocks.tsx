@@ -66,6 +66,7 @@ import { ReactiveProactiveFlowBlock } from './ReactiveProactiveFlow/Component'
 import { SetupEstimatorBlock } from './SetupEstimator/Component'
 import { OfficeBlueprintBlock } from './OfficeBlueprint/Component'
 import { IconFeatureGridBlock } from './IconFeatureGrid/Component'
+import { DetailedFeatureGridBlock } from './DetailedFeatureGrid/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -149,6 +150,7 @@ const blockComponents = {
   setupEstimator: SetupEstimatorBlock,
   officeBlueprint: OfficeBlueprintBlock,
   iconFeatureGrid: IconFeatureGridBlock,
+  detailedFeatureGrid: DetailedFeatureGridBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,

@@ -61,6 +61,7 @@ import { ReactiveProactiveFlow } from '@/blocks/ReactiveProactiveFlow/config'
 import { SetupEstimator } from '@/blocks/SetupEstimator/config'
 import { OfficeBlueprint } from '@/blocks/OfficeBlueprint/config'
 import { IconFeatureGrid } from '@/blocks/IconFeatureGrid/config'
+import { DetailedFeatureGrid } from '@/blocks/DetailedFeatureGrid/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -279,6 +280,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 SetupEstimator,
                 OfficeBlueprint,
                 IconFeatureGrid,
+                DetailedFeatureGrid,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,
