@@ -375,6 +375,7 @@ export interface Page {
     | DetailedFeatureGridBlock
     | PipelineFlowBlock
     | FeatureListBlock
+    | SolutionRailBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3114,6 +3115,29 @@ export interface FeatureListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionRailBlock".
+ */
+export interface SolutionRailBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a horizontally scrolling card rail — a deliberately different look from the grid/list blocks used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'solutionRail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4468,6 +4492,7 @@ export interface PagesSelect<T extends boolean = true> {
         detailedFeatureGrid?: T | DetailedFeatureGridBlockSelect<T>;
         pipelineFlow?: T | PipelineFlowBlockSelect<T>;
         featureList?: T | FeatureListBlockSelect<T>;
+        solutionRail?: T | SolutionRailBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -5962,6 +5987,25 @@ export interface PipelineFlowBlockSelect<T extends boolean = true> {
  * via the `definition` "FeatureListBlock_select".
  */
 export interface FeatureListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionRailBlock_select".
+ */
+export interface SolutionRailBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   intro?: T;

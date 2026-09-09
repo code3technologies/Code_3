@@ -69,6 +69,7 @@ import { IconFeatureGridBlock } from './IconFeatureGrid/Component'
 import { DetailedFeatureGridBlock } from './DetailedFeatureGrid/Component'
 import { PipelineFlowBlock } from './PipelineFlow/Component'
 import { FeatureListBlock } from './FeatureList/Component'
+import { SolutionRailBlock } from './SolutionRail/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -155,6 +156,7 @@ const blockComponents = {
   detailedFeatureGrid: DetailedFeatureGridBlock,
   pipelineFlow: PipelineFlowBlock,
   featureList: FeatureListBlock,
+  solutionRail: SolutionRailBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
