@@ -6,14 +6,22 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
   Bell,
+  Car,
+  DoorOpen,
   Eye,
+  Factory,
+  Fence,
   Grid2x2,
   History,
+  Lock,
   Moon,
   Radar,
   Smartphone,
   Sparkles,
+  Truck,
   UserCog,
+  Users,
+  Warehouse,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -29,6 +37,14 @@ function getFeatureIcon(text?: string | null): LucideIcon {
   if (t.includes('user management')) return UserCog
   if (t.includes('alert') || t.includes('notification')) return Bell
   if (t.includes('multi-camera') || t.includes('multi camera')) return Grid2x2
+  if (t.includes('restricted zone')) return Lock
+  if (t.includes('perimeter')) return Fence
+  if (t.includes('entrance')) return DoorOpen
+  if (t.includes('loading')) return Truck
+  if (t.includes('parking')) return Car
+  if (t.includes('warehouse')) return Warehouse
+  if (t.includes('reception')) return Users
+  if (t.includes('production')) return Factory
   return Eye
 }
 

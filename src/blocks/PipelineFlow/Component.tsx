@@ -5,7 +5,7 @@ import React from 'react'
 import RichText from '@/components/RichText'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { Bell, Camera, ChevronDown, HardDrive, Monitor, Network, Server, type LucideIcon } from 'lucide-react'
+import { Bell, Camera, ChevronDown, Grid2x2, HardDrive, Monitor, Network, Server, Zap, type LucideIcon } from 'lucide-react'
 
 // Best-effort icon per step, matched by keyword.
 function getStepIcon(text?: string | null): LucideIcon {
@@ -14,6 +14,8 @@ function getStepIcon(text?: string | null): LucideIcon {
   if (t.includes('network') || t.includes('poe')) return Network
   if (t.includes('nvr') || t.includes('vms')) return Server
   if (t.includes('storage') || t.includes('recording')) return HardDrive
+  if (t.includes('zone')) return Grid2x2
+  if (t.includes('event')) return Zap
   if (t.includes('alert')) return Bell
   if (t.includes('monitor') || t.includes('viewing')) return Monitor
   return Server
