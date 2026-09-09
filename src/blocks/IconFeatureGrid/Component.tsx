@@ -185,6 +185,19 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('bollard')) return Lock
   if (t.includes('industrial')) return Factory
   if (t.includes('integrated access control')) return Network
+  if (t.includes('camera resolution')) return Aperture
+  // Checked before the shorter "event-based recording" rule below, since
+  // "Continuous or event-based recording" contains that phrase as a substring.
+  if (t.includes('continuous or event')) return RefreshCw
+  if (t.includes('continuous recording')) return RefreshCw
+  if (t.includes('event-based recording') || t.includes('event based recording')) return Zap
+  if (t.includes('motion-based recording') || t.includes('motion based recording')) return Footprints
+  if (t.includes('recording mode')) return Video
+  if (t.includes('frame rate')) return Activity
+  if (t.includes('compression')) return Layers
+  if (t.includes('recording day')) return Calendar
+  if (t.includes('number of sites')) return Building2
+  if (t.includes('platform-dependent') || t.includes('platform dependent')) return Settings2
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
   if (t.includes('remote authorization') || t.includes('remote authorisation')) return Smartphone
   if (t.includes('video intercom')) return Video
