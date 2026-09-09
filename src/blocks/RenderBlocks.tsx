@@ -73,6 +73,7 @@ import { SolutionRailBlock } from './SolutionRail/Component'
 import { ChecklistCardBlock } from './ChecklistCard/Component'
 import { EcosystemDiagramBlock } from './EcosystemDiagram/Component'
 import { TileShowcaseBlock } from './TileShowcase/Component'
+import { AlternatingTimelineBlock } from './AlternatingTimeline/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -163,6 +164,7 @@ const blockComponents = {
   checklistCard: ChecklistCardBlock,
   ecosystemDiagram: EcosystemDiagramBlock,
   tileShowcase: TileShowcaseBlock,
+  alternatingTimeline: AlternatingTimelineBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,

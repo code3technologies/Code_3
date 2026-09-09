@@ -379,6 +379,7 @@ export interface Page {
     | ChecklistCardBlock
     | EcosystemDiagramBlock
     | TileShowcaseBlock
+    | AlternatingTimelineBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3222,6 +3223,37 @@ export interface TileShowcaseBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AlternatingTimelineBlock".
+ */
+export interface AlternatingTimelineBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a spacious, alternating left/right timeline connected by a central spine — a deliberately different, more editorial look for an important sequential story.
+   */
+  steps?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'alternatingTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4584,6 +4616,7 @@ export interface PagesSelect<T extends boolean = true> {
         checklistCard?: T | ChecklistCardBlockSelect<T>;
         ecosystemDiagram?: T | EcosystemDiagramBlockSelect<T>;
         tileShowcase?: T | TileShowcaseBlockSelect<T>;
+        alternatingTimeline?: T | AlternatingTimelineBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6165,6 +6198,27 @@ export interface TileShowcaseBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AlternatingTimelineBlock_select".
+ */
+export interface AlternatingTimelineBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }
