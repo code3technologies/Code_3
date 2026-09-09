@@ -376,6 +376,7 @@ export interface Page {
     | PipelineFlowBlock
     | FeatureListBlock
     | SolutionRailBlock
+    | ChecklistCardBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3138,6 +3139,32 @@ export interface SolutionRailBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ChecklistCardBlock".
+ */
+export interface ChecklistCardBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a single unified checklist card with striped rows — a deliberately different look from the separate-card grids used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown as a highlighted bar at the bottom of the card, e.g. a compatibility disclaimer.
+   */
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checklistCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4493,6 +4520,7 @@ export interface PagesSelect<T extends boolean = true> {
         pipelineFlow?: T | PipelineFlowBlockSelect<T>;
         featureList?: T | FeatureListBlockSelect<T>;
         solutionRail?: T | SolutionRailBlockSelect<T>;
+        checklistCard?: T | ChecklistCardBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6017,6 +6045,25 @@ export interface SolutionRailBlockSelect<T extends boolean = true> {
         id?: T;
       };
   footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ChecklistCardBlock_select".
+ */
+export interface ChecklistCardBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
   id?: T;
   blockName?: T;
 }

@@ -65,6 +65,7 @@ import { DetailedFeatureGrid } from '@/blocks/DetailedFeatureGrid/config'
 import { PipelineFlow } from '@/blocks/PipelineFlow/config'
 import { FeatureList } from '@/blocks/FeatureList/config'
 import { SolutionRail } from '@/blocks/SolutionRail/config'
+import { ChecklistCard } from '@/blocks/ChecklistCard/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -287,6 +288,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 PipelineFlow,
                 FeatureList,
                 SolutionRail,
+                ChecklistCard,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,
