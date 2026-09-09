@@ -216,6 +216,12 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('color')) return Palette
   if (t.includes('calibrat')) return SlidersHorizontal
   if (t.includes('mounting')) return Wrench
+  if (t.includes('traffic speed') || t.includes('vehicle speed')) return Zap
+  if (t.includes('lane')) return Columns3
+  if (t.includes('lighting')) return Lightbulb
+  if (t.includes('plate visibility') || t.includes('plate-reading')) return ScanEye
+  if (t.includes('entry/exit angle') || t.includes('camera angle')) return Crosshair
+  if (t.includes('weather')) return Sun
   if (t.includes('outdoor')) return Sun
   if (t.includes('indoor')) return Home
   if (t.includes('menu board') || t.includes('menu')) return UtensilsCrossed
