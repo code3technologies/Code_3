@@ -18,6 +18,7 @@ import {
   Cable,
   Calendar,
   Camera,
+  Check,
   Car,
   Cloud,
   CloudMoon,
@@ -129,6 +130,9 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('resident')) return Home
   if (t.includes('staff')) return Users
   if (t.includes('multi-lane') || t.includes('multi lane')) return Columns3
+  if (t.includes('authorized vehicle')) return Check
+  if (t.includes('visitor vehicle')) return Users
+  if (t.includes('watchlist')) return AlertTriangle
   if (t.includes('vehicle') || t.includes('anpr')) return Car
   if (t.includes('people detection') || t.includes('people counting')) return Users
   if (t.includes('intrusion')) return AlertTriangle
