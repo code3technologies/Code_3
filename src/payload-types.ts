@@ -377,6 +377,7 @@ export interface Page {
     | FeatureListBlock
     | SolutionRailBlock
     | ChecklistCardBlock
+    | EcosystemDiagramBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3165,6 +3166,35 @@ export interface ChecklistCardBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EcosystemDiagramBlock".
+ */
+export interface EcosystemDiagramBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * e.g. "CCTV" — the system every spoke connects to.
+   */
+  hubLabel: string;
+  /**
+   * Rendered as a radial diagram around the hub (desktop) / a simple connected list (mobile) — a deliberately different, non-linear visual for peer systems rather than a sequential process.
+   */
+  items?:
+    | {
+        label: string;
+        /**
+         * If set, this spoke links to the given service page, e.g. "/service/anpr-systems-dubai-uae".
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ecosystemDiagram';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4521,6 +4551,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureList?: T | FeatureListBlockSelect<T>;
         solutionRail?: T | SolutionRailBlockSelect<T>;
         checklistCard?: T | ChecklistCardBlockSelect<T>;
+        ecosystemDiagram?: T | EcosystemDiagramBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6064,6 +6095,25 @@ export interface ChecklistCardBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EcosystemDiagramBlock_select".
+ */
+export interface EcosystemDiagramBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  hubLabel?: T;
+  items?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

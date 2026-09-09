@@ -71,6 +71,7 @@ import { PipelineFlowBlock } from './PipelineFlow/Component'
 import { FeatureListBlock } from './FeatureList/Component'
 import { SolutionRailBlock } from './SolutionRail/Component'
 import { ChecklistCardBlock } from './ChecklistCard/Component'
+import { EcosystemDiagramBlock } from './EcosystemDiagram/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -159,6 +160,7 @@ const blockComponents = {
   featureList: FeatureListBlock,
   solutionRail: SolutionRailBlock,
   checklistCard: ChecklistCardBlock,
+  ecosystemDiagram: EcosystemDiagramBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
