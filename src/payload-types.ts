@@ -374,6 +374,7 @@ export interface Page {
     | IconFeatureGridBlock
     | DetailedFeatureGridBlock
     | PipelineFlowBlock
+    | FeatureListBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3090,6 +3091,29 @@ export interface PipelineFlowBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureListBlock".
+ */
+export interface FeatureListBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a numbered two-column list with a large ghost numeral behind each icon — a deliberately different look from the bordered card grids used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4443,6 +4467,7 @@ export interface PagesSelect<T extends boolean = true> {
         iconFeatureGrid?: T | IconFeatureGridBlockSelect<T>;
         detailedFeatureGrid?: T | DetailedFeatureGridBlockSelect<T>;
         pipelineFlow?: T | PipelineFlowBlockSelect<T>;
+        featureList?: T | FeatureListBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -5922,6 +5947,25 @@ export interface PipelineFlowBlockSelect<T extends boolean = true> {
   title?: T;
   intro?: T;
   steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureListBlock_select".
+ */
+export interface FeatureListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
     | T
     | {
         title?: T;

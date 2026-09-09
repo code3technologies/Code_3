@@ -68,6 +68,7 @@ import { OfficeBlueprintBlock } from './OfficeBlueprint/Component'
 import { IconFeatureGridBlock } from './IconFeatureGrid/Component'
 import { DetailedFeatureGridBlock } from './DetailedFeatureGrid/Component'
 import { PipelineFlowBlock } from './PipelineFlow/Component'
+import { FeatureListBlock } from './FeatureList/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -153,6 +154,7 @@ const blockComponents = {
   iconFeatureGrid: IconFeatureGridBlock,
   detailedFeatureGrid: DetailedFeatureGridBlock,
   pipelineFlow: PipelineFlowBlock,
+  featureList: FeatureListBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
