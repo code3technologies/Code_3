@@ -54,6 +54,7 @@ import {
   Megaphone,
   Mic,
   Minimize2,
+  Monitor,
   Moon,
   Music,
   Network,
@@ -123,6 +124,12 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('outdoor cctv')) return Sun
   if (t.includes('ptz')) return ZoomIn
   if (t.includes('nvr')) return Server
+  if (t.includes('storage') || t.includes('retention')) return HardDrive
+  if (t.includes('cctv monitoring')) return Monitor
+  if (t.includes('remote viewing')) return Smartphone
+  if (t.includes('commissioning') || t.includes('installation')) return Wrench
+  if (t.includes('maintenance')) return Headset
+  if (t.includes('configuration')) return Settings2
   if (t.includes('dome')) return Building2
   if (t.includes('bullet')) return Sun
   if (t.includes('restricted')) return Lock
