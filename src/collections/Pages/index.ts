@@ -62,6 +62,7 @@ import { SetupEstimator } from '@/blocks/SetupEstimator/config'
 import { OfficeBlueprint } from '@/blocks/OfficeBlueprint/config'
 import { IconFeatureGrid } from '@/blocks/IconFeatureGrid/config'
 import { DetailedFeatureGrid } from '@/blocks/DetailedFeatureGrid/config'
+import { PipelineFlow } from '@/blocks/PipelineFlow/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -281,6 +282,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 OfficeBlueprint,
                 IconFeatureGrid,
                 DetailedFeatureGrid,
+                PipelineFlow,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,

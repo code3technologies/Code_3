@@ -373,6 +373,7 @@ export interface Page {
     | OfficeBlueprintBlock
     | IconFeatureGridBlock
     | DetailedFeatureGridBlock
+    | PipelineFlowBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3046,6 +3047,35 @@ export interface DetailedFeatureGridBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PipelineFlowBlock".
+ */
+export interface PipelineFlowBlock {
+  badge?: string | null;
+  title: string;
+  /**
+   * e.g. "A properly designed CCTV environment typically connects multiple components into one surveillance system."
+   */
+  intro?: string | null;
+  /**
+   * Rendered as a single vertical stack connected by arrows, e.g. Camera → Network → NVR → Storage → Monitoring.
+   */
+  steps?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. a closing line about optional integrations with other systems.
+   */
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pipelineFlow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4398,6 +4428,7 @@ export interface PagesSelect<T extends boolean = true> {
         officeBlueprint?: T | OfficeBlueprintBlockSelect<T>;
         iconFeatureGrid?: T | IconFeatureGridBlockSelect<T>;
         detailedFeatureGrid?: T | DetailedFeatureGridBlockSelect<T>;
+        pipelineFlow?: T | PipelineFlowBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -5862,6 +5893,25 @@ export interface DetailedFeatureGridBlockSelect<T extends boolean = true> {
             };
         ctaLabel?: T;
         ctaUrl?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PipelineFlowBlock_select".
+ */
+export interface PipelineFlowBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
         id?: T;
       };
   footer?: T;

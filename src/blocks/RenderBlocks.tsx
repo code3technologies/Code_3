@@ -67,6 +67,7 @@ import { SetupEstimatorBlock } from './SetupEstimator/Component'
 import { OfficeBlueprintBlock } from './OfficeBlueprint/Component'
 import { IconFeatureGridBlock } from './IconFeatureGrid/Component'
 import { DetailedFeatureGridBlock } from './DetailedFeatureGrid/Component'
+import { PipelineFlowBlock } from './PipelineFlow/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -151,6 +152,7 @@ const blockComponents = {
   officeBlueprint: OfficeBlueprintBlock,
   iconFeatureGrid: IconFeatureGridBlock,
   detailedFeatureGrid: DetailedFeatureGridBlock,
+  pipelineFlow: PipelineFlowBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
