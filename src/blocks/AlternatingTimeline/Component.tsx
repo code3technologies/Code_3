@@ -32,10 +32,10 @@ type Props = {
   className?: string
 } & AlternatingTimelineBlockProps
 
-// A spacious, alternating left/right timeline connected by a central spine
-// — reserved for important sequential stories that deserve more room than
-// the compact card grids (IconFeatureGrid/DetailedFeatureGrid), the boxed
-// vertical stack (PipelineFlow) or the numbered-circle timelines
+// A spacious, single-column timeline with large step markers on a left-hand
+// spine — reserved for important sequential stories that deserve more room
+// than the compact card grids (IconFeatureGrid/DetailedFeatureGrid), the
+// boxed vertical stack (PipelineFlow) or the numbered-circle timelines
 // (ProcessTimeline/DeliveryProcess) used elsewhere on the site.
 export const AlternatingTimelineBlock: React.FC<Props> = ({
   className,
@@ -59,29 +59,22 @@ export const AlternatingTimelineBlock: React.FC<Props> = ({
           {intro && <p className="mt-3 text-gray-600 leading-relaxed">{intro}</p>}
         </Reveal>
 
-        <div className="relative mx-auto max-w-3xl">
-          {/* Central spine */}
-          <div className="absolute left-6 top-2 bottom-2 w-px bg-border md:left-1/2 md:-translate-x-1/2" />
+        <div className="relative mx-auto max-w-2xl">
+          {/* Left-hand spine */}
+          <div className="absolute left-6 top-2 bottom-2 w-px bg-border" />
 
-          <div className="space-y-10 md:space-y-14">
+          <div className="space-y-10 md:space-y-12">
             {safeSteps.map((step, index) => {
               const Icon = getStepIcon(step.title)
-              const isEven = index % 2 === 0
               return (
                 <Reveal key={step.id || index} delayMs={index * 60}>
-                  <div className="relative flex flex-col gap-4 pl-16 md:grid md:grid-cols-2 md:gap-10 md:pl-0">
+                  <div className="relative flex gap-6 pl-16">
                     {/* Marker on the spine */}
-                    <span className="absolute left-6 top-0 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-primary_red text-white shadow-md md:left-1/2">
+                    <span className="absolute left-6 top-0 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-primary_red text-white shadow-md">
                       <Icon className="h-5 w-5" />
                     </span>
 
-                    <div
-                      className={cn(
-                        isEven
-                          ? 'md:col-start-1 md:row-start-1 md:pr-14 md:text-right'
-                          : 'md:col-start-2 md:row-start-1 md:pl-14 md:text-left',
-                      )}
-                    >
+                    <div>
                       <span className="text-xs font-bold uppercase tracking-wide text-primary_red">
                         Step {String(index + 1).padStart(2, '0')}
                       </span>
