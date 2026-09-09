@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { ArrowRight, Building2, Camera, Sparkles, Sun, ZoomIn, type LucideIcon } from 'lucide-react'
+import { Aperture, ArrowRight, Building2, Camera, Car, Sparkles, Sun, Thermometer, ZoomIn, type LucideIcon } from 'lucide-react'
 
 // Best-effort icon per item, matched by keyword — mirrors RoomSizeGuide's
 // camera-type mapping so the same item reads consistently across blocks.
@@ -16,6 +16,9 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('turret')) return Camera
   if (t.includes('ptz')) return ZoomIn
   if (t.includes('ai camera') || t.includes('ai-camera')) return Sparkles
+  if (t.includes('anpr')) return Car
+  if (t.includes('thermal')) return Thermometer
+  if (t.includes('fisheye')) return Aperture
   return Camera
 }
 
@@ -40,7 +43,7 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
           delayMs={100}
           className={cn(
             'mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2',
-            safeItems.length % 3 === 0 ? 'lg:grid-cols-3' : safeItems.length % 2 === 0 ? 'lg:grid-cols-2' : 'lg:grid-cols-3',
+            safeItems.length <= 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3',
           )}
         >
           {safeItems.map((item, index) => {
