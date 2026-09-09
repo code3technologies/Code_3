@@ -2231,6 +2231,10 @@ export interface CategorizedIntegrationsBlock {
   badge?: string | null;
   title: string;
   subtitle?: string | null;
+  /**
+   * Swaps the plain dot bullets for checkmarks — use for genuine checklists (e.g. project phases) rather than categorized feature/integration lists.
+   */
+  checklistStyle?: boolean | null;
   groups?:
     | {
         /**
@@ -5579,6 +5583,7 @@ export interface CategorizedIntegrationsBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
+  checklistStyle?: T;
   groups?:
     | T
     | {
