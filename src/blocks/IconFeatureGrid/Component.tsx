@@ -198,6 +198,9 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('recording day')) return Calendar
   if (t.includes('number of sites')) return Building2
   if (t.includes('platform-dependent') || t.includes('platform dependent')) return Settings2
+  if (t.includes('gate automation')) return Fence
+  if (t.includes('ai camera')) return Sparkles
+  if (t.includes('+ intercom')) return Mic
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
   if (t.includes('remote authorization') || t.includes('remote authorisation')) return Smartphone
   if (t.includes('video intercom')) return Video
