@@ -10,20 +10,32 @@ import {
   Aperture,
   ArrowRight,
   Building2,
+  Cable,
   Camera,
   Car,
+  Cloud,
   CloudSun,
+  DraftingCompass,
   Footprints,
+  Globe,
   Grid2x2,
   Home,
+  Laptop,
+  MapPin,
   Moon,
+  Network,
+  Printer,
   Radar,
+  Router,
   ScanEye,
   ScanLine,
+  Server,
   Sparkles,
+  Split,
   Sun,
   Thermometer,
   Users,
+  Wifi,
   ZoomIn,
   type LucideIcon,
 } from 'lucide-react'
@@ -32,6 +44,41 @@ import {
 // camera-type mapping so the same item reads consistently across blocks.
 function getItemIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  // Networking / infrastructure keywords (LAN & WAN pages) — checked first so
+  // "design"/"approach" summary cards don't fall through to a camera icon.
+  if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
+    return DraftingCompass
+  if (t.includes('segment')) return Split
+  if (t.includes('switch')) return Network
+  if (t.includes('router')) return Router
+  if (t.includes('access point') || t.includes('wi-fi') || t.includes('wifi') || t.includes('wireless'))
+    return Wifi
+  if (
+    t.includes('ethernet') ||
+    t.includes('cabling') ||
+    t.includes('cat6') ||
+    t.includes('cat 6') ||
+    t.includes('fiber') ||
+    t.includes('fibre')
+  )
+    return Cable
+  if (t.includes('data center') || t.includes('datacenter') || t.includes('data centre')) return Server
+  if (t.includes('server')) return Server
+  if (t.includes('printer')) return Printer
+  if (
+    t.includes('end-user') ||
+    t.includes('end user') ||
+    t.includes('endpoint') ||
+    t.includes('workstation') ||
+    t.includes('laptop')
+  )
+    return Laptop
+  if (t.includes('headquarter') || t.includes('head office')) return Building2
+  if (t.includes('branch') || t.includes('office lan') || t.includes('office')) return Building2
+  if (t.includes('remote site') || t.includes('remote')) return MapPin
+  if (t.includes('cloud')) return Cloud
+  if (t.includes('geographical') || t.includes('separated location') || t.includes('multi-site')) return Globe
+  if (t.includes('connectivity') || t.includes('network')) return Network
   if (t.includes('dome')) return Building2
   if (t.includes('bullet')) return Sun
   if (t.includes('turret')) return Camera
