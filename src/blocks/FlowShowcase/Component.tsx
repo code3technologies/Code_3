@@ -11,8 +11,6 @@ import {
   Camera,
   Car,
   CheckCircle2,
-  ChevronDown,
-  ChevronRight,
   ClipboardCheck,
   Fence,
   Fingerprint,
@@ -52,15 +50,14 @@ type Props = {
   className?: string
 } & FlowShowcaseBlockProps
 
-// A single, bold flow on a dark gradient panel — a horizontal row of large
-// connected icon nodes. When steps carry descriptions, a matching grid of
-// detail cards is rendered below the panel. Reserved for a flow important
-// enough to deserve its own visual moment.
+// A single, bold flow on a dark gradient panel — the steps themselves are
+// elevated cards (number, icon, label, detail) laid out left-to-right in a
+// grid. Reserved for a flow important enough to deserve its own visual
+// moment, distinct from the plain-white timelines used elsewhere.
 export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], note, ctaLabel, ctaUrl }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
-  const hasDescriptions = safeSteps.some((step) => step.description)
-  const wideGrid = safeSteps.length !== 4 && safeSteps.length !== 2
+  const cols = safeSteps.length % 3 === 0 ? 3 : safeSteps.length === 4 ? 2 : safeSteps.length <= 3 ? safeSteps.length : 3
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -73,47 +70,22 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
 
         <Reveal
           delayMs={100}
-          className="relative mx-auto max-w-4xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-5 py-10 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-8 md:py-12"
+          className="relative mx-auto max-w-5xl overflow-hidden rounded-[28px] bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red p-5 shadow-[0_28px_70px_-28px_rgba(201,14,29,0.55)] sm:p-7 md:p-9"
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-20 right-0 h-64 w-64 rounded-full bg-white/[0.06] blur-3xl"
+            className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-white/[0.07] blur-3xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-20 left-0 h-56 w-56 rounded-full bg-black/20 blur-3xl"
+            className="pointer-events-none absolute -bottom-24 left-0 h-64 w-64 rounded-full bg-black/25 blur-3xl"
           />
 
-          <div className="relative flex flex-col items-center gap-2 overflow-x-auto md:flex-row md:flex-nowrap md:justify-center md:gap-1.5 md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
-            {safeSteps.map((step, index) => {
-              const Icon = getNodeIcon(step.label)
-              const isLast = index === safeSteps.length - 1
-              return (
-                <React.Fragment key={step.id || index}>
-                  <div className="flex w-24 flex-none flex-col items-center gap-2 text-center">
-                    <span className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-white text-primary_red shadow-lg sm:h-14 sm:w-14">
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                    </span>
-                    <span className="text-xs font-bold leading-tight text-white sm:text-sm">{step.label}</span>
-                  </div>
-                  {!isLast && (
-                    <>
-                      <ChevronDown className="h-5 w-5 flex-none text-white/40 md:hidden" strokeWidth={2.5} />
-                      <ChevronRight className="hidden h-5 w-5 flex-none text-white/40 md:block" strokeWidth={2.5} />
-                    </>
-                  )}
-                </React.Fragment>
-              )
-            })}
-          </div>
-        </Reveal>
-
-        {hasDescriptions && (
-          <Reveal
-            delayMs={150}
+          <div
             className={cn(
-              'mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 md:mt-5',
-              wideGrid && 'lg:grid-cols-3',
+              'relative grid gap-3 sm:gap-4',
+              cols === 2 && 'sm:grid-cols-2',
+              cols === 3 && 'sm:grid-cols-2 lg:grid-cols-3',
             )}
           >
             {safeSteps.map((step, index) => {
@@ -121,29 +93,30 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
               return (
                 <div
                   key={step.id || index}
-                  className="flex flex-col gap-2 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md"
+                  className="group relative flex flex-col rounded-2xl border border-white/10 bg-white/[0.07] p-5 ring-1 ring-inset ring-white/[0.03] transition-colors duration-300 hover:bg-white/[0.11]"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <span className="text-xs font-bold text-primary_red/40">{String(index + 1).padStart(2, '0')}</span>
-                  </div>
-                  <h3 className="text-sm font-bold leading-snug text-foreground">{step.label}</h3>
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute right-4 top-3 select-none text-3xl font-black leading-none text-white/[0.08]"
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="mb-3 flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-white text-primary_red shadow-lg">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-base font-bold leading-snug text-white">{step.label}</h3>
                   {step.description && (
-                    <p className="text-sm leading-relaxed text-gray-600">{step.description}</p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-white/65">{step.description}</p>
                   )}
                 </div>
               )
             })}
-          </Reveal>
-        )}
+          </div>
 
-        {note && (
-          <Reveal delayMs={200} className="mx-auto mt-6 max-w-2xl text-center">
-            <p className="text-sm text-gray-500">{note}</p>
-          </Reveal>
-        )}
+          {note && (
+            <p className="relative mt-6 border-t border-white/10 pt-5 text-center text-sm text-white/55">{note}</p>
+          )}
+        </Reveal>
 
         {ctaLabel && ctaUrl && (
           <div className="mt-6 flex justify-center md:mt-7">
