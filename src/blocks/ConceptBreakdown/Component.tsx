@@ -54,13 +54,13 @@ export const ConceptBreakdownBlock: React.FC<Props> = ({
             )}
 
             {asideParas.length > 0 && (
-              <div className="mt-6 border-l-2 border-primary_red pl-4">
+              <div className="mt-6 rounded-r-lg border-l-[3px] border-primary_red bg-[#FDEBEC]/60 py-4 pl-4 pr-5">
                 {asideLabel && (
                   <div className="mb-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary_red">
                     {asideLabel}
                   </div>
                 )}
-                <div className="space-y-3 text-sm leading-relaxed text-gray-600">
+                <div className="space-y-3 text-sm leading-relaxed text-gray-700">
                   {asideParas.map((p, i) => (
                     <p key={i}>{p}</p>
                   ))}
@@ -71,17 +71,17 @@ export const ConceptBreakdownBlock: React.FC<Props> = ({
 
           {/* Right: hairline reference list */}
           <Reveal delayMs={100} className="lg:pt-1">
-            <dl className="border-t border-border">
+            <dl className="border-t-2 border-primary_red/50">
               {safeItems.map((item, index) => (
                 <div
                   key={item.id || index}
-                  className="grid gap-x-6 border-b border-border py-5 sm:grid-cols-[minmax(0,210px)_1fr] sm:py-6"
+                  className="group -mx-3 grid gap-x-6 rounded-lg border-b border-border px-3 py-5 transition-colors hover:bg-[#FDEBEC]/40 sm:grid-cols-[minmax(0,210px)_1fr] sm:py-6"
                 >
                   <dt className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs text-gray-400">
+                    <span className="font-mono text-xs font-semibold text-primary_red">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    <span className="text-base font-semibold leading-snug text-foreground">
+                    <span className="text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-primary_red">
                       {item.term}
                     </span>
                   </dt>
@@ -92,7 +92,9 @@ export const ConceptBreakdownBlock: React.FC<Props> = ({
               ))}
             </dl>
 
-            {note && <p className="mt-5 text-sm text-gray-500">{note}</p>}
+            {note && (
+              <p className="mt-5 border-l-2 border-primary_red/40 pl-3 text-sm text-gray-500">{note}</p>
+            )}
           </Reveal>
         </div>
       </div>
