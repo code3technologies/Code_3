@@ -385,6 +385,7 @@ export interface Page {
     | ParameterListBlock
     | ConceptBreakdownBlock
     | ZonedFlowBlock
+    | PathCompareBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3420,6 +3421,38 @@ export interface ZonedFlowBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PathCompareBlock".
+ */
+export interface PathCompareBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Each path renders as an equal-weight card with a numbered top-to-bottom step list. Use it for "either / or" journeys, not a good-vs-bad comparison.
+   */
+  columns?:
+    | {
+        label: string;
+        /**
+         * One line under the label, e.g. who this path is for.
+         */
+        caption?: string | null;
+        steps?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pathCompare';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4788,6 +4821,7 @@ export interface PagesSelect<T extends boolean = true> {
         parameterList?: T | ParameterListBlockSelect<T>;
         conceptBreakdown?: T | ConceptBreakdownBlockSelect<T>;
         zonedFlow?: T | ZonedFlowBlockSelect<T>;
+        pathCompare?: T | PathCompareBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6496,6 +6530,31 @@ export interface ZonedFlowBlockSelect<T extends boolean = true> {
           | {
               title?: T;
               description?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PathCompareBlock_select".
+ */
+export interface PathCompareBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  columns?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        steps?:
+          | T
+          | {
+              text?: T;
               id?: T;
             };
         id?: T;

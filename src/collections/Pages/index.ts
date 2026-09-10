@@ -74,6 +74,7 @@ import { SpecSheet } from '@/blocks/SpecSheet/config'
 import { ParameterList } from '@/blocks/ParameterList/config'
 import { ConceptBreakdown } from '@/blocks/ConceptBreakdown/config'
 import { ZonedFlow } from '@/blocks/ZonedFlow/config'
+import { PathCompare } from '@/blocks/PathCompare/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -305,6 +306,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ParameterList,
                 ConceptBreakdown,
                 ZonedFlow,
+                PathCompare,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,
