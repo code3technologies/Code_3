@@ -2,6 +2,7 @@ import type { PathCompareBlock as PathCompareBlockProps } from 'src/payload-type
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { ChevronDown } from 'lucide-react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 
@@ -9,9 +10,10 @@ type Props = {
   className?: string
 } & PathCompareBlockProps
 
-// Two (or three) equal-weight paths side by side, each a numbered top-to-bottom
-// step list on a connecting rail. Deliberately symmetrical — for "which of these
-// are you?" journeys rather than a better/worse comparison.
+// Two (or three) equal-weight paths side by side. Each card has a solid
+// coloured header and a top-to-bottom stack of step chips joined by
+// chevrons. Deliberately symmetrical — for "which of these are you?"
+// journeys rather than a better/worse comparison.
 export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, subtitle, columns = [], note }) => {
   const safeColumns = (columns || []).filter((c) => (c.steps || []).length > 0)
   if (safeColumns.length === 0) return null
@@ -29,7 +31,7 @@ export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, sub
 
         <div
           className={cn(
-            'mx-auto grid max-w-4xl gap-5',
+            'mx-auto grid max-w-4xl items-stretch gap-5',
             safeColumns.length === 2 && 'md:grid-cols-2',
             safeColumns.length >= 3 && 'md:grid-cols-2 lg:grid-cols-3',
           )}
@@ -40,26 +42,30 @@ export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, sub
               <Reveal
                 key={col.id || ci}
                 delayMs={ci * 80}
-                className="flex flex-col rounded-2xl border border-border bg-white p-5 shadow-sm sm:p-6"
+                className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
               >
-                <div className="mb-4 border-b border-border pb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 flex-none rounded-full bg-primary_red" />
-                    <h3 className="text-base font-bold text-foreground">{col.label}</h3>
-                  </div>
-                  {col.caption && <p className="mt-1 text-sm text-gray-500">{col.caption}</p>}
+                <div className="bg-primary_red px-5 py-4 text-white sm:px-6">
+                  <h3 className="text-base font-bold">{col.label}</h3>
+                  {col.caption && <p className="mt-0.5 text-sm text-white/80">{col.caption}</p>}
                 </div>
 
-                <ol className="relative ml-[11px] space-y-3 border-l-2 border-primary_red/15 pl-6">
+                <div className="flex flex-1 flex-col p-4 sm:p-5">
                   {steps.map((step, si) => (
-                    <li key={step.id || si} className="relative">
-                      <span className="absolute -left-[31px] top-1/2 flex h-[22px] w-[22px] -translate-y-1/2 items-center justify-center rounded-full bg-primary_red text-[11px] font-bold text-white ring-4 ring-white">
-                        {si + 1}
-                      </span>
-                      <span className="text-sm font-medium leading-snug text-foreground">{step.text}</span>
-                    </li>
+                    <React.Fragment key={step.id || si}>
+                      <div className="flex items-center gap-3 rounded-xl border border-primary_red/15 bg-[#FDEBEC]/50 px-3.5 py-2.5">
+                        <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red text-[11px] font-bold text-white">
+                          {si + 1}
+                        </span>
+                        <span className="text-sm font-semibold leading-snug text-foreground">{step.text}</span>
+                      </div>
+                      {si < steps.length - 1 && (
+                        <div className="flex justify-center py-1">
+                          <ChevronDown className="h-4 w-4 text-primary_red/40" strokeWidth={2.5} />
+                        </div>
+                      )}
+                    </React.Fragment>
                   ))}
-                </ol>
+                </div>
               </Reveal>
             )
           })}
