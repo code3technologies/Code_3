@@ -37,10 +37,12 @@ type Props = {
   className?: string
 } & PipelineFlowBlockProps
 
-// A row of connected steps — horizontal on desktop, stacked on mobile.
+// A row of connected steps. Up to 4 steps lay out horizontally on desktop;
+// 5+ stay as a vertical stack so the per-step text keeps room to breathe.
 export const PipelineFlowBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], footer }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
+  const horizontal = safeSteps.length <= 4
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -53,31 +55,51 @@ export const PipelineFlowBlock: React.FC<Props> = ({ className, badge, title, in
 
         <Reveal
           delayMs={100}
-          className="mx-auto flex max-w-xl flex-col items-stretch md:max-w-5xl md:flex-row md:flex-nowrap md:items-stretch md:justify-center"
+          className={cn(
+            'mx-auto flex max-w-xl flex-col items-stretch',
+            horizontal && 'md:max-w-4xl md:flex-row md:flex-nowrap md:items-stretch md:justify-center',
+          )}
         >
           {safeSteps.map((step, index) => {
             const Icon = getStepIcon(step.title)
             const isLast = index === safeSteps.length - 1
             return (
               <React.Fragment key={step.id || index}>
-                <div className="flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5 md:min-w-0 md:flex-1 md:basis-0 md:flex-col md:items-center md:gap-2.5 md:p-4 md:text-center">
+                <div
+                  className={cn(
+                    'flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5',
+                    horizontal && 'md:min-w-0 md:flex-1 md:basis-0 md:flex-col md:items-center md:gap-2.5 md:p-4 md:text-center',
+                  )}
+                >
                   <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
                     <Icon className="h-5 w-5" />
                   </span>
                   <div>
-                    <div className="text-base font-semibold leading-snug text-foreground md:text-sm">{step.title}</div>
+                    <div className={cn('text-base font-semibold leading-snug text-foreground', horizontal && 'md:text-sm')}>
+                      {step.title}
+                    </div>
                     {step.description && (
                       <p className="mt-1 text-sm leading-relaxed text-gray-600">{step.description}</p>
                     )}
                   </div>
                 </div>
                 {!isLast && (
-                  <div className="flex flex-none justify-center py-1.5 md:items-center md:px-1 md:py-0">
-                    <ChevronDown className="h-5 w-5 flex-none text-primary_red/40 md:hidden" strokeWidth={2.5} />
-                    <ChevronRight
-                      className="hidden h-5 w-5 flex-none text-primary_red/40 md:block"
+                  <div
+                    className={cn(
+                      'flex justify-center py-1.5',
+                      horizontal && 'flex-none md:items-center md:px-1 md:py-0',
+                    )}
+                  >
+                    <ChevronDown
+                      className={cn('h-5 w-5 flex-none text-primary_red/40', horizontal && 'md:hidden')}
                       strokeWidth={2.5}
                     />
+                    {horizontal && (
+                      <ChevronRight
+                        className="hidden h-5 w-5 flex-none text-primary_red/40 md:block"
+                        strokeWidth={2.5}
+                      />
+                    )}
                   </div>
                 )}
               </React.Fragment>
