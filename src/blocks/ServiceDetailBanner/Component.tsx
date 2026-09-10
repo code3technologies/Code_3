@@ -176,7 +176,7 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
   }
 
   return (
-    <section className={cn('relative w-full py-12 md:py-16', className)}>
+    <section className={cn('relative w-full pt-12 pb-3 md:pt-16 md:pb-4', className)}>
       {/* One background field — gradient, dot grid, drifting glow, light
           streaks and floating icons — all on a single layer that is taller
           than this section, so it runs unbroken behind the ServiceOverview

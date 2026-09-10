@@ -52,7 +52,7 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
         // When animated, this section paints nothing — the Service Detail
         // Banner above renders one tall background layer that bleeds down
         // behind here, so there is a single unbroken background.
-        animatedBackground ? 'relative pb-14 pt-6 md:pb-20 md:pt-8' : 'bg-white pt-2 pb-8 md:pt-3 md:pb-10',
+        animatedBackground ? 'relative pb-14 pt-1 md:pb-20 md:pt-2' : 'bg-white pt-2 pb-8 md:pt-3 md:pb-10',
         className,
       )}
     >
