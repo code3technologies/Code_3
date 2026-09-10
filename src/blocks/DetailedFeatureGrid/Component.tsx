@@ -12,6 +12,7 @@ import {
   Building2,
   Briefcase,
   Cable,
+  CalendarDays,
   Camera,
   Car,
   Cloud,
@@ -41,12 +42,14 @@ import {
   ShieldCheck,
   Sparkles,
   Split,
+  Stethoscope,
   Store,
   Sun,
   Thermometer,
   TrendingUp,
   Users,
   UsersRound,
+  Utensils,
   Warehouse,
   Wifi,
   Wrench,
@@ -72,6 +75,10 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('education') || t.includes('school') || t.includes('classroom') || t.includes('campus'))
     return GraduationCap
   if (t.includes('retail') || t.includes('store') || t.includes('shop')) return Store
+  if (t.includes('restaurant') || t.includes('dining') || t.includes('cafe')) return Utensils
+  if (t.includes('clinic') || t.includes('medical') || t.includes('healthcare') || t.includes('hospital ')) return Stethoscope
+  if (t.includes('event')) return CalendarDays
+  if (t.includes('commercial') || t.includes('building')) return Building2
   if (t.includes('industrial') || t.includes('factory') || t.includes('plant floor')) return Factory
   if (t.includes('high-density') || t.includes('high density') || t.includes('density')) return UsersRound
   if (t.includes('multi-floor') || t.includes('multi floor')) return Layers
