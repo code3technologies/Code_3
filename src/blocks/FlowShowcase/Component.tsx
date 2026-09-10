@@ -50,10 +50,10 @@ type Props = {
   className?: string
 } & FlowShowcaseBlockProps
 
-// A single, bold flow on a dark gradient panel — a vertical spine of large
-// white icon nodes, each with its own label and detail line. Reserved for a
-// flow important enough to deserve its own visual moment, distinct from the
-// plain-white timelines used elsewhere on the site.
+// A single, bold flow on a dark gradient panel — numbered glass step cards
+// laid out in a left-to-right grid, each with an icon, label and detail
+// line. Reserved for a flow important enough to deserve its own visual
+// moment, distinct from the plain-white timelines used elsewhere.
 export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], note, ctaLabel, ctaUrl }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
@@ -69,7 +69,7 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
 
         <Reveal
           delayMs={100}
-          className="relative mx-auto max-w-3xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-6 py-10 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-10 md:py-12"
+          className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-5 py-8 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-8 md:py-10"
         >
           <div
             aria-hidden
@@ -80,28 +80,32 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
             className="pointer-events-none absolute -bottom-20 left-0 h-56 w-56 rounded-full bg-black/20 blur-3xl"
           />
 
-          <div className="relative mx-auto max-w-xl">
-            {/* Spine through the icon nodes */}
-            <div className="absolute left-6 top-3 bottom-3 w-px -translate-x-1/2 bg-white/15 sm:left-7" />
-
-            <ol className="relative space-y-6 md:space-y-7">
-              {safeSteps.map((step, index) => {
-                const Icon = getNodeIcon(step.label)
-                return (
-                  <li key={step.id || index} className="flex gap-4 sm:gap-5">
-                    <span className="relative z-10 flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-white text-primary_red shadow-lg sm:h-14 sm:w-14">
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+          <div
+            className={cn(
+              'relative grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4',
+              safeSteps.length !== 4 && safeSteps.length !== 2 && 'lg:grid-cols-3',
+            )}
+          >
+            {safeSteps.map((step, index) => {
+              const Icon = getNodeIcon(step.label)
+              return (
+                <div
+                  key={step.id || index}
+                  className="flex flex-col gap-2.5 rounded-2xl border border-white/10 bg-white/[0.06] p-4 sm:p-5"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white text-primary_red shadow-md">
+                      <Icon className="h-5 w-5" />
                     </span>
-                    <div className="pt-1">
-                      <div className="text-sm font-bold leading-snug text-white sm:text-base">{step.label}</div>
-                      {step.description && (
-                        <p className="mt-1 text-sm leading-relaxed text-white/70">{step.description}</p>
-                      )}
-                    </div>
-                  </li>
-                )
-              })}
-            </ol>
+                    <span className="text-xs font-bold text-white/40">{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                  <div className="text-sm font-bold leading-snug text-white">{step.label}</div>
+                  {step.description && (
+                    <p className="text-sm leading-relaxed text-white/65">{step.description}</p>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </Reveal>
 
