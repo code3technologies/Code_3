@@ -1540,6 +1540,10 @@ export interface ServiceDetailBannerBlock {
   description: string;
   showGradientLine?: boolean | null;
   /**
+   * Use the homepage-style animated dark-red hero background (drifting glow, light streaks, floating icons) instead of the plain white banner.
+   */
+  animatedBackground?: boolean | null;
+  /**
    * e.g. "Cyber Security" — shown as a small link back to the parent service category.
    */
   backLinkLabel?: string | null;
@@ -5253,6 +5257,7 @@ export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   showGradientLine?: T;
+  animatedBackground?: T;
   backLinkLabel?: T;
   backLinkUrl?: T;
   cardBadge?: T;

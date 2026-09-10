@@ -36,6 +36,15 @@ export const ServiceDetailBanner: Block = {
       defaultValue: true,
     },
     {
+      name: 'animatedBackground',
+      type: 'checkbox',
+      label: 'Animated Dark Background',
+      defaultValue: false,
+      admin: {
+        description: 'Use the homepage-style animated dark-red hero background (drifting glow, light streaks, floating icons) instead of the plain white banner.',
+      },
+    },
+    {
       name: 'backLinkLabel',
       type: 'text',
       label: 'Back Link Label',
