@@ -58,6 +58,7 @@ type Props = {
 export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], note, ctaLabel, ctaUrl }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
+  const hasDescriptions = safeSteps.some((step) => step.description)
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -105,8 +106,29 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
           </div>
         </Reveal>
 
+        {hasDescriptions && (
+          <Reveal
+            delayMs={150}
+            className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {safeSteps.map((step, index) => (
+              <div key={step.id || index} className="flex gap-3">
+                <span className="flex-none text-lg font-black leading-none text-primary_red/25">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 className="text-sm font-bold leading-snug text-foreground">{step.label}</h3>
+                  {step.description && (
+                    <p className="mt-1 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </Reveal>
+        )}
+
         {note && (
-          <Reveal delayMs={150} className="mx-auto mt-6 max-w-2xl text-center">
+          <Reveal delayMs={200} className="mx-auto mt-8 max-w-2xl text-center">
             <p className="text-sm text-gray-500">{note}</p>
           </Reveal>
         )}

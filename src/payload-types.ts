@@ -3267,6 +3267,10 @@ export interface FlowShowcaseBlock {
   steps?:
     | {
         label: string;
+        /**
+         * Optional — adds a numbered detail breakdown below the flow panel once any step has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -6263,6 +6267,7 @@ export interface FlowShowcaseBlockSelect<T extends boolean = true> {
     | T
     | {
         label?: T;
+        description?: T;
         id?: T;
       };
   note?: T;
