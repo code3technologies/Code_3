@@ -5,7 +5,19 @@ import React from 'react'
 import RichText from '@/components/RichText'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { Bell, Camera, ChevronDown, Grid2x2, HardDrive, Monitor, Network, Server, Zap, type LucideIcon } from 'lucide-react'
+import {
+  Bell,
+  Camera,
+  ChevronDown,
+  ChevronRight,
+  Grid2x2,
+  HardDrive,
+  Monitor,
+  Network,
+  Server,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react'
 
 // Best-effort icon per step, matched by keyword.
 function getStepIcon(text?: string | null): LucideIcon {
@@ -25,10 +37,7 @@ type Props = {
   className?: string
 } & PipelineFlowBlockProps
 
-// A single vertical stack of connected steps — deliberately not the
-// horizontal-on-desktop timeline used by ProcessTimeline/DeliveryProcess,
-// since this content is a literal top-to-bottom system pipeline rather
-// than a sequence of instructional steps.
+// A row of connected steps — horizontal on desktop, stacked on mobile.
 export const PipelineFlowBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], footer }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
@@ -42,26 +51,33 @@ export const PipelineFlowBlock: React.FC<Props> = ({ className, badge, title, in
           {intro && <p className="mt-2 text-gray-600 leading-relaxed">{intro}</p>}
         </Reveal>
 
-        <Reveal delayMs={100} className="mx-auto flex max-w-xl flex-col items-stretch">
+        <Reveal
+          delayMs={100}
+          className="mx-auto flex max-w-xl flex-col items-stretch md:max-w-5xl md:flex-row md:flex-nowrap md:items-stretch md:justify-center"
+        >
           {safeSteps.map((step, index) => {
             const Icon = getStepIcon(step.title)
             const isLast = index === safeSteps.length - 1
             return (
               <React.Fragment key={step.id || index}>
-                <div className="flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5">
+                <div className="flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5 md:min-w-0 md:flex-1 md:basis-0 md:flex-col md:items-center md:gap-2.5 md:p-4 md:text-center">
                   <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
                     <Icon className="h-5 w-5" />
                   </span>
                   <div>
-                    <div className="text-base font-semibold leading-snug text-foreground">{step.title}</div>
+                    <div className="text-base font-semibold leading-snug text-foreground md:text-sm">{step.title}</div>
                     {step.description && (
                       <p className="mt-1 text-sm leading-relaxed text-gray-600">{step.description}</p>
                     )}
                   </div>
                 </div>
                 {!isLast && (
-                  <div className="flex justify-center py-1.5">
-                    <ChevronDown className="h-5 w-5 flex-none text-primary_red/40" strokeWidth={2.5} />
+                  <div className="flex flex-none justify-center py-1.5 md:items-center md:px-1 md:py-0">
+                    <ChevronDown className="h-5 w-5 flex-none text-primary_red/40 md:hidden" strokeWidth={2.5} />
+                    <ChevronRight
+                      className="hidden h-5 w-5 flex-none text-primary_red/40 md:block"
+                      strokeWidth={2.5}
+                    />
                   </div>
                 )}
               </React.Fragment>
