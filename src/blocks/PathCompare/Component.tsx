@@ -29,7 +29,7 @@ export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, sub
           {subtitle && <p className="mt-2 leading-relaxed text-gray-600">{subtitle}</p>}
         </Reveal>
 
-        <div className="mx-auto grid max-w-5xl gap-5">
+        <div className="mx-auto grid max-w-6xl gap-4">
           {safeColumns.map((col, ci) => {
             const steps = col.steps || []
             return (
@@ -38,23 +38,25 @@ export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, sub
                 delayMs={ci * 80}
                 className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
               >
-                <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
-                  <div className="flex-none rounded-xl bg-primary_red px-4 py-3 text-white sm:w-52">
-                    <h3 className="text-sm font-bold uppercase tracking-wide">{col.label}</h3>
-                    {col.caption && <p className="mt-0.5 text-xs leading-snug text-white/80">{col.caption}</p>}
+                <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:gap-4">
+                  <div className="flex-none rounded-lg bg-primary_red px-3.5 py-2.5 text-white sm:w-44">
+                    <h3 className="text-xs font-bold uppercase tracking-wide">{col.label}</h3>
+                    {col.caption && <p className="mt-0.5 hidden text-[11px] leading-snug text-white/80 sm:block">{col.caption}</p>}
                   </div>
 
-                  <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-2">
+                  <div className="-mx-4 flex min-w-0 flex-1 flex-nowrap items-center gap-x-1 overflow-x-auto px-4 pb-1 [scrollbar-width:thin] sm:mx-0 sm:px-0 sm:pb-0">
                     {steps.map((step, si) => (
                       <React.Fragment key={step.id || si}>
-                        <span className="inline-flex items-center gap-2 rounded-lg border border-primary_red/15 bg-[#FDEBEC]/50 px-3 py-2">
-                          <span className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-primary_red text-[10px] font-bold text-white">
+                        <span className="inline-flex flex-none items-center gap-1.5 rounded-md border border-primary_red/15 bg-[#FDEBEC]/50 px-2.5 py-1.5">
+                          <span className="flex h-4 w-4 flex-none items-center justify-center rounded-full bg-primary_red text-[9px] font-bold text-white">
                             {si + 1}
                           </span>
-                          <span className="text-sm font-semibold leading-none text-foreground">{step.text}</span>
+                          <span className="whitespace-nowrap text-xs font-semibold leading-none text-foreground">
+                            {step.text}
+                          </span>
                         </span>
                         {si < steps.length - 1 && (
-                          <ChevronRight className="h-4 w-4 flex-none text-primary_red/40" strokeWidth={2.5} />
+                          <ChevronRight className="h-3.5 w-3.5 flex-none text-primary_red/40" strokeWidth={2.5} />
                         )}
                       </React.Fragment>
                     ))}
