@@ -10,22 +10,30 @@ import {
   Aperture,
   ArrowRight,
   Building2,
+  Briefcase,
   Cable,
+  CalendarDays,
   Camera,
   Car,
   Cloud,
   CloudSun,
   DraftingCompass,
+  Factory,
+  Fingerprint,
   Footprints,
   Globe,
+  GraduationCap,
   Grid2x2,
   Home,
+  Hotel,
   Laptop,
+  Layers,
   Lock,
   MapPin,
   Moon,
   Network,
   PencilRuler,
+  Plug,
   Printer,
   Radar,
   Router,
@@ -35,10 +43,15 @@ import {
   ShieldCheck,
   Sparkles,
   Split,
+  Stethoscope,
+  Store,
   Sun,
   Thermometer,
   TrendingUp,
   Users,
+  UsersRound,
+  Utensils,
+  Warehouse,
   Wifi,
   Wrench,
   ZoomIn,
@@ -53,7 +66,44 @@ function getItemIcon(text?: string | null): LucideIcon {
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
-  if (t.includes('wan monitor') || t.includes('network monitor')) return Radar
+  // Wi-Fi security keywords
+  if (t.includes('authentication')) return Fingerprint
+  if (t.includes('rogue')) return AlertTriangle
+  if (t.includes('guest')) return Users
+  // Wi-Fi / wireless environments (checked before the generic wi-fi rule)
+  if (t.includes('warehouse')) return Warehouse
+  if (t.includes('hospitality') || t.includes('hotel')) return Hotel
+  if (t.includes('education') || t.includes('school') || t.includes('classroom') || t.includes('campus'))
+    return GraduationCap
+  if (t.includes('retail') || t.includes('store') || t.includes('shop')) return Store
+  if (t.includes('restaurant') || t.includes('dining') || t.includes('cafe')) return Utensils
+  if (t.includes('clinic') || t.includes('medical') || t.includes('healthcare') || t.includes('hospital ')) return Stethoscope
+  if (t.includes('event')) return CalendarDays
+  if (t.includes('commercial') || t.includes('building')) return Building2
+  if (t.includes('industrial') || t.includes('factory') || t.includes('plant floor')) return Factory
+  if (t.includes('high-density') || t.includes('high density') || t.includes('density')) return UsersRound
+  if (t.includes('multi-floor') || t.includes('multi floor') || t.includes('floor')) return Layers
+  if (t.includes('multi-site') || t.includes('multi site')) return Globe
+  // Multi-floor / large-building Wi-Fi design keywords
+  if (t.includes('placement')) return MapPin
+  if (t.includes('coverage') || t.includes('overlap')) return Wifi
+  if (t.includes('capacity')) return UsersRound
+  if (t.includes('poe') || t.includes('power over ethernet')) return Plug
+  if (t.includes('roaming')) return Footprints
+  if (t.includes('centraliz') || t.includes('central management') || t.includes('controller'))
+    return Server
+  if (t.includes('small business') || t.includes('smb')) return Briefcase
+  if (t.includes('corporate') || t.includes('office wi-fi') || t.includes('office wifi')) return Building2
+  if (
+    t.includes('cisco') ||
+    t.includes('ubiquiti') ||
+    t.includes('unifi') ||
+    t.includes('ruijie') ||
+    t.includes('aruba') ||
+    t.includes('meraki')
+  )
+    return Wifi
+  if (t.includes('wan monitor') || t.includes('network monitor') || t === 'monitoring') return Radar
   if (t.includes('firewall') || t.includes('threat')) return ShieldCheck
   if (t.includes('access control')) return Lock
   if (t.includes('secure') || t.includes('site-to-site') || t.includes('vpn')) return Lock

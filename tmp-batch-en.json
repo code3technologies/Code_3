@@ -1,0 +1,1647 @@
+{
+  "IT Asset Management": {
+    "id": "6a451a8278829dcc3a08c237",
+    "slug": "it-asset-management-dubai-uae",
+    "hero": {
+      "type": "lowImpact",
+      "HeroText": "IT Asset Management Services",
+      "subText": "IT equipment gets lost, forgotten, or run past its useful life without anyone noticing. We track hardware, software licenses, and warranties through the full asset lifecycle, from purchase to retirement.",
+      "links": [],
+      "carouselImages": []
+    },
+    "meta": {
+      "title": "IT Asset Management Services in Dubai | CODE3",
+      "image": "6a45d9ed18523e92fa1d3aa2",
+      "description": "CODE3 provides IT asset management services in Dubai and across the UAE, helping businesses track, manage and plan for the technology they own.",
+      "keywords": "IT Asset Management Dubai, IT asset tracking Dubai, IT inventory management UAE, IT lifecycle management Dubai, technology asset management Dubai"
+    },
+    "layout": [
+      {
+        "blockType": "serviceDetailBanner",
+        "serviceBadge": "MANAGED IT SERVICES",
+        "serviceName": "IT ASSET MANAGEMENT",
+        "title": "Know What Technology You Have and Where It Is",
+        "description": "As businesses grow, it becomes harder to keep track of every laptop, server, license and piece of equipment in use. CODE3 provides IT asset management services in Dubai and across the UAE, helping businesses maintain a clear record of their technology — what they have, where it's deployed, and when it needs to be replaced or renewed.",
+        "showGradientLine": true,
+        "backLinkLabel": "Managed IT Service",
+        "backLinkUrl": "/service/managed-it-service",
+        "id": "6a45d70b6bb52030daefd167"
+      },
+      {
+        "blockType": "serviceOverview",
+        "badge": "SERVICES OVERVIEW",
+        "title": "A Clear Picture of Your Technology Environment",
+        "description": "Without proper tracking, IT assets can go missing, licenses can lapse unnoticed, and ageing equipment can go unreplaced until it fails. IT asset management gives you visibility into what technology your business owns, who's using it, and its lifecycle status. This makes budgeting, planning and compliance considerably easier, and helps avoid unnecessary spend on equipment or licenses you already have.",
+        "image": null,
+        "id": "6a45d7116bb52030daefd168"
+      },
+      {
+        "blockType": "stats",
+        "stats": [
+          {
+            "icon": "users",
+            "value": 30,
+            "suffix": "+",
+            "label": "Experienced Professionals",
+            "id": "6a68cd7ddf3c3c0a3cae2668"
+          },
+          {
+            "icon": "handshake",
+            "value": 50,
+            "suffix": "+",
+            "label": "Technology Partners",
+            "id": "6a68cd7ddf3c3c0a3cae2669"
+          },
+          {
+            "icon": "check",
+            "value": 1500,
+            "suffix": "+",
+            "label": "Projects Successfully Delivered",
+            "id": "6a68cd7ddf3c3c0a3cae266a"
+          },
+          {
+            "icon": "smile",
+            "value": 400,
+            "suffix": "+",
+            "label": "Satisfied Customers",
+            "id": "6a68cd7ddf3c3c0a3cae266b"
+          }
+        ],
+        "id": "6a68cd7ddf3c3c0a3cae266c"
+      },
+      {
+        "blockType": "whyChooseUsAbout",
+        "badge": "WHAT'S INCLUDED",
+        "title": "Why Choose CODE3 for IT Asset Management?",
+        "subtitle": "You can't manage what you can't see. We help you build an accurate, maintained record of your IT environment.",
+        "features": [
+          {
+            "icon": "6a45d86818523e92fa1d3957",
+            "title": "Complete Asset Visibility",
+            "description": "We help you track hardware, software licenses and other IT assets across your business.",
+            "id": "6a45d7a26bb52030daefd16e"
+          },
+          {
+            "icon": "6a45d87518523e92fa1d3965",
+            "title": "Lifecycle Planning",
+            "description": "Understand when equipment is approaching end-of-life so replacements can be planned rather than reactive.",
+            "id": "6a45d7b46bb52030daefd16f"
+          },
+          {
+            "icon": "6a45d88318523e92fa1d3973",
+            "title": "License & Compliance Tracking",
+            "description": "Keep on top of software licensing to avoid compliance issues or unnecessary renewal costs.",
+            "id": "6a45d7c36bb52030daefd170"
+          },
+          {
+            "icon": "6a45d890e54765206afb6dec",
+            "title": "Practical Reporting",
+            "description": "Get clear, usable reports on your IT assets, not just raw data.",
+            "id": "6a45d7ce6bb52030daefd171"
+          }
+        ],
+        "ctaText": "Want to see how we can support your business?",
+        "ctaLabel": "Talk to Our Experts",
+        "ctaUrl": "/contact",
+        "id": "6a45d7176bb52030daefd169"
+      },
+      {
+        "blockType": "whyWorkWithUs",
+        "badge": "WHY CODE3",
+        "title": "How We Build Your Asset Register",
+        "subtitle": "Our experts help you manage, monitor, and maintain your IT assets for maximum efficiency, security, and long-term business value.",
+        "features": [
+          {
+            "title": "Initial Audit",
+            "description": "We start by identifying and cataloguing the technology assets currently in use across your business.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "8de354b331aea62bfdd41fee"
+          },
+          {
+            "title": "Structured Record-Keeping",
+            "description": "Assets are logged with relevant details: location, owner, purchase date and lifecycle status.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "35f73f6a677e7f9e95bedad2"
+          },
+          {
+            "title": "Ongoing Updates",
+            "description": "As assets are added, retired or moved, the register is kept current.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "cc2f6f34866c8fd822c0de61"
+          },
+          {
+            "title": "Integration With Other Services",
+            "description": "Asset management can work alongside our AMC and managed IT services for a fuller picture of your environment.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "40cdeda4fb545fa46c566921"
+          }
+        ],
+        "id": "6a45d71c6bb52030daefd16a"
+      },
+      {
+        "blockType": "quickEnquiry",
+        "title": "Want Better Visibility Into Your IT Assets?",
+        "description": "Tell us about your environment and we'll help you get started.",
+        "promoEnabled": false,
+        "promoBadge": "LIMITED TIME OFFER",
+        "promoFeatures": [],
+        "promoCtaLabel": "Claim Your Free Trial",
+        "promoCtaUrl": "/contact",
+        "id": "6a68a6546c6b8b529475dfff"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Businesses That Trust CODE3 With Their Technology Records",
+        "subtitle": "CODE3 helps businesses across Dubai and the UAE keep track of the technology that keeps their operations running.",
+        "displayStyle": "grid",
+        "gridColumns": "4",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "LULU GROUP",
+            "logo": "6a69c9b850284d26e2cb4fe2",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e83d"
+          },
+          {
+            "name": "NMDC",
+            "logo": "6a69ca000b7e91940d957d07",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e83e"
+          },
+          {
+            "name": "ARAMTEC",
+            "logo": "6a69ca3163ce9b470a702f6f",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e83f"
+          },
+          {
+            "name": "GAMBIT PUBLIC RELATION",
+            "logo": "6a69ca56bd6906e5c394f308",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e840"
+          },
+          {
+            "name": "ADNOC",
+            "logo": "6a69ca78bd6906e5c394f31a",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e841"
+          },
+          {
+            "name": "DP WORLD",
+            "logo": "6a69ca9c63ce9b470a702f77",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e842"
+          },
+          {
+            "name": "LANDMARK GROUP",
+            "logo": "6a69cac0bd6906e5c394f32c",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e843"
+          },
+          {
+            "name": "BURJEEL HOLDINGS",
+            "logo": "6a69cafcbd6906e5c394f34f",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e844"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "6a6aaf507542c972a437031b"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Backed by Established Technology Partners",
+        "subtitle": "We work with established technology vendors and platforms to support accurate, up-to-date asset tracking.",
+        "displayStyle": "grid",
+        "gridColumns": "5",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "3CX",
+            "logo": "6a68cc45cf97d81b37605f25",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae266d"
+          },
+          {
+            "name": "AWS",
+            "logo": "6a68cc48cf97d81b37605f28",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae266e"
+          },
+          {
+            "name": "Acronis",
+            "logo": "6a68cc49cf97d81b37605f2b",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae266f"
+          },
+          {
+            "name": "Cisco",
+            "logo": "6a68cc4acf97d81b37605f2e",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2670"
+          },
+          {
+            "name": "Dell Technologies",
+            "logo": "6a68cc4bcf97d81b37605f31",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2671"
+          },
+          {
+            "name": "HP",
+            "logo": "6a68cc4ccf97d81b37605f34",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2672"
+          },
+          {
+            "name": "Logitech",
+            "logo": "6a68cc4ccf97d81b37605f37",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2673"
+          },
+          {
+            "name": "Microsoft",
+            "logo": "6a68cc4ecf97d81b37605f3a",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2674"
+          },
+          {
+            "name": "Sophos",
+            "logo": "6a68cc4fcf97d81b37605f3d",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2675"
+          },
+          {
+            "name": "Synology",
+            "logo": "6a68cc51cf97d81b37605f40",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2676"
+          },
+          {
+            "name": "Yealink",
+            "logo": "6a68cc52cf97d81b37605f43",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2677"
+          },
+          {
+            "name": "Yeastar",
+            "logo": "6a68cc52cf97d81b37605f46",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2678"
+          },
+          {
+            "name": "Fortinet",
+            "logo": "6a68cc53cf97d81b37605f49",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae2679"
+          },
+          {
+            "name": "Ruijie",
+            "logo": "6a68cc54cf97d81b37605f4c",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae267a"
+          },
+          {
+            "name": "Ubiquiti",
+            "logo": "6a68cc55cf97d81b37605f4f",
+            "linkType": "none",
+            "id": "6a68cd7ddf3c3c0a3cae267b"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "6a68cd7ddf3c3c0a3cae267c"
+      },
+      {
+        "blockType": "testimonials",
+        "badge": "CLIENT VOICES",
+        "title": "What Our Clients Say About Working With CODE3",
+        "useGoogleReviews": true,
+        "fallbackQuotes": [
+          {
+            "quote": "CODE3 has been a reliable technology partner for our organization. Their proactive approach and rapid response significantly improved the stability of our IT environment.",
+            "name": "IT Manager",
+            "role": "UAE-Based Enterprise",
+            "id": "6a6aaf507542c972a437031c"
+          },
+          {
+            "quote": "The team demonstrated exceptional professionalism throughout the project. From consultation to implementation, every stage was delivered efficiently and exceeded expectations.",
+            "name": "Operations Manager",
+            "role": "Retail Sector",
+            "id": "6a6aaf507542c972a437031d"
+          },
+          {
+            "quote": "CODE3's expertise in IT infrastructure and cybersecurity has strengthened our technology environment while ensuring uninterrupted business operations.",
+            "name": "Director",
+            "role": "Healthcare Organization",
+            "id": "6a6aaf507542c972a437031e"
+          }
+        ],
+        "ctaText": "Ready to experience the same level of service?",
+        "ctaLabel": "Become Our Next Success Story",
+        "ctaUrl": "/contact",
+        "id": "6a6aaf507542c972a437031f"
+      },
+      {
+        "blockType": "subServicesNav",
+        "id": "adf5b81f04c3408e25dacd8f"
+      },
+      {
+        "blockType": "faq",
+        "title": "Frequently Asked Questions About IT Asset Management",
+        "subtitle": "Everything you need to know about our IT Asset Management services.",
+        "badge": "FAQS",
+        "faqs": [
+          {
+            "question": "What is IT asset management?",
+            "answer": "IT asset management is the process of tracking and managing the hardware, software and licenses a business owns, including their location, condition and lifecycle status.",
+            "id": "6a45d9576bb52030daefd177"
+          },
+          {
+            "question": "What kinds of assets can CODE3 help track?",
+            "answer": "We can help track computers, servers, network equipment, mobile devices and software licenses, among other IT assets.",
+            "id": "6a45d9686bb52030daefd178"
+          },
+          {
+            "question": "Why does IT asset management matter?",
+            "answer": "It helps prevent lost or unaccounted-for equipment, missed license renewals, unplanned equipment failures and unnecessary spending on duplicate purchases.",
+            "id": "6a45d9786bb52030daefd179"
+          },
+          {
+            "question": "Can IT asset management help with software license compliance?",
+            "answer": "Yes. Tracking your licenses helps ensure you're not under- or over-licensed, and helps avoid compliance issues.",
+            "id": "6a45d9946bb52030daefd17b"
+          },
+          {
+            "question": "How often is the asset register updated?",
+            "answer": "This depends on the arrangement, but registers are typically kept current as assets are added, retired or reassigned.",
+            "id": "6a45d9826bb52030daefd17a"
+          },
+          {
+            "question": "Can IT asset management be combined with our AMC?",
+            "answer": "Yes. It's often combined with managed IT or AMC services for a more complete view of your environment.",
+            "id": "297a1a6f15da3f357f4546ac"
+          },
+          {
+            "question": "Does CODE3 provide IT asset management outside Dubai?",
+            "answer": "CODE3 supports businesses across Dubai and the UAE.",
+            "id": "6cf6ae0cc0d3acbfd33917a6"
+          }
+        ],
+        "ctaText": "Can't find the answer you're looking for?",
+        "ctaLabel": "Still Have Questions? Contact Us",
+        "ctaUrl": "/contact",
+        "id": "6a45d72d6bb52030daefd16c"
+      },
+      {
+        "blockType": "cta",
+        "showLogo": true,
+        "title": "Get a Clear Picture of Your IT Assets",
+        "description": "Tell us about your environment and we'll help you build a system that keeps track of it properly.",
+        "links": [
+          {
+            "link": {
+              "type": "reference",
+              "reference": {
+                "relationTo": "pages",
+                "value": "68d55564285b2fc25970d39a"
+              },
+              "label": "Get a Free Consultation",
+              "appearance": "default"
+            },
+            "id": "6a45d9ba6bb52030daefd17c"
+          }
+        ],
+        "backgroundImage": "68e8e4e5d32169188c291c98",
+        "id": "6a45d7316bb52030daefd16d"
+      }
+    ]
+  },
+  "Data Recovery (Managed IT)": {
+    "id": "6a451a7678829dcc3a08c214",
+    "slug": "data-recovery-services-dubai-uae",
+    "hero": {
+      "type": "lowImpact",
+      "HeroText": "Data Recovery",
+      "subText": "Careful, honest data recovery for failed drives, damaged storage and inaccessible systems.",
+      "links": [],
+      "carouselImages": []
+    },
+    "meta": {
+      "title": "Data Recovery Services in Dubai | CODE3",
+      "image": "6a45c706da6866ecaeafcce7",
+      "description": "CODE3 provides data recovery services in Dubai and across the UAE, helping businesses recover lost or inaccessible data from drives, servers and devices.",
+      "keywords": "Data Recovery Services Dubai, Data recovery company Dubai, recover lost data UAE, hard drive recovery Dubai, business data recovery services"
+    },
+    "layout": [
+      {
+        "blockType": "serviceDetailBanner",
+        "serviceBadge": "MANAGED IT SERVICES",
+        "serviceName": "DATA RECOVERY",
+        "title": "Recover Lost or Inaccessible Business Data",
+        "description": "Losing access to important files, whether from hardware failure, accidental deletion or a corrupted system, can bring parts of your business to a stop. CODE3 provides data recovery services in Dubai and across the UAE, helping businesses recover data from failed drives, damaged storage and inaccessible systems. We assess what's recoverable and work carefully to get your critical information back.",
+        "showGradientLine": true,
+        "backLinkLabel": "Managed IT Service",
+        "backLinkUrl": "/service/managed-it-service",
+        "id": "6a45c4ae6bb52030daefd122"
+      },
+      {
+        "blockType": "serviceOverview",
+        "badge": "SERVICES OVERVIEW",
+        "title": "When Data Goes Missing, Every Hour Matters",
+        "description": "Data loss can happen in different ways — a failed hard drive, accidental deletion, corrupted files or a system that won't boot. Whatever the cause, the priority is the same: understanding what happened and recovering what can be recovered without making the problem worse. CODE3's technicians assess the affected drive or system, identify the most appropriate recovery approach and work to retrieve your data safely.",
+        "image": null,
+        "id": "6a45c4b36bb52030daefd123"
+      },
+      {
+        "blockType": "stats",
+        "stats": [
+          {
+            "icon": "users",
+            "value": 30,
+            "suffix": "+",
+            "label": "Experienced Professionals",
+            "id": "6a68cd7edf3c3c0a3cae267d"
+          },
+          {
+            "icon": "handshake",
+            "value": 50,
+            "suffix": "+",
+            "label": "Technology Partners",
+            "id": "6a68cd7edf3c3c0a3cae267e"
+          },
+          {
+            "icon": "check",
+            "value": 1500,
+            "suffix": "+",
+            "label": "Projects Successfully Delivered",
+            "id": "6a68cd7edf3c3c0a3cae267f"
+          },
+          {
+            "icon": "smile",
+            "value": 400,
+            "suffix": "+",
+            "label": "Satisfied Customers",
+            "id": "6a68cd7edf3c3c0a3cae2680"
+          }
+        ],
+        "id": "6a68cd7edf3c3c0a3cae2681"
+      },
+      {
+        "blockType": "whyChooseUsAbout",
+        "badge": "WHAT'S INCLUDED",
+        "title": "Why Choose CODE3 for Data Recovery?",
+        "subtitle": "Data recovery needs to be handled carefully — the wrong first step can make data permanently unrecoverable. We approach every case methodically.",
+        "features": [
+          {
+            "icon": "6a45c6e7da6866ecaeafcce0",
+            "title": "Careful Diagnostic Process",
+            "description": "We assess the affected device before attempting recovery, to understand what happened and avoid actions that could cause further data loss.",
+            "id": "6a45c5896bb52030daefd129"
+          },
+          {
+            "icon": "6a45c6d8d5bd4d504d122f5e",
+            "title": "Experience Across Devices",
+            "description": "We work with hard drives, SSDs, servers, RAID arrays and virtual environments.",
+            "id": "6a45c58d6bb52030daefd12a"
+          },
+          {
+            "icon": "6a45c6c9d5bd4d504d122f50",
+            "title": "Clear Communication",
+            "description": "We'll tell you honestly what's likely recoverable before starting, rather than promising outcomes we can't guarantee.",
+            "id": "6a45c5926bb52030daefd12b"
+          },
+          {
+            "icon": "6a45c6bad5bd4d504d122f3f",
+            "title": "Confidential Handling",
+            "description": "Your data is handled with strict confidentiality throughout the recovery process.",
+            "id": "6a45c5976bb52030daefd12c"
+          }
+        ],
+        "ctaText": "Want to see how we can support your business?",
+        "ctaLabel": "Talk to Our Experts",
+        "ctaUrl": "/contact",
+        "id": "6a45c4c46bb52030daefd124"
+      },
+      {
+        "blockType": "whyWorkWithUs",
+        "badge": "WHY CODE3",
+        "title": "What Happens When You Contact CODE3",
+        "subtitle": "We combine advanced recovery techniques with secure processes to maximize successful data restoration.",
+        "features": [
+          {
+            "title": "Initial Assessment",
+            "description": "We start by understanding what happened and examining the affected device or system.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "b4ca6c747702a8288c9a2a82"
+          },
+          {
+            "title": "Recovery Attempt",
+            "description": "Using appropriate tools and techniques, we work to retrieve accessible data.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "82f5cd80d2e703d2c4bde299"
+          },
+          {
+            "title": "Data Handover",
+            "description": "Recovered data is provided back to you securely.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "8a98dc00860c2c9a877f317b"
+          },
+          {
+            "title": "Guidance Going Forward",
+            "description": "We can advise on backup practices to reduce the risk of this happening again.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "da362258765ebcc0b6b66835"
+          }
+        ],
+        "id": "6a45c4ca6bb52030daefd125"
+      },
+      {
+        "blockType": "quickEnquiry",
+        "title": "Lost Important Data?",
+        "description": "Tell us what happened and what device or system is affected — we'll advise you on next steps.",
+        "promoEnabled": false,
+        "promoBadge": "LIMITED TIME OFFER",
+        "promoFeatures": [],
+        "promoCtaLabel": "Claim Your Free Trial",
+        "promoCtaUrl": "/contact",
+        "id": "6a68a6556c6b8b529475e000"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Businesses That Trust CODE3 With Their Data",
+        "subtitle": "CODE3 helps businesses across Dubai and the UAE recover critical data when systems fail or files go missing.",
+        "displayStyle": "grid",
+        "gridColumns": "4",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "LULU GROUP",
+            "logo": "6a69c9b850284d26e2cb4fe2",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e845"
+          },
+          {
+            "name": "NMDC",
+            "logo": "6a69ca000b7e91940d957d07",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e846"
+          },
+          {
+            "name": "ARAMTEC",
+            "logo": "6a69ca3163ce9b470a702f6f",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e847"
+          },
+          {
+            "name": "GAMBIT PUBLIC RELATION",
+            "logo": "6a69ca56bd6906e5c394f308",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e848"
+          },
+          {
+            "name": "ADNOC",
+            "logo": "6a69ca78bd6906e5c394f31a",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e849"
+          },
+          {
+            "name": "DP WORLD",
+            "logo": "6a69ca9c63ce9b470a702f77",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e84a"
+          },
+          {
+            "name": "LANDMARK GROUP",
+            "logo": "6a69cac0bd6906e5c394f32c",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e84b"
+          },
+          {
+            "name": "BURJEEL HOLDINGS",
+            "logo": "6a69cafcbd6906e5c394f34f",
+            "linkType": "none",
+            "id": "6a6ab68aeb4f885ad486e84c"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "6a6aaf507542c972a4370327"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Backed by Established Technology Partners",
+        "subtitle": "We work with trusted backup, storage and recovery technology to support our data recovery process.",
+        "displayStyle": "grid",
+        "gridColumns": "5",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "3CX",
+            "logo": "6a68cc45cf97d81b37605f25",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2682"
+          },
+          {
+            "name": "AWS",
+            "logo": "6a68cc48cf97d81b37605f28",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2683"
+          },
+          {
+            "name": "Acronis",
+            "logo": "6a68cc49cf97d81b37605f2b",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2684"
+          },
+          {
+            "name": "Cisco",
+            "logo": "6a68cc4acf97d81b37605f2e",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2685"
+          },
+          {
+            "name": "Dell Technologies",
+            "logo": "6a68cc4bcf97d81b37605f31",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2686"
+          },
+          {
+            "name": "HP",
+            "logo": "6a68cc4ccf97d81b37605f34",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2687"
+          },
+          {
+            "name": "Logitech",
+            "logo": "6a68cc4ccf97d81b37605f37",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2688"
+          },
+          {
+            "name": "Microsoft",
+            "logo": "6a68cc4ecf97d81b37605f3a",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2689"
+          },
+          {
+            "name": "Sophos",
+            "logo": "6a68cc4fcf97d81b37605f3d",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae268a"
+          },
+          {
+            "name": "Synology",
+            "logo": "6a68cc51cf97d81b37605f40",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae268b"
+          },
+          {
+            "name": "Yealink",
+            "logo": "6a68cc52cf97d81b37605f43",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae268c"
+          },
+          {
+            "name": "Yeastar",
+            "logo": "6a68cc52cf97d81b37605f46",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae268d"
+          },
+          {
+            "name": "Fortinet",
+            "logo": "6a68cc53cf97d81b37605f49",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae268e"
+          },
+          {
+            "name": "Ruijie",
+            "logo": "6a68cc54cf97d81b37605f4c",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae268f"
+          },
+          {
+            "name": "Ubiquiti",
+            "logo": "6a68cc55cf97d81b37605f4f",
+            "linkType": "none",
+            "id": "6a68cd7edf3c3c0a3cae2690"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "6a68cd7edf3c3c0a3cae2691"
+      },
+      {
+        "blockType": "testimonials",
+        "badge": "CLIENT VOICES",
+        "title": "What Our Clients Say About Working With CODE3",
+        "useGoogleReviews": true,
+        "fallbackQuotes": [
+          {
+            "quote": "CODE3 has been a reliable technology partner for our organization. Their proactive approach and rapid response significantly improved the stability of our IT environment.",
+            "name": "IT Manager",
+            "role": "UAE-Based Enterprise",
+            "id": "6a6aaf507542c972a4370328"
+          },
+          {
+            "quote": "The team demonstrated exceptional professionalism throughout the project. From consultation to implementation, every stage was delivered efficiently and exceeded expectations.",
+            "name": "Operations Manager",
+            "role": "Retail Sector",
+            "id": "6a6aaf507542c972a4370329"
+          },
+          {
+            "quote": "CODE3's expertise in IT infrastructure and cybersecurity has strengthened our technology environment while ensuring uninterrupted business operations.",
+            "name": "Director",
+            "role": "Healthcare Organization",
+            "id": "6a6aaf507542c972a437032a"
+          }
+        ],
+        "ctaText": "Ready to experience the same level of service?",
+        "ctaLabel": "Become Our Next Success Story",
+        "ctaUrl": "/contact",
+        "id": "6a6aaf507542c972a437032b"
+      },
+      {
+        "blockType": "subServicesNav",
+        "id": "c71b211efcb1b51c1547f55f"
+      },
+      {
+        "blockType": "faq",
+        "title": "Frequently Asked Questions About Data Recovery",
+        "subtitle": "Learn more about our professional data recovery services.",
+        "badge": "FAQS",
+        "faqs": [
+          {
+            "question": "What causes data loss?",
+            "answer": "Common causes include hardware failure, accidental deletion, corrupted files, software issues, virus/malware damage and physical damage to storage devices.",
+            "id": "6a45c8f36bb52030daefd132"
+          },
+          {
+            "question": "Can CODE3 recover data from a failed hard drive?",
+            "answer": "In many cases, yes. Recoverability depends on the extent and type of failure — we assess this before starting.",
+            "id": "6a45c8fd6bb52030daefd133"
+          },
+          {
+            "question": "Is data recovery always successful?",
+            "answer": "No recovery service can guarantee 100% success in every case. We assess each situation and give you an honest picture of what's likely recoverable.",
+            "id": "6a45c90e6bb52030daefd134"
+          },
+          {
+            "question": "How long does data recovery take?",
+            "answer": "This depends on the complexity of the case. Straightforward recoveries can be quick; more complex hardware failures take longer.",
+            "id": "6a45c91f6bb52030daefd135"
+          },
+          {
+            "question": "Can you recover data from a server or RAID array?",
+            "answer": "Yes. We have experience recovering data from servers, RAID configurations and virtual environments, in addition to individual drives.",
+            "id": "6a45c92f6bb52030daefd136"
+          },
+          {
+            "question": "What should I do immediately after losing data?",
+            "answer": "Stop using the affected device and avoid writing new data to it, as this can overwrite recoverable files. Contact us as soon as possible.",
+            "id": "6a884b6d5e88d024bc8046d6"
+          },
+          {
+            "question": "Can CODE3 help prevent future data loss?",
+            "answer": "Yes. We can advise on backup strategies and, if useful, connect you with our backup and business continuity services.",
+            "id": "6a884b6d5e88d024bc8046d7"
+          }
+        ],
+        "ctaText": "Can't find the answer you're looking for?",
+        "ctaLabel": "Still Have Questions? Contact Us",
+        "ctaUrl": "/contact",
+        "id": "6a45c4dc6bb52030daefd127"
+      },
+      {
+        "blockType": "cta",
+        "showLogo": true,
+        "title": "Don't Wait — Contact Us About Your Lost Data",
+        "description": "The sooner we can assess the situation, the better the chances of a successful recovery.",
+        "links": [
+          {
+            "link": {
+              "type": "reference",
+              "reference": {
+                "relationTo": "pages",
+                "value": "68d55564285b2fc25970d39a"
+              },
+              "label": "Get Help Now",
+              "appearance": "default"
+            },
+            "id": "6a45c9476bb52030daefd137"
+          }
+        ],
+        "backgroundImage": "68e8e4e5d32169188c291c98",
+        "id": "6a45c4e16bb52030daefd128"
+      }
+    ]
+  },
+  "Preventive Maintenance & System Health Checks": {
+    "id": "690a37d96580cb8832e7c6b5",
+    "slug": "preventive-maintenance-and-system-health-checks",
+    "hero": {
+      "type": "lowImpact",
+      "HeroText": "Preventive Maintenance & System Health Checks",
+      "subText": "Prevent downtime with proactive IT maintenance, system health monitoring, and performance optimization for businesses across Dubai and the UAE.",
+      "links": [],
+      "carouselImages": []
+    },
+    "meta": {
+      "title": "Preventive Maintenance & System Health Checks in Dubai | CODE3",
+      "image": "6a4503f5f08bb42a90be214d",
+      "description": "CODE3 provides preventive maintenance and system health checks in Dubai and across the UAE, identifying risks before they cause downtime.",
+      "keywords": "Preventive IT Maintenance Dubai, System health checks Dubai, IT maintenance services UAE, proactive IT maintenance Dubai, server health check Dubai"
+    },
+    "layout": [
+      {
+        "blockType": "serviceDetailBanner",
+        "serviceBadge": "MANAGED IT SERVICES",
+        "serviceName": "PREVENTIVE MAINTENANCE",
+        "title": "Catch IT Problems Before They Cause Downtime",
+        "description": "Most IT failures don't happen without warning signs — ageing hardware, software that hasn't been updated, or performance that's been quietly degrading. CODE3 provides preventive maintenance and system health checks for businesses in Dubai and across the UAE, identifying risks in your IT environment before they turn into costly downtime.",
+        "showGradientLine": true,
+        "backLinkLabel": "Managed IT Service",
+        "backLinkUrl": "/service/managed-it-service",
+        "id": "690a37f970affd9444edfb5c"
+      },
+      {
+        "blockType": "serviceOverview",
+        "badge": "SERVICES OVERVIEW",
+        "title": "Maintenance That Happens Before Something Breaks",
+        "description": "Reactive IT support means fixing things after they've already caused a problem. Preventive maintenance takes a different approach: regularly checking the health of your systems, applying updates, and identifying ageing or at-risk equipment before it fails. It's a smaller, more predictable effort than dealing with unplanned downtime.",
+        "image": null,
+        "id": "690a380c70affd9444edfb5d"
+      },
+      {
+        "blockType": "stats",
+        "stats": [
+          {
+            "icon": "users",
+            "value": 30,
+            "suffix": "+",
+            "label": "Experienced Professionals",
+            "id": "6a68cd83df3c3c0a3cae278e"
+          },
+          {
+            "icon": "handshake",
+            "value": 50,
+            "suffix": "+",
+            "label": "Technology Partners",
+            "id": "6a68cd83df3c3c0a3cae278f"
+          },
+          {
+            "icon": "check",
+            "value": 1500,
+            "suffix": "+",
+            "label": "Projects Successfully Delivered",
+            "id": "6a68cd83df3c3c0a3cae2790"
+          },
+          {
+            "icon": "smile",
+            "value": 400,
+            "suffix": "+",
+            "label": "Satisfied Customers",
+            "id": "6a68cd83df3c3c0a3cae2791"
+          }
+        ],
+        "id": "6a68cd83df3c3c0a3cae2792"
+      },
+      {
+        "blockType": "whyChooseUsAbout",
+        "badge": "FEATURES & SOLUTIONS",
+        "title": "Why Choose CODE3 for Preventive Maintenance?",
+        "subtitle": "A few hours of regular maintenance can prevent days of unplanned downtime. We build that into how we work.",
+        "features": [
+          {
+            "icon": "68fa373cd1725a53be05be90",
+            "title": "Scheduled System Health Checks",
+            "description": "Regular reviews of your servers, network and critical systems to catch issues early.",
+            "id": "690a383e70affd9444edfb5f"
+          },
+          {
+            "icon": "68f9ec7e17e9d4da4f7a3be2",
+            "title": "Proactive Updates & Patching",
+            "description": "Keeping software and systems current reduces both performance issues and security risk.",
+            "id": "690a384d70affd9444edfb60"
+          },
+          {
+            "icon": "68fa373cd1725a53be05be90",
+            "title": "Equipment Lifecycle Awareness",
+            "description": "We flag ageing hardware before it fails, so replacements can be planned rather than urgent.",
+            "id": "690a385b70affd9444edfb61"
+          },
+          {
+            "icon": "68f9ec7e17e9d4da4f7a3be2",
+            "title": "Clear Reporting",
+            "description": "You'll get a clear picture of your system's health after each check, not just \"everything's fine.\"",
+            "id": "690a386b70affd9444edfb62"
+          }
+        ],
+        "ctaText": "Want to see how we can support your business?",
+        "ctaLabel": "Talk to Our Experts",
+        "ctaUrl": "/contact",
+        "id": "690a382e70affd9444edfb5e"
+      },
+      {
+        "blockType": "whyWorkWithUs",
+        "badge": "WHY CODE3",
+        "title": "How Our Maintenance Checks Work",
+        "subtitle": "A closer look at how CODE3 structures preventive maintenance so nothing slips through the cracks.",
+        "features": [
+          {
+            "title": "Scheduled Visits",
+            "description": "Maintenance is carried out on a regular schedule that fits your business.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "84f91382b7e8f0f623396649"
+          },
+          {
+            "title": "Comprehensive Checks",
+            "description": "We review server health, backup status, security posture and general system performance.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "83d2887a2010a733ea37e6a9"
+          },
+          {
+            "title": "Issue Flagging",
+            "description": "Anything that needs attention is flagged clearly, with recommendations.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "c6717dd0d4ca631ef6c8eec3"
+          },
+          {
+            "title": "Ongoing Tracking",
+            "description": "Results are tracked over time, so you can see trends, not just single snapshots.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "b182a829210d5cc7bc15e816"
+          }
+        ],
+        "id": "2316c2e5844ff15397002da2"
+      },
+      {
+        "blockType": "quickEnquiry",
+        "title": "Want a Health Check on Your IT Systems?",
+        "description": "Tell us about your environment and we'll help you understand what a preventive maintenance plan would look like.",
+        "promoEnabled": false,
+        "promoBadge": "LIMITED TIME OFFER",
+        "promoFeatures": [],
+        "promoCtaLabel": "Claim Your Free Trial",
+        "promoCtaUrl": "/contact",
+        "id": "6a68a65b6c6b8b529475e00d"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Businesses That Trust CODE3 With Their System Health",
+        "subtitle": "CODE3 helps businesses across Dubai and the UAE stay ahead of IT problems with regular preventive maintenance.",
+        "displayStyle": "grid",
+        "gridColumns": "4",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "LULU GROUP",
+            "logo": "6a69c9b850284d26e2cb4fe2",
+            "linkType": "none",
+            "id": "62b5d54dc39ef5e1af378c49"
+          },
+          {
+            "name": "NMDC",
+            "logo": "6a69ca000b7e91940d957d07",
+            "linkType": "none",
+            "id": "6950353c8b76e5138bbc1114"
+          },
+          {
+            "name": "ARAMTEC",
+            "logo": "6a69ca3163ce9b470a702f6f",
+            "linkType": "none",
+            "id": "d44196ae83d76b011599dc4a"
+          },
+          {
+            "name": "GAMBIT PUBLIC RELATION",
+            "logo": "6a69ca56bd6906e5c394f308",
+            "linkType": "none",
+            "id": "3f7d3a0246e9c732052449f8"
+          },
+          {
+            "name": "ADNOC",
+            "logo": "6a69ca78bd6906e5c394f31a",
+            "linkType": "none",
+            "id": "092475e69796c28ed4afa589"
+          },
+          {
+            "name": "DP WORLD",
+            "logo": "6a69ca9c63ce9b470a702f77",
+            "linkType": "none",
+            "id": "7068df75b094254dbb90f5c3"
+          },
+          {
+            "name": "LANDMARK GROUP",
+            "logo": "6a69cac0bd6906e5c394f32c",
+            "linkType": "none",
+            "id": "1e80af691b8be06723af3c4c"
+          },
+          {
+            "name": "BURJEEL HOLDINGS",
+            "logo": "6a69cafcbd6906e5c394f34f",
+            "linkType": "none",
+            "id": "e5cabca6963de0daeffe2cfe"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "1b5af07b9a846be8396f4c50"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Backed by Established Technology Partners",
+        "subtitle": "Our maintenance checks are informed by tools and platforms from established technology vendors.",
+        "displayStyle": "grid",
+        "gridColumns": "5",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "3CX",
+            "logo": "6a68cc45cf97d81b37605f25",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2793"
+          },
+          {
+            "name": "AWS",
+            "logo": "6a68cc48cf97d81b37605f28",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2794"
+          },
+          {
+            "name": "Acronis",
+            "logo": "6a68cc49cf97d81b37605f2b",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2795"
+          },
+          {
+            "name": "Cisco",
+            "logo": "6a68cc4acf97d81b37605f2e",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2796"
+          },
+          {
+            "name": "Dell Technologies",
+            "logo": "6a68cc4bcf97d81b37605f31",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2797"
+          },
+          {
+            "name": "HP",
+            "logo": "6a68cc4ccf97d81b37605f34",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2798"
+          },
+          {
+            "name": "Logitech",
+            "logo": "6a68cc4ccf97d81b37605f37",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae2799"
+          },
+          {
+            "name": "Microsoft",
+            "logo": "6a68cc4ecf97d81b37605f3a",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae279a"
+          },
+          {
+            "name": "Sophos",
+            "logo": "6a68cc4fcf97d81b37605f3d",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae279b"
+          },
+          {
+            "name": "Synology",
+            "logo": "6a68cc51cf97d81b37605f40",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae279c"
+          },
+          {
+            "name": "Yealink",
+            "logo": "6a68cc52cf97d81b37605f43",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae279d"
+          },
+          {
+            "name": "Yeastar",
+            "logo": "6a68cc52cf97d81b37605f46",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae279e"
+          },
+          {
+            "name": "Fortinet",
+            "logo": "6a68cc53cf97d81b37605f49",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae279f"
+          },
+          {
+            "name": "Ruijie",
+            "logo": "6a68cc54cf97d81b37605f4c",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27a0"
+          },
+          {
+            "name": "Ubiquiti",
+            "logo": "6a68cc55cf97d81b37605f4f",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27a1"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "6a68cd83df3c3c0a3cae27a2"
+      },
+      {
+        "blockType": "subServicesNav",
+        "id": "9fb6e22aba877b62c2aba3a9"
+      },
+      {
+        "blockType": "faq",
+        "title": "Frequently Asked Questions About Preventive Maintenance",
+        "badge": "FAQS",
+        "faqs": [
+          {
+            "question": "What is included in a system health check?",
+            "answer": "A health check typically reviews server performance, backup status, security posture, software updates and general system condition.",
+            "id": "690a388b70affd9444edfb64"
+          },
+          {
+            "question": "How often should preventive maintenance be carried out?",
+            "answer": "This depends on your environment, but regular scheduled checks (such as monthly or quarterly) are common.",
+            "id": "690a389b70affd9444edfb66"
+          },
+          {
+            "question": "Can preventive maintenance prevent all downtime?",
+            "answer": "No maintenance program can eliminate all risk, but regular checks significantly reduce the chance of avoidable failures.",
+            "id": "690a389770affd9444edfb65"
+          },
+          {
+            "question": "Is preventive maintenance included in an IT AMC?",
+            "answer": "Yes, preventive maintenance is often a core part of AMC and managed IT arrangements, and can also be arranged as a standalone service.",
+            "id": "690a389c70affd9444edfb67"
+          },
+          {
+            "question": "What happens if an issue is found during a check?",
+            "answer": "We'll flag it clearly with a recommendation, and can help you plan and implement a fix.",
+            "id": "690a38b870affd9444edfb68"
+          },
+          {
+            "question": "Does preventive maintenance cover both hardware and software?",
+            "answer": "Yes, checks typically cover both physical equipment condition and software/system health.",
+            "id": "170ed69cfc33c703fb33038c"
+          },
+          {
+            "question": "Does CODE3 provide preventive maintenance outside Dubai?",
+            "answer": "CODE3 supports businesses across Dubai and the UAE.",
+            "id": "b0a65988144adfb0e49cac1e"
+          }
+        ],
+        "ctaText": "Can't find the answer you're looking for?",
+        "ctaLabel": "Still Have Questions? Contact Us",
+        "ctaUrl": "/contact",
+        "id": "690a387a70affd9444edfb63"
+      },
+      {
+        "blockType": "cta",
+        "showLogo": true,
+        "title": "Stay Ahead of IT Problems",
+        "description": "Regular maintenance is a lot cheaper than unplanned downtime. Let's talk about a schedule that works for your business.",
+        "links": [
+          {
+            "link": {
+              "type": "reference",
+              "reference": {
+                "relationTo": "pages",
+                "value": "68d55564285b2fc25970d39a"
+              },
+              "label": "Get a Free Consultation",
+              "appearance": "default"
+            },
+            "id": "690a38fa70affd9444edfb6b"
+          }
+        ],
+        "backgroundImage": "68e8e4e5d32169188c291c98",
+        "id": "690a38c170affd9444edfb69"
+      }
+    ]
+  },
+  "24/7 Remote & On-Site IT Support": {
+    "id": "690a315d86876d015b7595ae",
+    "slug": "remote-on-site-it-support",
+    "hero": {
+      "type": "lowImpact",
+      "HeroText": "24/7 Remote & On-Site IT Support",
+      "subText": "Around-the-clock IT support that resolves most issues remotely and sends an engineer on-site when hands-on work is needed, day or night, weekday or weekend.",
+      "links": [],
+      "carouselImages": []
+    },
+    "meta": {
+      "title": "24/7 Remote & On-Site IT Support in Dubai | CODE3",
+      "description": "CODE3 provides 24/7 remote and on-site IT support in Dubai and across the UAE, so your business has help available whenever it's needed.",
+      "keywords": "24/7 IT Support Dubai, 24 hour IT support UAE, round the clock IT support Dubai, emergency IT support Dubai, after hours IT support Dubai"
+    },
+    "layout": [
+      {
+        "blockType": "serviceDetailBanner",
+        "serviceBadge": "MANAGED IT SERVICES",
+        "serviceName": "24/7 REMOTE & ON-SITE IT SUPPORT",
+        "title": "IT Support That Doesn't Keep Business Hours",
+        "description": "Technology problems don't always happen during the working day. CODE3 provides 24/7 remote and on-site IT support for businesses in Dubai and across the UAE that need round-the-clock coverage — whether that's a critical system that can't afford downtime, or operations that run outside standard business hours.",
+        "showGradientLine": true,
+        "backLinkLabel": "Managed IT Service",
+        "backLinkUrl": "/service/managed-it-service",
+        "id": "690a351f70affd9444edfb3c"
+      },
+      {
+        "blockType": "serviceOverview",
+        "badge": "SERVICES OVERVIEW",
+        "title": "Support That Matches How Your Business Actually Operates",
+        "description": "Some businesses run shifts around the clock. Others simply can't risk a critical system being down overnight or over a weekend. 24/7 support means your business has access to technical help whenever it's genuinely needed, not just during standard office hours. CODE3 provides a combination of remote and on-site support structured around your business's actual availability requirements.",
+        "image": null,
+        "id": "690a356770affd9444edfb3e"
+      },
+      {
+        "blockType": "stats",
+        "stats": [
+          {
+            "icon": "users",
+            "value": 30,
+            "suffix": "+",
+            "label": "Experienced Professionals",
+            "id": "6a68cd83df3c3c0a3cae27a3"
+          },
+          {
+            "icon": "handshake",
+            "value": 50,
+            "suffix": "+",
+            "label": "Technology Partners",
+            "id": "6a68cd83df3c3c0a3cae27a4"
+          },
+          {
+            "icon": "check",
+            "value": 1500,
+            "suffix": "+",
+            "label": "Projects Successfully Delivered",
+            "id": "6a68cd83df3c3c0a3cae27a5"
+          },
+          {
+            "icon": "smile",
+            "value": 400,
+            "suffix": "+",
+            "label": "Satisfied Customers",
+            "id": "6a68cd83df3c3c0a3cae27a6"
+          }
+        ],
+        "id": "6a68cd83df3c3c0a3cae27a7"
+      },
+      {
+        "blockType": "whyChooseUsAbout",
+        "badge": "FEATURES & SOLUTIONS",
+        "title": "Why Choose CODE3 for 24/7 IT Support?",
+        "subtitle": "Around-the-clock support only works if it's genuinely reliable when you need it. We build our coverage with that in mind.",
+        "features": [
+          {
+            "icon": "68fa373cd1725a53be05be90",
+            "title": "Coverage Beyond Standard Hours",
+            "description": "Support available outside the typical 9-to-5, aligned to your business's actual operating hours.",
+            "id": "690a35c370affd9444edfb40"
+          },
+          {
+            "icon": "68f9ec7e17e9d4da4f7a3be2",
+            "title": "Remote-First, On-Site When Required",
+            "description": "Most issues can be handled remotely at any hour; on-site visits are arranged when the situation calls for it.",
+            "id": "690a35c870affd9444edfb42"
+          },
+          {
+            "icon": "68fa373cd1725a53be05be90",
+            "title": "Priority Handling for Critical Systems",
+            "description": "Business-critical issues are treated with urgency, whatever time they occur.",
+            "id": "690a35c470affd9444edfb41"
+          },
+          {
+            "icon": "68f9ec7e17e9d4da4f7a3be2",
+            "title": "Consistent Team Knowledge",
+            "description": "Even outside business hours, you're supported by technicians familiar with your environment.",
+            "id": "690a35c970affd9444edfb43"
+          }
+        ],
+        "ctaText": "Want to see how we can support your business?",
+        "ctaLabel": "Talk to Our Experts",
+        "ctaUrl": "/contact",
+        "id": "690a359870affd9444edfb3f"
+      },
+      {
+        "blockType": "whyWorkWithUs",
+        "badge": "WHY CODE3",
+        "title": "How 24/7 Coverage Works",
+        "subtitle": "A closer look at how CODE3 structures around-the-clock coverage for your business.",
+        "features": [
+          {
+            "title": "Defined Coverage Hours",
+            "description": "We agree with you exactly what hours and systems are covered under 24/7 support.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "a38d22d95c6aead288d6f312"
+          },
+          {
+            "title": "Clear Escalation Path",
+            "description": "You'll know exactly how to reach support at any hour, and what response to expect.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "e1941dde282866a77171429d"
+          },
+          {
+            "title": "Prioritized by Impact",
+            "description": "Critical, business-stopping issues are handled with urgency; less urgent matters are scheduled appropriately.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "56b645fa2cb7654720aa2a35"
+          },
+          {
+            "title": "Reviewed Regularly",
+            "description": "Coverage is reviewed periodically to make sure it still matches how your business operates.",
+            "colSpan": "4",
+            "iconAlignment": "left",
+            "id": "d0605e835298dfa4b2fc2521"
+          }
+        ],
+        "id": "201a4623070384839ce508b8"
+      },
+      {
+        "blockType": "quickEnquiry",
+        "title": "Need Support Outside Business Hours?",
+        "description": "Tell us about your operating hours and critical systems, and we'll help structure the right coverage.",
+        "promoEnabled": false,
+        "promoBadge": "LIMITED TIME OFFER",
+        "promoFeatures": [],
+        "promoCtaLabel": "Claim Your Free Trial",
+        "promoCtaUrl": "/contact",
+        "id": "6a68a65c6c6b8b529475e00e"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Businesses That Rely on CODE3 Around the Clock",
+        "subtitle": "From businesses running shifts to those with critical systems that can't go down, companies across Dubai and the UAE trust CODE3 for 24/7 coverage.",
+        "displayStyle": "grid",
+        "gridColumns": "4",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "LULU GROUP",
+            "logo": "6a69c9b850284d26e2cb4fe2",
+            "linkType": "none",
+            "id": "de60de5a582c7b73a2b444e3"
+          },
+          {
+            "name": "NMDC",
+            "logo": "6a69ca000b7e91940d957d07",
+            "linkType": "none",
+            "id": "bfd55fbde245abc11bb93649"
+          },
+          {
+            "name": "ARAMTEC",
+            "logo": "6a69ca3163ce9b470a702f6f",
+            "linkType": "none",
+            "id": "165b4f1ecd5437ab6dcefb8c"
+          },
+          {
+            "name": "GAMBIT PUBLIC RELATION",
+            "logo": "6a69ca56bd6906e5c394f308",
+            "linkType": "none",
+            "id": "4efb2b2a9339a881899c10c3"
+          },
+          {
+            "name": "ADNOC",
+            "logo": "6a69ca78bd6906e5c394f31a",
+            "linkType": "none",
+            "id": "da63d6b6a3e454075be0cc0b"
+          },
+          {
+            "name": "DP WORLD",
+            "logo": "6a69ca9c63ce9b470a702f77",
+            "linkType": "none",
+            "id": "2ef0dc3cf8a2b535fb0fdd2a"
+          },
+          {
+            "name": "LANDMARK GROUP",
+            "logo": "6a69cac0bd6906e5c394f32c",
+            "linkType": "none",
+            "id": "01cf605d8a538b3090b188a2"
+          },
+          {
+            "name": "BURJEEL HOLDINGS",
+            "logo": "6a69cafcbd6906e5c394f34f",
+            "linkType": "none",
+            "id": "ffc4889a613ec6cdff5f226c"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "98345002f5103276107d9f80"
+      },
+      {
+        "blockType": "trustedBrands",
+        "title": "Backed by Established Technology Partners",
+        "subtitle": "Our round-the-clock support is backed by the same trusted technology partners behind all of CODE3's IT services.",
+        "displayStyle": "grid",
+        "gridColumns": "5",
+        "animationSpeed": "normal",
+        "pauseOnHover": true,
+        "brands": [
+          {
+            "name": "3CX",
+            "logo": "6a68cc45cf97d81b37605f25",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27a8"
+          },
+          {
+            "name": "AWS",
+            "logo": "6a68cc48cf97d81b37605f28",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27a9"
+          },
+          {
+            "name": "Acronis",
+            "logo": "6a68cc49cf97d81b37605f2b",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27aa"
+          },
+          {
+            "name": "Cisco",
+            "logo": "6a68cc4acf97d81b37605f2e",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27ab"
+          },
+          {
+            "name": "Dell Technologies",
+            "logo": "6a68cc4bcf97d81b37605f31",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27ac"
+          },
+          {
+            "name": "HP",
+            "logo": "6a68cc4ccf97d81b37605f34",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27ad"
+          },
+          {
+            "name": "Logitech",
+            "logo": "6a68cc4ccf97d81b37605f37",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27ae"
+          },
+          {
+            "name": "Microsoft",
+            "logo": "6a68cc4ecf97d81b37605f3a",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27af"
+          },
+          {
+            "name": "Sophos",
+            "logo": "6a68cc4fcf97d81b37605f3d",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b0"
+          },
+          {
+            "name": "Synology",
+            "logo": "6a68cc51cf97d81b37605f40",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b1"
+          },
+          {
+            "name": "Yealink",
+            "logo": "6a68cc52cf97d81b37605f43",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b2"
+          },
+          {
+            "name": "Yeastar",
+            "logo": "6a68cc52cf97d81b37605f46",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b3"
+          },
+          {
+            "name": "Fortinet",
+            "logo": "6a68cc53cf97d81b37605f49",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b4"
+          },
+          {
+            "name": "Ruijie",
+            "logo": "6a68cc54cf97d81b37605f4c",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b5"
+          },
+          {
+            "name": "Ubiquiti",
+            "logo": "6a68cc55cf97d81b37605f4f",
+            "linkType": "none",
+            "id": "6a68cd83df3c3c0a3cae27b6"
+          }
+        ],
+        "ctaText": "Interested in partnering with CODE3?",
+        "ctaLabel": "Partner With Us",
+        "ctaUrl": "/contact",
+        "id": "6a68cd83df3c3c0a3cae27b7"
+      },
+      {
+        "blockType": "subServicesNav",
+        "id": "eff3e721a7416861c6de97f9"
+      },
+      {
+        "blockType": "faq",
+        "title": "Frequently Asked Questions About 24/7 IT Support",
+        "badge": "FAQS",
+        "faqs": [
+          {
+            "question": "What does 24/7 IT support actually cover?",
+            "answer": "The exact scope is agreed with you — it can include specific critical systems, all IT infrastructure, or particular hours outside the standard working day.",
+            "id": "690a361770affd9444edfb45"
+          },
+          {
+            "question": "Is 24/7 support all remote, or is on-site included?",
+            "answer": "Both. Most after-hours issues are handled remotely, with on-site support available when the situation requires it.",
+            "id": "690a361a70affd9444edfb46"
+          },
+          {
+            "question": "How do I reach support outside business hours?",
+            "answer": "We agree on a clear contact method and escalation path as part of setting up your coverage.",
+            "id": "690a362070affd9444edfb48"
+          },
+          {
+            "question": "Is 24/7 support only for large businesses?",
+            "answer": "No. Any business with systems that can't afford extended downtime, regardless of size, can benefit from extended coverage hours.",
+            "id": "690a361b70affd9444edfb47"
+          },
+          {
+            "question": "Can 24/7 support be limited to just our most critical systems?",
+            "answer": "Yes. Coverage can be scoped to specific systems rather than your entire environment, if that better fits your needs and budget.",
+            "id": "690a362270affd9444edfb49"
+          },
+          {
+            "question": "Is 24/7 support part of a managed IT contract, or can it stand alone?",
+            "answer": "It can be part of a broader managed IT or AMC arrangement, or scoped as a more focused support agreement.",
+            "id": "be79cf31d5fcbe025d814a7d"
+          },
+          {
+            "question": "Does CODE3 provide 24/7 support outside Dubai?",
+            "answer": "CODE3 supports businesses across Dubai and the UAE.",
+            "id": "87fb61be1a46384b3cd3be5a"
+          }
+        ],
+        "ctaText": "Can't find the answer you're looking for?",
+        "ctaLabel": "Still Have Questions? Contact Us",
+        "ctaUrl": "/contact",
+        "id": "690a360b70affd9444edfb44"
+      },
+      {
+        "blockType": "cta",
+        "showLogo": true,
+        "title": "Get Support That Matches Your Hours",
+        "description": "Tell us about your operating hours and critical systems, and we'll help you build the right coverage.",
+        "links": [
+          {
+            "link": {
+              "type": "reference",
+              "reference": {
+                "relationTo": "pages",
+                "value": "68d55564285b2fc25970d39a"
+              },
+              "label": "Get a Free Consultation",
+              "appearance": "default"
+            },
+            "id": "690a366370affd9444edfb4b"
+          }
+        ],
+        "backgroundImage": "68e8e4e5d32169188c291c98",
+        "id": "690a365770affd9444edfb4a"
+      }
+    ]
+  }
+}

@@ -76,6 +76,7 @@ import { ConceptBreakdown } from '@/blocks/ConceptBreakdown/config'
 import { ZonedFlow } from '@/blocks/ZonedFlow/config'
 import { PathCompare } from '@/blocks/PathCompare/config'
 import { NetworkEstimator } from '@/blocks/NetworkEstimator/config'
+import { WiFiEstimator } from '@/blocks/WiFiEstimator/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -309,6 +310,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ZonedFlow,
                 PathCompare,
                 NetworkEstimator,
+                WiFiEstimator,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,

@@ -387,6 +387,7 @@ export interface Page {
     | ZonedFlowBlock
     | PathCompareBlock
     | NetworkEstimatorBlock
+    | WiFiEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3433,6 +3434,10 @@ export interface PathCompareBlock {
   title: string;
   subtitle?: string | null;
   /**
+   * Use "List" when the items are situations or criteria rather than an ordered process.
+   */
+  variant?: ('flow' | 'list') | null;
+  /**
    * Each path renders as an equal-weight card with a numbered top-to-bottom step list. Use it for "either / or" journeys, not a good-vs-bad comparison.
    */
   columns?:
@@ -3548,6 +3553,71 @@ export interface NetworkEstimatorBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'networkEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WiFiEstimatorBlock".
+ */
+export interface WiFiEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  sizeLabel?: string | null;
+  sizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  floorsLabel?: string | null;
+  floorsOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  areaLabel?: string | null;
+  areaOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  devicesLabel?: string | null;
+  devicesOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingLabel?: string | null;
+  existingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  reqLabel?: string | null;
+  reqOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'wifiEstimator';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4921,6 +4991,7 @@ export interface PagesSelect<T extends boolean = true> {
         zonedFlow?: T | ZonedFlowBlockSelect<T>;
         pathCompare?: T | PathCompareBlockSelect<T>;
         networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
+        wifiEstimator?: T | WiFiEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6646,6 +6717,7 @@ export interface PathCompareBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
+  variant?: T;
   columns?:
     | T
     | {
@@ -6736,6 +6808,64 @@ export interface NetworkEstimatorBlockSelect<T extends boolean = true> {
       };
   securityLabel?: T;
   securityOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WiFiEstimatorBlock_select".
+ */
+export interface WiFiEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  sizeLabel?: T;
+  sizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  floorsLabel?: T;
+  floorsOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  areaLabel?: T;
+  areaOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  devicesLabel?: T;
+  devicesOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingLabel?: T;
+  existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  reqLabel?: T;
+  reqOptions?:
     | T
     | {
         text?: T;
