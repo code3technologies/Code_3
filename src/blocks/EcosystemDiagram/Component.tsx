@@ -5,11 +5,35 @@ import Link from 'next/link'
 import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { Camera, Car, Fence, Fingerprint, Mic, ShieldCheck, Sparkles, Users, type LucideIcon } from 'lucide-react'
+import {
+  Building2,
+  Camera,
+  Car,
+  Cloud,
+  Fence,
+  Fingerprint,
+  MapPin,
+  Mic,
+  Network,
+  Server,
+  ShieldCheck,
+  Sparkles,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
 
 // Best-effort icon per connected system, matched by keyword.
 function getSystemIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  // Multi-site / location keywords, checked first (e.g. "Dubai HQ" would
+  // otherwise match the "ai" rule below).
+  if (t.includes('hq') || t.includes('headquarter') || t.includes('head office')) return Building2
+  if (t.includes('data center') || t.includes('data centre') || t.includes('datacenter')) return Server
+  if (t.includes('cloud')) return Cloud
+  if (t.includes('remote')) return MapPin
+  if (t.includes('branch') || t.includes('office')) return Building2
+  if (t.includes('wan') || t.includes('backbone') || (t.includes('network') && !t.includes('networking')))
+    return Network
   if (t.includes('cctv') || t.includes('camera')) return Camera
   if (t.includes('ai')) return Sparkles
   if (t.includes('access control')) return Fingerprint
