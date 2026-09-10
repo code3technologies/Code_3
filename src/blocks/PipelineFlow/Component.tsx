@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   Users,
   Waypoints,
+  Wifi,
   Zap,
   type LucideIcon,
 } from 'lucide-react'
@@ -34,7 +35,10 @@ function getStepIcon(text?: string | null): LucideIcon {
   if (t.includes('firewall')) return ShieldCheck
   if (t.includes('router')) return Router
   if (t.includes('switch')) return Network
+  if (t.includes('access point') || t.includes('wi-fi') || t.includes('wifi') || t.includes('wireless'))
+    return Wifi
   if (t.includes('wan')) return Waypoints
+  if (t === 'lan' || t.includes('local area') || t.includes('lan ')) return Network
   if (t.includes('branch') || t.includes('cloud') || t.includes('internet') || t.includes('remote site'))
     return t.includes('cloud') && !t.includes('branch') ? Cloud : Globe
   if (t.includes('network') || t.includes('poe')) return Network
