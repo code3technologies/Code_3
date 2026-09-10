@@ -59,11 +59,28 @@ import { BlogScrollBlock } from './BlogScroll/Component'
 import { BusinessNeedsBlock } from './BusinessNeeds/Component'
 import { SubServicesNavBlock } from './SubServicesNav/Component'
 import { RoomClassificationBlock } from './RoomClassification/Component'
+import { ScenarioFlowsBlock } from './ScenarioFlows/Component'
+import { TransformationListBlock } from './TransformationList/Component'
 import { RoomSizeEstimatorBlock } from './RoomSizeEstimator/Component'
 import { ReactiveProactiveFlowBlock } from './ReactiveProactiveFlow/Component'
 import { SetupEstimatorBlock } from './SetupEstimator/Component'
 import { OfficeBlueprintBlock } from './OfficeBlueprint/Component'
 import { IconFeatureGridBlock } from './IconFeatureGrid/Component'
+import { DetailedFeatureGridBlock } from './DetailedFeatureGrid/Component'
+import { PipelineFlowBlock } from './PipelineFlow/Component'
+import { FeatureListBlock } from './FeatureList/Component'
+import { SolutionRailBlock } from './SolutionRail/Component'
+import { ChecklistCardBlock } from './ChecklistCard/Component'
+import { EcosystemDiagramBlock } from './EcosystemDiagram/Component'
+import { TileShowcaseBlock } from './TileShowcase/Component'
+import { AlternatingTimelineBlock } from './AlternatingTimeline/Component'
+import { FlowShowcaseBlock } from './FlowShowcase/Component'
+import { SpecSheetBlock } from './SpecSheet/Component'
+import { ParameterListBlock } from './ParameterList/Component'
+import { ConceptBreakdownBlock } from './ConceptBreakdown/Component'
+import { ZonedFlowBlock } from './ZonedFlow/Component'
+import { PathCompareBlock } from './PathCompare/Component'
+import { NetworkEstimatorBlock } from './NetworkEstimator/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -76,6 +93,9 @@ import { CastingEstimatorBlock } from './CastingEstimator/Component'
 import { VideoWallEstimatorBlock } from './VideoWallEstimator/Component'
 import { ProjectorEstimatorBlock } from './ProjectorEstimator/Component'
 import { PASystemEstimatorBlock } from './PASystemEstimator/Component'
+import { BGMEstimatorBlock } from './BGMEstimator/Component'
+import { CCTVEstimatorBlock } from './CCTVEstimator/Component'
+import { AICameraEstimatorBlock } from './AICameraEstimator/Component'
 
 interface BlockProps {
   disableInnerContainer?: boolean
@@ -137,11 +157,28 @@ const blockComponents = {
   businessNeeds: BusinessNeedsBlock,
   subServicesNav: SubServicesNavBlock,
   roomClassification: RoomClassificationBlock,
+  scenarioFlows: ScenarioFlowsBlock,
+  transformationList: TransformationListBlock,
   roomSizeEstimator: RoomSizeEstimatorBlock,
   reactiveProactiveFlow: ReactiveProactiveFlowBlock,
   setupEstimator: SetupEstimatorBlock,
   officeBlueprint: OfficeBlueprintBlock,
   iconFeatureGrid: IconFeatureGridBlock,
+  detailedFeatureGrid: DetailedFeatureGridBlock,
+  pipelineFlow: PipelineFlowBlock,
+  featureList: FeatureListBlock,
+  solutionRail: SolutionRailBlock,
+  checklistCard: ChecklistCardBlock,
+  ecosystemDiagram: EcosystemDiagramBlock,
+  tileShowcase: TileShowcaseBlock,
+  alternatingTimeline: AlternatingTimelineBlock,
+  flowShowcase: FlowShowcaseBlock,
+  specSheet: SpecSheetBlock,
+  parameterList: ParameterListBlock,
+  conceptBreakdown: ConceptBreakdownBlock,
+  zonedFlow: ZonedFlowBlock,
+  pathCompare: PathCompareBlock,
+  networkEstimator: NetworkEstimatorBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
@@ -154,6 +191,9 @@ const blockComponents = {
   videoWallEstimator: VideoWallEstimatorBlock,
   projectorEstimator: ProjectorEstimatorBlock,
   paSystemEstimator: PASystemEstimatorBlock,
+  bgmEstimator: BGMEstimatorBlock,
+  cctvEstimator: CCTVEstimatorBlock,
+  aiCameraEstimator: AICameraEstimatorBlock,
   resultsShowcase: ResultsShowcaseBlock,
   processTimeline: ProcessTimelineBlock,
   coverageTable: CoverageTableBlock,

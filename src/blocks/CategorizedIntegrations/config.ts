@@ -29,6 +29,15 @@ export const CategorizedIntegrations: Block = {
       localized: true,
     },
     {
+      name: 'checklistStyle',
+      type: 'checkbox',
+      label: 'Use Checkmark Bullets (Checklist Style)',
+      defaultValue: false,
+      admin: {
+        description: 'Swaps the plain dot bullets for checkmarks — use for genuine checklists (e.g. project phases) rather than categorized feature/integration lists.',
+      },
+    },
+    {
       name: 'groups',
       type: 'array',
       label: 'Categories',

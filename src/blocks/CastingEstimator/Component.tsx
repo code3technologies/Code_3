@@ -9,7 +9,8 @@ import { Reveal } from '@/components/site/Reveal'
 import { ChipQuestion } from '@/components/site/estimator/ChipQuestion'
 import { EstimatorResultPanel } from '@/components/site/estimator/ResultPanel'
 import { EstimatorCard, EstimatorFooter, StartOverButton, estimatorBodyClassName } from '@/components/site/estimator/Shell'
-import { WizardBackLink, WizardProgress } from '@/components/site/estimator/Wizard'
+import { EstimatorWizardFrame, WizardBackLink } from '@/components/site/estimator/Wizard'
+import { useScrollOnResult } from '@/components/site/estimator/useScrollOnResult'
 import { Laptop, MapPin, Tv, Users, Video } from 'lucide-react'
 
 // Best-effort recommended casting label from the selected device platform.
@@ -58,6 +59,7 @@ export const CastingEstimatorBlock: React.FC<Props> = ({
   const [vc, setVc] = useState<number | null>(null)
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const sectionRef = useScrollOnResult<HTMLElement>(submitted)
 
   if (
     safeLocation.length === 0 ||
@@ -81,39 +83,40 @@ export const CastingEstimatorBlock: React.FC<Props> = ({
   }
 
   const steps = [
-    <ChipQuestion
-      key="location"
-      label={locationLabel}
-      Icon={MapPin}
-      options={safeLocation}
-      value={location}
-      onChange={(i) => select(setLocation, i)}
-    />,
-    <ChipQuestion
-      key="participants"
-      label={participantsLabel}
-      Icon={Users}
-      options={safeParticipants}
-      value={participants}
-      onChange={(i) => select(setParticipants, i)}
-    />,
-    <ChipQuestion
-      key="currentDisplay"
-      label={currentDisplayLabel}
-      Icon={Tv}
-      options={safeCurrentDisplay}
-      value={currentDisplay}
-      onChange={(i) => select(setCurrentDisplay, i)}
-    />,
-    <ChipQuestion
-      key="devices"
-      label={devicesLabel}
-      Icon={Laptop}
-      options={safeDevices}
-      value={devices}
-      onChange={(i) => select(setDevices, i)}
-    />,
-    <ChipQuestion key="vc" label={vcLabel} Icon={Video} options={safeVc} value={vc} onChange={(i) => select(setVc, i)} />,
+    {
+      icon: MapPin,
+      content: <ChipQuestion label={locationLabel} options={safeLocation} value={location} onChange={(i) => select(setLocation, i)} />,
+    },
+    {
+      icon: Users,
+      content: (
+        <ChipQuestion
+          label={participantsLabel}
+          options={safeParticipants}
+          value={participants}
+          onChange={(i) => select(setParticipants, i)}
+        />
+      ),
+    },
+    {
+      icon: Tv,
+      content: (
+        <ChipQuestion
+          label={currentDisplayLabel}
+          options={safeCurrentDisplay}
+          value={currentDisplay}
+          onChange={(i) => select(setCurrentDisplay, i)}
+        />
+      ),
+    },
+    {
+      icon: Laptop,
+      content: <ChipQuestion label={devicesLabel} options={safeDevices} value={devices} onChange={(i) => select(setDevices, i)} />,
+    },
+    {
+      icon: Video,
+      content: <ChipQuestion label={vcLabel} options={safeVc} value={vc} onChange={(i) => select(setVc, i)} />,
+    },
   ]
 
   const handleBack = () => setStep((s) => Math.max(0, s - 1))
@@ -134,14 +137,16 @@ export const CastingEstimatorBlock: React.FC<Props> = ({
     const participantsText = safeParticipants[participants as number]?.text
     const currentDisplayText = safeCurrentDisplay[currentDisplay as number]?.text
     const devicesText = safeDevices[devices as number]?.text
-    const vcText = (safeVc[vc as number]?.text || '').toLowerCase()
+    // Exact match, not .includes() - "Not Sure" contains the substring "no"
+    // and would otherwise be misread as a "No" answer.
+    const vcText = (safeVc[vc as number]?.text || '').trim().toLowerCase()
 
     const label = deviceLabel(devicesText)
 
     let vcNote = "We'll help you determine whether conferencing-ready casting makes sense for your setup."
-    if (vcText.includes('yes')) {
+    if (vcText === 'yes') {
       vcNote = "We'll include conferencing-ready casting so remote participants can join every session."
-    } else if (vcText.includes('no')) {
+    } else if (vcText === 'no') {
       vcNote = "Since video conferencing isn't required, we'll focus on fast, reliable local screen sharing."
     }
 
@@ -149,9 +154,9 @@ export const CastingEstimatorBlock: React.FC<Props> = ({
   })()
 
   return (
-    <section className={cn('bg-white py-7 md:py-9', className)}>
+    <section ref={sectionRef} className={cn('bg-white py-7 md:py-9 scroll-mt-32', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mb-6">
+        <Reveal className="max-w-2xl mb-4">
           {badge && <Eyebrow>{badge}</Eyebrow>}
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">{title}</h2>
           {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
@@ -159,23 +164,22 @@ export const CastingEstimatorBlock: React.FC<Props> = ({
 
         <Reveal delayMs={100}>
           <EstimatorCard>
-            <div className={estimatorBodyClassName}>
-              {result ? (
-                <div>
-                  <EstimatorResultPanel eyebrow="Recommended Casting Setup" headline={result.label}>
-                    For a {result.locationText?.toLowerCase()} with {result.participantsText?.toLowerCase()} participants
-                    using a {result.currentDisplayText?.toLowerCase()}, this setup is a strong fit. {result.vcNote}
-                  </EstimatorResultPanel>
-                  <StartOverButton onClick={handleStartOver} />
-                </div>
-              ) : (
+            {result ? (
+              <div className={estimatorBodyClassName}>
+                <EstimatorResultPanel eyebrow="Recommended Casting Setup" headline={result.label}>
+                  For a {result.locationText?.toLowerCase()} with {result.participantsText?.toLowerCase()} participants
+                  using a {result.currentDisplayText?.toLowerCase()}, this setup is a strong fit. {result.vcNote}
+                </EstimatorResultPanel>
+                <StartOverButton onClick={handleStartOver} />
+              </div>
+            ) : (
+              <EstimatorWizardFrame icon={steps[step].icon} current={step} total={totalSteps}>
                 <div key={step} className="animate-step-in">
-                  <WizardProgress current={step} total={totalSteps} />
-                  {steps[step]}
+                  {steps[step].content}
                   <WizardBackLink show={step > 0} onBack={handleBack} />
                 </div>
-              )}
-            </div>
+              </EstimatorWizardFrame>
+            )}
 
             <EstimatorFooter disclaimer={disclaimer} ctaLabel={ctaLabel} ctaUrl={ctaUrl} />
           </EstimatorCard>

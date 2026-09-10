@@ -8,7 +8,8 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { EstimatorResultPanel } from '@/components/site/estimator/ResultPanel'
 import { EstimatorCard, EstimatorFooter, StartOverButton, estimatorBodyClassName } from '@/components/site/estimator/Shell'
-import { WizardBackLink, WizardNav, WizardProgress } from '@/components/site/estimator/Wizard'
+import { EstimatorWizardFrame, WizardBackLink, WizardNav } from '@/components/site/estimator/Wizard'
+import { useScrollOnResult } from '@/components/site/estimator/useScrollOnResult'
 import {
   Briefcase,
   Building2,
@@ -46,9 +47,11 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('wi-fi') || t.includes('wifi')) return Wifi
   if (t.includes('network')) return Network
   if (t.includes('computer')) return Monitor
+  if (t.includes('server room')) return Building2
   if (t.includes('server') || t.includes('cloud')) return Cloud
   if (t.includes('cctv') || t.includes('camera')) return Camera
-  if (t.includes('access control')) return KeyRound
+  if (t.includes('access control') || t.includes('restricted')) return KeyRound
+  if (t.includes('warehouse')) return Building2
   if (t.includes('meeting')) return Presentation
   if (t.includes('365') || t.includes('microsoft')) return Mail
   if (t.includes('security') || t.includes('cyber')) return ShieldCheck
@@ -79,6 +82,7 @@ export const SetupEstimatorBlock: React.FC<Props> = ({
   const [answers, setAnswers] = useState<Record<number, number | number[]>>({})
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const sectionRef = useScrollOnResult<HTMLElement>(submitted)
 
   if (safeQuestions.length === 0 || safeTiers.length === 0) return null
 
@@ -140,9 +144,9 @@ export const SetupEstimatorBlock: React.FC<Props> = ({
   })()
 
   return (
-    <section className={cn('bg-white py-7 md:py-9', className)}>
+    <section ref={sectionRef} className={cn('bg-white py-7 md:py-9 scroll-mt-32', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mb-6">
+        <Reveal className="max-w-2xl mb-4">
           {badge && <Eyebrow>{badge}</Eyebrow>}
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">{title}</h2>
           {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
@@ -150,45 +154,38 @@ export const SetupEstimatorBlock: React.FC<Props> = ({
 
         <Reveal delayMs={100}>
           <EstimatorCard>
-            <div className={estimatorBodyClassName}>
-              {result ? (
-                <div>
-                  <EstimatorResultPanel eyebrow="Recommended Scope" headline={result.tier.tierName}>
-                    <p>{result.tier.description}</p>
-                    {result.selectedItems.length > 0 && (
-                      <div className="mt-4 border-t border-black/5 pt-4 text-left">
-                        <div className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Your setup will include
-                        </div>
-                        <div className="flex flex-wrap justify-center gap-1.5">
-                          {result.selectedItems.map((item, i) => (
-                            <span
-                              key={i}
-                              className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-black/10"
-                            >
-                              <Check className="h-3 w-3 flex-none text-primary_red" />
-                              {item}
-                            </span>
-                          ))}
-                        </div>
+            {result ? (
+              <div className={estimatorBodyClassName}>
+                <EstimatorResultPanel eyebrow="Recommended Scope" headline={result.tier.tierName}>
+                  <p>{result.tier.description}</p>
+                  {result.selectedItems.length > 0 && (
+                    <div className="mt-4 border-t border-black/5 pt-4 text-left">
+                      <div className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Your setup will include
                       </div>
-                    )}
-                  </EstimatorResultPanel>
-                  <StartOverButton onClick={handleStartOver} />
-                </div>
-              ) : (
+                      <div className="flex flex-wrap justify-center gap-1.5">
+                        {result.selectedItems.map((item, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-black/10"
+                          >
+                            <Check className="h-3 w-3 flex-none text-primary_red" />
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </EstimatorResultPanel>
+                <StartOverButton onClick={handleStartOver} />
+              </div>
+            ) : (
+              <EstimatorWizardFrame icon={QuestionIcon} current={step} total={safeQuestions.length}>
                 <div key={step} className="animate-step-in">
-                  <WizardProgress current={step} total={safeQuestions.length} />
-
-                  <div className="mb-6 flex items-center gap-4">
-                    <span className="flex h-14 w-14 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
-                      <QuestionIcon className="h-6 w-6" />
-                    </span>
-                    <label className="text-xl font-semibold text-foreground">
-                      {question.label}
-                      {isMulti && <span className="ml-1.5 text-base font-normal text-gray-400">(select all that apply)</span>}
-                    </label>
-                  </div>
+                  <label className="mb-6 block text-xl font-semibold text-foreground md:text-2xl">
+                    {question.label}
+                    {isMulti && <span className="ml-1.5 text-base font-normal text-gray-400">(select all that apply)</span>}
+                  </label>
                   <div className="flex flex-wrap gap-3">
                     {(question.options || []).map((option, oIndex) => {
                       const isSelected = isMulti
@@ -235,8 +232,8 @@ export const SetupEstimatorBlock: React.FC<Props> = ({
                     <WizardBackLink show={step > 0} onBack={handleBack} />
                   )}
                 </div>
-              )}
-            </div>
+              </EstimatorWizardFrame>
+            )}
 
             <EstimatorFooter disclaimer={disclaimer} ctaLabel={ctaLabel} ctaUrl={ctaUrl} />
           </EstimatorCard>

@@ -19,6 +19,7 @@ interface QuickEnquiryBlockProps {
   promoCtaLabel?: string | null
   promoCtaUrl?: string | null
   sidebarImage?: (string | null) | MediaType
+  formOnDark?: boolean | null
 }
 
 function GiftIcon() {
@@ -53,6 +54,7 @@ export const QuickEnquiryBlock: React.FC<QuickEnquiryBlockProps> = ({
   promoCtaLabel,
   promoCtaUrl,
   sidebarImage,
+  formOnDark,
 }) => {
   return (
     <div
@@ -63,6 +65,7 @@ export const QuickEnquiryBlock: React.FC<QuickEnquiryBlockProps> = ({
         <MiniContactForm
           title={title}
           description={description}
+          onDark={Boolean(formOnDark)}
           className="mx-auto max-w-md lg:pointer-events-auto lg:mx-0 lg:mt-8 lg:w-[360px]"
         />
 

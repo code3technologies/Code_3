@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { ICON_PRESET_OPTIONS } from '@/components/site/icons'
 import { ctaFields } from '@/fields/ctaFields'
 
 export const ProcessTimeline: Block = {
@@ -55,6 +56,15 @@ export const ProcessTimeline: Block = {
       maxRows: 7,
       fields: [
         {
+          name: 'icon',
+          type: 'select',
+          label: 'Icon (optional)',
+          options: [...ICON_PRESET_OPTIONS],
+          admin: {
+            description: 'Optional — shows this icon in the step marker instead of the step number.',
+          },
+        },
+        {
           name: 'title',
           type: 'text',
           label: 'Step Title',
@@ -67,6 +77,12 @@ export const ProcessTimeline: Block = {
           label: 'Step Description',
           required: true,
           localized: true,
+        },
+        {
+          name: 'url',
+          type: 'text',
+          label: 'Link URL (optional)',
+          admin: { description: 'If set, this step links to the given URL, e.g. "/service/cctv-installations-dubai-uae" - for an internal-linking timeline.' },
         },
       ],
     },

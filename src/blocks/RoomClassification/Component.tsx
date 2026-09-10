@@ -8,6 +8,7 @@ import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
+import { ServiceIcon } from '@/components/site/icons'
 
 type Props = {
   className?: string
@@ -60,10 +61,20 @@ export const RoomClassificationBlock: React.FC<Props> = ({ className, badge, tit
 
         <Reveal delayMs={150} className="mt-8">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border shadow-sm md:aspect-[21/9]">
-            {active.image && typeof active.image === 'object' && (
+            {active.image && typeof active.image === 'object' ? (
               <Media resource={active.image} fill imgClassName="h-full w-full object-cover" />
-            )}
+            ) : active.icon ? (
+              <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#FDEBEC] via-white to-gray-50 px-6 text-center">
+                <span className="flex h-16 w-16 flex-none items-center justify-center rounded-2xl bg-primary_red text-white shadow-lg md:h-20 md:w-20">
+                  <ServiceIcon preset={active.icon} className="h-8 w-8 md:h-10 md:w-10" />
+                </span>
+                <h3 className="text-xl font-semibold text-foreground md:text-2xl">{active.label}</h3>
+              </div>
+            ) : null}
           </div>
+          {active.caption && (
+            <p className="mx-auto mt-4 max-w-xl text-center text-sm text-gray-500">{active.caption}</p>
+          )}
         </Reveal>
       </div>
     </section>

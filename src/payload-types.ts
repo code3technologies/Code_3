@@ -219,7 +219,15 @@ export interface Page {
    */
   navOrder?: number | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type:
+      | 'none'
+      | 'highImpact'
+      | 'mediumImpact'
+      | 'lowImpact'
+      | 'photoImpact'
+      | 'softImpact'
+      | 'vividImpact'
+      | 'splitImpact';
     richText?: {
       root: {
         type: string;
@@ -357,11 +365,28 @@ export interface Page {
     | BusinessNeedsBlock
     | SubServicesNavBlock
     | RoomClassificationBlock
+    | ScenarioFlowsBlock
+    | TransformationListBlock
     | RoomSizeEstimatorBlock
     | ReactiveProactiveFlowBlock
     | SetupEstimatorBlock
     | OfficeBlueprintBlock
     | IconFeatureGridBlock
+    | DetailedFeatureGridBlock
+    | PipelineFlowBlock
+    | FeatureListBlock
+    | SolutionRailBlock
+    | ChecklistCardBlock
+    | EcosystemDiagramBlock
+    | TileShowcaseBlock
+    | AlternatingTimelineBlock
+    | FlowShowcaseBlock
+    | SpecSheetBlock
+    | ParameterListBlock
+    | ConceptBreakdownBlock
+    | ZonedFlowBlock
+    | PathCompareBlock
+    | NetworkEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -374,6 +399,9 @@ export interface Page {
     | VideoWallEstimatorBlock
     | ProjectorEstimatorBlock
     | PASystemEstimatorBlock
+    | BGMEstimatorBlock
+    | CCTVEstimatorBlock
+    | AICameraEstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1305,6 +1333,10 @@ export interface PartnersDirectoryBlock {
 export interface QuickEnquiryBlock {
   title: string;
   description?: string | null;
+  /**
+   * Use a translucent glass style for the form so it sits well over an animated dark hero.
+   */
+  formOnDark?: boolean | null;
   promoEnabled?: boolean | null;
   promoBadge?: string | null;
   promoTitle?: string | null;
@@ -1516,6 +1548,14 @@ export interface ServiceDetailBannerBlock {
   description: string;
   showGradientLine?: boolean | null;
   /**
+   * Use the homepage-style animated dark-red hero background (drifting glow, light streaks, floating icons) instead of the plain white banner.
+   */
+  animatedBackground?: boolean | null;
+  /**
+   * Which icons drift through the animated hero background — pick the set that matches this service.
+   */
+  floatingIconSet?: ('surveillance' | 'networking' | 'general') | null;
+  /**
    * e.g. "Cyber Security" — shown as a small link back to the parent service category.
    */
   backLinkLabel?: string | null;
@@ -1541,9 +1581,33 @@ export interface ServiceOverviewBlock {
   title: string;
   description: string;
   /**
-   * Optional — the overview renders full-width without one.
+   * Optional — the overview renders full-width without one, unless space is reserved for a sidebar below.
    */
   image?: (string | null) | Media;
+  /**
+   * Optional — shown as a stat panel on the right instead of an image (e.g. real figures like "30+ Experienced Professionals"). Ignored if an image is set.
+   */
+  highlights?:
+    | {
+        /**
+         * e.g. "30+"
+         */
+        value: string;
+        /**
+         * e.g. "Experienced Professionals"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Continues the homepage-style animated dark-red hero background from a Service Detail Banner above, so the two read as one hero area.
+   */
+  animatedBackground?: boolean | null;
+  /**
+   * Keep checked on service pages that also have a Quick Enquiry block, so text doesn't run under it. Uncheck for standalone pages with no such sidebar, so the text uses the full width.
+   */
+  reserveSidebarSpace?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'serviceOverview';
@@ -1707,11 +1771,32 @@ export interface ComparisonTableBlock {
   middleEnabled?: boolean | null;
   middleLabel?: string | null;
   rightLabel: string;
+  /**
+   * Use when the left and right lists are paired point-for-point (same length). Leave empty and use the independent lists below instead when the two lists differ in length.
+   */
   rows?:
     | {
         left: string;
         middle?: string | null;
         right: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Use instead of Comparison Rows when the left and right lists don't need to be the same length.
+   */
+  leftItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Use instead of Comparison Rows when the left and right lists don't need to be the same length.
+   */
+  rightItems?:
+    | {
+        text: string;
         id?: string | null;
       }[]
     | null;
@@ -1875,6 +1960,10 @@ export interface ScopeChecklistBlock {
     | {
         text: string;
         /**
+         * Optional — switches every item in this list to a larger card with this detail line, once any item has one.
+         */
+        description?: string | null;
+        /**
          * If set, this item links to the given URL, e.g. "/service/cyber-security".
          */
         url?: string | null;
@@ -1983,8 +2072,58 @@ export interface ProcessTimelineBlock {
   emphasizeFinalStep?: boolean | null;
   steps?:
     | {
+        /**
+         * Optional — shows this icon in the step marker instead of the step number.
+         */
+        icon?:
+          | (
+              | 'shield'
+              | 'server'
+              | 'cloud'
+              | 'network'
+              | 'phone'
+              | 'monitor'
+              | 'wrench'
+              | 'refresh'
+              | 'chart'
+              | 'users'
+              | 'layout'
+              | 'code'
+              | 'search'
+              | 'smartphone'
+              | 'palette'
+              | 'truck'
+              | 'camera'
+              | 'lock'
+              | 'box'
+              | 'lightbulb'
+              | 'headset'
+              | 'building'
+              | 'pin'
+              | 'database'
+              | 'settings'
+              | 'document'
+              | 'graduation'
+              | 'printer'
+              | 'tv'
+              | 'mic'
+              | 'wifi'
+              | 'handshake'
+              | 'check'
+              | 'smile'
+              | 'health'
+              | 'home'
+              | 'shoppingBag'
+              | 'factory'
+              | 'bed'
+            )
+          | null;
         title: string;
         description: string;
+        /**
+         * If set, this step links to the given URL, e.g. "/service/cctv-installations-dubai-uae" - for an internal-linking timeline.
+         */
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2116,6 +2255,10 @@ export interface CategorizedIntegrationsBlock {
   badge?: string | null;
   title: string;
   subtitle?: string | null;
+  /**
+   * Swaps the plain dot bullets for checkmarks — use for genuine checklists (e.g. project phases) rather than categorized feature/integration lists.
+   */
+  checklistStyle?: boolean | null;
   groups?:
     | {
         /**
@@ -2519,13 +2662,182 @@ export interface RoomClassificationBlock {
          * e.g. "Standard Meeting Room"
          */
         label: string;
-        image: string | Media;
+        /**
+         * Leave empty to show the fallback icon panel below instead.
+         */
+        image?: (string | null) | Media;
+        icon?:
+          | (
+              | 'shield'
+              | 'server'
+              | 'cloud'
+              | 'network'
+              | 'phone'
+              | 'monitor'
+              | 'wrench'
+              | 'refresh'
+              | 'chart'
+              | 'users'
+              | 'layout'
+              | 'code'
+              | 'search'
+              | 'smartphone'
+              | 'palette'
+              | 'truck'
+              | 'camera'
+              | 'lock'
+              | 'box'
+              | 'lightbulb'
+              | 'headset'
+              | 'building'
+              | 'pin'
+              | 'database'
+              | 'settings'
+              | 'document'
+              | 'graduation'
+              | 'printer'
+              | 'tv'
+              | 'mic'
+              | 'wifi'
+              | 'handshake'
+              | 'check'
+              | 'smile'
+              | 'health'
+              | 'home'
+              | 'shoppingBag'
+              | 'factory'
+              | 'bed'
+            )
+          | null;
+        /**
+         * Short line shown under the visual, e.g. "Best for huddle rooms · 55″–75″".
+         */
+        caption?: string | null;
         id?: string | null;
       }[]
     | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'roomClassification';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScenarioFlowsBlock".
+ */
+export interface ScenarioFlowsBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Each scenario is a short, real-world flow through the system, e.g. "Main Office: Employee enters → biometric authentication → attendance recorded."
+   */
+  scenarios?:
+    | {
+        /**
+         * e.g. "Main Office"
+         */
+        label: string;
+        /**
+         * One line summarizing the outcome, shown below the flow, e.g. "Every employee entry is authenticated and logged automatically."
+         */
+        description?: string | null;
+        steps?:
+          | {
+              text: string;
+              icon?:
+                | (
+                    | 'shield'
+                    | 'server'
+                    | 'cloud'
+                    | 'network'
+                    | 'phone'
+                    | 'monitor'
+                    | 'wrench'
+                    | 'refresh'
+                    | 'chart'
+                    | 'users'
+                    | 'layout'
+                    | 'code'
+                    | 'search'
+                    | 'smartphone'
+                    | 'palette'
+                    | 'truck'
+                    | 'camera'
+                    | 'lock'
+                    | 'box'
+                    | 'lightbulb'
+                    | 'headset'
+                    | 'building'
+                    | 'pin'
+                    | 'database'
+                    | 'settings'
+                    | 'document'
+                    | 'graduation'
+                    | 'printer'
+                    | 'tv'
+                    | 'mic'
+                    | 'wifi'
+                    | 'handshake'
+                    | 'check'
+                    | 'smile'
+                    | 'health'
+                    | 'home'
+                    | 'shoppingBag'
+                    | 'factory'
+                    | 'bed'
+                  )
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scenarioFlows';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TransformationListBlock".
+ */
+export interface TransformationListBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  fromLabel?: string | null;
+  toLabel?: string | null;
+  /**
+   * One row per point, e.g. "Sign-in sheets" → "Digital records" - a unified list rather than two separate boxes.
+   */
+  pairs?:
+    | {
+        from: string;
+        to: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'transformationList';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2734,6 +3046,511 @@ export interface IconFeatureGridBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DetailedFeatureGridBlock".
+ */
+export interface DetailedFeatureGridBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  items?:
+    | {
+        title: string;
+        description: string;
+        /**
+         * Optional short bullet list shown under the description, e.g. specific locations or use cases this item is suited for.
+         */
+        applications?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. "Explore: AI Camera Solutions" — shown as a link at the bottom of this card.
+         */
+        ctaLabel?: string | null;
+        ctaUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'detailedFeatureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PipelineFlowBlock".
+ */
+export interface PipelineFlowBlock {
+  badge?: string | null;
+  title: string;
+  /**
+   * e.g. "A properly designed CCTV environment typically connects multiple components into one surveillance system."
+   */
+  intro?: string | null;
+  /**
+   * Rendered as a single vertical stack connected by arrows, e.g. Camera → Network → NVR → Storage → Monitoring.
+   */
+  steps?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. a closing line about optional integrations with other systems — link individual service names to their pages via the toolbar.
+   */
+  footer?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pipelineFlow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureListBlock".
+ */
+export interface FeatureListBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a numbered two-column list with a large ghost numeral behind each icon — a deliberately different look from the bordered card grids used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionRailBlock".
+ */
+export interface SolutionRailBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a horizontally scrolling card rail — a deliberately different look from the grid/list blocks used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  footer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'solutionRail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ChecklistCardBlock".
+ */
+export interface ChecklistCardBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a single unified checklist card with striped rows — a deliberately different look from the separate-card grids used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown as a highlighted bar at the bottom of the card, e.g. a compatibility disclaimer.
+   */
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checklistCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EcosystemDiagramBlock".
+ */
+export interface EcosystemDiagramBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * e.g. "CCTV" — the system every spoke connects to.
+   */
+  hubLabel: string;
+  /**
+   * Rendered as a radial diagram around the hub (desktop) / a simple connected list (mobile) — a deliberately different, non-linear visual for peer systems rather than a sequential process.
+   */
+  items?:
+    | {
+        label: string;
+        /**
+         * If set, this spoke links to the given service page, e.g. "/service/anpr-systems-dubai-uae".
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ecosystemDiagram';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TileShowcaseBlock".
+ */
+export interface TileShowcaseBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a bold, alternating dark/red checkerboard tile grid — a deliberately different, high-contrast look from the white-card grids used elsewhere.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tileShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AlternatingTimelineBlock".
+ */
+export interface AlternatingTimelineBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a spacious, alternating left/right timeline connected by a central spine — a deliberately different, more editorial look for an important sequential story.
+   */
+  steps?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'alternatingTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlowShowcaseBlock".
+ */
+export interface FlowShowcaseBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Short labels only (1-4 words) — rendered as large connected nodes on a bold colored panel. Reserved for a single, important, eye-catching flow rather than a plain step list.
+   */
+  steps?:
+    | {
+        label: string;
+        /**
+         * Optional — adds a numbered detail breakdown below the flow panel once any step has one.
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown below the flow, e.g. a compatibility disclaimer.
+   */
+  note?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'flowShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecSheetBlock".
+ */
+export interface SpecSheetBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a technical datasheet — numbered rows on a blueprint-grid panel, two columns on desktop.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'specSheet';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParameterListBlock".
+ */
+export interface ParameterListBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a borderless reference list — term on the left, description on the right, hairline dividers. No cards.
+   */
+  items?:
+    | {
+        term: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'parameterList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConceptBreakdownBlock".
+ */
+export interface ConceptBreakdownBlock {
+  badge?: string | null;
+  title: string;
+  /**
+   * Sits in the sticky left column above the list. Separate paragraphs with a blank line.
+   */
+  intro?: string | null;
+  /**
+   * e.g. "How CODE3 designs your LAN" — small heading above the aside passage.
+   */
+  asideLabel?: string | null;
+  /**
+   * A short passage shown under the intro in the left column, set off by a red rule. Separate paragraphs with a blank line.
+   */
+  asideText?: string | null;
+  /**
+   * Rendered as a borderless, hairline-divided reference list in the right column — term, then explanation. No cards, no icons.
+   */
+  items?:
+    | {
+        term: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'conceptBreakdown';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ZonedFlowBlock".
+ */
+export interface ZonedFlowBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Each zone is a labelled band containing one or more stages. Use it to show a boundary, e.g. Your Site / The Edge / Beyond.
+   */
+  zones?:
+    | {
+        label: string;
+        /**
+         * Tints the band and makes the label chip solid red — use for the pivotal zone.
+         */
+        emphasis?: boolean | null;
+        /**
+         * Small caption on the arrow leading to the next zone. Ignored on the last zone.
+         */
+        connectorNote?: string | null;
+        stages?:
+          | {
+              title: string;
+              description: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'zonedFlow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PathCompareBlock".
+ */
+export interface PathCompareBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Each path renders as an equal-weight card with a numbered top-to-bottom step list. Use it for "either / or" journeys, not a good-vs-bad comparison.
+   */
+  columns?:
+    | {
+        label: string;
+        /**
+         * One line under the label, e.g. who this path is for.
+         */
+        caption?: string | null;
+        steps?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pathCompare';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NetworkEstimatorBlock".
+ */
+export interface NetworkEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  usersLabel?: string | null;
+  usersOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  officesLabel?: string | null;
+  officesOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  floorsLabel?: string | null;
+  floorsOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  devicesLabel?: string | null;
+  devicesOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  internetLabel?: string | null;
+  internetOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  wifiLabel?: string | null;
+  wifiOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingLabel?: string | null;
+  existingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  serverLabel?: string | null;
+  serverOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  vpnLabel?: string | null;
+  vpnOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  securityLabel?: string | null;
+  securityOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'networkEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -2749,6 +3566,10 @@ export interface ProcessPhasesBlock {
         items?:
           | {
               text: string;
+              /**
+               * Optional — switches every item across every phase to a larger row with this detail line, once any item has one.
+               */
+              description?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -2857,6 +3678,10 @@ export interface CustodyChainBlock {
   steps?:
     | {
         text: string;
+        /**
+         * Optional — explains how this step is actually done. Shown as a detail list below the chain once any step has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2987,9 +3812,17 @@ export interface RoomSizeGuideBlock {
     | {
         room: string;
         recommended: string;
+        /**
+         * Optional — briefly explains why this is the right fit. Shown below the recommendation once any row has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Shown centered below the table, e.g. "The right method depends on your workforce, environment, and existing infrastructure."
+   */
+  note?: string | null;
   /**
    * Short line shown next to the button.
    */
@@ -3301,6 +4134,194 @@ export interface PASystemEstimatorBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'paSystemEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BGMEstimatorBlock".
+ */
+export interface BGMEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  spaceLabel?: string | null;
+  spaceOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  areaLabel?: string | null;
+  areaOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  zonesLabel?: string | null;
+  zonesOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  speakerLabel?: string | null;
+  speakerOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  volumeLabel?: string | null;
+  volumeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  multiLocationLabel?: string | null;
+  multiLocationOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bgmEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CCTVEstimatorBlock".
+ */
+export interface CCTVEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  propertyLabel?: string | null;
+  propertyOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  areaLabel?: string | null;
+  areaOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  camerasLabel?: string | null;
+  camerasOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  coverageLabel?: string | null;
+  coverageOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  remoteViewingLabel?: string | null;
+  remoteViewingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  aiLabel?: string | null;
+  aiOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cctvEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AICameraEstimatorBlock".
+ */
+export interface AICameraEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  propertyLabel?: string | null;
+  propertyOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  areaLabel?: string | null;
+  areaOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  coverageLabel?: string | null;
+  coverageOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  featureLabel?: string | null;
+  featureOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingCctvLabel?: string | null;
+  existingCctvOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aiCameraEstimator';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3878,11 +4899,28 @@ export interface PagesSelect<T extends boolean = true> {
         businessNeeds?: T | BusinessNeedsBlockSelect<T>;
         subServicesNav?: T | SubServicesNavBlockSelect<T>;
         roomClassification?: T | RoomClassificationBlockSelect<T>;
+        scenarioFlows?: T | ScenarioFlowsBlockSelect<T>;
+        transformationList?: T | TransformationListBlockSelect<T>;
         roomSizeEstimator?: T | RoomSizeEstimatorBlockSelect<T>;
         reactiveProactiveFlow?: T | ReactiveProactiveFlowBlockSelect<T>;
         setupEstimator?: T | SetupEstimatorBlockSelect<T>;
         officeBlueprint?: T | OfficeBlueprintBlockSelect<T>;
         iconFeatureGrid?: T | IconFeatureGridBlockSelect<T>;
+        detailedFeatureGrid?: T | DetailedFeatureGridBlockSelect<T>;
+        pipelineFlow?: T | PipelineFlowBlockSelect<T>;
+        featureList?: T | FeatureListBlockSelect<T>;
+        solutionRail?: T | SolutionRailBlockSelect<T>;
+        checklistCard?: T | ChecklistCardBlockSelect<T>;
+        ecosystemDiagram?: T | EcosystemDiagramBlockSelect<T>;
+        tileShowcase?: T | TileShowcaseBlockSelect<T>;
+        alternatingTimeline?: T | AlternatingTimelineBlockSelect<T>;
+        flowShowcase?: T | FlowShowcaseBlockSelect<T>;
+        specSheet?: T | SpecSheetBlockSelect<T>;
+        parameterList?: T | ParameterListBlockSelect<T>;
+        conceptBreakdown?: T | ConceptBreakdownBlockSelect<T>;
+        zonedFlow?: T | ZonedFlowBlockSelect<T>;
+        pathCompare?: T | PathCompareBlockSelect<T>;
+        networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -3895,6 +4933,9 @@ export interface PagesSelect<T extends boolean = true> {
         videoWallEstimator?: T | VideoWallEstimatorBlockSelect<T>;
         projectorEstimator?: T | ProjectorEstimatorBlockSelect<T>;
         paSystemEstimator?: T | PASystemEstimatorBlockSelect<T>;
+        bgmEstimator?: T | BGMEstimatorBlockSelect<T>;
+        cctvEstimator?: T | CCTVEstimatorBlockSelect<T>;
+        aiCameraEstimator?: T | AICameraEstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -4274,6 +5315,7 @@ export interface PartnersDirectoryBlockSelect<T extends boolean = true> {
 export interface QuickEnquiryBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  formOnDark?: T;
   promoEnabled?: T;
   promoBadge?: T;
   promoTitle?: T;
@@ -4432,6 +5474,8 @@ export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   showGradientLine?: T;
+  animatedBackground?: T;
+  floatingIconSet?: T;
   backLinkLabel?: T;
   backLinkUrl?: T;
   cardBadge?: T;
@@ -4451,6 +5495,15 @@ export interface ServiceOverviewBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   image?: T;
+  highlights?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  animatedBackground?: T;
+  reserveSidebarSpace?: T;
   id?: T;
   blockName?: T;
 }
@@ -4557,6 +5610,18 @@ export interface ComparisonTableBlockSelect<T extends boolean = true> {
         left?: T;
         middle?: T;
         right?: T;
+        id?: T;
+      };
+  leftItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  rightItems?:
+    | T
+    | {
+        text?: T;
         id?: T;
       };
   ctaText?: T;
@@ -4689,6 +5754,7 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        description?: T;
         url?: T;
         id?: T;
       };
@@ -4762,8 +5828,10 @@ export interface ProcessTimelineBlockSelect<T extends boolean = true> {
   steps?:
     | T
     | {
+        icon?: T;
         title?: T;
         description?: T;
+        url?: T;
         id?: T;
       };
   ctaText?: T;
@@ -4860,6 +5928,7 @@ export interface CategorizedIntegrationsBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
+  checklistStyle?: T;
   groups?:
     | T
     | {
@@ -5102,8 +6171,61 @@ export interface RoomClassificationBlockSelect<T extends boolean = true> {
     | {
         label?: T;
         image?: T;
+        icon?: T;
+        caption?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScenarioFlowsBlock_select".
+ */
+export interface ScenarioFlowsBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  scenarios?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        steps?:
+          | T
+          | {
+              text?: T;
+              icon?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TransformationListBlock_select".
+ */
+export interface TransformationListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  fromLabel?: T;
+  toLabel?: T;
+  pairs?:
+    | T
+    | {
+        from?: T;
+        to?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }
@@ -5249,6 +6371,386 @@ export interface IconFeatureGridBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DetailedFeatureGridBlock_select".
+ */
+export interface DetailedFeatureGridBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        applications?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaUrl?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PipelineFlowBlock_select".
+ */
+export interface PipelineFlowBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureListBlock_select".
+ */
+export interface FeatureListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionRailBlock_select".
+ */
+export interface SolutionRailBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  footer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ChecklistCardBlock_select".
+ */
+export interface ChecklistCardBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EcosystemDiagramBlock_select".
+ */
+export interface EcosystemDiagramBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  hubLabel?: T;
+  items?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TileShowcaseBlock_select".
+ */
+export interface TileShowcaseBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AlternatingTimelineBlock_select".
+ */
+export interface AlternatingTimelineBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlowShowcaseBlock_select".
+ */
+export interface FlowShowcaseBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  steps?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecSheetBlock_select".
+ */
+export interface SpecSheetBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParameterListBlock_select".
+ */
+export interface ParameterListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        term?: T;
+        description?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConceptBreakdownBlock_select".
+ */
+export interface ConceptBreakdownBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  asideLabel?: T;
+  asideText?: T;
+  items?:
+    | T
+    | {
+        term?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ZonedFlowBlock_select".
+ */
+export interface ZonedFlowBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  zones?:
+    | T
+    | {
+        label?: T;
+        emphasis?: T;
+        connectorNote?: T;
+        stages?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PathCompareBlock_select".
+ */
+export interface PathCompareBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  columns?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        steps?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NetworkEstimatorBlock_select".
+ */
+export interface NetworkEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  usersLabel?: T;
+  usersOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  officesLabel?: T;
+  officesOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  floorsLabel?: T;
+  floorsOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  devicesLabel?: T;
+  devicesOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  internetLabel?: T;
+  internetOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  wifiLabel?: T;
+  wifiOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingLabel?: T;
+  existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  serverLabel?: T;
+  serverOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  vpnLabel?: T;
+  vpnOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  securityLabel?: T;
+  securityOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock_select".
  */
 export interface ProcessPhasesBlockSelect<T extends boolean = true> {
@@ -5263,6 +6765,7 @@ export interface ProcessPhasesBlockSelect<T extends boolean = true> {
           | T
           | {
               text?: T;
+              description?: T;
               id?: T;
             };
         id?: T;
@@ -5334,6 +6837,7 @@ export interface CustodyChainBlockSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        description?: T;
         id?: T;
       };
   ctaText?: T;
@@ -5428,8 +6932,10 @@ export interface RoomSizeGuideBlockSelect<T extends boolean = true> {
     | {
         room?: T;
         recommended?: T;
+        description?: T;
         id?: T;
       };
+  note?: T;
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
@@ -5684,6 +7190,173 @@ export interface PASystemEstimatorBlockSelect<T extends boolean = true> {
       };
   integrationLabel?: T;
   integrationOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BGMEstimatorBlock_select".
+ */
+export interface BGMEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  spaceLabel?: T;
+  spaceOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  areaLabel?: T;
+  areaOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  zonesLabel?: T;
+  zonesOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  speakerLabel?: T;
+  speakerOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  volumeLabel?: T;
+  volumeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  multiLocationLabel?: T;
+  multiLocationOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CCTVEstimatorBlock_select".
+ */
+export interface CCTVEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  propertyLabel?: T;
+  propertyOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  areaLabel?: T;
+  areaOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  camerasLabel?: T;
+  camerasOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  coverageLabel?: T;
+  coverageOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  remoteViewingLabel?: T;
+  remoteViewingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  aiLabel?: T;
+  aiOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AICameraEstimatorBlock_select".
+ */
+export interface AICameraEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  propertyLabel?: T;
+  propertyOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  areaLabel?: T;
+  areaOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  coverageLabel?: T;
+  coverageOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  featureLabel?: T;
+  featureOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingCctvLabel?: T;
+  existingCctvOptions?:
     | T
     | {
         text?: T;

@@ -49,6 +49,15 @@ export const ScopeChecklist: Block = {
       fields: [
         { name: 'text', type: 'text', required: true, localized: true },
         {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: {
+            description: 'Optional — switches every item in this list to a larger card with this detail line, once any item has one.',
+          },
+        },
+        {
           name: 'url',
           type: 'text',
           label: 'Link URL (optional)',

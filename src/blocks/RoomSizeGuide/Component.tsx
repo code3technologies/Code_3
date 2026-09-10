@@ -9,22 +9,42 @@ import {
   ArrowRight,
   Briefcase,
   Building2,
+  Camera,
+  Car,
+  CreditCard,
   DoorOpen,
   Factory,
+  Fence,
+  Fingerprint,
   Globe,
   GraduationCap,
+  Home,
+  KeySquare,
+  Layers,
+  Lock,
   Monitor,
+  Network,
   Presentation,
+  ScanFace,
+  Smartphone,
+  Sparkles,
   Store,
   Sun,
   Users,
   Warehouse,
+  ZoomIn,
   type LucideIcon,
 } from 'lucide-react'
 
 // Best-effort icon per room type, matched by keyword.
 function getRoomIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  if (t.includes('dome')) return Building2
+  if (t.includes('bullet')) return Sun
+  if (t.includes('ptz')) return ZoomIn
+  if (t.includes('turret')) return Camera
+  if (t.includes('ai camera') || t.includes('ai-camera')) return Sparkles
+  if (t.includes('anpr')) return Car
   if (t.includes('huddle')) return Users
   if (t.includes('boardroom')) return Briefcase
   if (t.includes('training')) return GraduationCap
@@ -40,6 +60,29 @@ function getRoomIcon(text?: string | null): LucideIcon {
   if (t.includes('open-ceiling') || t.includes('open ceiling')) return Warehouse
   if (t.includes('outdoor')) return Sun
   if (t.includes('office')) return Briefcase
+  if (t.includes('simple') || t.includes('employee access')) return CreditCard
+  if (t.includes('perimeter')) return Fence
+  if (t.includes('high-security') || t.includes('high security')) return Fingerprint
+  if (t.includes('pedestrian')) return DoorOpen
+  if (t.includes('visitor')) return Users
+  if (t.includes('sliding')) return DoorOpen
+  if (t.includes('parking') || t.includes('vehicle')) return Car
+  if (t.includes('apartment')) return Building2
+  if (t.includes('villa')) return Home
+  if (t.includes('gate')) return Fence
+  if (t.includes('controlled')) return Lock
+  if (t.includes('security systems') || t.includes('multiple security')) return Network
+  if (t.includes('touchless')) return ScanFace
+  if (t.includes('low-cost') || t.includes('low cost')) return KeySquare
+  if (t.includes('workforce')) return Users
+  if (t.includes('modern workplace')) return Smartphone
+  if (t.includes('mixed')) return Layers
+  if (t.includes('fingerprint')) return Fingerprint
+  if (t.includes('face recognition') || t.includes('facial recognition')) return ScanFace
+  if (t.includes('rfid')) return CreditCard
+  if (/\bpin\b/.test(t)) return KeySquare
+  if (/\bmobile\b/.test(t)) return Smartphone
+  if (t.includes('combined')) return Layers
   return Presentation
 }
 
@@ -53,6 +96,7 @@ export const RoomSizeGuideBlock: React.FC<Props> = ({
   title,
   subtitle,
   rows = [],
+  note,
   ctaLabel,
   ctaUrl,
 }) => {
@@ -89,10 +133,19 @@ export const RoomSizeGuideBlock: React.FC<Props> = ({
                 <span className="inline-flex items-center rounded-full bg-primary_red px-3.5 py-1.5 text-sm font-bold text-white">
                   {row.recommended}
                 </span>
+                {row.description && (
+                  <p className="text-xs leading-relaxed text-gray-500">{row.description}</p>
+                )}
               </div>
             )
           })}
         </Reveal>
+
+        {note && (
+          <Reveal delayMs={150} className="mx-auto mt-6 max-w-2xl text-center">
+            <p className="text-sm text-gray-500">{note}</p>
+          </Reveal>
+        )}
 
         {ctaLabel && ctaUrl && (
           <div className="mt-6 flex justify-center md:mt-7">

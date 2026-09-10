@@ -5,6 +5,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
+import { ServiceIcon } from '@/components/site/icons'
 
 type Props = {
   className?: string
@@ -32,6 +33,37 @@ export const ProcessTimelineBlock: React.FC<Props> = ({
       filled ? 'border-primary_red bg-primary_red text-white' : 'border-primary_red bg-white text-primary_red',
     )
 
+  // A step with an icon set shows that icon instead of its plain number -
+  // lets a milestone-style timeline (e.g. "Our Journey") match the
+  // icon-forward language used everywhere else on the site, while a
+  // step with no icon (every existing use of this block) renders exactly
+  // as before.
+  const StepMarker = ({ step, index, filled }: { step: (typeof steps)[number]; index: number; filled: boolean }) => (
+    <div className={cn(markerClassName(filled), step.url && 'transition-colors group-hover:border-secondary_red')}>
+      {step.icon ? <ServiceIcon preset={step.icon} className="h-4 w-4" /> : index + 1}
+    </div>
+  )
+
+  // Wraps a step in a Link when it has a url (e.g. an internal-linking
+  // timeline) - otherwise a plain div, so non-linked steps (every existing
+  // use of this block) render exactly as before.
+  const StepWrapper = ({
+    step,
+    className,
+    children,
+  }: {
+    step: (typeof steps)[number]
+    className: string
+    children: React.ReactNode
+  }) =>
+    step.url ? (
+      <Link href={step.url} className={cn(className, 'group')}>
+        {children}
+      </Link>
+    ) : (
+      <div className={className}>{children}</div>
+    )
+
   return (
     <section className={cn('bg-white py-14 md:py-20', className)}>
       <div className="container mx-auto px-4 sm:px-6">
@@ -56,13 +88,18 @@ export const ProcessTimelineBlock: React.FC<Props> = ({
                 </div>
               )}
               {steps.map((step, index) => (
-                <div key={step.id || index} className="relative px-4 text-center last:pr-0">
-                  <div className={markerClassName(!!emphasizeFinalStep && index === steps.length - 1)}>
-                    {index + 1}
-                  </div>
-                  <h3 className="mt-5 text-base font-bold text-foreground">{step.title}</h3>
+                <StepWrapper key={step.id || index} step={step} className="relative px-4 text-center last:pr-0">
+                  <StepMarker step={step} index={index} filled={!!emphasizeFinalStep && index === steps.length - 1} />
+                  <h3
+                    className={cn(
+                      'mt-5 text-base font-bold text-foreground',
+                      step.url && 'transition-colors group-hover:text-primary_red',
+                    )}
+                  >
+                    {step.title}
+                  </h3>
                   <p className="mt-2 text-sm leading-relaxed text-gray-600">{step.description}</p>
-                </div>
+                </StepWrapper>
               ))}
             </div>
           </div>
@@ -81,15 +118,20 @@ export const ProcessTimelineBlock: React.FC<Props> = ({
                 </div>
               )}
               {steps.map((step, index) => (
-                <div key={step.id || index} className="relative flex gap-4 pl-0">
-                  <div className={markerClassName(!!emphasizeFinalStep && index === steps.length - 1)}>
-                    {index + 1}
-                  </div>
+                <StepWrapper key={step.id || index} step={step} className="relative flex gap-4 pl-0">
+                  <StepMarker step={step} index={index} filled={!!emphasizeFinalStep && index === steps.length - 1} />
                   <div className="pt-1.5">
-                    <h3 className="text-base font-bold text-foreground">{step.title}</h3>
+                    <h3
+                      className={cn(
+                        'text-base font-bold text-foreground',
+                        step.url && 'transition-colors group-hover:text-primary_red',
+                      )}
+                    >
+                      {step.title}
+                    </h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{step.description}</p>
                   </div>
-                </div>
+                </StepWrapper>
               ))}
             </div>
           </div>

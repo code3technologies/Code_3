@@ -45,7 +45,18 @@ export const ProcessPhases: Block = {
           type: 'array',
           label: 'Items',
           minRows: 1,
-          fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+          fields: [
+            { name: 'text', type: 'text', required: true, localized: true },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'Description (optional)',
+              localized: true,
+              admin: {
+                description: 'Optional — switches every item across every phase to a larger row with this detail line, once any item has one.',
+              },
+            },
+          ],
         },
       ],
     },

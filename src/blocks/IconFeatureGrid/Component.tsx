@@ -11,32 +11,55 @@ import {
   AppWindow,
   Aperture,
   ArrowRight,
+  ArrowRightLeft,
+  BadgeCheck,
+  Bell,
+  Eye,
+  FileSearch,
+  History,
   Briefcase,
   Building2,
   Cable,
   Calendar,
   Camera,
+  Check,
+  Car,
   Cloud,
+  CloudMoon,
   Columns3,
+  CreditCard,
   Crosshair,
   DoorOpen,
+  Factory,
+  Fence,
   FileText,
+  Fingerprint,
+  Footprints,
   Frame,
   GraduationCap,
   Grid2x2,
   Grid3x3,
   Hand,
+  Handshake,
+  HardDrive,
+  Headset,
   Home,
   Image as ImageIcon,
+  KeySquare,
   Laptop,
+  Layers,
   LayoutGrid,
   Lightbulb,
+  ListChecks,
   ListVideo,
+  Lock,
   Mail,
   Maximize2,
   Megaphone,
   Mic,
   Minimize2,
+  Monitor,
+  Moon,
   Music,
   Network,
   Palette,
@@ -45,8 +68,12 @@ import {
   Presentation,
   Printer,
   Projector,
+  Radar,
   RefreshCw,
   Ruler,
+  ScanEye,
+  ScanFace,
+  ScanLine,
   Server,
   Settings2,
   Share2,
@@ -54,16 +81,19 @@ import {
   Signpost,
   SlidersHorizontal,
   Smartphone,
+  Sparkles,
   Speaker,
   Store,
   Sun,
   SunMedium,
   Tablet,
+  Truck,
   User,
   Users,
   UtensilsCrossed,
   Video,
   Volume2,
+  Warehouse,
   Wifi,
   Wrench,
   Zap,
@@ -83,10 +113,111 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (/\bios\b/.test(t)) return Smartphone
   if (t.includes('wi-fi') || t.includes('wifi')) return Wifi
   if (t.includes('network')) return Network
+  if (t.includes('managed it')) return Settings2
+  if (t.includes('it infrastructure')) return Server
+  if (t.includes('audio visual')) return Video
+  if (t.includes('backup') || t.includes('business continuity')) return HardDrive
+  if (t.includes('security & surveillance') || t.includes('security and surveillance')) return Camera
   if (t.includes('server')) return Server
   if (t.includes('cloud')) return Cloud
   if (t.includes('cyber') || t.includes('security') || t.includes('firewall')) return ShieldCheck
+  if (t.includes('ip cctv') || t.includes('ip-based cctv')) return Network
+  if (t.includes('hd cctv')) return Video
+  if (t.includes('ai-powered') || t.includes('ai powered')) return Sparkles
+  if (t.includes('indoor cctv')) return Home
+  if (t.includes('outdoor cctv')) return Sun
+  if (t.includes('ptz')) return ZoomIn
+  if (t.includes('nvr')) return Server
+  if (t.includes('storage') || t.includes('retention')) return HardDrive
+  if (t.includes('cctv monitoring')) return Monitor
+  if (t.includes('remote viewing')) return Smartphone
+  if (t.includes('commissioning') || t.includes('installation')) return Wrench
+  if (t.includes('maintenance')) return Headset
+  if (t.includes('configuration')) return Settings2
+  if (t.includes('dome')) return Building2
+  if (t.includes('bullet')) return Sun
+  if (t.includes('restricted')) return Lock
+  if (t.includes('delivery')) return Truck
+  if (t.includes('resident')) return Home
+  if (t.includes('staff')) return Users
+  if (t.includes('multi-lane') || t.includes('multi lane')) return Columns3
+  if (t.includes('authorized vehicle')) return Check
+  if (t.includes('visitor vehicle')) return Users
+  if (t.includes('watchlist')) return AlertTriangle
+  if (t.includes('live monitoring')) return Eye
+  if (t.includes('event-based review') || t.includes('event based review')) return History
+  if (t.includes('alert')) return Bell
+  if (t.includes('video search')) return FileSearch
+  if (t.includes('incident')) return AlertTriangle
+  if (t.includes('vehicle') || t.includes('anpr')) return Car
+  if (t.includes('people detection') || t.includes('people counting')) return Users
+  if (t.includes('intrusion')) return AlertTriangle
+  if (t.includes('loiter')) return Footprints
+  if (t.includes('object recognition') || t.includes('object detection')) return ScanEye
+  if (t.includes('line crossing')) return ScanLine
+  if (t.includes('unusual activity')) return Radar
+  if (t.includes('night vision') || t.includes('ir camera') || t.includes('ir /')) return Moon
+  if (t.includes('low-light') || t.includes('low light')) return CloudMoon
+  if (t.includes('lighting-assisted') || t.includes('lighting assisted')) return Lightbulb
+  if (t.includes('unauthorized')) return DoorOpen
+  if (t.includes('perimeter breach') || t.includes('perimeter')) return Fence
+  if (t.includes('occupancy')) return Users
+  if (t.includes('certified')) return BadgeCheck
+  if (t.includes('multi-vendor') || t.includes('multi vendor')) return Handshake
+  if (t.includes('infrastructure experience')) return Server
+  if (t.includes('av expertise')) return Video
+  if (t.includes('remote support')) return Headset
+  if (t.includes('on-site deployment') || t.includes('on site deployment')) return Wrench
+  if (t.includes('project management')) return ListChecks
+  if (t.includes('customer first')) return Users
+  if (/^integrity$/.test(t.trim())) return ShieldCheck
+  if (t.includes('technical excellence')) return Settings2
+  if (t.includes('continuous improvement')) return RefreshCw
+  if (t.includes('reliable service')) return Headset
+  if (t.includes('night surveillance')) return Moon
+  if (t.includes('parking')) return Car
+  if (t.includes('warehouse')) return Warehouse
+  if (t.includes('loading')) return Truck
+  if (t.includes('gate communication')) return Mic
+  if (t.includes('tenant')) return Building2
+  if (t.includes('visitor')) return Users
+  if (t.includes('entry') || t.includes('exit')) return DoorOpen
+  if (t.includes('fingerprint')) return Fingerprint
+  if (t.includes('facial recognition')) return ScanFace
+  if (t.includes('rfid') || t.includes('access card')) return CreditCard
+  if (t.includes('pin authentication') || t.includes('pin code')) return KeySquare
+  if (t.includes('mobile credential')) return Smartphone
+  if (t.includes('multi-factor') || t.includes('multi factor')) return Layers
+  if (t.includes('boom barrier')) return Fence
+  if (t.includes('sliding gate')) return DoorOpen
+  if (t.includes('swing gate')) return ArrowRightLeft
+  if (t.includes('bollard')) return Lock
+  if (t.includes('industrial')) return Factory
+  if (t.includes('integrated access control')) return Network
+  if (t.includes('camera resolution')) return Aperture
+  // Checked before the shorter "event-based recording" rule below, since
+  // "Continuous or event-based recording" contains that phrase as a substring.
+  if (t.includes('continuous or event')) return RefreshCw
+  if (t.includes('continuous recording')) return RefreshCw
+  if (t.includes('event-based recording') || t.includes('event based recording')) return Zap
+  if (t.includes('motion-based recording') || t.includes('motion based recording')) return Footprints
+  if (t.includes('recording mode')) return Video
+  if (t.includes('frame rate')) return Activity
+  if (t.includes('compression')) return Layers
+  if (t.includes('recording day')) return Calendar
+  if (t.includes('number of sites')) return Building2
+  if (t.includes('platform-dependent') || t.includes('platform dependent')) return Settings2
+  if (t.includes('gate automation')) return Fence
+  if (t.includes('ai camera')) return Sparkles
+  if (t.includes('+ intercom')) return Mic
   if (t.includes('cctv') || t.includes('access control') || t.includes('camera')) return Camera
+  if (t.includes('remote authorization') || t.includes('remote authorisation')) return Smartphone
+  if (t.includes('video intercom')) return Video
+  if (t.includes('multi-unit') || t.includes('multi unit')) return Building2
+  if (t.includes('gate intercom')) return DoorOpen
+  if (t.includes('ip intercom')) return Network
+  if (t.includes('intercom')) return Mic
+  if (t.includes('contractor')) return Wrench
   if (t.includes('printer') || t.includes('peripheral')) return Printer
   if (t.includes('present')) return Presentation
   if (t.includes('collaborate')) return Users
@@ -117,6 +248,12 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('color')) return Palette
   if (t.includes('calibrat')) return SlidersHorizontal
   if (t.includes('mounting')) return Wrench
+  if (t.includes('traffic speed') || t.includes('vehicle speed')) return Zap
+  if (t.includes('lane')) return Columns3
+  if (t.includes('lighting')) return Lightbulb
+  if (t.includes('plate visibility') || t.includes('plate-reading')) return ScanEye
+  if (t.includes('entry/exit angle') || t.includes('camera angle')) return Crosshair
+  if (t.includes('weather')) return Sun
   if (t.includes('outdoor')) return Sun
   if (t.includes('indoor')) return Home
   if (t.includes('menu board') || t.includes('menu')) return UtensilsCrossed
@@ -131,13 +268,17 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('screen group')) return Grid2x2
   if (t.includes('evacuation')) return AlertTriangle
   if (t.includes('paging')) return Megaphone
+  if (t.includes('single-zone') || t.includes('single zone')) return Home
+  if (t.includes('multi-location') || t.includes('multi location')) return Building2
+  if (t.includes('centralized') || t.includes('central')) return Settings2
   if (t.includes('zoned') || t.includes('zone')) return Grid2x2
   if (t.includes('background music') || t.includes('music')) return Music
   if (t.includes('ip-based') || t.includes('ip based')) return Network
+  if (t.includes('ceiling')) return Aperture
   if (t.includes('commercial')) return Building2
   if (t.includes('microphone')) return Mic
   if (t.includes('speaker')) return Speaker
-  if (t.includes('amplifier')) return Volume2
+  if (t.includes('amplifier') || t.includes('volume')) return Volume2
   if (t.includes('audio controller')) return SlidersHorizontal
   if (t.includes('promotion')) return Megaphone
   if (t.includes('schedule')) return Calendar

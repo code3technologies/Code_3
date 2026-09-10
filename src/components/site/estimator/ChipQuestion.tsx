@@ -1,27 +1,20 @@
 import { cn } from '@/utilities/ui'
-import { Check, type LucideIcon } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 export function ChipQuestion({
   label,
-  Icon,
   options,
   value,
   onChange,
 }: {
   label?: string | null
-  Icon: LucideIcon
   options: { text: string; id?: string | null }[]
   value: number | null
   onChange: (index: number) => void
 }) {
   return (
     <div>
-      <div className="mb-6 flex items-center gap-4">
-        <span className="flex h-14 w-14 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
-          <Icon className="h-6 w-6" />
-        </span>
-        <label className="text-xl font-semibold text-foreground">{label}</label>
-      </div>
+      <label className="mb-6 block text-xl font-semibold text-foreground md:text-2xl">{label}</label>
       <div className="flex flex-wrap gap-3">
         {options.map((opt, i) => (
           <button

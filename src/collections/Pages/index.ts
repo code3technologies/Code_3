@@ -54,11 +54,28 @@ import { ScopeChecklist } from '@/blocks/ScopeChecklist/config'
 import { BusinessNeeds } from '@/blocks/BusinessNeeds/config'
 import { SubServicesNav } from '@/blocks/SubServicesNav/config'
 import { RoomClassification } from '@/blocks/RoomClassification/config'
+import { ScenarioFlows } from '@/blocks/ScenarioFlows/config'
+import { TransformationList } from '@/blocks/TransformationList/config'
 import { RoomSizeEstimator } from '@/blocks/RoomSizeEstimator/config'
 import { ReactiveProactiveFlow } from '@/blocks/ReactiveProactiveFlow/config'
 import { SetupEstimator } from '@/blocks/SetupEstimator/config'
 import { OfficeBlueprint } from '@/blocks/OfficeBlueprint/config'
 import { IconFeatureGrid } from '@/blocks/IconFeatureGrid/config'
+import { DetailedFeatureGrid } from '@/blocks/DetailedFeatureGrid/config'
+import { PipelineFlow } from '@/blocks/PipelineFlow/config'
+import { FeatureList } from '@/blocks/FeatureList/config'
+import { SolutionRail } from '@/blocks/SolutionRail/config'
+import { ChecklistCard } from '@/blocks/ChecklistCard/config'
+import { EcosystemDiagram } from '@/blocks/EcosystemDiagram/config'
+import { TileShowcase } from '@/blocks/TileShowcase/config'
+import { AlternatingTimeline } from '@/blocks/AlternatingTimeline/config'
+import { FlowShowcase } from '@/blocks/FlowShowcase/config'
+import { SpecSheet } from '@/blocks/SpecSheet/config'
+import { ParameterList } from '@/blocks/ParameterList/config'
+import { ConceptBreakdown } from '@/blocks/ConceptBreakdown/config'
+import { ZonedFlow } from '@/blocks/ZonedFlow/config'
+import { PathCompare } from '@/blocks/PathCompare/config'
+import { NetworkEstimator } from '@/blocks/NetworkEstimator/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -71,6 +88,9 @@ import { CastingEstimator } from '@/blocks/CastingEstimator/config'
 import { VideoWallEstimator } from '@/blocks/VideoWallEstimator/config'
 import { ProjectorEstimator } from '@/blocks/ProjectorEstimator/config'
 import { PASystemEstimator } from '@/blocks/PASystemEstimator/config'
+import { BGMEstimator } from '@/blocks/BGMEstimator/config'
+import { CCTVEstimator } from '@/blocks/CCTVEstimator/config'
+import { AICameraEstimator } from '@/blocks/AICameraEstimator/config'
 import { SpecComparisonTable } from '@/blocks/SpecComparisonTable/config'
 import { ResultsShowcase } from '@/blocks/ResultsShowcase/config'
 import { ProcessTimeline } from '@/blocks/ProcessTimeline/config'
@@ -267,11 +287,28 @@ export const Pages: CollectionConfig<'pages'> = {
                 BusinessNeeds,
                 SubServicesNav,
                 RoomClassification,
+                ScenarioFlows,
+                TransformationList,
                 RoomSizeEstimator,
                 ReactiveProactiveFlow,
                 SetupEstimator,
                 OfficeBlueprint,
                 IconFeatureGrid,
+                DetailedFeatureGrid,
+                PipelineFlow,
+                FeatureList,
+                SolutionRail,
+                ChecklistCard,
+                EcosystemDiagram,
+                TileShowcase,
+                AlternatingTimeline,
+                FlowShowcase,
+                SpecSheet,
+                ParameterList,
+                ConceptBreakdown,
+                ZonedFlow,
+                PathCompare,
+                NetworkEstimator,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,
@@ -284,6 +321,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 VideoWallEstimator,
                 ProjectorEstimator,
                 PASystemEstimator,
+                BGMEstimator,
+                CCTVEstimator,
+                AICameraEstimator,
               ],
               required: true,
               admin: {

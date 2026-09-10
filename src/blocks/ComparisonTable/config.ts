@@ -62,12 +62,32 @@ export const ComparisonTable: Block = {
       name: 'rows',
       type: 'array',
       label: 'Comparison Rows',
-      minRows: 1,
+      admin: {
+        description: 'Use when the left and right lists are paired point-for-point (same length). Leave empty and use the independent lists below instead when the two lists differ in length.',
+      },
       fields: [
         { name: 'left', type: 'text', label: 'Left Column', required: true, localized: true },
         { name: 'middle', type: 'text', label: 'Middle Column', localized: true },
         { name: 'right', type: 'text', label: 'Right Column (CODE3)', required: true, localized: true },
       ],
+    },
+    {
+      name: 'leftItems',
+      type: 'array',
+      label: 'Left Column Items (independent list, optional)',
+      admin: {
+        description: 'Use instead of Comparison Rows when the left and right lists don\'t need to be the same length.',
+      },
+      fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+    },
+    {
+      name: 'rightItems',
+      type: 'array',
+      label: 'Right Column Items (independent list, optional)',
+      admin: {
+        description: 'Use instead of Comparison Rows when the left and right lists don\'t need to be the same length.',
+      },
+      fields: [{ name: 'text', type: 'text', required: true, localized: true }],
     },
     ...ctaFields(''),
   ],

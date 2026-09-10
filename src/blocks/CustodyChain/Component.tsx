@@ -11,7 +11,9 @@ import {
   CheckCircle2,
   Cpu,
   Database,
+  Handshake,
   LayoutDashboard,
+  Lock,
   MapPin,
   Network,
   PenTool,
@@ -30,9 +32,11 @@ function getStepIcon(text?: string | null): LucideIcon {
   if (t.includes('tag')) return Tag
   if (t.includes('photo')) return Camera
   if (t.includes('disconnect')) return Unplug
+  if (t.includes('secure')) return Lock
   if (t.includes('transport')) return Truck
   if (t.includes('reinstall') || t.includes('install')) return Plug
   if (t.includes('verify') || t.includes('test')) return CheckCircle2
+  if (t.includes('handover') || t.includes('hand over')) return Handshake
   if (t.includes('creation') || t.includes('create')) return PenTool
   if (t.includes('management system') || t.includes('cms')) return Database
   if (t.includes('player')) return Cpu
@@ -59,6 +63,7 @@ export const CustodyChainBlock: React.FC<Props> = ({
 }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
+  const hasDescriptions = safeSteps.some((step) => step.description)
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -69,30 +74,63 @@ export const CustodyChainBlock: React.FC<Props> = ({
           {subtitle && <p className="mt-2 text-gray-600 leading-relaxed">{subtitle}</p>}
         </Reveal>
 
-        <Reveal
-          delayMs={100}
-          className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-gray-50/60"
-        >
-          <div className="h-1.5 w-full bg-gradient-to-r from-primary_red via-red-400 to-primary_red" />
-          <div className="flex flex-wrap items-center justify-center gap-2.5 p-6 md:p-8">
+        {hasDescriptions ? (
+          // With descriptions, one set of richer cards replaces the compact
+          // chip flow below - showing the same 8 steps twice (once as bare
+          // chips, once as a detail grid) read as cluttered and repetitive.
+          <Reveal
+            delayMs={100}
+            className="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          >
             {safeSteps.map((step, index) => {
               const Icon = getStepIcon(step.text)
-              // The arrow travels with the chip it leads into (not the one before it),
-              // so if this pair wraps to a new line the arrow doesn't dangle alone.
               return (
-                <span key={step.id || index} className="inline-flex items-center gap-2.5">
-                  {index > 0 && <ArrowRight className="h-4 w-4 flex-none text-primary_red/40" strokeWidth={2.5} />}
-                  <span className="inline-flex items-center gap-2 rounded-full border border-primary_red/20 bg-white px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm">
-                    <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red/10 text-primary_red">
-                      <Icon className="h-3.5 w-3.5" />
+                <div
+                  key={step.id || index}
+                  className="group relative flex flex-col gap-3 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red transition-transform duration-300 group-hover:scale-105">
+                      <Icon className="h-5 w-5" />
                     </span>
-                    {step.text}
-                  </span>
-                </span>
+                    <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red text-xs font-bold text-white">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-semibold text-foreground">{step.text}</h3>
+                  {step.description && (
+                    <p className="text-sm leading-relaxed text-gray-600">{step.description}</p>
+                  )}
+                </div>
               )
             })}
-          </div>
-        </Reveal>
+          </Reveal>
+        ) : (
+          <Reveal
+            delayMs={100}
+            className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-gray-50/60"
+          >
+            <div className="h-1.5 w-full bg-gradient-to-r from-primary_red via-red-400 to-primary_red" />
+            <div className="flex flex-wrap items-center justify-center gap-2.5 p-6 md:p-8">
+              {safeSteps.map((step, index) => {
+                const Icon = getStepIcon(step.text)
+                // The arrow travels with the chip it leads into (not the one before it),
+                // so if this pair wraps to a new line the arrow doesn't dangle alone.
+                return (
+                  <span key={step.id || index} className="inline-flex items-center gap-2.5">
+                    {index > 0 && <ArrowRight className="h-4 w-4 flex-none text-primary_red/40" strokeWidth={2.5} />}
+                    <span className="inline-flex items-center gap-2 rounded-full border border-primary_red/20 bg-white px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm">
+                      <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red/10 text-primary_red">
+                        <Icon className="h-3.5 w-3.5" />
+                      </span>
+                      {step.text}
+                    </span>
+                  </span>
+                )
+              })}
+            </div>
+          </Reveal>
+        )}
 
         {ctaLabel && ctaUrl && (
           <div className="mt-6 flex justify-center md:mt-7">

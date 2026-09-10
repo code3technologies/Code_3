@@ -9,7 +9,22 @@ type Props = {
   className?: string
 } & CategorizedIntegrationsBlockProps
 
-export const CategorizedIntegrationsBlock: React.FC<Props> = ({ badge, className, title, subtitle, groups = [] }) => {
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3 flex-none">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  )
+}
+
+export const CategorizedIntegrationsBlock: React.FC<Props> = ({
+  badge,
+  className,
+  title,
+  subtitle,
+  groups = [],
+  checklistStyle,
+}) => {
   if (!groups || groups.length === 0) return null
 
   return (
@@ -36,7 +51,13 @@ export const CategorizedIntegrationsBlock: React.FC<Props> = ({ badge, className
               <ul className="space-y-2">
                 {(group.items || []).map((item, itemIndex) => (
                   <li key={item.id || itemIndex} className="flex items-center gap-2.5 text-sm text-gray-700">
-                    <span className="h-1.5 w-1.5 flex-none rounded-full bg-primary_red" />
+                    {checklistStyle ? (
+                      <span className="flex h-4 w-4 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
+                        <CheckIcon />
+                      </span>
+                    ) : (
+                      <span className="h-1.5 w-1.5 flex-none rounded-full bg-primary_red" />
+                    )}
                     {item.text}
                   </li>
                 ))}

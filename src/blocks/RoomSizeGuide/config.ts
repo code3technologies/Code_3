@@ -31,7 +31,23 @@ export const RoomSizeGuide: Block = {
       fields: [
         { name: 'room', type: 'text', required: true, localized: true },
         { name: 'recommended', type: 'text', required: true, localized: true },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: { description: 'Optional — briefly explains why this is the right fit. Shown below the recommendation once any row has one.' },
+        },
       ],
+    },
+    {
+      name: 'note',
+      type: 'textarea',
+      label: 'Closing Guidance (optional)',
+      localized: true,
+      admin: {
+        description: 'Shown centered below the table, e.g. "The right method depends on your workforce, environment, and existing infrastructure."',
+      },
     },
     ...ctaFields('Talk to Our Experts'),
   ],

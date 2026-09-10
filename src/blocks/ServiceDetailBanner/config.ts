@@ -36,6 +36,30 @@ export const ServiceDetailBanner: Block = {
       defaultValue: true,
     },
     {
+      name: 'animatedBackground',
+      type: 'checkbox',
+      label: 'Animated Dark Background',
+      defaultValue: false,
+      admin: {
+        description: 'Use the homepage-style animated dark-red hero background (drifting glow, light streaks, floating icons) instead of the plain white banner.',
+      },
+    },
+    {
+      name: 'floatingIconSet',
+      type: 'select',
+      label: 'Floating Icons Set',
+      defaultValue: 'surveillance',
+      options: [
+        { label: 'Security & Surveillance', value: 'surveillance' },
+        { label: 'Networking', value: 'networking' },
+        { label: 'General IT', value: 'general' },
+      ],
+      admin: {
+        description: 'Which icons drift through the animated hero background — pick the set that matches this service.',
+        condition: (_, siblingData) => Boolean(siblingData?.animatedBackground),
+      },
+    },
+    {
       name: 'backLinkLabel',
       type: 'text',
       label: 'Back Link Label',

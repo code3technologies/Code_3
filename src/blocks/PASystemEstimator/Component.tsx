@@ -9,7 +9,8 @@ import { Reveal } from '@/components/site/Reveal'
 import { ChipQuestion } from '@/components/site/estimator/ChipQuestion'
 import { EstimatorResultPanel } from '@/components/site/estimator/ResultPanel'
 import { EstimatorCard, EstimatorFooter, StartOverButton, estimatorBodyClassName } from '@/components/site/estimator/Shell'
-import { WizardBackLink, WizardProgress } from '@/components/site/estimator/Wizard'
+import { EstimatorWizardFrame, WizardBackLink } from '@/components/site/estimator/Wizard'
+import { useScrollOnResult } from '@/components/site/estimator/useScrollOnResult'
 import { Building2, Grid2x2, ListChecks, Maximize2, Plug } from 'lucide-react'
 
 // Best-effort recommended PA system type, matched the same way as the
@@ -72,6 +73,7 @@ export const PASystemEstimatorBlock: React.FC<Props> = ({
   const [integration, setIntegration] = useState<number | null>(null)
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const sectionRef = useScrollOnResult<HTMLElement>(submitted)
 
   if (
     safeFacility.length === 0 ||
@@ -95,39 +97,30 @@ export const PASystemEstimatorBlock: React.FC<Props> = ({
   }
 
   const steps = [
-    <ChipQuestion
-      key="facility"
-      label={facilityLabel}
-      Icon={Building2}
-      options={safeFacility}
-      value={facility}
-      onChange={(i) => select(setFacility, i)}
-    />,
-    <ChipQuestion
-      key="area"
-      label={areaLabel}
-      Icon={Maximize2}
-      options={safeArea}
-      value={area}
-      onChange={(i) => select(setArea, i)}
-    />,
-    <ChipQuestion
-      key="zones"
-      label={zonesLabel}
-      Icon={Grid2x2}
-      options={safeZones}
-      value={zones}
-      onChange={(i) => select(setZones, i)}
-    />,
-    <ChipQuestion key="need" label={needLabel} Icon={ListChecks} options={safeNeed} value={need} onChange={(i) => select(setNeed, i)} />,
-    <ChipQuestion
-      key="integration"
-      label={integrationLabel}
-      Icon={Plug}
-      options={safeIntegration}
-      value={integration}
-      onChange={(i) => select(setIntegration, i)}
-    />,
+    {
+      icon: Building2,
+      content: (
+        <ChipQuestion label={facilityLabel} options={safeFacility} value={facility} onChange={(i) => select(setFacility, i)} />
+      ),
+    },
+    {
+      icon: Maximize2,
+      content: <ChipQuestion label={areaLabel} options={safeArea} value={area} onChange={(i) => select(setArea, i)} />,
+    },
+    {
+      icon: Grid2x2,
+      content: <ChipQuestion label={zonesLabel} options={safeZones} value={zones} onChange={(i) => select(setZones, i)} />,
+    },
+    {
+      icon: ListChecks,
+      content: <ChipQuestion label={needLabel} options={safeNeed} value={need} onChange={(i) => select(setNeed, i)} />,
+    },
+    {
+      icon: Plug,
+      content: (
+        <ChipQuestion label={integrationLabel} options={safeIntegration} value={integration} onChange={(i) => select(setIntegration, i)} />
+      ),
+    },
   ]
 
   const handleBack = () => setStep((s) => Math.max(0, s - 1))
@@ -166,9 +159,9 @@ export const PASystemEstimatorBlock: React.FC<Props> = ({
   })()
 
   return (
-    <section className={cn('bg-white py-7 md:py-9', className)}>
+    <section ref={sectionRef} className={cn('bg-white py-7 md:py-9 scroll-mt-32', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mb-6">
+        <Reveal className="max-w-2xl mb-4">
           {badge && <Eyebrow>{badge}</Eyebrow>}
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">{title}</h2>
           {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
@@ -176,24 +169,23 @@ export const PASystemEstimatorBlock: React.FC<Props> = ({
 
         <Reveal delayMs={100}>
           <EstimatorCard>
-            <div className={estimatorBodyClassName}>
-              {result ? (
-                <div>
-                  <EstimatorResultPanel eyebrow="Recommended PA System" headline={result.label}>
-                    For {article(result.facilityText)} {result.facilityText?.toLowerCase()} ({result.areaText?.toLowerCase()}) with{' '}
-                    {result.zonesText?.toLowerCase()} zone(s) needing {result.needText?.toLowerCase()}, a{' '}
-                    {result.label.toLowerCase()} is a strong fit. {result.integrationNote}
-                  </EstimatorResultPanel>
-                  <StartOverButton onClick={handleStartOver} />
-                </div>
-              ) : (
+            {result ? (
+              <div className={estimatorBodyClassName}>
+                <EstimatorResultPanel eyebrow="Recommended PA System" headline={result.label}>
+                  For {article(result.facilityText)} {result.facilityText?.toLowerCase()} ({result.areaText?.toLowerCase()}) with{' '}
+                  {result.zonesText?.toLowerCase()} zone(s) needing {result.needText?.toLowerCase()}, a{' '}
+                  {result.label.toLowerCase()} is a strong fit. {result.integrationNote}
+                </EstimatorResultPanel>
+                <StartOverButton onClick={handleStartOver} />
+              </div>
+            ) : (
+              <EstimatorWizardFrame icon={steps[step].icon} current={step} total={totalSteps}>
                 <div key={step} className="animate-step-in">
-                  <WizardProgress current={step} total={totalSteps} />
-                  {steps[step]}
+                  {steps[step].content}
                   <WizardBackLink show={step > 0} onBack={handleBack} />
                 </div>
-              )}
-            </div>
+              </EstimatorWizardFrame>
+            )}
 
             <EstimatorFooter disclaimer={disclaimer} ctaLabel={ctaLabel} ctaUrl={ctaUrl} />
           </EstimatorCard>

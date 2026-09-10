@@ -1,26 +1,17 @@
-import type { LucideIcon } from 'lucide-react'
-
 export function NumberField({
   label,
-  Icon,
   placeholder,
   value,
   onChange,
 }: {
   label?: string | null
-  Icon: LucideIcon
   placeholder: string
   value: number | ''
   onChange: (value: number | '') => void
 }) {
   return (
     <div>
-      <div className="mb-6 flex items-center gap-4">
-        <span className="flex h-14 w-14 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
-          <Icon className="h-6 w-6" />
-        </span>
-        <label className="text-xl font-semibold text-foreground">{label}</label>
-      </div>
+      <label className="mb-6 block text-xl font-semibold text-foreground md:text-2xl">{label}</label>
       <input
         type="number"
         min={0}

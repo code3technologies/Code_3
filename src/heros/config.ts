@@ -35,6 +35,22 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Photo Impact',
+          value: 'photoImpact',
+        },
+        {
+          label: 'Soft Impact',
+          value: 'softImpact',
+        },
+        {
+          label: 'Vivid Impact',
+          value: 'vividImpact',
+        },
+        {
+          label: 'Split Impact',
+          value: 'splitImpact',
+        },
       ],
       required: true,
     },
@@ -85,7 +101,7 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact', 'photoImpact'].includes(type),
       },
       relationTo: 'media',
       required: true,

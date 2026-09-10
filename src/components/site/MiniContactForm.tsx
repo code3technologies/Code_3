@@ -24,6 +24,7 @@ export function MiniContactForm({
   showCompanySize = false,
   submitLabel = 'Send Enquiry',
   messagePlaceholder = 'How can we help?',
+  onDark = false,
 }: {
   className?: string
   title?: string
@@ -32,6 +33,8 @@ export function MiniContactForm({
   showCompanySize?: boolean
   submitLabel?: string
   messagePlaceholder?: string
+  /** Glass styling for use over a dark hero background. */
+  onDark?: boolean
 }) {
   const {
     register,
@@ -96,21 +99,33 @@ export function MiniContactForm({
     }
   }, [])
 
-  const fieldClassName =
-    'w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-primary_red'
+  // Glass styling is scoped to `lg:` because the form only floats over the
+  // dark hero on desktop — on mobile it renders as a normal light section.
+  const fieldClassName = cn(
+    'w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-primary_red',
+    onDark &&
+      'lg:border-white/20 lg:bg-white/10 lg:text-white lg:placeholder:text-white/50 lg:focus:border-white/60',
+  )
+  const errorTextClass = cn('text-primary_red', onDark && 'lg:text-red-300')
+  const cardClass = cn(
+    'rounded-2xl border border-border bg-white shadow-sm',
+    onDark && 'lg:border-white/15 lg:bg-white/[0.07] lg:shadow-2xl lg:backdrop-blur-md',
+  )
 
   if (hasSubmitted) {
     return (
-      <div className={cn('rounded-2xl border border-border bg-white p-6 shadow-sm', className)}>
-        <p className="text-sm font-medium text-foreground">Thanks for reaching out!</p>
-        <p className="mt-1 text-sm text-gray-600">Our team will get back to you shortly.</p>
+      <div className={cn(cardClass, 'p-6', className)}>
+        <p className={cn('text-sm font-medium text-foreground', onDark && 'lg:text-white')}>Thanks for reaching out!</p>
+        <p className={cn('mt-1 text-sm text-gray-600', onDark && 'lg:text-white/70')}>
+          Our team will get back to you shortly.
+        </p>
         <button
           type="button"
           onClick={() => {
             setHasSubmitted(false)
             reset()
           }}
-          className="mt-3 text-sm font-semibold text-primary_red hover:underline"
+          className={cn('mt-3 text-sm font-semibold text-primary_red hover:underline', onDark && 'lg:text-white')}
         >
           Send another message
         </button>
@@ -119,9 +134,11 @@ export function MiniContactForm({
   }
 
   return (
-    <div className={cn('rounded-2xl border border-border bg-white p-5 shadow-sm', className)}>
-      <h3 className="text-base font-semibold text-foreground">{title}</h3>
-      {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
+    <div className={cn(cardClass, 'p-5', className)}>
+      <h3 className={cn('text-base font-semibold text-foreground', onDark && 'lg:text-white')}>{title}</h3>
+      {description && (
+        <p className={cn('mt-1 text-sm text-gray-500', onDark && 'lg:text-white/70')}>{description}</p>
+      )}
 
       <form className="mt-3 space-y-2.5" onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -131,7 +148,7 @@ export function MiniContactForm({
             {...register('fullname', { required: true })}
             className={fieldClassName}
           />
-          {errors.fullname && <p className="mt-1 text-xs text-primary_red">Full name is required.</p>}
+          {errors.fullname && <p className={cn("mt-1 text-xs", errorTextClass)}>Full name is required.</p>}
         </div>
 
         <div>
@@ -141,7 +158,7 @@ export function MiniContactForm({
             {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             className={fieldClassName}
           />
-          {errors.email && <p className="mt-1 text-xs text-primary_red">A valid email is required.</p>}
+          {errors.email && <p className={cn("mt-1 text-xs", errorTextClass)}>A valid email is required.</p>}
         </div>
 
         <div>
@@ -155,7 +172,7 @@ export function MiniContactForm({
             })}
             className={fieldClassName}
           />
-          {errors.phone && <p className="mt-1 text-xs text-primary_red">A valid phone number is required.</p>}
+          {errors.phone && <p className={cn("mt-1 text-xs", errorTextClass)}>A valid phone number is required.</p>}
         </div>
 
         {showCompanySize && (
@@ -163,7 +180,7 @@ export function MiniContactForm({
             <select
               defaultValue=""
               {...register('companySize', { required: true })}
-              className={cn(fieldClassName, 'text-gray-900')}
+              className={cn(fieldClassName, 'text-gray-900', onDark && 'lg:text-white [&>option]:text-gray-900')}
             >
               <option value="" disabled>
                 Company size
@@ -174,7 +191,7 @@ export function MiniContactForm({
                 </option>
               ))}
             </select>
-            {errors.companySize && <p className="mt-1 text-xs text-primary_red">Please select your company size.</p>}
+            {errors.companySize && <p className={cn("mt-1 text-xs", errorTextClass)}>Please select your company size.</p>}
           </div>
         )}
 
@@ -185,10 +202,10 @@ export function MiniContactForm({
             {...register('message', { required: true })}
             className={cn(fieldClassName, 'resize-none')}
           />
-          {errors.message && <p className="mt-1 text-xs text-primary_red">Please add a short message.</p>}
+          {errors.message && <p className={cn("mt-1 text-xs", errorTextClass)}>Please add a short message.</p>}
         </div>
 
-        {error && <p className="text-xs text-primary_red">{error}</p>}
+        {error && <p className={cn("text-xs", errorTextClass)}>{error}</p>}
 
         <Button type="submit" variant="default" disabled={isLoading} className="w-full disabled:opacity-50">
           {isLoading ? 'Sending...' : submitLabel}

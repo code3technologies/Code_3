@@ -9,7 +9,8 @@ import { Reveal } from '@/components/site/Reveal'
 import { ChipQuestion } from '@/components/site/estimator/ChipQuestion'
 import { EstimatorResultPanel } from '@/components/site/estimator/ResultPanel'
 import { EstimatorCard, EstimatorFooter, StartOverButton, estimatorBodyClassName } from '@/components/site/estimator/Shell'
-import { WizardBackLink, WizardProgress } from '@/components/site/estimator/Wizard'
+import { EstimatorWizardFrame, WizardBackLink } from '@/components/site/estimator/Wizard'
+import { useScrollOnResult } from '@/components/site/estimator/useScrollOnResult'
 import { MapPin, Maximize2, Projector, Sun, Tv, Users } from 'lucide-react'
 
 // Best-effort recommended projector type, matched the same way as the
@@ -82,6 +83,7 @@ export const ProjectorEstimatorBlock: React.FC<Props> = ({
   const [screen, setScreen] = useState<number | null>(null)
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const sectionRef = useScrollOnResult<HTMLElement>(submitted)
 
   if (
     safeSpace.length === 0 ||
@@ -106,33 +108,23 @@ export const ProjectorEstimatorBlock: React.FC<Props> = ({
   }
 
   const steps = [
-    <ChipQuestion key="space" label={spaceLabel} Icon={MapPin} options={safeSpace} value={space} onChange={(i) => select(setSpace, i)} />,
-    <ChipQuestion
-      key="roomSize"
-      label={roomSizeLabel}
-      Icon={Maximize2}
-      options={safeRoomSize}
-      value={roomSize}
-      onChange={(i) => select(setRoomSize, i)}
-    />,
-    <ChipQuestion
-      key="people"
-      label={peopleLabel}
-      Icon={Users}
-      options={safePeople}
-      value={people}
-      onChange={(i) => select(setPeople, i)}
-    />,
-    <ChipQuestion key="light" label={lightLabel} Icon={Sun} options={safeLight} value={light} onChange={(i) => select(setLight, i)} />,
-    <ChipQuestion
-      key="projection"
-      label={projectionLabel}
-      Icon={Projector}
-      options={safeProjection}
-      value={projection}
-      onChange={(i) => select(setProjection, i)}
-    />,
-    <ChipQuestion key="screen" label={screenLabel} Icon={Tv} options={safeScreen} value={screen} onChange={(i) => select(setScreen, i)} />,
+    { icon: MapPin, content: <ChipQuestion label={spaceLabel} options={safeSpace} value={space} onChange={(i) => select(setSpace, i)} /> },
+    {
+      icon: Maximize2,
+      content: <ChipQuestion label={roomSizeLabel} options={safeRoomSize} value={roomSize} onChange={(i) => select(setRoomSize, i)} />,
+    },
+    {
+      icon: Users,
+      content: <ChipQuestion label={peopleLabel} options={safePeople} value={people} onChange={(i) => select(setPeople, i)} />,
+    },
+    { icon: Sun, content: <ChipQuestion label={lightLabel} options={safeLight} value={light} onChange={(i) => select(setLight, i)} /> },
+    {
+      icon: Projector,
+      content: (
+        <ChipQuestion label={projectionLabel} options={safeProjection} value={projection} onChange={(i) => select(setProjection, i)} />
+      ),
+    },
+    { icon: Tv, content: <ChipQuestion label={screenLabel} options={safeScreen} value={screen} onChange={(i) => select(setScreen, i)} /> },
   ]
 
   const handleBack = () => setStep((s) => Math.max(0, s - 1))
@@ -164,9 +156,9 @@ export const ProjectorEstimatorBlock: React.FC<Props> = ({
   })()
 
   return (
-    <section className={cn('bg-white py-7 md:py-9', className)}>
+    <section ref={sectionRef} className={cn('bg-white py-7 md:py-9 scroll-mt-32', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mb-6">
+        <Reveal className="max-w-2xl mb-4">
           {badge && <Eyebrow>{badge}</Eyebrow>}
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">{title}</h2>
           {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
@@ -174,27 +166,25 @@ export const ProjectorEstimatorBlock: React.FC<Props> = ({
 
         <Reveal delayMs={100}>
           <EstimatorCard>
-            <div className={estimatorBodyClassName}>
-              {result ? (
-                <div>
-                  <EstimatorResultPanel eyebrow="Recommended Projector" headline={result.label}>
-                    For {article(result.spaceText)} {result.spaceText?.toLowerCase()} with {result.peopleText?.toLowerCase()}{' '}
-                    people and {result.lightText?.toLowerCase()} ambient light, a {result.label.toLowerCase()} is a strong
-                    fit.{' '}
-                    {result.needsScreen
-                      ? "We'll also recommend the right screen size for your room."
-                      : "We'll match the projector to your existing screen setup."}
-                  </EstimatorResultPanel>
-                  <StartOverButton onClick={handleStartOver} />
-                </div>
-              ) : (
+            {result ? (
+              <div className={estimatorBodyClassName}>
+                <EstimatorResultPanel eyebrow="Recommended Projector" headline={result.label}>
+                  For {article(result.spaceText)} {result.spaceText?.toLowerCase()} with {result.peopleText?.toLowerCase()}{' '}
+                  people and {result.lightText?.toLowerCase()} ambient light, a {result.label.toLowerCase()} is a strong fit.{' '}
+                  {result.needsScreen
+                    ? "We'll also recommend the right screen size for your room."
+                    : "We'll match the projector to your existing screen setup."}
+                </EstimatorResultPanel>
+                <StartOverButton onClick={handleStartOver} />
+              </div>
+            ) : (
+              <EstimatorWizardFrame icon={steps[step].icon} current={step} total={totalSteps}>
                 <div key={step} className="animate-step-in">
-                  <WizardProgress current={step} total={totalSteps} />
-                  {steps[step]}
+                  {steps[step].content}
                   <WizardBackLink show={step > 0} onBack={handleBack} />
                 </div>
-              )}
-            </div>
+              </EstimatorWizardFrame>
+            )}
 
             <EstimatorFooter disclaimer={disclaimer} ctaLabel={ctaLabel} ctaUrl={ctaUrl} />
           </EstimatorCard>
