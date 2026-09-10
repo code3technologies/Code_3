@@ -384,6 +384,7 @@ export interface Page {
     | SpecSheetBlock
     | ParameterListBlock
     | ConceptBreakdownBlock
+    | ZonedFlowBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3382,6 +3383,43 @@ export interface ConceptBreakdownBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ZonedFlowBlock".
+ */
+export interface ZonedFlowBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Each zone is a labelled band containing one or more stages. Use it to show a boundary, e.g. Your Site / The Edge / Beyond.
+   */
+  zones?:
+    | {
+        label: string;
+        /**
+         * Tints the band and makes the label chip solid red — use for the pivotal zone.
+         */
+        emphasis?: boolean | null;
+        /**
+         * Small caption on the arrow leading to the next zone. Ignored on the last zone.
+         */
+        connectorNote?: string | null;
+        stages?:
+          | {
+              title: string;
+              description: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'zonedFlow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4749,6 +4787,7 @@ export interface PagesSelect<T extends boolean = true> {
         specSheet?: T | SpecSheetBlockSelect<T>;
         parameterList?: T | ParameterListBlockSelect<T>;
         conceptBreakdown?: T | ConceptBreakdownBlockSelect<T>;
+        zonedFlow?: T | ZonedFlowBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6432,6 +6471,33 @@ export interface ConceptBreakdownBlockSelect<T extends boolean = true> {
     | {
         term?: T;
         description?: T;
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ZonedFlowBlock_select".
+ */
+export interface ZonedFlowBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  zones?:
+    | T
+    | {
+        label?: T;
+        emphasis?: T;
+        connectorNote?: T;
+        stages?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
         id?: T;
       };
   note?: T;

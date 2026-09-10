@@ -78,6 +78,7 @@ import { FlowShowcaseBlock } from './FlowShowcase/Component'
 import { SpecSheetBlock } from './SpecSheet/Component'
 import { ParameterListBlock } from './ParameterList/Component'
 import { ConceptBreakdownBlock } from './ConceptBreakdown/Component'
+import { ZonedFlowBlock } from './ZonedFlow/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -173,6 +174,7 @@ const blockComponents = {
   specSheet: SpecSheetBlock,
   parameterList: ParameterListBlock,
   conceptBreakdown: ConceptBreakdownBlock,
+  zonedFlow: ZonedFlowBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
