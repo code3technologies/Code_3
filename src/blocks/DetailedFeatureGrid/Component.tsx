@@ -32,6 +32,7 @@ import {
   ScanEye,
   ScanLine,
   Server,
+  ShieldCheck,
   Sparkles,
   Split,
   Sun,
@@ -53,7 +54,10 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
   if (t.includes('wan monitor') || t.includes('network monitor')) return Radar
+  if (t.includes('firewall') || t.includes('threat')) return ShieldCheck
+  if (t.includes('access control')) return Lock
   if (t.includes('secure') || t.includes('site-to-site') || t.includes('vpn')) return Lock
+  if (t.includes('traffic')) return Network
   if (t.includes('internet')) return Globe
   if (
     t.includes('expansion') ||
