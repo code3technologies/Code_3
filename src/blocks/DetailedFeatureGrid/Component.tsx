@@ -18,6 +18,7 @@ import {
   CloudSun,
   DraftingCompass,
   Factory,
+  Fingerprint,
   Footprints,
   Globe,
   GraduationCap,
@@ -61,6 +62,10 @@ function getItemIcon(text?: string | null): LucideIcon {
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
+  // Wi-Fi security keywords
+  if (t.includes('authentication')) return Fingerprint
+  if (t.includes('rogue')) return AlertTriangle
+  if (t.includes('guest')) return Users
   // Wi-Fi / wireless environments (checked before the generic wi-fi rule)
   if (t.includes('warehouse')) return Warehouse
   if (t.includes('hospitality') || t.includes('hotel')) return Hotel
@@ -82,7 +87,7 @@ function getItemIcon(text?: string | null): LucideIcon {
     t.includes('meraki')
   )
     return Wifi
-  if (t.includes('wan monitor') || t.includes('network monitor')) return Radar
+  if (t.includes('wan monitor') || t.includes('network monitor') || t === 'monitoring') return Radar
   if (t.includes('firewall') || t.includes('threat')) return ShieldCheck
   if (t.includes('access control')) return Lock
   if (t.includes('secure') || t.includes('site-to-site') || t.includes('vpn')) return Lock
