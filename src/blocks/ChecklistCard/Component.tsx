@@ -37,35 +37,25 @@ export const ChecklistCardBlock: React.FC<Props> = ({ className, badge, title, i
 
         <Reveal
           delayMs={100}
-          className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04),0_24px_50px_-24px_rgba(0,0,0,0.18)]"
+          className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04),0_24px_50px_-24px_rgba(0,0,0,0.18)]"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2">
-            {safeItems.map((item, index) => {
-              const rowIndex = Math.floor(index / 2)
-              const shaded = rowIndex % 2 === 1
-              const isRightCol = index % 2 === 1
-              return (
-                <div
-                  key={item.id || index}
-                  className={cn(
-                    'flex items-start gap-3 px-5 py-4 sm:px-6',
-                    shaded && 'bg-gray-50/70',
-                    index > 1 && 'border-t border-border',
-                    isRightCol && 'sm:border-l sm:border-border',
+          <div className="-ml-px -mt-px grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {safeItems.map((item, index) => (
+              <div
+                key={item.id || index}
+                className="flex items-start gap-3 border-l border-t border-border px-5 py-4 sm:px-6"
+              >
+                <span className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
+                  <CheckIcon />
+                </span>
+                <div>
+                  <div className="text-sm font-semibold leading-snug text-foreground">{item.title}</div>
+                  {item.description && (
+                    <p className="mt-0.5 text-sm leading-relaxed text-gray-600">{item.description}</p>
                   )}
-                >
-                  <span className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
-                    <CheckIcon />
-                  </span>
-                  <div>
-                    <div className="text-sm font-semibold leading-snug text-foreground">{item.title}</div>
-                    {item.description && (
-                      <p className="mt-0.5 text-sm leading-relaxed text-gray-600">{item.description}</p>
-                    )}
-                  </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
 
           {note && (
