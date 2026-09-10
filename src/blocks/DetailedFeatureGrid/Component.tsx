@@ -33,6 +33,7 @@ import {
   Moon,
   Network,
   PencilRuler,
+  Plug,
   Printer,
   Radar,
   Router,
@@ -81,8 +82,16 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('commercial') || t.includes('building')) return Building2
   if (t.includes('industrial') || t.includes('factory') || t.includes('plant floor')) return Factory
   if (t.includes('high-density') || t.includes('high density') || t.includes('density')) return UsersRound
-  if (t.includes('multi-floor') || t.includes('multi floor')) return Layers
+  if (t.includes('multi-floor') || t.includes('multi floor') || t.includes('floor')) return Layers
   if (t.includes('multi-site') || t.includes('multi site')) return Globe
+  // Multi-floor / large-building Wi-Fi design keywords
+  if (t.includes('placement')) return MapPin
+  if (t.includes('coverage') || t.includes('overlap')) return Wifi
+  if (t.includes('capacity')) return UsersRound
+  if (t.includes('poe') || t.includes('power over ethernet')) return Plug
+  if (t.includes('roaming')) return Footprints
+  if (t.includes('centraliz') || t.includes('central management') || t.includes('controller'))
+    return Server
   if (t.includes('small business') || t.includes('smb')) return Briefcase
   if (t.includes('corporate') || t.includes('office wi-fi') || t.includes('office wifi')) return Building2
   if (
