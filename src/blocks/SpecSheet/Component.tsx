@@ -41,25 +41,19 @@ export const SpecSheetBlock: React.FC<Props> = ({ className, badge, title, intro
           />
 
           {/* datasheet header strip */}
-          <div className="relative flex items-center gap-2 border-b border-border bg-gray-50/70 px-5 py-2.5 sm:px-6">
+          <div className="relative flex items-center gap-2 bg-gray-50/70 px-5 py-2.5 sm:px-6">
             <span className="h-2 w-2 rounded-full bg-primary_red" />
             <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500">
               {String(safeItems.length).padStart(2, '0')} requirements
             </span>
           </div>
 
-          <div className="relative grid sm:grid-cols-2">
+          <div className="relative -ml-px -mt-px grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {safeItems.map((item, index) => {
-              const isRightCol = index % 2 === 1
               return (
                 <div
                   key={item.id || index}
-                  className={cn(
-                    'flex gap-4 px-5 py-4 sm:px-6',
-                    index > 0 && 'border-t border-border',
-                    'sm:[&:nth-child(2)]:border-t-0',
-                    isRightCol && 'sm:border-l sm:border-border',
-                  )}
+                  className="flex gap-4 border-l border-t border-border px-5 py-4 sm:px-6"
                 >
                   <span className="flex h-7 w-7 flex-none items-center justify-center rounded-md border border-primary_red/30 font-mono text-xs font-bold text-primary_red">
                     {String(index + 1).padStart(2, '0')}
