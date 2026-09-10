@@ -1552,6 +1552,10 @@ export interface ServiceDetailBannerBlock {
    */
   animatedBackground?: boolean | null;
   /**
+   * Which icons drift through the animated hero background — pick the set that matches this service.
+   */
+  floatingIconSet?: ('surveillance' | 'networking' | 'general') | null;
+  /**
    * e.g. "Cyber Security" — shown as a small link back to the parent service category.
    */
   backLinkLabel?: string | null;
@@ -5471,6 +5475,7 @@ export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
   description?: T;
   showGradientLine?: T;
   animatedBackground?: T;
+  floatingIconSet?: T;
   backLinkLabel?: T;
   backLinkUrl?: T;
   cardBadge?: T;

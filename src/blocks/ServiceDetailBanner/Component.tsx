@@ -1,6 +1,21 @@
 import React from 'react'
 import Link from 'next/link'
-import { Camera, Cctv, HardDrive, Monitor, ScanEye, Video, type LucideIcon } from 'lucide-react'
+import {
+  Cable,
+  Camera,
+  Cctv,
+  Globe,
+  HardDrive,
+  Monitor,
+  MonitorSmartphone,
+  Network,
+  Router,
+  ScanEye,
+  Server,
+  Video,
+  Wifi,
+  type LucideIcon,
+} from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
@@ -11,6 +26,7 @@ interface ServiceDetailBannerBlockProps {
   description?: string
   showGradientLine?: boolean
   animatedBackground?: boolean
+  floatingIconSet?: ('surveillance' | 'networking' | 'general') | null
   className?: string
   serviceBadge?: string
   backLinkLabel?: string
@@ -24,28 +40,40 @@ interface ServiceDetailBannerBlockProps {
 
 type Props = ServiceDetailBannerBlockProps
 
-// Purely decorative — a handful of thin outlined CCTV icons drifting through
-// the hero's open background space, mirroring the homepage hero treatment.
-function FloatingCctvIcons() {
-  const icons: { Icon: LucideIcon; style: React.CSSProperties; duration: string; delay: string }[] = [
-    { Icon: Cctv, style: { top: '12%', left: '54%' }, duration: '18s', delay: '0s' },
-    { Icon: Camera, style: { top: '16%', right: '7%' }, duration: '22s', delay: '-5s' },
-    { Icon: ScanEye, style: { top: '56%', left: '61%' }, duration: '20s', delay: '-10s' },
-    { Icon: HardDrive, style: { bottom: '16%', left: '3%' }, duration: '24s', delay: '-3s' },
-    { Icon: Monitor, style: { bottom: '12%', right: '32%' }, duration: '19s', delay: '-8s' },
-    { Icon: Video, style: { top: '40%', left: '2%' }, duration: '21s', delay: '-14s' },
-  ]
+// Purely decorative — a handful of thin outlined icons drifting through the
+// hero's open background space, mirroring the homepage hero treatment. The
+// icon set is chosen per page so it reflects the service being shown.
+const FLOATING_ICON_SETS: Record<string, LucideIcon[]> = {
+  surveillance: [Cctv, Camera, ScanEye, HardDrive, Monitor, Video],
+  networking: [Network, Router, Wifi, Server, Cable, Globe],
+  general: [Server, Network, MonitorSmartphone, HardDrive, Wifi, Globe],
+}
+
+const FLOATING_POSITIONS: { style: React.CSSProperties; duration: string; delay: string }[] = [
+  { style: { top: '12%', left: '54%' }, duration: '18s', delay: '0s' },
+  { style: { top: '16%', right: '7%' }, duration: '22s', delay: '-5s' },
+  { style: { top: '56%', left: '61%' }, duration: '20s', delay: '-10s' },
+  { style: { bottom: '16%', left: '3%' }, duration: '24s', delay: '-3s' },
+  { style: { bottom: '12%', right: '32%' }, duration: '19s', delay: '-8s' },
+  { style: { top: '40%', left: '2%' }, duration: '21s', delay: '-14s' },
+]
+
+function FloatingIcons({ set }: { set?: string | null }) {
+  const icons = FLOATING_ICON_SETS[set || 'surveillance'] || FLOATING_ICON_SETS.surveillance
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
-      {icons.map(({ Icon, style, duration, delay }, i) => (
-        <Icon
-          key={i}
-          strokeWidth={1}
-          className="animate-drift absolute h-9 w-9 text-white/[0.09]"
-          style={{ ...style, animationDuration: duration, animationDelay: delay }}
-        />
-      ))}
+      {FLOATING_POSITIONS.map(({ style, duration, delay }, i) => {
+        const Icon = icons[i % icons.length]
+        return (
+          <Icon
+            key={i}
+            strokeWidth={1}
+            className="animate-drift absolute h-9 w-9 text-white/[0.09]"
+            style={{ ...style, animationDuration: duration, animationDelay: delay }}
+          />
+        )
+      })}
     </div>
   )
 }
@@ -57,6 +85,7 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
   title,
   description,
   animatedBackground,
+  floatingIconSet,
   backLinkLabel,
   backLinkUrl,
   cardBadge,
@@ -218,7 +247,7 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
           className="animate-streak-sway absolute -top-[10%] left-[70%] h-[130%] w-28 bg-gradient-to-b from-transparent via-secondary_red/[0.22] to-transparent"
           style={{ animationDuration: '15s', animationDelay: '-9s' }}
         />
-        <FloatingCctvIcons />
+        <FloatingIcons set={floatingIconSet} />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">{content}</div>
