@@ -73,6 +73,15 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('multi-site') || t.includes('multi site')) return Globe
   if (t.includes('small business') || t.includes('smb')) return Briefcase
   if (t.includes('corporate') || t.includes('office wi-fi') || t.includes('office wifi')) return Building2
+  if (
+    t.includes('cisco') ||
+    t.includes('ubiquiti') ||
+    t.includes('unifi') ||
+    t.includes('ruijie') ||
+    t.includes('aruba') ||
+    t.includes('meraki')
+  )
+    return Wifi
   if (t.includes('wan monitor') || t.includes('network monitor')) return Radar
   if (t.includes('firewall') || t.includes('threat')) return ShieldCheck
   if (t.includes('access control')) return Lock
