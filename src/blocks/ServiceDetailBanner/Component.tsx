@@ -177,14 +177,15 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
 
   return (
     <section className={cn('relative w-full py-12 md:py-16', className)}>
-      {/* Base layer — gradient + dot grid — deliberately taller than this
-          section so it bleeds down behind the ServiceOverview block below
-          (which renders transparent), giving one uninterrupted background
-          from the top of the hero to just before the Stats block. */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[1600px] max-h-[220vh]">
+      {/* One background field — gradient, dot grid, drifting glow, light
+          streaks and floating icons — all on a single layer that is taller
+          than this section, so it runs unbroken behind the ServiceOverview
+          block below (which renders transparent). overflow-hidden clips the
+          blurred blobs so they can't cause horizontal scroll. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[1600px] max-h-[220vh] overflow-hidden">
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, #b3121f 0%, #8b0f1f 32%, #4a101a 60%, #1a0808 100%)' }}
+          style={{ background: 'linear-gradient(180deg, #b3121f 0%, #8b0f1f 26%, #57121e 48%, #2c0d0d 74%, #180707 100%)' }}
         />
         <div
           className="absolute inset-0 opacity-[0.16]"
@@ -193,37 +194,32 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
             backgroundSize: '28px 28px',
           }}
         />
-      </div>
-
-      {/* Decorative motion layers — clipped to this section */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
-          className="animate-drift absolute -right-24 -top-32 h-[32rem] w-[32rem] rounded-full bg-white/20 blur-[130px]"
+          className="animate-drift absolute -right-24 -top-32 h-[32rem] w-[32rem] rounded-full bg-white/15 blur-[130px]"
           style={{ animationDuration: '16s' }}
         />
         <div
-          className="animate-drift absolute -bottom-40 -left-24 h-[26rem] w-[26rem] rounded-full bg-black/30 blur-[120px]"
-          style={{ animationDuration: '20s', animationDelay: '-6s' }}
+          className="animate-drift absolute left-[6%] top-[42%] h-[28rem] w-[28rem] rounded-full bg-secondary_red/20 blur-[150px]"
+          style={{ animationDuration: '22s', animationDelay: '-6s' }}
         />
         <div
-          className="animate-drift absolute right-0 top-1/3 h-[26rem] w-[26rem] rounded-full bg-secondary_red/25 blur-[150px]"
+          className="animate-drift absolute right-0 top-[64%] h-[26rem] w-[26rem] rounded-full bg-black/25 blur-[150px]"
           style={{ animationDuration: '24s', animationDelay: '-12s' }}
         />
         <div
-          className="animate-streak-sway absolute -top-1/4 left-[8%] h-[180%] w-20 bg-gradient-to-b from-transparent via-white/[0.07] to-transparent"
+          className="animate-streak-sway absolute -top-[10%] left-[8%] h-[130%] w-20 bg-gradient-to-b from-transparent via-white/[0.07] to-transparent"
           style={{ animationDuration: '13s' }}
         />
         <div
-          className="animate-streak-sway absolute -top-1/4 left-[40%] h-[180%] w-12 bg-gradient-to-b from-transparent via-white/[0.05] to-transparent"
+          className="animate-streak-sway absolute -top-[10%] left-[40%] h-[130%] w-12 bg-gradient-to-b from-transparent via-white/[0.05] to-transparent"
           style={{ animationDuration: '17s', animationDelay: '-4s' }}
         />
         <div
-          className="animate-streak-sway absolute -top-1/4 left-[70%] h-[180%] w-28 bg-gradient-to-b from-transparent via-secondary_red/[0.25] to-transparent"
+          className="animate-streak-sway absolute -top-[10%] left-[70%] h-[130%] w-28 bg-gradient-to-b from-transparent via-secondary_red/[0.22] to-transparent"
           style={{ animationDuration: '15s', animationDelay: '-9s' }}
         />
+        <FloatingCctvIcons />
       </div>
-
-      <FloatingCctvIcons />
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">{content}</div>
     </section>

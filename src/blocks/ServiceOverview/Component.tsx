@@ -1,17 +1,5 @@
 import React from 'react'
-import {
-  Camera,
-  Cctv,
-  CheckCircle2,
-  HardDrive,
-  Handshake,
-  Monitor,
-  ScanEye,
-  Smile,
-  Users,
-  Video,
-  type LucideIcon,
-} from 'lucide-react'
+import { CheckCircle2, Handshake, Smile, Users, type LucideIcon } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
@@ -31,31 +19,6 @@ interface ServiceOverviewProps {
   // to use the full width instead of leaving a dead gap on the right.
   reserveSidebarSpace?: boolean
   className?: string
-}
-
-// Decorative CCTV icons drifting through the dark background, continuing
-// the treatment from the Service Detail Banner above.
-function FloatingCctvIcons() {
-  const icons: { Icon: LucideIcon; style: React.CSSProperties; duration: string; delay: string }[] = [
-    { Icon: Cctv, style: { top: '18%', right: '10%' }, duration: '19s', delay: '-2s' },
-    { Icon: Video, style: { bottom: '16%', left: '4%' }, duration: '23s', delay: '-9s' },
-    { Icon: ScanEye, style: { top: '55%', right: '32%' }, duration: '21s', delay: '-13s' },
-    { Icon: Camera, style: { top: '24%', left: '46%' }, duration: '18s', delay: '-6s' },
-    { Icon: HardDrive, style: { bottom: '22%', right: '4%' }, duration: '22s', delay: '-4s' },
-    { Icon: Monitor, style: { top: '10%', left: '10%' }, duration: '20s', delay: '-11s' },
-  ]
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
-      {icons.map(({ Icon, style, duration, delay }, i) => (
-        <Icon
-          key={i}
-          strokeWidth={1}
-          className="animate-drift absolute h-9 w-9 text-white/[0.09]"
-          style={{ ...style, animationDuration: duration, animationDelay: delay }}
-        />
-      ))}
-    </div>
-  )
 }
 
 // Best-effort icon per highlight label, matched by keyword - mirrors the
@@ -86,34 +49,13 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
   return (
     <section
       className={cn(
+        // When animated, this section paints nothing — the Service Detail
+        // Banner above renders one tall background layer that bleeds down
+        // behind here, so there is a single unbroken background.
         animatedBackground ? 'relative pb-14 pt-6 md:pb-20 md:pt-8' : 'bg-white pt-2 pb-8 md:pt-3 md:pb-10',
         className,
       )}
     >
-      {animatedBackground && (
-        // No background of its own — the Service Detail Banner's base layer
-        // bleeds down behind this section so the gradient/dot-grid stay
-        // continuous. Only the drifting motion layers live here, clipped.
-        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div
-            className="animate-drift absolute -left-24 top-0 h-[26rem] w-[26rem] rounded-full bg-secondary_red/20 blur-[140px]"
-            style={{ animationDuration: '22s' }}
-          />
-          <div
-            className="animate-drift absolute -bottom-40 right-0 h-[24rem] w-[24rem] rounded-full bg-white/10 blur-[130px]"
-            style={{ animationDuration: '18s', animationDelay: '-7s' }}
-          />
-          <div
-            className="animate-streak-sway absolute -top-1/4 left-[14%] h-[180%] w-16 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent"
-            style={{ animationDuration: '16s', animationDelay: '-3s' }}
-          />
-          <div
-            className="animate-streak-sway absolute -top-1/4 left-[62%] h-[180%] w-24 bg-gradient-to-b from-transparent via-secondary_red/[0.22] to-transparent"
-            style={{ animationDuration: '14s', animationDelay: '-8s' }}
-          />
-          <FloatingCctvIcons />
-        </div>
-      )}
       <div className={cn('container mx-auto px-4 sm:px-6', animatedBackground && 'relative z-10')}>
         <div className={cn('flex flex-col items-start gap-6', hasSideContent && 'md:flex-row md:gap-8')}>
           <Reveal
