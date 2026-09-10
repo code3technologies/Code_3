@@ -86,49 +86,33 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
   return (
     <section
       className={cn(
-        animatedBackground ? 'relative overflow-hidden pb-14 pt-6 md:pb-20 md:pt-8' : 'bg-white pt-2 pb-8 md:pt-3 md:pb-10',
+        animatedBackground ? 'relative pb-14 pt-6 md:pb-20 md:pt-8' : 'bg-white pt-2 pb-8 md:pt-3 md:pb-10',
         className,
       )}
     >
       {animatedBackground && (
-        <>
-          {/* Starts on exactly the banner's bottom tone (#2d0e0e) and eases
-              darker, so the seam between the two sections is invisible */}
+        // No background of its own — the Service Detail Banner's base layer
+        // bleeds down behind this section so the gradient/dot-grid stay
+        // continuous. Only the drifting motion layers live here, clipped.
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, #2d0e0e 0%, #230a0a 55%, #1a0808 100%)' }}
-          />
-          <div
-            aria-hidden
-            className="animate-drift pointer-events-none absolute -left-24 top-0 h-[26rem] w-[26rem] rounded-full bg-secondary_red/20 blur-[140px]"
+            className="animate-drift absolute -left-24 top-0 h-[26rem] w-[26rem] rounded-full bg-secondary_red/20 blur-[140px]"
             style={{ animationDuration: '22s' }}
           />
           <div
-            aria-hidden
-            className="animate-drift pointer-events-none absolute -bottom-40 right-0 h-[24rem] w-[24rem] rounded-full bg-white/10 blur-[130px]"
+            className="animate-drift absolute -bottom-40 right-0 h-[24rem] w-[24rem] rounded-full bg-white/10 blur-[130px]"
             style={{ animationDuration: '18s', animationDelay: '-7s' }}
           />
           <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.16]"
-            style={{
-              backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)',
-              backgroundSize: '28px 28px',
-            }}
+            className="animate-streak-sway absolute -top-1/4 left-[14%] h-[180%] w-16 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent"
+            style={{ animationDuration: '16s', animationDelay: '-3s' }}
           />
-          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div
-              className="animate-streak-sway absolute -top-1/4 left-[14%] h-[180%] w-16 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent"
-              style={{ animationDuration: '16s', animationDelay: '-3s' }}
-            />
-            <div
-              className="animate-streak-sway absolute -top-1/4 left-[62%] h-[180%] w-24 bg-gradient-to-b from-transparent via-secondary_red/[0.22] to-transparent"
-              style={{ animationDuration: '14s', animationDelay: '-8s' }}
-            />
-          </div>
+          <div
+            className="animate-streak-sway absolute -top-1/4 left-[62%] h-[180%] w-24 bg-gradient-to-b from-transparent via-secondary_red/[0.22] to-transparent"
+            style={{ animationDuration: '14s', animationDelay: '-8s' }}
+          />
           <FloatingCctvIcons />
-        </>
+        </div>
       )}
       <div className={cn('container mx-auto px-4 sm:px-6', animatedBackground && 'relative z-10')}>
         <div className={cn('flex flex-col items-start gap-6', hasSideContent && 'md:flex-row md:gap-8')}>

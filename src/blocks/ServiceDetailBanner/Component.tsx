@@ -176,42 +176,39 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
   }
 
   return (
-    <section className={cn('relative w-full overflow-hidden py-12 md:py-16', className)}>
-      {/* Dark-red gradient. Vertical (not diagonal) so its bottom edge is a
-          uniform dark tone the ServiceOverview below can pick up seamlessly;
-          the diagonal light streaks below supply the angled visual interest. */}
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{ background: 'linear-gradient(180deg, #b3121f 0%, #8b0f1f 34%, #47101a 68%, #2d0e0e 100%)' }}
-      />
-      {/* Drifting ambient glow accents */}
-      <div
-        aria-hidden
-        className="animate-drift pointer-events-none absolute -right-24 -top-32 h-[32rem] w-[32rem] rounded-full bg-white/20 blur-[130px]"
-        style={{ animationDuration: '16s' }}
-      />
-      <div
-        aria-hidden
-        className="animate-drift pointer-events-none absolute -bottom-40 -left-24 h-[26rem] w-[26rem] rounded-full bg-black/30 blur-[120px]"
-        style={{ animationDuration: '20s', animationDelay: '-6s' }}
-      />
-      <div
-        aria-hidden
-        className="animate-drift pointer-events-none absolute right-0 top-1/3 h-[26rem] w-[26rem] rounded-full bg-secondary_red/25 blur-[150px]"
-        style={{ animationDuration: '24s', animationDelay: '-12s' }}
-      />
-      {/* Dot-grid texture */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.18]"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }}
-      />
-      {/* Swaying diagonal light streaks */}
+    <section className={cn('relative w-full py-12 md:py-16', className)}>
+      {/* Base layer — gradient + dot grid — deliberately taller than this
+          section so it bleeds down behind the ServiceOverview block below
+          (which renders transparent), giving one uninterrupted background
+          from the top of the hero to just before the Stats block. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[1600px] max-h-[220vh]">
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, #b3121f 0%, #8b0f1f 32%, #4a101a 60%, #1a0808 100%)' }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.16]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)',
+            backgroundSize: '28px 28px',
+          }}
+        />
+      </div>
+
+      {/* Decorative motion layers — clipped to this section */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="animate-drift absolute -right-24 -top-32 h-[32rem] w-[32rem] rounded-full bg-white/20 blur-[130px]"
+          style={{ animationDuration: '16s' }}
+        />
+        <div
+          className="animate-drift absolute -bottom-40 -left-24 h-[26rem] w-[26rem] rounded-full bg-black/30 blur-[120px]"
+          style={{ animationDuration: '20s', animationDelay: '-6s' }}
+        />
+        <div
+          className="animate-drift absolute right-0 top-1/3 h-[26rem] w-[26rem] rounded-full bg-secondary_red/25 blur-[150px]"
+          style={{ animationDuration: '24s', animationDelay: '-12s' }}
+        />
         <div
           className="animate-streak-sway absolute -top-1/4 left-[8%] h-[180%] w-20 bg-gradient-to-b from-transparent via-white/[0.07] to-transparent"
           style={{ animationDuration: '13s' }}
