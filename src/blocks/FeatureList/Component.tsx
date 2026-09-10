@@ -52,9 +52,8 @@ type Props = {
   className?: string
 } & FeatureListBlockProps
 
-// A numbered, borderless list — a large translucent numeral sits behind each
-// icon instead of the bordered/shadowed cards used by every other feature
-// grid on the site (IconFeatureGrid, DetailedFeatureGrid, etc).
+// A clean, borderless icon list — no cards, no shadows — a lighter
+// alternative to the bordered feature grids used elsewhere on the site.
 export const FeatureListBlock: React.FC<Props> = ({ className, badge, title, intro, items = [], footer }) => {
   const safeItems = items || []
   if (safeItems.length === 0) return null
@@ -70,23 +69,16 @@ export const FeatureListBlock: React.FC<Props> = ({ className, badge, title, int
 
         <Reveal
           delayMs={100}
-          className="mx-auto grid max-w-4xl grid-cols-1 gap-x-12 gap-y-10 sm:grid-cols-2"
+          className="mx-auto grid max-w-5xl grid-cols-1 gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3"
         >
           {safeItems.map((item, index) => {
             const Icon = getFeatureIcon(item.title)
-            const number = String(index + 1).padStart(2, '0')
             return (
-              <div key={item.id || index} className="relative flex gap-4">
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute -left-1.5 -top-5 select-none font-sans text-6xl font-black leading-none text-gray-100"
-                >
-                  {number}
-                </span>
-                <span className="relative z-10 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
+              <div key={item.id || index} className="flex gap-4">
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
                   <Icon className="h-5 w-5" />
                 </span>
-                <div className="relative z-10 pt-0.5">
+                <div className="pt-0.5">
                   <h3 className="text-base font-semibold leading-snug text-foreground">{item.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-gray-600">{item.description}</p>
                 </div>
