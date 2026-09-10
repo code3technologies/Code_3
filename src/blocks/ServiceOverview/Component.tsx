@@ -92,11 +92,12 @@ const ServiceOverviewComponent: React.FC<ServiceOverviewProps> = ({
     >
       {animatedBackground && (
         <>
-          {/* Continues the banner's gradient from its dark end, going darker */}
+          {/* Starts on exactly the banner's bottom tone (#2d0e0e) and eases
+              darker, so the seam between the two sections is invisible */}
           <div
             aria-hidden
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, #2c0d0d 0%, #260b0b 45%, #1a0808 100%)' }}
+            style={{ background: 'linear-gradient(180deg, #2d0e0e 0%, #230a0a 55%, #1a0808 100%)' }}
           />
           <div
             aria-hidden

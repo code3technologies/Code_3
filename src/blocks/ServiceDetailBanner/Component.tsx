@@ -177,11 +177,13 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
 
   return (
     <section className={cn('relative w-full overflow-hidden py-12 md:py-16', className)}>
-      {/* Dark-red gradient — same as the homepage hero / Infra Services sidebar */}
+      {/* Dark-red gradient. Vertical (not diagonal) so its bottom edge is a
+          uniform dark tone the ServiceOverview below can pick up seamlessly;
+          the diagonal light streaks below supply the angled visual interest. */}
       <div
         aria-hidden
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(135deg, #b3121f 0%, #8b0f1f 40%, #2d0e0e 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #b3121f 0%, #8b0f1f 34%, #47101a 68%, #2d0e0e 100%)' }}
       />
       {/* Drifting ambient glow accents */}
       <div
