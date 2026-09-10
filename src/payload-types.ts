@@ -386,6 +386,7 @@ export interface Page {
     | ConceptBreakdownBlock
     | ZonedFlowBlock
     | PathCompareBlock
+    | NetworkEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3453,6 +3454,99 @@ export interface PathCompareBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NetworkEstimatorBlock".
+ */
+export interface NetworkEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  usersLabel?: string | null;
+  usersOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  officesLabel?: string | null;
+  officesOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  floorsLabel?: string | null;
+  floorsOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  devicesLabel?: string | null;
+  devicesOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  internetLabel?: string | null;
+  internetOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  wifiLabel?: string | null;
+  wifiOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingLabel?: string | null;
+  existingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  serverLabel?: string | null;
+  serverOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  vpnLabel?: string | null;
+  vpnOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  securityLabel?: string | null;
+  securityOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'networkEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4822,6 +4916,7 @@ export interface PagesSelect<T extends boolean = true> {
         conceptBreakdown?: T | ConceptBreakdownBlockSelect<T>;
         zonedFlow?: T | ZonedFlowBlockSelect<T>;
         pathCompare?: T | PathCompareBlockSelect<T>;
+        networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6560,6 +6655,92 @@ export interface PathCompareBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NetworkEstimatorBlock_select".
+ */
+export interface NetworkEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  usersLabel?: T;
+  usersOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  officesLabel?: T;
+  officesOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  floorsLabel?: T;
+  floorsOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  devicesLabel?: T;
+  devicesOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  internetLabel?: T;
+  internetOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  wifiLabel?: T;
+  wifiOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingLabel?: T;
+  existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  serverLabel?: T;
+  serverOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  vpnLabel?: T;
+  vpnOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  securityLabel?: T;
+  securityOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }

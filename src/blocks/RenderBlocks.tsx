@@ -80,6 +80,7 @@ import { ParameterListBlock } from './ParameterList/Component'
 import { ConceptBreakdownBlock } from './ConceptBreakdown/Component'
 import { ZonedFlowBlock } from './ZonedFlow/Component'
 import { PathCompareBlock } from './PathCompare/Component'
+import { NetworkEstimatorBlock } from './NetworkEstimator/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -177,6 +178,7 @@ const blockComponents = {
   conceptBreakdown: ConceptBreakdownBlock,
   zonedFlow: ZonedFlowBlock,
   pathCompare: PathCompareBlock,
+  networkEstimator: NetworkEstimatorBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,
