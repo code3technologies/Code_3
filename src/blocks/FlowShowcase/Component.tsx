@@ -11,6 +11,8 @@ import {
   Camera,
   Car,
   CheckCircle2,
+  ChevronDown,
+  ChevronRight,
   ClipboardCheck,
   Fence,
   Fingerprint,
@@ -50,10 +52,10 @@ type Props = {
   className?: string
 } & FlowShowcaseBlockProps
 
-// A single, bold flow on a dark gradient panel — numbered glass step cards
-// laid out in a left-to-right grid, each with an icon, label and detail
-// line. Reserved for a flow important enough to deserve its own visual
-// moment, distinct from the plain-white timelines used elsewhere.
+// A single, bold flow on a dark gradient panel — large connected icon nodes
+// with a short caption each. Horizontal on desktop, stacked on mobile.
+// Reserved for a flow important enough to deserve its own visual moment,
+// distinct from the plain-white timelines used elsewhere on the site.
 export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], note, ctaLabel, ctaUrl }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
@@ -69,7 +71,7 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
 
         <Reveal
           delayMs={100}
-          className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-5 py-8 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-8 md:py-10"
+          className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-5 py-10 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-8 md:py-12"
         >
           <div
             aria-hidden
@@ -80,30 +82,31 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
             className="pointer-events-none absolute -bottom-20 left-0 h-56 w-56 rounded-full bg-black/20 blur-3xl"
           />
 
-          <div
-            className={cn(
-              'relative grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4',
-              safeSteps.length !== 4 && safeSteps.length !== 2 && 'lg:grid-cols-3',
-            )}
-          >
+          <div className="relative flex flex-col items-center gap-3 overflow-x-auto md:flex-row md:flex-nowrap md:items-start md:justify-center md:gap-2 md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
             {safeSteps.map((step, index) => {
               const Icon = getNodeIcon(step.label)
+              const isLast = index === safeSteps.length - 1
               return (
-                <div
-                  key={step.id || index}
-                  className="flex flex-col gap-2.5 rounded-2xl border border-white/10 bg-white/[0.06] p-4 sm:p-5"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white text-primary_red shadow-md">
-                      <Icon className="h-5 w-5" />
+                <React.Fragment key={step.id || index}>
+                  <div className="flex w-full max-w-[220px] flex-none flex-col items-center gap-2 text-center md:w-32">
+                    <span className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-white text-primary_red shadow-lg sm:h-14 sm:w-14">
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </span>
-                    <span className="text-xs font-bold text-white/40">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="text-xs font-bold leading-tight text-white sm:text-sm">{step.label}</span>
+                    {step.description && (
+                      <span className="text-[11px] leading-snug text-white/60 sm:text-xs">{step.description}</span>
+                    )}
                   </div>
-                  <div className="text-sm font-bold leading-snug text-white">{step.label}</div>
-                  {step.description && (
-                    <p className="text-sm leading-relaxed text-white/65">{step.description}</p>
+                  {!isLast && (
+                    <>
+                      <ChevronDown className="h-5 w-5 flex-none text-white/40 md:hidden" strokeWidth={2.5} />
+                      <ChevronRight
+                        className="mt-4 hidden h-5 w-5 flex-none text-white/40 sm:mt-5 md:block"
+                        strokeWidth={2.5}
+                      />
+                    </>
                   )}
-                </div>
+                </React.Fragment>
               )
             })}
           </div>
