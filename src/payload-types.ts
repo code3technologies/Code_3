@@ -382,6 +382,7 @@ export interface Page {
     | AlternatingTimelineBlock
     | FlowShowcaseBlock
     | SpecSheetBlock
+    | ParameterListBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3310,6 +3311,30 @@ export interface SpecSheetBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParameterListBlock".
+ */
+export interface ParameterListBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a borderless reference list — term on the left, description on the right, hairline dividers. No cards.
+   */
+  items?:
+    | {
+        term: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'parameterList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4675,6 +4700,7 @@ export interface PagesSelect<T extends boolean = true> {
         alternatingTimeline?: T | AlternatingTimelineBlockSelect<T>;
         flowShowcase?: T | FlowShowcaseBlockSelect<T>;
         specSheet?: T | SpecSheetBlockSelect<T>;
+        parameterList?: T | ParameterListBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6317,6 +6343,26 @@ export interface SpecSheetBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParameterListBlock_select".
+ */
+export interface ParameterListBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        term?: T;
+        description?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }
