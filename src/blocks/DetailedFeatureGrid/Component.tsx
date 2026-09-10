@@ -24,6 +24,7 @@ import {
   MapPin,
   Moon,
   Network,
+  PencilRuler,
   Printer,
   Radar,
   Router,
@@ -34,8 +35,10 @@ import {
   Split,
   Sun,
   Thermometer,
+  TrendingUp,
   Users,
   Wifi,
+  Wrench,
   ZoomIn,
   type LucideIcon,
 } from 'lucide-react'
@@ -48,6 +51,10 @@ function getItemIcon(text?: string | null): LucideIcon {
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
+  if (t.includes('expansion') || t.includes('expand') || t.includes('scal') || t.includes('grow'))
+    return TrendingUp
+  if (t.includes('installation') || t.includes('install')) return Wrench
+  if (t.includes('design') || t.includes('architecture')) return PencilRuler
   if (t.includes('segment')) return Split
   if (t.includes('switch')) return Network
   if (t.includes('router')) return Router
