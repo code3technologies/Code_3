@@ -10,11 +10,17 @@ import {
   Camera,
   ChevronDown,
   ChevronRight,
+  Cloud,
+  Globe,
   Grid2x2,
   HardDrive,
   Monitor,
   Network,
+  Router,
   Server,
+  ShieldCheck,
+  Users,
+  Waypoints,
   Zap,
   type LucideIcon,
 } from 'lucide-react'
@@ -23,6 +29,14 @@ import {
 function getStepIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
   if (t.includes('camera')) return Camera
+  // LAN-to-WAN path keywords
+  if (t.includes('user') || t.includes('device') || t.includes('endpoint')) return Users
+  if (t.includes('firewall')) return ShieldCheck
+  if (t.includes('router')) return Router
+  if (t.includes('switch')) return Network
+  if (t.includes('wan')) return Waypoints
+  if (t.includes('branch') || t.includes('cloud') || t.includes('internet') || t.includes('remote site'))
+    return t.includes('cloud') && !t.includes('branch') ? Cloud : Globe
   if (t.includes('network') || t.includes('poe')) return Network
   if (t.includes('nvr') || t.includes('vms')) return Server
   if (t.includes('storage') || t.includes('recording')) return HardDrive
@@ -67,7 +81,7 @@ export const PipelineFlowBlock: React.FC<Props> = ({ className, badge, title, in
               <React.Fragment key={step.id || index}>
                 <div
                   className={cn(
-                    'flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5',
+                    'flex items-start gap-4 rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5',
                     horizontal && 'md:min-w-0 md:flex-1 md:basis-0 md:flex-col md:items-center md:gap-2.5 md:p-4 md:text-center',
                   )}
                 >
