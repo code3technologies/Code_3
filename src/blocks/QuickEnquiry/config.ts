@@ -24,6 +24,15 @@ export const QuickEnquiry: Block = {
       localized: true,
     },
     {
+      name: 'formOnDark',
+      type: 'checkbox',
+      label: 'Glass Form (for a dark hero background)',
+      defaultValue: false,
+      admin: {
+        description: 'Use a translucent glass style for the form so it sits well over an animated dark hero.',
+      },
+    },
+    {
       name: 'promoEnabled',
       type: 'checkbox',
       label: 'Show Promo Card Below Form',

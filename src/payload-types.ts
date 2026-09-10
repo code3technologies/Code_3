@@ -1329,6 +1329,10 @@ export interface PartnersDirectoryBlock {
 export interface QuickEnquiryBlock {
   title: string;
   description?: string | null;
+  /**
+   * Use a translucent glass style for the form so it sits well over an animated dark hero.
+   */
+  formOnDark?: boolean | null;
   promoEnabled?: boolean | null;
   promoBadge?: string | null;
   promoTitle?: string | null;
@@ -5103,6 +5107,7 @@ export interface PartnersDirectoryBlockSelect<T extends boolean = true> {
 export interface QuickEnquiryBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  formOnDark?: T;
   promoEnabled?: T;
   promoBadge?: T;
   promoTitle?: T;
