@@ -10,17 +10,22 @@ import {
   Aperture,
   ArrowRight,
   Building2,
+  Briefcase,
   Cable,
   Camera,
   Car,
   Cloud,
   CloudSun,
   DraftingCompass,
+  Factory,
   Footprints,
   Globe,
+  GraduationCap,
   Grid2x2,
   Home,
+  Hotel,
   Laptop,
+  Layers,
   Lock,
   MapPin,
   Moon,
@@ -35,10 +40,13 @@ import {
   ShieldCheck,
   Sparkles,
   Split,
+  Store,
   Sun,
   Thermometer,
   TrendingUp,
   Users,
+  UsersRound,
+  Warehouse,
   Wifi,
   Wrench,
   ZoomIn,
@@ -53,6 +61,18 @@ function getItemIcon(text?: string | null): LucideIcon {
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
+  // Wi-Fi / wireless environments (checked before the generic wi-fi rule)
+  if (t.includes('warehouse')) return Warehouse
+  if (t.includes('hospitality') || t.includes('hotel')) return Hotel
+  if (t.includes('education') || t.includes('school') || t.includes('classroom') || t.includes('campus'))
+    return GraduationCap
+  if (t.includes('retail') || t.includes('store') || t.includes('shop')) return Store
+  if (t.includes('industrial') || t.includes('factory') || t.includes('plant floor')) return Factory
+  if (t.includes('high-density') || t.includes('high density') || t.includes('density')) return UsersRound
+  if (t.includes('multi-floor') || t.includes('multi floor')) return Layers
+  if (t.includes('multi-site') || t.includes('multi site')) return Globe
+  if (t.includes('small business') || t.includes('smb')) return Briefcase
+  if (t.includes('corporate') || t.includes('office wi-fi') || t.includes('office wifi')) return Building2
   if (t.includes('wan monitor') || t.includes('network monitor')) return Radar
   if (t.includes('firewall') || t.includes('threat')) return ShieldCheck
   if (t.includes('access control')) return Lock
