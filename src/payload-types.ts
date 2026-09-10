@@ -381,6 +381,7 @@ export interface Page {
     | TileShowcaseBlock
     | AlternatingTimelineBlock
     | FlowShowcaseBlock
+    | SpecSheetBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3286,6 +3287,29 @@ export interface FlowShowcaseBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecSheetBlock".
+ */
+export interface SpecSheetBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Rendered as a technical datasheet — numbered rows on a blueprint-grid panel, two columns on desktop.
+   */
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'specSheet';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4650,6 +4674,7 @@ export interface PagesSelect<T extends boolean = true> {
         tileShowcase?: T | TileShowcaseBlockSelect<T>;
         alternatingTimeline?: T | AlternatingTimelineBlockSelect<T>;
         flowShowcase?: T | FlowShowcaseBlockSelect<T>;
+        specSheet?: T | SpecSheetBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6273,6 +6298,25 @@ export interface FlowShowcaseBlockSelect<T extends boolean = true> {
   note?: T;
   ctaLabel?: T;
   ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecSheetBlock_select".
+ */
+export interface SpecSheetBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
   id?: T;
   blockName?: T;
 }
