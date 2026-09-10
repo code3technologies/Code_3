@@ -1589,6 +1589,10 @@ export interface ServiceOverviewBlock {
       }[]
     | null;
   /**
+   * Continues the homepage-style animated dark-red hero background from a Service Detail Banner above, so the two read as one hero area.
+   */
+  animatedBackground?: boolean | null;
+  /**
    * Keep checked on service pages that also have a Quick Enquiry block, so text doesn't run under it. Uncheck for standalone pages with no such sidebar, so the text uses the full width.
    */
   reserveSidebarSpace?: boolean | null;
@@ -5284,6 +5288,7 @@ export interface ServiceOverviewBlockSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  animatedBackground?: T;
   reserveSidebarSpace?: T;
   id?: T;
   blockName?: T;

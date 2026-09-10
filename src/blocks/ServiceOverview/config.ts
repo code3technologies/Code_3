@@ -49,6 +49,15 @@ export const ServiceOverview: Block = {
       ],
     },
     {
+      name: 'animatedBackground',
+      type: 'checkbox',
+      label: 'Animated Dark Background',
+      defaultValue: false,
+      admin: {
+        description: 'Continues the homepage-style animated dark-red hero background from a Service Detail Banner above, so the two read as one hero area.',
+      },
+    },
+    {
       name: 'reserveSidebarSpace',
       type: 'checkbox',
       label: 'Reserve space for a floating sidebar form (e.g. Quick Enquiry)',
