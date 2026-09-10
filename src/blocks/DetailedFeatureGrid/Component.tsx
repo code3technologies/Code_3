@@ -21,6 +21,7 @@ import {
   Grid2x2,
   Home,
   Laptop,
+  Lock,
   MapPin,
   Moon,
   Network,
@@ -51,7 +52,16 @@ function getItemIcon(text?: string | null): LucideIcon {
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
-  if (t.includes('expansion') || t.includes('expand') || t.includes('scal') || t.includes('grow'))
+  if (t.includes('wan monitor') || t.includes('network monitor')) return Radar
+  if (t.includes('secure') || t.includes('site-to-site') || t.includes('vpn')) return Lock
+  if (t.includes('internet')) return Globe
+  if (
+    t.includes('expansion') ||
+    t.includes('expand') ||
+    t.includes('scal') ||
+    t.includes('grow') ||
+    t.includes('optim')
+  )
     return TrendingUp
   if (t.includes('installation') || t.includes('install')) return Wrench
   if (t.includes('design') || t.includes('architecture')) return PencilRuler
