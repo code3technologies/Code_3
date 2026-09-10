@@ -28,6 +28,17 @@ export const PathCompare: Block = {
       localized: true,
     },
     {
+      name: 'variant',
+      type: 'select',
+      label: 'Style',
+      defaultValue: 'flow',
+      options: [
+        { label: 'Flow — numbered steps joined by chevrons', value: 'flow' },
+        { label: 'List — plain checklist items', value: 'list' },
+      ],
+      admin: { description: 'Use "List" when the items are situations or criteria rather than an ordered process.' },
+    },
+    {
       name: 'columns',
       type: 'array',
       label: 'Paths',

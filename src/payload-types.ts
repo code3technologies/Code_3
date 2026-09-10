@@ -3434,6 +3434,10 @@ export interface PathCompareBlock {
   title: string;
   subtitle?: string | null;
   /**
+   * Use "List" when the items are situations or criteria rather than an ordered process.
+   */
+  variant?: ('flow' | 'list') | null;
+  /**
    * Each path renders as an equal-weight card with a numbered top-to-bottom step list. Use it for "either / or" journeys, not a good-vs-bad comparison.
    */
   columns?:
@@ -6713,6 +6717,7 @@ export interface PathCompareBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
+  variant?: T;
   columns?:
     | T
     | {
