@@ -383,6 +383,7 @@ export interface Page {
     | FlowShowcaseBlock
     | SpecSheetBlock
     | ParameterListBlock
+    | ConceptBreakdownBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3347,6 +3348,40 @@ export interface ParameterListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConceptBreakdownBlock".
+ */
+export interface ConceptBreakdownBlock {
+  badge?: string | null;
+  title: string;
+  /**
+   * Sits in the sticky left column above the list. Separate paragraphs with a blank line.
+   */
+  intro?: string | null;
+  /**
+   * e.g. "How CODE3 designs your LAN" — small heading above the aside passage.
+   */
+  asideLabel?: string | null;
+  /**
+   * A short passage shown under the intro in the left column, set off by a red rule. Separate paragraphs with a blank line.
+   */
+  asideText?: string | null;
+  /**
+   * Rendered as a borderless, hairline-divided reference list in the right column — term, then explanation. No cards, no icons.
+   */
+  items?:
+    | {
+        term: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'conceptBreakdown';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4713,6 +4748,7 @@ export interface PagesSelect<T extends boolean = true> {
         flowShowcase?: T | FlowShowcaseBlockSelect<T>;
         specSheet?: T | SpecSheetBlockSelect<T>;
         parameterList?: T | ParameterListBlockSelect<T>;
+        conceptBreakdown?: T | ConceptBreakdownBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6378,6 +6414,27 @@ export interface ParameterListBlockSelect<T extends boolean = true> {
       };
   ctaLabel?: T;
   ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConceptBreakdownBlock_select".
+ */
+export interface ConceptBreakdownBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  asideLabel?: T;
+  asideText?: T;
+  items?:
+    | T
+    | {
+        term?: T;
+        description?: T;
+        id?: T;
+      };
+  note?: T;
   id?: T;
   blockName?: T;
 }

@@ -72,6 +72,7 @@ import { AlternatingTimeline } from '@/blocks/AlternatingTimeline/config'
 import { FlowShowcase } from '@/blocks/FlowShowcase/config'
 import { SpecSheet } from '@/blocks/SpecSheet/config'
 import { ParameterList } from '@/blocks/ParameterList/config'
+import { ConceptBreakdown } from '@/blocks/ConceptBreakdown/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -301,6 +302,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FlowShowcase,
                 SpecSheet,
                 ParameterList,
+                ConceptBreakdown,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,
