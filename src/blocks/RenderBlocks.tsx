@@ -74,6 +74,7 @@ import { ChecklistCardBlock } from './ChecklistCard/Component'
 import { EcosystemDiagramBlock } from './EcosystemDiagram/Component'
 import { TileShowcaseBlock } from './TileShowcase/Component'
 import { AlternatingTimelineBlock } from './AlternatingTimeline/Component'
+import { FlowShowcaseBlock } from './FlowShowcase/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -165,6 +166,7 @@ const blockComponents = {
   ecosystemDiagram: EcosystemDiagramBlock,
   tileShowcase: TileShowcaseBlock,
   alternatingTimeline: AlternatingTimelineBlock,
+  flowShowcase: FlowShowcaseBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,

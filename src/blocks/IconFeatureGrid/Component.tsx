@@ -13,6 +13,10 @@ import {
   ArrowRight,
   ArrowRightLeft,
   BadgeCheck,
+  Bell,
+  Eye,
+  FileSearch,
+  History,
   Briefcase,
   Building2,
   Cable,
@@ -140,6 +144,11 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('authorized vehicle')) return Check
   if (t.includes('visitor vehicle')) return Users
   if (t.includes('watchlist')) return AlertTriangle
+  if (t.includes('live monitoring')) return Eye
+  if (t.includes('event-based review') || t.includes('event based review')) return History
+  if (t.includes('alert')) return Bell
+  if (t.includes('video search')) return FileSearch
+  if (t.includes('incident')) return AlertTriangle
   if (t.includes('vehicle') || t.includes('anpr')) return Car
   if (t.includes('people detection') || t.includes('people counting')) return Users
   if (t.includes('intrusion')) return AlertTriangle

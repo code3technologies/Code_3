@@ -69,6 +69,7 @@ import { ChecklistCard } from '@/blocks/ChecklistCard/config'
 import { EcosystemDiagram } from '@/blocks/EcosystemDiagram/config'
 import { TileShowcase } from '@/blocks/TileShowcase/config'
 import { AlternatingTimeline } from '@/blocks/AlternatingTimeline/config'
+import { FlowShowcase } from '@/blocks/FlowShowcase/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -295,6 +296,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 EcosystemDiagram,
                 TileShowcase,
                 AlternatingTimeline,
+                FlowShowcase,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,

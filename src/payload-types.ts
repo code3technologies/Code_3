@@ -380,6 +380,7 @@ export interface Page {
     | EcosystemDiagramBlock
     | TileShowcaseBlock
     | AlternatingTimelineBlock
+    | FlowShowcaseBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3254,6 +3255,33 @@ export interface AlternatingTimelineBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlowShowcaseBlock".
+ */
+export interface FlowShowcaseBlock {
+  badge?: string | null;
+  title: string;
+  intro?: string | null;
+  /**
+   * Short labels only (1-4 words) — rendered as large connected nodes on a bold colored panel. Reserved for a single, important, eye-catching flow rather than a plain step list.
+   */
+  steps?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown below the flow, e.g. a compatibility disclaimer.
+   */
+  note?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'flowShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4617,6 +4645,7 @@ export interface PagesSelect<T extends boolean = true> {
         ecosystemDiagram?: T | EcosystemDiagramBlockSelect<T>;
         tileShowcase?: T | TileShowcaseBlockSelect<T>;
         alternatingTimeline?: T | AlternatingTimelineBlockSelect<T>;
+        flowShowcase?: T | FlowShowcaseBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -6217,6 +6246,26 @@ export interface AlternatingTimelineBlockSelect<T extends boolean = true> {
         id?: T;
       };
   ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlowShowcaseBlock_select".
+ */
+export interface FlowShowcaseBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  intro?: T;
+  steps?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  note?: T;
   ctaLabel?: T;
   ctaUrl?: T;
   id?: T;
