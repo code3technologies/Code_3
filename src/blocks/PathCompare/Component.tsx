@@ -2,7 +2,7 @@ import type { PathCompareBlock as PathCompareBlockProps } from 'src/payload-type
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 
@@ -10,10 +10,10 @@ type Props = {
   className?: string
 } & PathCompareBlockProps
 
-// Two (or three) equal-weight paths side by side. Each card has a solid
-// coloured header and a top-to-bottom stack of step chips joined by
-// chevrons. Deliberately symmetrical — for "which of these are you?"
-// journeys rather than a better/worse comparison.
+// Two (or three) equal-weight paths, stacked full-width. Each card has a
+// solid coloured header and a left-to-right row of step chips joined by
+// chevrons (wrapping on narrow screens). Deliberately symmetrical — for
+// "which of these are you?" journeys, not a better/worse comparison.
 export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, subtitle, columns = [], note }) => {
   const safeColumns = (columns || []).filter((c) => (c.steps || []).length > 0)
   if (safeColumns.length === 0) return null
@@ -29,42 +29,36 @@ export const PathCompareBlock: React.FC<Props> = ({ className, badge, title, sub
           {subtitle && <p className="mt-2 leading-relaxed text-gray-600">{subtitle}</p>}
         </Reveal>
 
-        <div
-          className={cn(
-            'mx-auto grid max-w-4xl items-stretch gap-5',
-            safeColumns.length === 2 && 'md:grid-cols-2',
-            safeColumns.length >= 3 && 'md:grid-cols-2 lg:grid-cols-3',
-          )}
-        >
+        <div className="mx-auto grid max-w-5xl gap-5">
           {safeColumns.map((col, ci) => {
             const steps = col.steps || []
             return (
               <Reveal
                 key={col.id || ci}
                 delayMs={ci * 80}
-                className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
+                className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
               >
-                <div className="bg-primary_red px-5 py-4 text-white sm:px-6">
-                  <h3 className="text-base font-bold">{col.label}</h3>
-                  {col.caption && <p className="mt-0.5 text-sm text-white/80">{col.caption}</p>}
-                </div>
+                <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+                  <div className="flex-none rounded-xl bg-primary_red px-4 py-3 text-white sm:w-52">
+                    <h3 className="text-sm font-bold uppercase tracking-wide">{col.label}</h3>
+                    {col.caption && <p className="mt-0.5 text-xs leading-snug text-white/80">{col.caption}</p>}
+                  </div>
 
-                <div className="flex flex-1 flex-col p-4 sm:p-5">
-                  {steps.map((step, si) => (
-                    <React.Fragment key={step.id || si}>
-                      <div className="flex items-center gap-3 rounded-xl border border-primary_red/15 bg-[#FDEBEC]/50 px-3.5 py-2.5">
-                        <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red text-[11px] font-bold text-white">
-                          {si + 1}
+                  <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-2">
+                    {steps.map((step, si) => (
+                      <React.Fragment key={step.id || si}>
+                        <span className="inline-flex items-center gap-2 rounded-lg border border-primary_red/15 bg-[#FDEBEC]/50 px-3 py-2">
+                          <span className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-primary_red text-[10px] font-bold text-white">
+                            {si + 1}
+                          </span>
+                          <span className="text-sm font-semibold leading-none text-foreground">{step.text}</span>
                         </span>
-                        <span className="text-sm font-semibold leading-snug text-foreground">{step.text}</span>
-                      </div>
-                      {si < steps.length - 1 && (
-                        <div className="flex justify-center py-1">
-                          <ChevronDown className="h-4 w-4 text-primary_red/40" strokeWidth={2.5} />
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
+                        {si < steps.length - 1 && (
+                          <ChevronRight className="h-4 w-4 flex-none text-primary_red/40" strokeWidth={2.5} />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
                 </div>
               </Reveal>
             )
