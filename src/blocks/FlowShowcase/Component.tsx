@@ -52,13 +52,14 @@ type Props = {
   className?: string
 } & FlowShowcaseBlockProps
 
-// A single, bold flow on a dark gradient panel — large connected icon nodes
-// with a short caption each. Horizontal on desktop, stacked on mobile.
-// Reserved for a flow important enough to deserve its own visual moment,
-// distinct from the plain-white timelines used elsewhere on the site.
+// A single, bold flow on a dark gradient panel: a horizontal row of large
+// connected icon nodes, and — inside the same panel — a numbered detail
+// list beneath it. Reserved for a flow important enough to deserve its own
+// visual moment, distinct from the plain-white timelines used elsewhere.
 export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, intro, steps = [], note, ctaLabel, ctaUrl }) => {
   const safeSteps = steps || []
   if (safeSteps.length === 0) return null
+  const hasDescriptions = safeSteps.some((step) => step.description)
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -71,7 +72,7 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
 
         <Reveal
           delayMs={100}
-          className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-5 py-10 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-8 md:py-12"
+          className="relative mx-auto max-w-4xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1c1113] via-[#3a0f14] to-primary_red px-5 py-9 shadow-[0_24px_60px_-24px_rgba(201,14,29,0.5)] sm:px-8 md:py-11"
         >
           <div
             aria-hidden
@@ -82,34 +83,50 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
             className="pointer-events-none absolute -bottom-20 left-0 h-56 w-56 rounded-full bg-black/20 blur-3xl"
           />
 
-          <div className="relative flex flex-col items-center gap-3 overflow-x-auto md:flex-row md:flex-nowrap md:items-start md:justify-center md:gap-2 md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
+          {/* Flow row */}
+          <div className="relative flex flex-col items-center gap-2 overflow-x-auto md:flex-row md:flex-nowrap md:justify-center md:gap-1.5 md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
             {safeSteps.map((step, index) => {
               const Icon = getNodeIcon(step.label)
               const isLast = index === safeSteps.length - 1
               return (
                 <React.Fragment key={step.id || index}>
-                  <div className="flex w-full max-w-[220px] flex-none flex-col items-center gap-2 text-center md:w-32">
+                  <div className="flex w-24 flex-none flex-col items-center gap-2 text-center">
                     <span className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-white text-primary_red shadow-lg sm:h-14 sm:w-14">
                       <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </span>
                     <span className="text-xs font-bold leading-tight text-white sm:text-sm">{step.label}</span>
-                    {step.description && (
-                      <span className="text-[11px] leading-snug text-white/60 sm:text-xs">{step.description}</span>
-                    )}
                   </div>
                   {!isLast && (
                     <>
                       <ChevronDown className="h-5 w-5 flex-none text-white/40 md:hidden" strokeWidth={2.5} />
-                      <ChevronRight
-                        className="mt-4 hidden h-5 w-5 flex-none text-white/40 sm:mt-5 md:block"
-                        strokeWidth={2.5}
-                      />
+                      <ChevronRight className="hidden h-5 w-5 flex-none text-white/40 md:block" strokeWidth={2.5} />
                     </>
                   )}
                 </React.Fragment>
               )
             })}
           </div>
+
+          {/* Detail list — same panel, below the flow */}
+          {hasDescriptions && (
+            <div className="relative mt-8 border-t border-white/10 pt-8">
+              <div className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
+                {safeSteps.map((step, index) => (
+                  <div key={step.id || index} className="flex gap-3">
+                    <span className="flex-none text-base font-black leading-none text-white/25">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <div className="text-sm font-bold leading-snug text-white">{step.label}</div>
+                      {step.description && (
+                        <p className="mt-1 text-sm leading-relaxed text-white/60">{step.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </Reveal>
 
         {note && (
