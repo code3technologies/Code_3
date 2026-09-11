@@ -107,13 +107,9 @@ export function MiniContactForm({
       'lg:border-white/20 lg:bg-white/10 lg:text-white lg:placeholder:text-white/50 lg:focus:border-white/60',
   )
   const errorTextClass = cn('text-primary_red', onDark && 'lg:text-red-300')
-  // A solid (not translucent) dark tone, not a see-through overlay: this
-  // card can end up taller than the hero's dark background on short pages,
-  // and a see-through card turns unreadable once it overlaps the plain
-  // white section below.
   const cardClass = cn(
     'rounded-2xl border border-border bg-white shadow-sm',
-    onDark && 'lg:border-white/15 lg:bg-[#2a0d10]/95 lg:shadow-2xl lg:backdrop-blur-md',
+    onDark && 'lg:border-white/15 lg:bg-white/[0.07] lg:shadow-2xl lg:backdrop-blur-md',
   )
 
   if (hasSubmitted) {
