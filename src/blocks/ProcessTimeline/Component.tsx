@@ -38,8 +38,24 @@ export const ProcessTimelineBlock: React.FC<Props> = ({
   // icon-forward language used everywhere else on the site, while a
   // step with no icon (every existing use of this block) renders exactly
   // as before.
-  const StepMarker = ({ step, index, filled }: { step: (typeof steps)[number]; index: number; filled: boolean }) => (
-    <div className={cn(markerClassName(filled), step.url && 'transition-colors group-hover:border-secondary_red')}>
+  const StepMarker = ({
+    step,
+    index,
+    filled,
+    centered,
+  }: {
+    step: (typeof steps)[number]
+    index: number
+    filled: boolean
+    centered?: boolean
+  }) => (
+    <div
+      className={cn(
+        markerClassName(filled),
+        centered && 'mx-auto',
+        step.url && 'transition-colors group-hover:border-secondary_red',
+      )}
+    >
       {step.icon ? <ServiceIcon preset={step.icon} className="h-4 w-4" /> : index + 1}
     </div>
   )
@@ -89,7 +105,7 @@ export const ProcessTimelineBlock: React.FC<Props> = ({
               )}
               {steps.map((step, index) => (
                 <StepWrapper key={step.id || index} step={step} className="relative px-4 text-center last:pr-0">
-                  <StepMarker step={step} index={index} filled={!!emphasizeFinalStep && index === steps.length - 1} />
+                  <StepMarker step={step} index={index} filled={!!emphasizeFinalStep && index === steps.length - 1} centered />
                   <h3
                     className={cn(
                       'mt-5 text-base font-bold text-foreground',
