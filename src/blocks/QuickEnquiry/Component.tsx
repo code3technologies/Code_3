@@ -70,7 +70,21 @@ export const QuickEnquiryBlock: React.FC<QuickEnquiryBlockProps> = ({
         />
 
         {promoEnabled && promoTitle && (
-          <div className="relative mx-auto mt-4 max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-primary_red via-primary_red to-[#6d0b12] p-5 shadow-xl ring-1 ring-black/5 lg:pointer-events-auto lg:mx-0 lg:w-[360px]">
+          <div
+            className={cn(
+              'relative mx-auto mt-4 max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-primary_red via-primary_red to-[#6d0b12] p-5 shadow-xl ring-1 ring-black/5 lg:pointer-events-auto lg:mx-0 lg:w-[360px]',
+              // On the animated dark hero, a second opaque red card fights the
+              // background instead of reading as a distinct "offer" panel — so
+              // on desktop it switches to a dark glass panel instead. A solid
+              // (not translucent) dark tone is used rather than a see-through
+              // overlay: this card can be taller than the hero's dark area on
+              // short pages, and a see-through card turns unreadable once it
+              // overlaps the plain white section below. Mobile (where it's a
+              // normal light-page card) is unaffected.
+              formOnDark &&
+                'lg:border lg:border-white/15 lg:bg-none lg:bg-[#2a0d10]/95 lg:shadow-2xl lg:ring-white/10 lg:backdrop-blur-md',
+            )}
+          >
             {/* Decorative glow accents */}
             <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
             <div className="pointer-events-none absolute -bottom-12 -left-8 h-28 w-28 rounded-full bg-black/10 blur-2xl" />
