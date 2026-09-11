@@ -39,7 +39,7 @@ export const TeamConvergence: Block = {
       name: 'items',
       type: 'array',
       label: 'Scattered Items',
-      minRows: 3,
+      minRows: 2,
       maxRows: 12,
       admin: { description: 'The fragmented specialties/vendors shown converging into one team.' },
       fields: [{ name: 'text', type: 'text', required: true, localized: true }],

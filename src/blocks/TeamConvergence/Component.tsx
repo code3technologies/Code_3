@@ -13,15 +13,18 @@ import {
   CheckCircle2,
   ChevronsDown,
   ClipboardList,
+  Cloud,
   Handshake,
   KeyRound,
   Mail,
   Monitor,
   Network,
+  Phone,
   Presentation,
   Server,
   ShieldCheck,
   User,
+  Users,
   UsersRound,
   Wifi,
   type LucideIcon,
@@ -51,6 +54,11 @@ function getDestinationIcon(text?: string | null): LucideIcon {
   if (t.includes('team')) return UsersRound
   if (t.includes('plan')) return ClipboardList
   if (t.includes('handover')) return Handshake
+  if (t.includes('server')) return Server
+  if (t.includes('wi-fi') || t.includes('wifi')) return Wifi
+  if (t.includes('voip') || t.includes('phone')) return Phone
+  if (t.includes('cloud')) return Cloud
+  if (t.includes('user')) return Users
   return CheckCircle2
 }
 

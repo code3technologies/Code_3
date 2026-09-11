@@ -5,20 +5,26 @@ import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
+  Activity,
   Bell,
   Car,
   DoorOpen,
   Eye,
   Factory,
   Fence,
+  Gauge,
   Grid2x2,
   History,
+  Infinity as InfinityIcon,
   Lock,
   Moon,
   Radar,
+  RefreshCw,
+  ShieldCheck,
   Smartphone,
   Sparkles,
   Truck,
+  Unlink,
   UserCog,
   Users,
   Warehouse,
@@ -28,6 +34,12 @@ import {
 // Best-effort icon per feature, matched by keyword.
 function getFeatureIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  if (t.includes('redundan')) return ShieldCheck
+  if (t.includes('utiliz')) return Gauge
+  if (t.includes('failover')) return RefreshCw
+  if (t.includes('availab')) return Activity
+  if (t.includes('continuity')) return InfinityIcon
+  if (t.includes('dependency') || t.includes('provider')) return Unlink
   if (t.includes('live view')) return Eye
   if (t.includes('playback')) return History
   if (t.includes('remote')) return Smartphone
