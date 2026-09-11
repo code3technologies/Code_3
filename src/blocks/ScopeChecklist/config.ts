@@ -72,5 +72,25 @@ export const ScopeChecklist: Block = {
       admin: { description: 'e.g. "Also fully customizable based on your business needs and requirements."' },
       localized: true,
     },
+    {
+      name: 'ctaLabel',
+      type: 'text',
+      label: 'CTA Button Label (optional)',
+      localized: true,
+      admin: { description: 'Leave blank to show no button. Shown below the checklist, e.g. linking to a related service page.' },
+    },
+    {
+      name: 'ctaUrl',
+      type: 'text',
+      label: 'CTA Button URL',
+      admin: { description: 'e.g. "/service/new-office-it-setup-dubai-uae".' },
+    },
+    {
+      name: 'ctaText',
+      type: 'text',
+      label: 'CTA Lead-in Text (optional)',
+      localized: true,
+      admin: { description: 'Short line shown above the button, e.g. "Need the New Office IT Setup Too?"' },
+    },
   ],
 }

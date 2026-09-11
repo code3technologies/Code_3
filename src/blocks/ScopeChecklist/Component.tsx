@@ -47,7 +47,7 @@ function getMonthlyItemIcon(text?: string | null): LucideIcon {
   return CheckIcon as unknown as LucideIcon
 }
 
-function ChecklistGrid({ badge, title, subtitle, items, note }: ScopeChecklistBlockProps) {
+function ChecklistGrid({ badge, title, subtitle, items, note, ctaText, ctaLabel, ctaUrl }: ScopeChecklistBlockProps) {
   const safeItems = items || []
   const hasDescriptions = safeItems.some((item) => item.description)
 
@@ -109,6 +109,18 @@ function ChecklistGrid({ badge, title, subtitle, items, note }: ScopeChecklistBl
       </Reveal>
 
       {note && <p className="mt-5 text-sm text-gray-500">{note}</p>}
+
+      {ctaLabel && ctaUrl && (
+        <div className="mt-8 flex flex-col items-center gap-3 text-center">
+          {ctaText && <p className="text-sm font-medium text-gray-600">{ctaText}</p>}
+          <Link
+            href={ctaUrl}
+            className="inline-flex items-center gap-2 rounded-full bg-primary_red px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-700"
+          >
+            {ctaLabel}
+          </Link>
+        </div>
+      )}
     </>
   )
 }

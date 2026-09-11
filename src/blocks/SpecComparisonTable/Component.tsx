@@ -71,17 +71,7 @@ export const SpecComparisonTableBlock: React.FC<Props> = ({
     )
 
   return (
-    <section className={cn('relative overflow-hidden bg-gradient-to-b from-gray-50/70 to-white py-7 md:py-9', className)}>
-      {/* Decorative ambient glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-primary_red/10 blur-3xl md:h-96 md:w-96"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-24 left-0 h-64 w-64 rounded-full bg-primary_red/5 blur-3xl"
-      />
-
+    <section className={cn('relative bg-white py-7 md:py-9', className)}>
       <div className="container relative mx-auto px-4 sm:px-6">
         <Reveal className="max-w-2xl mb-8">
           {badge && <Eyebrow>{badge}</Eyebrow>}

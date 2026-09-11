@@ -388,6 +388,7 @@ export interface Page {
     | PathCompareBlock
     | NetworkEstimatorBlock
     | WiFiEstimatorBlock
+    | InternetRedundancyEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -1555,7 +1556,23 @@ export interface ServiceDetailBannerBlock {
   /**
    * Which icons drift through the animated hero background — pick the set that matches this service.
    */
-  floatingIconSet?: ('surveillance' | 'networking' | 'general') | null;
+  floatingIconSet?:
+    | (
+        | 'surveillance'
+        | 'networking'
+        | 'security'
+        | 'cloud'
+        | 'backup'
+        | 'datacenter'
+        | 'managed'
+        | 'hardware'
+        | 'av'
+        | 'comms'
+        | 'digital'
+        | 'professional'
+        | 'general'
+      )
+    | null;
   /**
    * e.g. "Cyber Security" — shown as a small link back to the parent service category.
    */
@@ -1975,6 +1992,18 @@ export interface ScopeChecklistBlock {
    * e.g. "Also fully customizable based on your business needs and requirements."
    */
   note?: string | null;
+  /**
+   * Leave blank to show no button. Shown below the checklist, e.g. linking to a related service page.
+   */
+  ctaLabel?: string | null;
+  /**
+   * e.g. "/service/new-office-it-setup-dubai-uae".
+   */
+  ctaUrl?: string | null;
+  /**
+   * Short line shown above the button, e.g. "Need the New Office IT Setup Too?"
+   */
+  ctaText?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'scopeChecklist';
@@ -3621,6 +3650,64 @@ export interface WiFiEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InternetRedundancyEstimatorBlock".
+ */
+export interface InternetRedundancyEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  connectionsLabel?: string | null;
+  connectionsOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  setupLabel?: string | null;
+  setupOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  sizeLabel?: string | null;
+  sizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  locationsLabel?: string | null;
+  locationsOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  reqLabel?: string | null;
+  reqOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'internetRedundancyEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -4992,6 +5079,7 @@ export interface PagesSelect<T extends boolean = true> {
         pathCompare?: T | PathCompareBlockSelect<T>;
         networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         wifiEstimator?: T | WiFiEstimatorBlockSelect<T>;
+        internetRedundancyEstimator?: T | InternetRedundancyEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -5830,6 +5918,9 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  ctaText?: T;
   id?: T;
   blockName?: T;
 }
@@ -6859,6 +6950,57 @@ export interface WiFiEstimatorBlockSelect<T extends boolean = true> {
       };
   existingLabel?: T;
   existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  reqLabel?: T;
+  reqOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InternetRedundancyEstimatorBlock_select".
+ */
+export interface InternetRedundancyEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  connectionsLabel?: T;
+  connectionsOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  setupLabel?: T;
+  setupOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  sizeLabel?: T;
+  sizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  locationsLabel?: T;
+  locationsOptions?:
     | T
     | {
         text?: T;

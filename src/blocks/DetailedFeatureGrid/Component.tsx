@@ -6,6 +6,7 @@ import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
+  Activity,
   AlertTriangle,
   Aperture,
   ArrowRight,
@@ -27,6 +28,7 @@ import {
   Home,
   Hotel,
   Laptop,
+  LayoutDashboard,
   Layers,
   Lock,
   MapPin,
@@ -36,6 +38,8 @@ import {
   Plug,
   Printer,
   Radar,
+  RefreshCw,
+  Route,
   Router,
   ScanEye,
   ScanLine,
@@ -66,6 +70,12 @@ function getItemIcon(text?: string | null): LucideIcon {
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))
     return DraftingCompass
+  // Load balancing router feature keywords
+  if (t.includes('wan port')) return Router
+  if (t.includes('failover')) return RefreshCw
+  if (t.includes('policy') || t.includes('routing')) return Route
+  if (t.includes('health check')) return Activity
+  if (t.includes('connection management')) return LayoutDashboard
   // Wi-Fi security keywords
   if (t.includes('authentication')) return Fingerprint
   if (t.includes('rogue')) return AlertTriangle
