@@ -1,19 +1,63 @@
 import React from 'react'
 import Link from 'next/link'
 import {
+  Archive,
+  Boxes,
+  Bug,
   Cable,
   Camera,
   Cctv,
+  ClipboardCheck,
+  Cloud,
+  Code,
+  Compass,
+  Cpu,
+  Database,
+  DatabaseBackup,
+  Fingerprint,
+  Gauge,
   Globe,
   HardDrive,
+  HardDriveDownload,
+  Headphones,
+  Headset,
+  History,
+  Keyboard,
+  KeyRound,
+  LayoutGrid,
+  LifeBuoy,
+  Lock,
+  MemoryStick,
+  MessageSquare,
+  Mic,
   Monitor,
+  MonitorCheck,
+  MonitorPlay,
   MonitorSmartphone,
   Network,
+  PencilRuler,
+  PenTool,
+  Phone,
+  Presentation,
+  Printer,
+  Projector,
+  RefreshCw,
+  Rocket,
   Router,
   ScanEye,
+  Search,
   Server,
+  Settings,
+  ShieldCheck,
+  Smartphone,
+  Speaker,
+  Target,
+  Thermometer,
+  Users,
   Video,
+  Voicemail,
   Wifi,
+  Wrench,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/utilities/ui'
@@ -26,7 +70,23 @@ interface ServiceDetailBannerBlockProps {
   description?: string
   showGradientLine?: boolean
   animatedBackground?: boolean
-  floatingIconSet?: ('surveillance' | 'networking' | 'general') | null
+  floatingIconSet?:
+    | (
+        | 'surveillance'
+        | 'networking'
+        | 'security'
+        | 'cloud'
+        | 'backup'
+        | 'datacenter'
+        | 'managed'
+        | 'hardware'
+        | 'av'
+        | 'comms'
+        | 'digital'
+        | 'professional'
+        | 'general'
+      )
+    | null
   className?: string
   serviceBadge?: string
   backLinkLabel?: string
@@ -46,6 +106,16 @@ type Props = ServiceDetailBannerBlockProps
 const FLOATING_ICON_SETS: Record<string, LucideIcon[]> = {
   surveillance: [Cctv, Camera, ScanEye, HardDrive, Monitor, Video],
   networking: [Network, Router, Wifi, Server, Cable, Globe],
+  security: [ShieldCheck, Lock, Fingerprint, Bug, ScanEye, KeyRound],
+  cloud: [Cloud, Server, Database, RefreshCw, HardDriveDownload, Globe],
+  backup: [HardDrive, DatabaseBackup, History, ShieldCheck, RefreshCw, Archive],
+  datacenter: [Server, HardDrive, Cpu, Boxes, Network, Thermometer],
+  managed: [LifeBuoy, Headset, Settings, MonitorCheck, Wrench, Gauge],
+  hardware: [Cpu, HardDrive, Keyboard, Printer, Server, MemoryStick],
+  av: [MonitorPlay, Projector, Speaker, Mic, Video, Presentation],
+  comms: [Phone, Video, MessageSquare, Headphones, Voicemail, Users],
+  digital: [Code, Search, PenTool, Smartphone, Rocket, LayoutGrid],
+  professional: [ClipboardCheck, Users, PencilRuler, Presentation, Target, Compass],
   general: [Server, Network, MonitorSmartphone, HardDrive, Wifi, Globe],
 }
 
@@ -59,7 +129,7 @@ const FLOATING_POSITIONS: { style: React.CSSProperties; duration: string; delay:
 ]
 
 function FloatingIcons({ set }: { set?: string | null }) {
-  const icons = FLOATING_ICON_SETS[set || 'surveillance'] || FLOATING_ICON_SETS.surveillance
+  const icons = FLOATING_ICON_SETS[set || 'general'] || FLOATING_ICON_SETS.general
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden lg:block">

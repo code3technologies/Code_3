@@ -1555,7 +1555,23 @@ export interface ServiceDetailBannerBlock {
   /**
    * Which icons drift through the animated hero background — pick the set that matches this service.
    */
-  floatingIconSet?: ('surveillance' | 'networking' | 'general') | null;
+  floatingIconSet?:
+    | (
+        | 'surveillance'
+        | 'networking'
+        | 'security'
+        | 'cloud'
+        | 'backup'
+        | 'datacenter'
+        | 'managed'
+        | 'hardware'
+        | 'av'
+        | 'comms'
+        | 'digital'
+        | 'professional'
+        | 'general'
+      )
+    | null;
   /**
    * e.g. "Cyber Security" — shown as a small link back to the parent service category.
    */
