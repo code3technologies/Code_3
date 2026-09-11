@@ -77,6 +77,7 @@ import { ZonedFlow } from '@/blocks/ZonedFlow/config'
 import { PathCompare } from '@/blocks/PathCompare/config'
 import { NetworkEstimator } from '@/blocks/NetworkEstimator/config'
 import { WiFiEstimator } from '@/blocks/WiFiEstimator/config'
+import { InternetRedundancyEstimator } from '@/blocks/InternetRedundancyEstimator/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
 import { ServiceJourney } from '@/blocks/ServiceJourney/config'
@@ -311,6 +312,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 PathCompare,
                 NetworkEstimator,
                 WiFiEstimator,
+                InternetRedundancyEstimator,
                 ProcessPhases,
                 TeamConvergence,
                 ServiceJourney,
