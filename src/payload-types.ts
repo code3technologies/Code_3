@@ -1992,6 +1992,18 @@ export interface ScopeChecklistBlock {
    * e.g. "Also fully customizable based on your business needs and requirements."
    */
   note?: string | null;
+  /**
+   * Leave blank to show no button. Shown below the checklist, e.g. linking to a related service page.
+   */
+  ctaLabel?: string | null;
+  /**
+   * e.g. "/service/new-office-it-setup-dubai-uae".
+   */
+  ctaUrl?: string | null;
+  /**
+   * Short line shown above the button, e.g. "Need the New Office IT Setup Too?"
+   */
+  ctaText?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'scopeChecklist';
@@ -5906,6 +5918,9 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  ctaText?: T;
   id?: T;
   blockName?: T;
 }
