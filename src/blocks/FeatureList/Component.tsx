@@ -6,6 +6,8 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
   Activity,
+  ArrowLeftRight,
+  ArrowUpDown,
   Bell,
   Car,
   DoorOpen,
@@ -14,12 +16,16 @@ import {
   Fence,
   Gauge,
   Grid2x2,
+  HeartPulse,
   History,
   Infinity as InfinityIcon,
+  Link2,
   Lock,
   Moon,
   Radar,
   RefreshCw,
+  Route,
+  Scale,
   ShieldCheck,
   Smartphone,
   Sparkles,
@@ -40,6 +46,13 @@ function getFeatureIcon(text?: string | null): LucideIcon {
   if (t.includes('availab')) return Activity
   if (t.includes('continuity')) return InfinityIcon
   if (t.includes('dependency') || t.includes('provider')) return Unlink
+  if (t.includes('weighted')) return Scale
+  if (t.includes('session')) return Link2
+  if (t.includes('application-aware') || t.includes('application aware')) return Sparkles
+  if (t.includes('health-check') || t.includes('health check')) return HeartPulse
+  if (t.includes('priority')) return ArrowUpDown
+  if (t.includes('source') || t.includes('destination')) return ArrowLeftRight
+  if (t.includes('policy') || t.includes('routing')) return Route
   if (t.includes('live view')) return Eye
   if (t.includes('playback')) return History
   if (t.includes('remote')) return Smartphone
