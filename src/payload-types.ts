@@ -388,6 +388,7 @@ export interface Page {
     | PathCompareBlock
     | NetworkEstimatorBlock
     | WiFiEstimatorBlock
+    | AVArchitectureFlowBlock
     | InternetRedundancyEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
@@ -3654,6 +3655,52 @@ export interface WiFiEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVArchitectureFlowBlock".
+ */
+export interface AVArchitectureFlowBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Rendered as a vertical chain of stages connected by arrows, e.g. Source → Connectivity → Processing → Output.
+   */
+  mainFlow?:
+    | {
+        title: string;
+        /**
+         * Generic category examples only, e.g. "Laptop / Camera / Microphone / Media" — avoid naming specific equipment unless actually supplied.
+         */
+        examples?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Additional parallel systems shown below the main path, e.g. Audio, Collaboration, Control.
+   */
+  secondaryFlows?:
+    | {
+        label: string;
+        style?: ('chain' | 'list') | null;
+        items?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. Collaboration tools feeding into Control.
+         */
+        connectFromPrevious?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'avArchitectureFlow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "InternetRedundancyEstimatorBlock".
  */
 export interface InternetRedundancyEstimatorBlock {
@@ -5083,6 +5130,7 @@ export interface PagesSelect<T extends boolean = true> {
         pathCompare?: T | PathCompareBlockSelect<T>;
         networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         wifiEstimator?: T | WiFiEstimatorBlockSelect<T>;
+        avArchitectureFlow?: T | AVArchitectureFlowBlockSelect<T>;
         internetRedundancyEstimator?: T | InternetRedundancyEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
@@ -6972,6 +7020,39 @@ export interface WiFiEstimatorBlockSelect<T extends boolean = true> {
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVArchitectureFlowBlock_select".
+ */
+export interface AVArchitectureFlowBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  mainFlow?:
+    | T
+    | {
+        title?: T;
+        examples?: T;
+        id?: T;
+      };
+  secondaryFlows?:
+    | T
+    | {
+        label?: T;
+        style?: T;
+        items?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        connectFromPrevious?: T;
+        id?: T;
+      };
+  note?: T;
   id?: T;
   blockName?: T;
 }
