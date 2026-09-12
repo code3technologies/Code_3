@@ -220,7 +220,7 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
           delayMs={100}
           className={cn(
             'mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2',
-            safeItems.length <= 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3',
+            safeItems.length <= 2 ? 'lg:grid-cols-2' : safeItems.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3',
           )}
         >
           {safeItems.map((item, index) => {
