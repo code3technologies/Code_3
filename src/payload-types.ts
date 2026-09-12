@@ -1995,6 +1995,10 @@ export interface ScopeChecklistBlock {
    */
   note?: string | null;
   /**
+   * Keyword-matched suits a list of distinct services/topics; checkmark suits a literal "these are included" checklist.
+   */
+  iconStyle?: ('check' | 'keyword') | null;
+  /**
    * Leave blank to show no button. Shown below the checklist, e.g. linking to a related service page.
    */
   ctaLabel?: string | null;
@@ -6012,6 +6016,7 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  iconStyle?: T;
   ctaLabel?: T;
   ctaUrl?: T;
   ctaText?: T;
