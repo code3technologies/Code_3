@@ -11,9 +11,13 @@ import {
   HardDrive,
   Headset,
   Lightbulb,
+  RefreshCw,
   RotateCw,
+  Settings2,
   ShieldCheck,
   Ticket,
+  TrendingUp,
+  Users,
   Wifi,
   Wrench,
   type LucideIcon,
@@ -31,25 +35,33 @@ function CheckIcon({ className = 'h-4 w-4' }: { className?: string }) {
   )
 }
 
-// Best-effort icon per item, matched by keyword — keeps the Monthly Cadence
-// layout sensible for any future item list, not just AMC's 9.
-function getMonthlyItemIcon(text?: string | null): LucideIcon {
+// Best-effort icon per item, matched by keyword — shared by the Monthly
+// Cadence layout and the Checklist Grid's optional "keyword" icon style, so
+// any future item list gets a sensible icon rather than just AMC's 9.
+function getKeywordIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  if (t.includes('troubleshoot')) return Wrench
+  if (t.includes('configuration')) return Settings2
+  if (t.includes('testing')) return Activity
+  if (t.includes('replacement')) return RefreshCw
+  if (t.includes('meeting-room') || t.includes('meeting room')) return Users
+  if (t.includes('upgrade')) return TrendingUp
   if (t.includes('maintenance')) return Wrench
   if (t.includes('health')) return Activity
   if (t.includes('network')) return Wifi
   if (t.includes('security')) return ShieldCheck
   if (t.includes('backup')) return HardDrive
-  if (t.includes('support')) return Headset
+  if (t.includes('support') || t.includes('assistance')) return Headset
   if (t.includes('ticket')) return Ticket
   if (t.includes('report')) return FileText
   if (t.includes('recommend') || t.includes('improvement')) return Lightbulb
   return CheckIcon as unknown as LucideIcon
 }
 
-function ChecklistGrid({ badge, title, subtitle, items, note, ctaText, ctaLabel, ctaUrl }: ScopeChecklistBlockProps) {
+function ChecklistGrid({ badge, title, subtitle, items, note, iconStyle, ctaText, ctaLabel, ctaUrl }: ScopeChecklistBlockProps) {
   const safeItems = items || []
   const hasDescriptions = safeItems.some((item) => item.description)
+  const useKeywordIcons = iconStyle === 'keyword'
 
   return (
     <>
@@ -73,6 +85,7 @@ function ChecklistGrid({ badge, title, subtitle, items, note, ctaText, ctaLabel,
               ? 'flex flex-col gap-3 p-5 text-left hover:border-primary_red/40 hover:bg-[#FDEBEC]/40'
               : 'flex items-center gap-2.5 px-4 py-3 hover:border-primary_red/40 hover:bg-[#FDEBEC]/40',
           )
+          const KeywordIcon = useKeywordIcons ? getKeywordIcon(item.text) : null
           const content = (
             <>
               <span
@@ -81,7 +94,7 @@ function ChecklistGrid({ badge, title, subtitle, items, note, ctaText, ctaLabel,
                   hasDescriptions ? 'h-10 w-10' : 'h-7 w-7',
                 )}
               >
-                <CheckIcon />
+                {KeywordIcon ? <KeywordIcon className={hasDescriptions ? 'h-5 w-5' : 'h-4 w-4'} /> : <CheckIcon />}
               </span>
               <span className={cn(hasDescriptions ? 'text-base font-semibold text-foreground' : 'text-sm font-medium text-foreground')}>
                 {item.text}
@@ -196,7 +209,7 @@ function MonthlyCadence({ badge, title, subtitle, items, note }: ScopeChecklistB
 
         <div className="grid grid-cols-1 sm:grid-cols-3">
           {(items || []).map((item, index) => {
-            const Icon = getMonthlyItemIcon(item.text)
+            const Icon = getKeywordIcon(item.text)
             const col = index % 3
             const row = Math.floor(index / 3)
             const isLastMobile = index === (items?.length ?? 0) - 1

@@ -75,6 +75,19 @@ export const ScopeChecklist: Block = {
       localized: true,
     },
     {
+      name: 'iconStyle',
+      type: 'select',
+      label: 'Icon Style (Checklist Grid only)',
+      defaultValue: 'check',
+      options: [
+        { label: 'Checkmark (default)', value: 'check' },
+        { label: 'Keyword-matched icon per item', value: 'keyword' },
+      ],
+      admin: {
+        description: 'Keyword-matched suits a list of distinct services/topics; checkmark suits a literal "these are included" checklist.',
+      },
+    },
+    {
       name: 'ctaLabel',
       type: 'text',
       label: 'CTA Button Label (optional)',
