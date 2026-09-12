@@ -70,6 +70,7 @@ export const SetupEstimatorBlock: React.FC<Props> = ({
   questions = [],
   submitLabel,
   sizeTiers = [],
+  resultEyebrow,
   disclaimer,
   ctaLabel,
   ctaUrl,
@@ -156,7 +157,7 @@ export const SetupEstimatorBlock: React.FC<Props> = ({
           <EstimatorCard>
             {result ? (
               <div className={estimatorBodyClassName}>
-                <EstimatorResultPanel eyebrow="Recommended Scope" headline={result.tier.tierName}>
+                <EstimatorResultPanel eyebrow={resultEyebrow || 'Recommended Scope'} headline={result.tier.tierName}>
                   <p>{result.tier.description}</p>
                   {result.selectedItems.length > 0 && (
                     <div className="mt-4 border-t border-black/5 pt-4 text-left">

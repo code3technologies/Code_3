@@ -388,6 +388,8 @@ export interface Page {
     | PathCompareBlock
     | NetworkEstimatorBlock
     | WiFiEstimatorBlock
+    | AVArchitectureFlowBlock
+    | AVCategorySpotlightBlock
     | InternetRedundancyEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
@@ -1968,9 +1970,9 @@ export interface AssuranceStripBlock {
  */
 export interface ScopeChecklistBlock {
   /**
-   * Monthly Cadence is meant for recurring/ongoing-service content, e.g. "what happens every month."
+   * Tag Cloud suits a broad illustrative list of examples that a fuller section elsewhere already explains in depth. Monthly Cadence is meant for recurring/ongoing-service content, e.g. "what happens every month."
    */
-  layoutStyle?: ('grid' | 'monthly') | null;
+  layoutStyle?: ('grid' | 'tags' | 'monthly') | null;
   badge?: string | null;
   title: string;
   subtitle?: string | null;
@@ -2982,6 +2984,10 @@ export interface SetupEstimatorBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Small label above the recommended tier name, e.g. "Your recommended AV solution scope". Defaults to "Recommended Scope".
+   */
+  resultEyebrow?: string | null;
   disclaimer?: string | null;
   /**
    * Short line shown next to the button.
@@ -3647,6 +3653,92 @@ export interface WiFiEstimatorBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'wifiEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVArchitectureFlowBlock".
+ */
+export interface AVArchitectureFlowBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Rendered as a vertical chain of stages connected by arrows, e.g. Source → Connectivity → Processing → Output.
+   */
+  mainFlow?:
+    | {
+        title: string;
+        /**
+         * One sentence explaining what this layer actually does.
+         */
+        description?: string | null;
+        /**
+         * Generic category examples only, e.g. "Laptop / Camera / Microphone / Media" — avoid naming specific equipment unless actually supplied.
+         */
+        examples?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Additional parallel systems shown below the main path, e.g. Audio, Collaboration, Control.
+   */
+  secondaryFlows?:
+    | {
+        label: string;
+        /**
+         * One sentence explaining what this system does.
+         */
+        description?: string | null;
+        style?: ('chain' | 'list') | null;
+        items?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. Collaboration tools feeding into Control.
+         */
+        connectFromPrevious?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  note?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'avArchitectureFlow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVCategorySpotlightBlock".
+ */
+export interface AVCategorySpotlightBlock {
+  badge?: string | null;
+  title: string;
+  description: string;
+  bulletsLabel?: string | null;
+  bullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Alternate true/false between consecutive spotlights for visual rhythm.
+   */
+  reverse?: boolean | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'avCategorySpotlight';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5079,6 +5171,8 @@ export interface PagesSelect<T extends boolean = true> {
         pathCompare?: T | PathCompareBlockSelect<T>;
         networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         wifiEstimator?: T | WiFiEstimatorBlockSelect<T>;
+        avArchitectureFlow?: T | AVArchitectureFlowBlockSelect<T>;
+        avCategorySpotlight?: T | AVCategorySpotlightBlockSelect<T>;
         internetRedundancyEstimator?: T | InternetRedundancyEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
@@ -6475,6 +6569,7 @@ export interface SetupEstimatorBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  resultEyebrow?: T;
   disclaimer?: T;
   ctaText?: T;
   ctaLabel?: T;
@@ -6964,6 +7059,63 @@ export interface WiFiEstimatorBlockSelect<T extends boolean = true> {
       };
   submitLabel?: T;
   disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVArchitectureFlowBlock_select".
+ */
+export interface AVArchitectureFlowBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  mainFlow?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        examples?: T;
+        id?: T;
+      };
+  secondaryFlows?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        style?: T;
+        items?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        connectFromPrevious?: T;
+        id?: T;
+      };
+  note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVCategorySpotlightBlock_select".
+ */
+export interface AVCategorySpotlightBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  bulletsLabel?: T;
+  bullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  reverse?: T;
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
