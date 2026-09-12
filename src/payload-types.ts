@@ -2982,6 +2982,10 @@ export interface SetupEstimatorBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Small label above the recommended tier name, e.g. "Your recommended AV solution scope". Defaults to "Recommended Scope".
+   */
+  resultEyebrow?: string | null;
   disclaimer?: string | null;
   /**
    * Short line shown next to the button.
@@ -6475,6 +6479,7 @@ export interface SetupEstimatorBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  resultEyebrow?: T;
   disclaimer?: T;
   ctaText?: T;
   ctaLabel?: T;

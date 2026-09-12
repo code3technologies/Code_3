@@ -79,6 +79,13 @@ export const SetupEstimator: Block = {
       ],
     },
     {
+      name: 'resultEyebrow',
+      type: 'text',
+      label: 'Result Eyebrow (optional)',
+      localized: true,
+      admin: { description: 'Small label above the recommended tier name, e.g. "Your recommended AV solution scope". Defaults to "Recommended Scope".' },
+    },
+    {
       name: 'disclaimer',
       type: 'text',
       label: 'Disclaimer',
