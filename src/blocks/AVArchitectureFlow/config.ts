@@ -38,6 +38,13 @@ export const AVArchitectureFlow: Block = {
       fields: [
         { name: 'title', type: 'text', required: true, localized: true },
         {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: { description: 'One sentence explaining what this layer actually does.' },
+        },
+        {
           name: 'examples',
           type: 'text',
           label: 'Examples (optional)',
@@ -55,6 +62,13 @@ export const AVArchitectureFlow: Block = {
       },
       fields: [
         { name: 'label', type: 'text', required: true, localized: true },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: { description: 'One sentence explaining what this system does.' },
+        },
         {
           name: 'style',
           type: 'select',

@@ -3668,6 +3668,10 @@ export interface AVArchitectureFlowBlock {
     | {
         title: string;
         /**
+         * One sentence explaining what this layer actually does.
+         */
+        description?: string | null;
+        /**
          * Generic category examples only, e.g. "Laptop / Camera / Microphone / Media" — avoid naming specific equipment unless actually supplied.
          */
         examples?: string | null;
@@ -3680,6 +3684,10 @@ export interface AVArchitectureFlowBlock {
   secondaryFlows?:
     | {
         label: string;
+        /**
+         * One sentence explaining what this system does.
+         */
+        description?: string | null;
         style?: ('chain' | 'list') | null;
         items?:
           | {
@@ -7035,6 +7043,7 @@ export interface AVArchitectureFlowBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        description?: T;
         examples?: T;
         id?: T;
       };
@@ -7042,6 +7051,7 @@ export interface AVArchitectureFlowBlockSelect<T extends boolean = true> {
     | T
     | {
         label?: T;
+        description?: T;
         style?: T;
         items?:
           | T
