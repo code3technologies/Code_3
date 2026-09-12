@@ -27,11 +27,13 @@ import {
   Grid2x2,
   Home,
   Hotel,
+  Image,
   Laptop,
   LayoutDashboard,
   Layers,
   Lock,
   MapPin,
+  Monitor,
   Moon,
   Network,
   PencilRuler,
@@ -43,8 +45,10 @@ import {
   Router,
   ScanEye,
   ScanLine,
+  ScreenShare,
   Server,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
   Split,
   Stethoscope,
@@ -55,6 +59,8 @@ import {
   Users,
   UsersRound,
   Utensils,
+  Video,
+  Volume2,
   Warehouse,
   Wifi,
   Wrench,
@@ -179,6 +185,13 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('vehicle detection')) return Car
   if (t.includes('unusual activity')) return Radar
   if (t.includes('fisheye')) return Aperture
+  // AV system component categories
+  if (t.includes('display')) return Monitor
+  if (t.includes('audio')) return Volume2
+  if (t.includes('video')) return Video
+  if (t.includes('collaborat')) return ScreenShare
+  if (t.includes('control')) return SlidersHorizontal
+  if (t.includes('content')) return Image
   return Camera
 }
 
