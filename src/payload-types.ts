@@ -389,6 +389,7 @@ export interface Page {
     | NetworkEstimatorBlock
     | WiFiEstimatorBlock
     | AVArchitectureFlowBlock
+    | AVCategorySpotlightBlock
     | InternetRedundancyEstimatorBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
@@ -3709,6 +3710,38 @@ export interface AVArchitectureFlowBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVCategorySpotlightBlock".
+ */
+export interface AVCategorySpotlightBlock {
+  badge?: string | null;
+  title: string;
+  description: string;
+  bulletsLabel?: string | null;
+  bullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Alternate true/false between consecutive spotlights for visual rhythm.
+   */
+  reverse?: boolean | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'avCategorySpotlight';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "InternetRedundancyEstimatorBlock".
  */
 export interface InternetRedundancyEstimatorBlock {
@@ -5139,6 +5172,7 @@ export interface PagesSelect<T extends boolean = true> {
         networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         wifiEstimator?: T | WiFiEstimatorBlockSelect<T>;
         avArchitectureFlow?: T | AVArchitectureFlowBlockSelect<T>;
+        avCategorySpotlight?: T | AVCategorySpotlightBlockSelect<T>;
         internetRedundancyEstimator?: T | InternetRedundancyEstimatorBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
@@ -7063,6 +7097,28 @@ export interface AVArchitectureFlowBlockSelect<T extends boolean = true> {
         id?: T;
       };
   note?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AVCategorySpotlightBlock_select".
+ */
+export interface AVCategorySpotlightBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  bulletsLabel?: T;
+  bullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  reverse?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }

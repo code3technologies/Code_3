@@ -78,6 +78,7 @@ import { PathCompare } from '@/blocks/PathCompare/config'
 import { NetworkEstimator } from '@/blocks/NetworkEstimator/config'
 import { WiFiEstimator } from '@/blocks/WiFiEstimator/config'
 import { AVArchitectureFlow } from '@/blocks/AVArchitectureFlow/config'
+import { AVCategorySpotlight } from '@/blocks/AVCategorySpotlight/config'
 import { InternetRedundancyEstimator } from '@/blocks/InternetRedundancyEstimator/config'
 import { ProcessPhases } from '@/blocks/ProcessPhases/config'
 import { TeamConvergence } from '@/blocks/TeamConvergence/config'
@@ -314,6 +315,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 NetworkEstimator,
                 WiFiEstimator,
                 AVArchitectureFlow,
+                AVCategorySpotlight,
                 InternetRedundancyEstimator,
                 ProcessPhases,
                 TeamConvergence,
