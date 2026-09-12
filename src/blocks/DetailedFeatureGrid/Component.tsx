@@ -18,6 +18,7 @@ import {
   Car,
   Cloud,
   CloudSun,
+  Combine,
   DraftingCompass,
   Factory,
   Fingerprint,
@@ -25,6 +26,7 @@ import {
   Globe,
   GraduationCap,
   Grid2x2,
+  Headset,
   Home,
   Hotel,
   Image,
@@ -192,6 +194,8 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('collaborat')) return ScreenShare
   if (t.includes('control')) return SlidersHorizontal
   if (t.includes('content')) return Image
+  if (t.includes('integrat')) return Combine
+  if (t.includes('support')) return Headset
   return Camera
 }
 
