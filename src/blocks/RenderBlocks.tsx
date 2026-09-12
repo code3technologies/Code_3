@@ -83,7 +83,6 @@ import { PathCompareBlock } from './PathCompare/Component'
 import { NetworkEstimatorBlock } from './NetworkEstimator/Component'
 import { WiFiEstimatorBlock } from './WiFiEstimator/Component'
 import { InternetRedundancyEstimatorBlock } from './InternetRedundancyEstimator/Component'
-import { RoomTypeShowcaseBlock } from './RoomTypeShowcase/Component'
 import { ProcessPhasesBlock } from './ProcessPhases/Component'
 import { TeamConvergenceBlock } from './TeamConvergence/Component'
 import { ServiceJourneyBlock } from './ServiceJourney/Component'
@@ -184,7 +183,6 @@ const blockComponents = {
   networkEstimator: NetworkEstimatorBlock,
   wifiEstimator: WiFiEstimatorBlock,
   internetRedundancyEstimator: InternetRedundancyEstimatorBlock,
-  roomTypeShowcase: RoomTypeShowcaseBlock,
   processPhases: ProcessPhasesBlock,
   teamConvergence: TeamConvergenceBlock,
   serviceJourney: ServiceJourneyBlock,

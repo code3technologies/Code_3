@@ -389,7 +389,6 @@ export interface Page {
     | NetworkEstimatorBlock
     | WiFiEstimatorBlock
     | InternetRedundancyEstimatorBlock
-    | RoomTypeShowcaseBlock
     | ProcessPhasesBlock
     | TeamConvergenceBlock
     | ServiceJourneyBlock
@@ -3709,29 +3708,6 @@ export interface InternetRedundancyEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RoomTypeShowcaseBlock".
- */
-export interface RoomTypeShowcaseBlock {
-  badge?: string | null;
-  title: string;
-  subtitle?: string | null;
-  /**
-   * A horizontally scrolling strip of cards — one per room or space type. An icon is matched automatically by keyword.
-   */
-  items?:
-    | {
-        title: string;
-        description: string;
-        id?: string | null;
-      }[]
-    | null;
-  note?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'roomTypeShowcase';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessPhasesBlock".
  */
 export interface ProcessPhasesBlock {
@@ -5104,7 +5080,6 @@ export interface PagesSelect<T extends boolean = true> {
         networkEstimator?: T | NetworkEstimatorBlockSelect<T>;
         wifiEstimator?: T | WiFiEstimatorBlockSelect<T>;
         internetRedundancyEstimator?: T | InternetRedundancyEstimatorBlockSelect<T>;
-        roomTypeShowcase?: T | RoomTypeShowcaseBlockSelect<T>;
         processPhases?: T | ProcessPhasesBlockSelect<T>;
         teamConvergence?: T | TeamConvergenceBlockSelect<T>;
         serviceJourney?: T | ServiceJourneyBlockSelect<T>;
@@ -7043,25 +7018,6 @@ export interface InternetRedundancyEstimatorBlockSelect<T extends boolean = true
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RoomTypeShowcaseBlock_select".
- */
-export interface RoomTypeShowcaseBlockSelect<T extends boolean = true> {
-  badge?: T;
-  title?: T;
-  subtitle?: T;
-  items?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        id?: T;
-      };
-  note?: T;
   id?: T;
   blockName?: T;
 }

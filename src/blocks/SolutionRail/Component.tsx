@@ -6,7 +6,24 @@ import { cn } from '@/utilities/ui'
 import React, { useEffect, useRef, useState } from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { Briefcase, Building2, Fence, Globe, Layers, RefreshCw, Warehouse, type LucideIcon } from 'lucide-react'
+import {
+  Briefcase,
+  Building2,
+  BookOpen,
+  DoorOpen,
+  Fence,
+  Globe,
+  GraduationCap,
+  Landmark,
+  Layers,
+  MessageSquare,
+  Presentation,
+  RefreshCw,
+  Store,
+  Users,
+  Warehouse,
+  type LucideIcon,
+} from 'lucide-react'
 
 // Best-effort icon per solution, matched by keyword.
 function getSolutionIcon(text?: string | null): LucideIcon {
@@ -17,6 +34,16 @@ function getSolutionIcon(text?: string | null): LucideIcon {
   if (t.includes('perimeter')) return Fence
   if (t.includes('multi-site') || t.includes('multi site')) return Globe
   if (t.includes('upgrade') || t.includes('existing')) return RefreshCw
+  // Space/room-type keywords (AV by Room Type)
+  if (t.includes('huddle')) return Users
+  if (t.includes('boardroom')) return Briefcase
+  if (t.includes('conference')) return Presentation
+  if (t.includes('meeting')) return MessageSquare
+  if (t.includes('training')) return GraduationCap
+  if (t.includes('classroom')) return BookOpen
+  if (t.includes('auditorium')) return Landmark
+  if (t.includes('reception') || t.includes('lobby')) return DoorOpen
+  if (t.includes('retail')) return Store
   return Building2
 }
 
