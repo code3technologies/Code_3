@@ -1968,9 +1968,9 @@ export interface AssuranceStripBlock {
  */
 export interface ScopeChecklistBlock {
   /**
-   * Monthly Cadence is meant for recurring/ongoing-service content, e.g. "what happens every month."
+   * Tag Cloud suits a broad illustrative list of examples that a fuller section elsewhere already explains in depth. Monthly Cadence is meant for recurring/ongoing-service content, e.g. "what happens every month."
    */
-  layoutStyle?: ('grid' | 'monthly') | null;
+  layoutStyle?: ('grid' | 'tags' | 'monthly') | null;
   badge?: string | null;
   title: string;
   subtitle?: string | null;

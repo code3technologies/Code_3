@@ -23,9 +23,9 @@ type Props = {
   className?: string
 } & ScopeChecklistBlockProps
 
-function CheckIcon() {
+function CheckIcon({ className = 'h-4 w-4' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-4 w-4 flex-none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cn('flex-none', className)}>
       <path d="M20 6L9 17l-5-5" />
     </svg>
   )
@@ -125,6 +125,58 @@ function ChecklistGrid({ badge, title, subtitle, items, note, ctaText, ctaLabel,
   )
 }
 
+// A dense, wrapped cloud of pill chips — for a broad illustrative list of
+// examples ("a system can include: ...") that shouldn't compete visually
+// with a fuller card-grid section elsewhere on the same page.
+function TagCloud({ badge, title, subtitle, items, note }: ScopeChecklistBlockProps) {
+  const safeItems = items || []
+
+  return (
+    <>
+      <Reveal className="mx-auto mb-7 max-w-2xl text-center">
+        {badge && <Eyebrow className="justify-center">{badge}</Eyebrow>}
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">{title}</h2>
+        {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
+      </Reveal>
+
+      <Reveal delayMs={100} className="rounded-3xl border border-border bg-gray-50/60 p-6 md:p-10">
+        <div className="flex flex-wrap justify-center gap-2.5 md:gap-3">
+          {safeItems.map((item, index) => {
+            const chipClassName = cn(
+              'inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors',
+              item.url && 'hover:border-primary_red/40 hover:text-primary_red hover:bg-[#FDEBEC]/40',
+            )
+            const content = (
+              <>
+                <span className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
+                  <CheckIcon className="h-3 w-3" />
+                </span>
+                {item.text}
+              </>
+            )
+
+            if (item.url) {
+              return (
+                <Link key={item.id || index} href={item.url} className={chipClassName}>
+                  {content}
+                </Link>
+              )
+            }
+
+            return (
+              <span key={item.id || index} className={chipClassName}>
+                {content}
+              </span>
+            )
+          })}
+        </div>
+      </Reveal>
+
+      {note && <p className="mt-5 text-center text-sm text-gray-500">{note}</p>}
+    </>
+  )
+}
+
 function MonthlyCadence({ badge, title, subtitle, items, note }: ScopeChecklistBlockProps) {
   return (
     <Reveal className="overflow-hidden rounded-3xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04),0_24px_50px_-24px_rgba(0,0,0,0.18)]">
@@ -178,7 +230,13 @@ export const ScopeChecklistBlock: React.FC<Props> = (props) => {
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        {layoutStyle === 'monthly' ? <MonthlyCadence {...props} /> : <ChecklistGrid {...props} />}
+        {layoutStyle === 'monthly' ? (
+          <MonthlyCadence {...props} />
+        ) : layoutStyle === 'tags' ? (
+          <TagCloud {...props} />
+        ) : (
+          <ChecklistGrid {...props} />
+        )}
       </div>
     </section>
   )

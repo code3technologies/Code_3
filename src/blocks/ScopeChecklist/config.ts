@@ -15,10 +15,12 @@ export const ScopeChecklist: Block = {
       defaultValue: 'grid',
       options: [
         { label: 'Checklist Grid', value: 'grid' },
+        { label: 'Tag Cloud (compact wrapped chips)', value: 'tags' },
         { label: 'Monthly Cadence (dark panel + icon rows)', value: 'monthly' },
       ],
       admin: {
-        description: 'Monthly Cadence is meant for recurring/ongoing-service content, e.g. "what happens every month."',
+        description:
+          'Tag Cloud suits a broad illustrative list of examples that a fuller section elsewhere already explains in depth. Monthly Cadence is meant for recurring/ongoing-service content, e.g. "what happens every month."',
       },
     },
     {
