@@ -1341,6 +1341,10 @@ export interface QuickEnquiryBlock {
    * Use a translucent glass style for the form so it sits well over an animated dark hero.
    */
   formOnDark?: boolean | null;
+  /**
+   * Turn off to show only the promo card (e.g. a trial offer) without the enquiry form above it.
+   */
+  showForm?: boolean | null;
   promoEnabled?: boolean | null;
   promoBadge?: string | null;
   promoTitle?: string | null;
@@ -5573,6 +5577,7 @@ export interface QuickEnquiryBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   formOnDark?: T;
+  showForm?: T;
   promoEnabled?: T;
   promoBadge?: T;
   promoTitle?: T;

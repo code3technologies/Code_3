@@ -33,6 +33,15 @@ export const QuickEnquiry: Block = {
       },
     },
     {
+      name: 'showForm',
+      type: 'checkbox',
+      label: 'Show Contact Form',
+      defaultValue: true,
+      admin: {
+        description: 'Turn off to show only the promo card (e.g. a trial offer) without the enquiry form above it.',
+      },
+    },
+    {
       name: 'promoEnabled',
       type: 'checkbox',
       label: 'Show Promo Card Below Form',
