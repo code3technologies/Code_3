@@ -64,9 +64,18 @@ export const SLATable: Block = {
         {
           name: 'impact',
           type: 'text',
-          label: 'Impact',
+          label: 'Impact Headline',
+          admin: { description: 'Short label, e.g. "Complete System Outage".' },
           required: true,
           localized: true,
+        },
+        {
+          name: 'impactExamples',
+          type: 'array',
+          label: 'Impact Examples (optional)',
+          maxRows: 4,
+          fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+          admin: { description: 'Concrete examples shown as bullets under the impact headline, e.g. "Core network, server, or firewall failure".' },
         },
         {
           name: 'remoteSupportTime',
@@ -92,9 +101,16 @@ export const SLATable: Block = {
         {
           name: 'resolutionTarget',
           type: 'text',
-          label: 'Critical Issue Resolution',
+          label: 'Resolution Target',
           required: true,
           localized: true,
+        },
+        {
+          name: 'resolutionApproach',
+          type: 'textarea',
+          label: 'Resolution Approach (optional)',
+          localized: true,
+          admin: { description: 'Explains how that resolution target is actually approached, e.g. "Uninterrupted support until resolved or a workaround is live."' },
         },
       ],
     },
