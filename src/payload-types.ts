@@ -1734,11 +1734,27 @@ export interface SLATableBlock {
     | {
         priority: 'High' | 'Medium' | 'Low';
         severity: 'red' | 'amber' | 'blue' | 'green';
+        /**
+         * Short label, e.g. "Complete System Outage".
+         */
         impact: string;
+        /**
+         * Concrete examples shown as bullets under the impact headline, e.g. "Core network, server, or firewall failure".
+         */
+        impactExamples?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
         remoteSupportTime: string;
         onsiteSupportTime: string;
         helpdeskAvailability: string;
         resolutionTarget: string;
+        /**
+         * Explains how that resolution target is actually approached, e.g. "Uninterrupted support until resolved or a workaround is live."
+         */
+        resolutionApproach?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5815,10 +5831,17 @@ export interface SLATableBlockSelect<T extends boolean = true> {
         priority?: T;
         severity?: T;
         impact?: T;
+        impactExamples?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
         remoteSupportTime?: T;
         onsiteSupportTime?: T;
         helpdeskAvailability?: T;
         resolutionTarget?: T;
+        resolutionApproach?: T;
         id?: T;
       };
   ctaText?: T;
