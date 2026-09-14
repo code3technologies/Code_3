@@ -108,17 +108,26 @@ export function MeetingRoomAssessmentForm({
     }
   }, [])
 
-  const fieldClassName =
-    'w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-primary_red'
+  // Glass styling is scoped to `lg:` because this form only floats over the
+  // dark hero on desktop — on mobile it renders as a normal light section,
+  // matching the sibling Quick Enquiry form this block replaced.
+  const fieldClassName = cn(
+    'w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-primary_red',
+    'lg:border-white/20 lg:bg-white/10 lg:text-white lg:placeholder:text-white/50 lg:focus:border-white/60',
+  )
+  const cardClass = cn(
+    'rounded-2xl border border-border bg-white shadow-md',
+    'lg:border-white/15 lg:bg-white/[0.07] lg:shadow-2xl lg:backdrop-blur-md',
+  )
 
   if (submitted) {
     return (
-      <div className={cn('rounded-2xl border border-primary_red/15 bg-gradient-to-b from-primary_red/[0.05] to-white p-6 text-center shadow-sm', className)}>
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary_red/10">
-          <CheckCircle2 className="h-6 w-6 text-primary_red" />
+      <div className={cn(cardClass, 'p-6 text-center', className)}>
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary_red/10 lg:bg-white/15">
+          <CheckCircle2 className="h-6 w-6 text-primary_red lg:text-white" />
         </div>
-        <h3 className="text-base font-bold text-foreground">Thanks — we&apos;ve got your details!</h3>
-        <p className="mt-1 text-sm text-gray-600">
+        <h3 className="text-base font-bold text-foreground lg:text-white">Thanks — we&apos;ve got your details!</h3>
+        <p className="mt-1 text-sm text-gray-600 lg:text-white/70">
           Our AV team will review your requirements and get back to you with a room recommendation shortly.
         </p>
         <button
@@ -127,7 +136,7 @@ export function MeetingRoomAssessmentForm({
             setSubmitted(false)
             reset()
           }}
-          className="mt-3 text-sm font-semibold text-primary_red hover:underline"
+          className="mt-3 text-sm font-semibold text-primary_red hover:underline lg:text-white"
         >
           Submit another request
         </button>
@@ -136,12 +145,12 @@ export function MeetingRoomAssessmentForm({
   }
 
   return (
-    <div className={cn('rounded-2xl border border-border bg-white p-5 shadow-md md:p-6', className)}>
-      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary_red/10">
-        <CalendarClock className="h-5 w-5 text-primary_red" />
+    <div className={cn(cardClass, 'p-5 md:p-6', className)}>
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary_red/10 lg:bg-white/15">
+        <CalendarClock className="h-5 w-5 text-primary_red lg:text-white" />
       </div>
-      {title && <h3 className="text-lg font-bold leading-snug text-foreground md:text-xl">{title}</h3>}
-      {description && <p className="mt-1.5 text-sm leading-relaxed text-gray-500">{description}</p>}
+      {title && <h3 className="text-lg font-bold leading-snug text-foreground lg:text-white md:text-xl">{title}</h3>}
+      {description && <p className="mt-1.5 text-sm leading-relaxed text-gray-500 lg:text-white/70">{description}</p>}
 
       <form className="mt-4 space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -151,7 +160,7 @@ export function MeetingRoomAssessmentForm({
             {...register('fullName', { required: true })}
             className={fieldClassName}
           />
-          {errors.fullName && <p className="mt-1 text-xs text-primary_red">Full name is required.</p>}
+          {errors.fullName && <p className="mt-1 text-xs text-primary_red lg:text-red-300">Full name is required.</p>}
         </div>
 
         <div>
@@ -161,7 +170,7 @@ export function MeetingRoomAssessmentForm({
             {...register('businessEmail', { required: true, pattern: /^\S+@\S+$/i })}
             className={fieldClassName}
           />
-          {errors.businessEmail && <p className="mt-1 text-xs text-primary_red">A valid business email is required.</p>}
+          {errors.businessEmail && <p className="mt-1 text-xs text-primary_red lg:text-red-300">A valid business email is required.</p>}
         </div>
 
         <div>
@@ -171,7 +180,7 @@ export function MeetingRoomAssessmentForm({
             {...register('phone', { required: true, pattern: /^[0-9+\s]+$/, minLength: 8 })}
             className={fieldClassName}
           />
-          {errors.phone && <p className="mt-1 text-xs text-primary_red">A valid phone number is required.</p>}
+          {errors.phone && <p className="mt-1 text-xs text-primary_red lg:text-red-300">A valid phone number is required.</p>}
         </div>
 
         <div>
@@ -182,14 +191,14 @@ export function MeetingRoomAssessmentForm({
             {...register('participants', { required: true })}
             className={fieldClassName}
           />
-          {errors.participants && <p className="mt-1 text-xs text-primary_red">Please enter the number of participants.</p>}
+          {errors.participants && <p className="mt-1 text-xs text-primary_red lg:text-red-300">Please enter the number of participants.</p>}
         </div>
 
         <div>
           <select
             defaultValue=""
             {...register('preferredPlatform', { required: true })}
-            className={cn(fieldClassName, 'text-gray-900')}
+            className={cn(fieldClassName, 'text-gray-900 lg:text-white lg:[&>option]:text-gray-900')}
           >
             <option value="" disabled>
               Preferred Platform
@@ -200,10 +209,10 @@ export function MeetingRoomAssessmentForm({
               </option>
             ))}
           </select>
-          {errors.preferredPlatform && <p className="mt-1 text-xs text-primary_red">Please select a preferred platform.</p>}
+          {errors.preferredPlatform && <p className="mt-1 text-xs text-primary_red lg:text-red-300">Please select a preferred platform.</p>}
         </div>
 
-        {error && <p className="text-xs text-primary_red">{error}</p>}
+        {error && <p className="text-xs text-primary_red lg:text-red-300">{error}</p>}
 
         <Button type="submit" variant="default" disabled={isLoading} className="w-full disabled:opacity-50">
           {isLoading ? 'Sending...' : submitLabel}
