@@ -20,6 +20,7 @@ interface QuickEnquiryBlockProps {
   promoCtaUrl?: string | null
   sidebarImage?: (string | null) | MediaType
   formOnDark?: boolean | null
+  showForm?: boolean | null
 }
 
 function GiftIcon() {
@@ -55,24 +56,30 @@ export const QuickEnquiryBlock: React.FC<QuickEnquiryBlockProps> = ({
   promoCtaUrl,
   sidebarImage,
   formOnDark,
+  showForm,
 }) => {
+  const shouldShowForm = showForm !== false
+
   return (
     <div
       data-quick-enquiry-form
       className={cn('bg-white py-8 lg:absolute lg:inset-x-0 lg:top-0 lg:bg-transparent lg:py-0 lg:pointer-events-none', className)}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:flex lg:flex-col lg:items-end">
-        <MiniContactForm
-          title={title}
-          description={description}
-          onDark={Boolean(formOnDark)}
-          className="mx-auto max-w-md lg:pointer-events-auto lg:mx-0 lg:mt-8 lg:w-[360px]"
-        />
+        {shouldShowForm && (
+          <MiniContactForm
+            title={title}
+            description={description}
+            onDark={Boolean(formOnDark)}
+            className="mx-auto max-w-md lg:pointer-events-auto lg:mx-0 lg:mt-8 lg:w-[360px]"
+          />
+        )}
 
         {promoEnabled && promoTitle && (
           <div
             className={cn(
-              'relative mx-auto mt-4 max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-primary_red via-primary_red to-[#6d0b12] p-5 shadow-xl ring-1 ring-black/5 lg:pointer-events-auto lg:mx-0 lg:w-[360px]',
+              'relative mx-auto max-w-md overflow-hidden rounded-2xl bg-gradient-to-br from-primary_red via-primary_red to-[#6d0b12] p-5 shadow-xl ring-1 ring-black/5 lg:pointer-events-auto lg:mx-0 lg:w-[360px]',
+              shouldShowForm ? 'mt-4' : 'lg:mt-8',
               // On the animated dark hero, a second opaque red card fights the
               // background instead of reading as a distinct "offer" panel — so
               // on desktop it switches to a dark glass panel instead. A solid
