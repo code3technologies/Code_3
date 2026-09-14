@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { getClientSideURL } from '@/utilities/getURL'
 import { reportContactConversion } from '@/utilities/reportConversion'
 import { Button } from '@/components/ui/button'
-import { CheckCircle2 } from 'lucide-react'
+import { CalendarClock, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 
 const PLATFORM_OPTIONS = [
@@ -18,12 +18,10 @@ const PLATFORM_OPTIONS = [
 
 type FormValues = {
   fullName: string
-  companyName: string
   businessEmail: string
   phone: string
   participants: string
   preferredPlatform: string
-  requirements: string
 }
 
 export function MeetingRoomAssessmentForm({
@@ -45,12 +43,10 @@ export function MeetingRoomAssessmentForm({
   } = useForm<FormValues>({
     defaultValues: {
       fullName: '',
-      companyName: '',
       businessEmail: '',
       phone: '',
       participants: '',
       preferredPlatform: '',
-      requirements: '',
     },
   })
 
@@ -83,16 +79,14 @@ export function MeetingRoomAssessmentForm({
           form: formId,
           submissionData: [
             { field: 'fullName', value: data.fullName },
-            { field: 'companyName', value: data.companyName },
             { field: 'businessEmail', value: data.businessEmail },
             { field: 'phone', value: data.phone },
             { field: 'participants', value: data.participants },
             { field: 'preferredPlatform', value: data.preferredPlatform },
-            { field: 'requirements', value: data.requirements },
             { field: 'subject', value: 'Meeting Room Assessment Request' },
             {
               field: 'message',
-              value: `Company: ${data.companyName}\nParticipants: ${data.participants}\nPreferred Platform: ${data.preferredPlatform}\n\nRequirements:\n${data.requirements}`,
+              value: `Participants: ${data.participants}\nPreferred Platform: ${data.preferredPlatform}`,
             },
           ],
         }),
@@ -142,8 +136,11 @@ export function MeetingRoomAssessmentForm({
   }
 
   return (
-    <div className={cn('rounded-2xl border border-border bg-white p-5 shadow-sm md:p-6', className)}>
-      {title && <h3 className="text-base font-bold text-foreground md:text-lg">{title}</h3>}
+    <div className={cn('rounded-2xl border border-border bg-white p-5 shadow-md md:p-6', className)}>
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary_red/10">
+        <CalendarClock className="h-5 w-5 text-primary_red" />
+      </div>
+      {title && <h3 className="text-lg font-bold leading-snug text-foreground md:text-xl">{title}</h3>}
       {description && <p className="mt-1.5 text-sm leading-relaxed text-gray-500">{description}</p>}
 
       <form className="mt-4 space-y-3" onSubmit={handleSubmit(onSubmit)}>
@@ -155,16 +152,6 @@ export function MeetingRoomAssessmentForm({
             className={fieldClassName}
           />
           {errors.fullName && <p className="mt-1 text-xs text-primary_red">Full name is required.</p>}
-        </div>
-
-        <div>
-          <input
-            type="text"
-            placeholder="Company Name"
-            {...register('companyName', { required: true })}
-            className={fieldClassName}
-          />
-          {errors.companyName && <p className="mt-1 text-xs text-primary_red">Company name is required.</p>}
         </div>
 
         <div>
@@ -214,16 +201,6 @@ export function MeetingRoomAssessmentForm({
             ))}
           </select>
           {errors.preferredPlatform && <p className="mt-1 text-xs text-primary_red">Please select a preferred platform.</p>}
-        </div>
-
-        <div>
-          <textarea
-            placeholder="Requirements"
-            rows={3}
-            {...register('requirements', { required: true })}
-            className={cn(fieldClassName, 'resize-none')}
-          />
-          {errors.requirements && <p className="mt-1 text-xs text-primary_red">Please share your requirements.</p>}
         </div>
 
         {error && <p className="text-xs text-primary_red">{error}</p>}
