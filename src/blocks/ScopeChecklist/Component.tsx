@@ -7,10 +7,16 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
   Activity,
+  Banknote,
+  Camera,
+  Cpu,
   FileText,
+  Fingerprint,
   HardDrive,
   Headset,
+  LayoutDashboard,
   Lightbulb,
+  Lock,
   RefreshCw,
   RotateCw,
   Settings2,
@@ -46,6 +52,12 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('replacement')) return RefreshCw
   if (t.includes('meeting-room') || t.includes('meeting room')) return Users
   if (t.includes('upgrade')) return TrendingUp
+  if (t.includes('biometric')) return Fingerprint
+  if (t.includes('controller')) return Cpu
+  if (t.includes('access zone')) return Lock
+  if (t.includes('centralized')) return LayoutDashboard
+  if (t.includes('cctv')) return Camera
+  if (t.includes('payroll')) return Banknote
   if (t.includes('maintenance')) return Wrench
   if (t.includes('health')) return Activity
   if (t.includes('network')) return Wifi
