@@ -3131,6 +3131,10 @@ export interface DetailedFeatureGridBlock {
   items?:
     | {
         title: string;
+        /**
+         * Shown as a colored badge under the title, e.g. a recommended approach or key takeaway — "Cross-Platform Solution".
+         */
+        tag?: string | null;
         description: string;
         /**
          * Optional short bullet list shown under the description, e.g. specific locations or use cases this item is suited for.
@@ -6691,6 +6695,7 @@ export interface DetailedFeatureGridBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        tag?: T;
         description?: T;
         applications?:
           | T

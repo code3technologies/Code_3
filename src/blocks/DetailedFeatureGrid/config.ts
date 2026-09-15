@@ -34,6 +34,15 @@ export const DetailedFeatureGrid: Block = {
       minRows: 2,
       fields: [
         { name: 'title', type: 'text', required: true, localized: true },
+        {
+          name: 'tag',
+          type: 'text',
+          label: 'Highlight Tag (optional)',
+          localized: true,
+          admin: {
+            description: 'Shown as a colored badge under the title, e.g. a recommended approach or key takeaway — "Cross-Platform Solution".',
+          },
+        },
         { name: 'description', type: 'textarea', required: true, localized: true },
         {
           name: 'applications',
