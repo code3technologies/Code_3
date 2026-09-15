@@ -71,20 +71,9 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   }
 }
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const { totalDocs } = await payload.count({
-    collection: 'posts',
-    overrideAccess: false,
-  })
-
-  const totalPages = Math.ceil(totalDocs / 12)
-
-  const pages: { pageNumber: string }[] = []
-
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push({ pageNumber: String(i) })
-  }
-
-  return pages
-}
+// Intentionally no generateStaticParams here: this route previously prerendered
+// every page at build time, and a slow/degraded DB connection during a
+// production build turned that into a 60s+ timeout that failed the entire
+// deployment (not just this page). With `revalidate` set above, Next.js still
+// caches each page after its first on-demand render, so this trades a slightly
+// slower first visit for the whole site never being blocked by this route again.

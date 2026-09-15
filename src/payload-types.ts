@@ -2263,6 +2263,10 @@ export interface PricingFactorsBlock {
          */
         icon?: string | null;
         text: string;
+        /**
+         * Optional — switches this section to a more detailed card layout once any factor has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -3127,6 +3131,10 @@ export interface DetailedFeatureGridBlock {
   items?:
     | {
         title: string;
+        /**
+         * Shown as a colored badge under the title, e.g. a recommended approach or key takeaway — "Cross-Platform Solution".
+         */
+        tag?: string | null;
         description: string;
         /**
          * Optional short bullet list shown under the description, e.g. specific locations or use cases this item is suited for.
@@ -6187,6 +6195,7 @@ export interface PricingFactorsBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         text?: T;
+        description?: T;
         id?: T;
       };
   ctaHeading?: T;
@@ -6686,6 +6695,7 @@ export interface DetailedFeatureGridBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        tag?: T;
         description?: T;
         applications?:
           | T

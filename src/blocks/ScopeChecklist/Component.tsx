@@ -223,6 +223,8 @@ function TagCloud({ badge, title, subtitle, items, note }: ScopeChecklistBlockPr
 }
 
 function MonthlyCadence({ badge, title, subtitle, items, note }: ScopeChecklistBlockProps) {
+  const hasDescriptions = (items || []).some((item) => item.description)
+
   return (
     <Reveal className="overflow-hidden rounded-3xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04),0_24px_50px_-24px_rgba(0,0,0,0.18)]">
       <div className="grid md:grid-cols-[300px_1fr]">
@@ -249,7 +251,8 @@ function MonthlyCadence({ badge, title, subtitle, items, note }: ScopeChecklistB
               <div
                 key={item.id || index}
                 className={cn(
-                  'flex items-center gap-3 border-border px-6 py-5 transition-colors hover:bg-gray-50/80',
+                  'flex gap-3 border-border px-6 py-5 transition-colors hover:bg-gray-50/80',
+                  hasDescriptions ? 'items-start' : 'items-center',
                   !isLastMobile && 'border-b sm:border-b-0',
                   col > 0 && 'sm:border-l',
                   row > 0 && 'sm:border-t',
@@ -258,7 +261,12 @@ function MonthlyCadence({ badge, title, subtitle, items, note }: ScopeChecklistB
                 <span className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-[#FDEBEC] text-primary_red">
                   <Icon className="h-[18px] w-[18px]" />
                 </span>
-                <span className="text-sm font-medium text-foreground">{item.text}</span>
+                <div>
+                  <span className="text-sm font-semibold text-foreground">{item.text}</span>
+                  {hasDescriptions && item.description && (
+                    <p className="mt-1 text-xs leading-relaxed text-gray-500">{item.description}</p>
+                  )}
+                </div>
               </div>
             )
           })}

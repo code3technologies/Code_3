@@ -235,6 +235,11 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
                   <Icon className="h-5 w-5" />
                 </span>
                 <span className="text-base font-semibold leading-snug text-foreground">{item.title}</span>
+                {item.tag && (
+                  <span className="inline-flex w-fit items-center rounded-full bg-primary_red/10 px-3 py-1 text-xs font-bold text-primary_red">
+                    {item.tag}
+                  </span>
+                )}
                 <p className="text-sm leading-relaxed text-gray-600">{item.description}</p>
 
                 {applications.length > 0 && (
