@@ -85,11 +85,25 @@ export const SLATable: Block = {
           localized: true,
         },
         {
+          name: 'remoteSupportNote',
+          type: 'textarea',
+          label: 'Remote Support Note (optional)',
+          localized: true,
+          admin: { description: 'Explains what happens during remote support, e.g. "Incident is prioritized immediately and remote troubleshooting begins without delay."' },
+        },
+        {
           name: 'onsiteSupportTime',
           type: 'text',
           label: 'Onsite Support Time',
           required: true,
           localized: true,
+        },
+        {
+          name: 'onsiteSupportNote',
+          type: 'textarea',
+          label: 'Onsite Support Note (optional)',
+          localized: true,
+          admin: { description: 'Explains when onsite support is arranged, e.g. "Arranged when remote troubleshooting cannot restore service."' },
         },
         {
           name: 'helpdeskAvailability',
