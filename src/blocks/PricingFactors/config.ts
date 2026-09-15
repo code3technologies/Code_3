@@ -46,6 +46,15 @@ export const PricingFactors: Block = {
           required: true,
           localized: true,
         },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (optional)',
+          localized: true,
+          admin: {
+            description: 'Optional — switches this section to a more detailed card layout once any factor has one.',
+          },
+        },
       ],
     },
     {

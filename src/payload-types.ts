@@ -2263,6 +2263,10 @@ export interface PricingFactorsBlock {
          */
         icon?: string | null;
         text: string;
+        /**
+         * Optional — switches this section to a more detailed card layout once any factor has one.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -6187,6 +6191,7 @@ export interface PricingFactorsBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         text?: T;
+        description?: T;
         id?: T;
       };
   ctaHeading?: T;
