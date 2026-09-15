@@ -78,17 +78,24 @@ export const SLATableBlock: React.FC<Props> = ({
               const examples = row.impactExamples || []
               const isLast = index === rows.length - 1
               return (
-                <div
+                <Reveal
                   key={row.id || index}
+                  delayMs={150 + index * 90}
                   className={cn(
-                    'grid min-w-[900px] grid-cols-[110px_1.4fr_0.8fr_0.8fr_1.4fr] border-l-4 border-t border-border',
+                    'grid min-w-[900px] grid-cols-[110px_1.4fr_0.8fr_0.8fr_1.4fr] border-l-4 border-t border-border transition-all duration-300 hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:brightness-[0.99]',
                     styles.border,
                     styles.rowBg,
                     isLast && 'rounded-b-2xl',
                   )}
                 >
                   <div className="flex items-start px-4 py-4">
-                    <span className={cn('inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide', styles.pill)}>
+                    <span className={cn('inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide', styles.pill)}>
+                      {row.severity === 'red' && (
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-white opacity-75" />
+                          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+                        </span>
+                      )}
                       {row.priority}
                     </span>
                   </div>
@@ -123,25 +130,35 @@ export const SLATableBlock: React.FC<Props> = ({
                       <p className="mt-1 text-xs leading-relaxed text-gray-500">{row.resolutionApproach}</p>
                     )}
                   </div>
-                </div>
+                </Reveal>
               )
             })}
           </div>
         </Reveal>
 
         {/* Mobile: stacked cards */}
-        <Reveal delayMs={100} className="grid grid-cols-1 gap-5 md:hidden">
+        <div className="grid grid-cols-1 gap-5 md:hidden">
           {rows.map((row, index) => {
             const styles = severityStyles[row.severity || 'blue']
             const examples = row.impactExamples || []
             return (
-              <div
+              <Reveal
                 key={row.id || index}
-                className={cn('relative overflow-hidden rounded-2xl border border-border pl-6 p-5 shadow-sm', styles.rowBg)}
+                delayMs={100 + index * 90}
+                className={cn(
+                  'relative overflow-hidden rounded-2xl border border-border pl-6 p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg',
+                  styles.rowBg,
+                )}
               >
                 <div className={cn('absolute inset-y-0 left-0 w-1.5', styles.bar)} />
 
-                <span className={cn('inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide', styles.pill)}>
+                <span className={cn('inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide', styles.pill)}>
+                  {row.severity === 'red' && (
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-white opacity-75" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+                    </span>
+                  )}
                   {row.priority} Priority
                 </span>
 
@@ -183,10 +200,10 @@ export const SLATableBlock: React.FC<Props> = ({
                 {row.resolutionApproach && (
                   <p className="mt-3 border-t border-black/5 pt-3 text-xs leading-relaxed text-gray-500">{row.resolutionApproach}</p>
                 )}
-              </div>
+              </Reveal>
             )
           })}
-        </Reveal>
+        </div>
 
         <CtaButton text={ctaText} label={ctaLabel} url={ctaUrl} className="mt-6" />
       </div>
