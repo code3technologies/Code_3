@@ -1748,7 +1748,15 @@ export interface SLATableBlock {
             }[]
           | null;
         remoteSupportTime: string;
+        /**
+         * Explains what happens during remote support, e.g. "Incident is prioritized immediately and remote troubleshooting begins without delay."
+         */
+        remoteSupportNote?: string | null;
         onsiteSupportTime: string;
+        /**
+         * Explains when onsite support is arranged, e.g. "Arranged when remote troubleshooting cannot restore service."
+         */
+        onsiteSupportNote?: string | null;
         helpdeskAvailability: string;
         resolutionTarget: string;
         /**
@@ -5842,7 +5850,9 @@ export interface SLATableBlockSelect<T extends boolean = true> {
               id?: T;
             };
         remoteSupportTime?: T;
+        remoteSupportNote?: T;
         onsiteSupportTime?: T;
+        onsiteSupportNote?: T;
         helpdeskAvailability?: T;
         resolutionTarget?: T;
         resolutionApproach?: T;

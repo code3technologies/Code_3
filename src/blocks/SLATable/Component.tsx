@@ -107,9 +107,15 @@ export const SLATableBlock: React.FC<Props> = ({
                   <div className="px-4 py-4">
                     <div className={cn('text-sm font-bold', styles.stat)}>{row.remoteSupportTime}</div>
                     <div className="mt-0.5 text-xs text-gray-500">{row.helpdeskAvailability}</div>
+                    {row.remoteSupportNote && (
+                      <p className="mt-1 text-xs leading-relaxed text-gray-500">{row.remoteSupportNote}</p>
+                    )}
                   </div>
                   <div className="px-4 py-4">
                     <div className={cn('text-sm font-bold', styles.stat)}>{row.onsiteSupportTime}</div>
+                    {row.onsiteSupportNote && (
+                      <p className="mt-1 text-xs leading-relaxed text-gray-500">{row.onsiteSupportNote}</p>
+                    )}
                   </div>
                   <div className="px-4 py-4">
                     <div className="text-sm font-semibold text-foreground">{row.resolutionTarget}</div>
@@ -154,10 +160,16 @@ export const SLATableBlock: React.FC<Props> = ({
                   <div>
                     <div className={cn('text-2xl font-bold', styles.stat)}>{row.remoteSupportTime}</div>
                     <div className="text-xs font-medium uppercase tracking-wide text-gray-500">Remote Support</div>
+                    {row.remoteSupportNote && (
+                      <p className="mt-1 text-xs leading-relaxed text-gray-500">{row.remoteSupportNote}</p>
+                    )}
                   </div>
                   <div>
                     <div className={cn('text-2xl font-bold', styles.stat)}>{row.onsiteSupportTime}</div>
                     <div className="text-xs font-medium uppercase tracking-wide text-gray-500">Onsite Support</div>
+                    {row.onsiteSupportNote && (
+                      <p className="mt-1 text-xs leading-relaxed text-gray-500">{row.onsiteSupportNote}</p>
+                    )}
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground">{row.helpdeskAvailability}</div>
