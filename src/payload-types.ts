@@ -2000,6 +2000,10 @@ export interface ScopeChecklistBlock {
     | {
         text: string;
         /**
+         * Optional — a brand/product logo shown instead of the generic checkmark or keyword icon.
+         */
+        logo?: (string | null) | Media;
+        /**
          * Optional — switches every item in this list to a larger card with this detail line, once any item has one.
          */
         description?: string | null;
@@ -6039,6 +6043,7 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        logo?: T;
         description?: T;
         url?: T;
         id?: T;
