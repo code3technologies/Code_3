@@ -51,6 +51,15 @@ export const ScopeChecklist: Block = {
       fields: [
         { name: 'text', type: 'text', required: true, localized: true },
         {
+          name: 'logo',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Logo Image (optional)',
+          admin: {
+            description: 'Optional — a brand/product logo shown instead of the generic checkmark or keyword icon.',
+          },
+        },
+        {
           name: 'description',
           type: 'textarea',
           label: 'Description (optional)',
