@@ -75,51 +75,49 @@ export const SLATableBlock: React.FC<Props> = ({
           {subtitle && <p className="mt-3 text-gray-600 leading-relaxed">{subtitle}</p>}
         </Reveal>
 
-        {/* Priority cards - one per severity tier, not a row/column table */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-start">
-          {rows.map((row, index) => {
-            const styles = severityStyles[row.severity || 'blue']
-            const SeverityIcon = styles.icon
-            const examples = row.impactExamples || []
-            const isFeatured = row.severity === 'red'
-            return (
-              <Reveal
-                key={row.id || index}
-                delayMs={100 + index * 110}
-                className={cn(
-                  'group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl',
-                  isFeatured && 'md:-translate-y-2 md:shadow-lg ring-1 ring-red-500/20',
-                )}
-              >
-                {/* Header band */}
-                <div className={cn('flex items-center justify-between gap-2 px-5 py-4', styles.bar)}>
-                  <span className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-white">
+        {/* Escalation ladder - a connected vertical line from most urgent (top) to least urgent (bottom) */}
+        <div className="relative pl-9 md:pl-11">
+          <div
+            className="absolute left-[13px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-red-500 via-amber-500 to-blue-500 opacity-30 md:left-[15px]"
+            aria-hidden="true"
+          />
+
+          <div className="space-y-8">
+            {rows.map((row, index) => {
+              const styles = severityStyles[row.severity || 'blue']
+              const SeverityIcon = styles.icon
+              const examples = row.impactExamples || []
+              return (
+                <Reveal key={row.id || index} delayMs={100 + index * 110} className="relative">
+                  <div
+                    className={cn(
+                      'absolute -left-9 top-1 flex h-[26px] w-[26px] items-center justify-center rounded-full ring-4 ring-white md:-left-11',
+                      styles.bar,
+                    )}
+                  >
                     {row.severity === 'red' ? (
                       <span className="relative flex h-2 w-2">
                         <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-white opacity-75" />
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
                       </span>
                     ) : (
-                      <SeverityIcon className="h-4 w-4" />
+                      <SeverityIcon className="h-3.5 w-3.5 text-white" />
                     )}
-                    {row.priority} Priority
-                  </span>
-                  {isFeatured && (
-                    <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-                      Most Urgent
-                    </span>
-                  )}
-                </div>
+                  </div>
 
-                <div className={cn('flex flex-1 flex-col gap-5 p-5', styles.rowBg)}>
-                  {/* Business impact */}
-                  <div>
-                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
-                      <AlertTriangle className="h-3 w-3" /> Business Impact
-                    </div>
-                    <p className="mt-1.5 text-sm font-semibold text-foreground">{row.impact}</p>
+                  <div className="rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-lg md:p-6">
+                    <span
+                      className={cn(
+                        'inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide',
+                        styles.pill,
+                      )}
+                    >
+                      {row.priority} Priority
+                    </span>
+
+                    <p className="mt-3 text-base font-bold text-foreground">{row.impact}</p>
                     {examples.length > 0 && (
-                      <ul className="mt-2 space-y-1.5">
+                      <ul className="mt-2 grid gap-1.5 sm:grid-cols-2">
                         {examples.map((ex, exIndex) => (
                           <li key={ex.id || exIndex} className="flex items-start gap-1.5 text-xs leading-relaxed text-gray-500">
                             <span className={cn('mt-1.5 h-1 w-1 flex-none rounded-full', styles.bar)} />
@@ -128,48 +126,42 @@ export const SLATableBlock: React.FC<Props> = ({
                         ))}
                       </ul>
                     )}
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-4 border-t border-black/5 pt-4">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
-                        <Headset className="h-3 w-3" /> Remote
+                    <div className="mt-4 grid grid-cols-1 gap-4 border-t border-black/5 pt-4 sm:grid-cols-3">
+                      <div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
+                          <Headset className="h-3 w-3" /> Remote Support
+                        </div>
+                        <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
+                          {row.remoteSupportTime}
+                        </span>
+                        <div className="mt-1 text-[11px] text-gray-400">{row.helpdeskAvailability}</div>
+                        {row.remoteSupportNote && <p className="mt-1 text-xs leading-snug text-gray-500">{row.remoteSupportNote}</p>}
                       </div>
-                      <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
-                        {row.remoteSupportTime}
-                      </span>
-                      <div className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400">{row.helpdeskAvailability}</div>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
-                        <MapPinned className="h-3 w-3" /> Onsite
+                      <div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
+                          <MapPinned className="h-3 w-3" /> Onsite Support
+                        </div>
+                        <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
+                          {row.onsiteSupportTime}
+                        </span>
+                        {row.onsiteSupportNote && <p className="mt-1 text-xs leading-snug text-gray-500">{row.onsiteSupportNote}</p>}
                       </div>
-                      <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
-                        {row.onsiteSupportTime}
-                      </span>
+                      <div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
+                          <TimerReset className="h-3 w-3" /> Target Resolution
+                        </div>
+                        <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
+                          {row.resolutionTarget}
+                        </span>
+                        {row.resolutionApproach && <p className="mt-1 text-xs leading-snug text-gray-500">{row.resolutionApproach}</p>}
+                      </div>
                     </div>
                   </div>
-                  {(row.remoteSupportNote || row.onsiteSupportNote) && (
-                    <div className="-mt-3 grid grid-cols-2 gap-4 text-xs leading-relaxed text-gray-500">
-                      <p>{row.remoteSupportNote}</p>
-                      <p>{row.onsiteSupportNote}</p>
-                    </div>
-                  )}
-
-                  {/* Target resolution */}
-                  <div className="mt-auto border-t border-black/5 pt-4">
-                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
-                      <TimerReset className="h-3 w-3" /> Target Resolution
-                    </div>
-                    <div className={cn('mt-1.5 text-2xl font-extrabold', styles.stat)}>{row.resolutionTarget}</div>
-                    {row.resolutionApproach && (
-                      <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{row.resolutionApproach}</p>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
-            )
-          })}
+                </Reveal>
+              )
+            })}
+          </div>
         </div>
 
         <CtaButton text={ctaText} label={ctaLabel} url={ctaUrl} className="mt-8" />
