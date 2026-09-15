@@ -127,34 +127,48 @@ export const SLATableBlock: React.FC<Props> = ({
                       </ul>
                     )}
 
-                    <div className="mt-4 grid grid-cols-1 gap-4 border-t border-black/5 pt-4 sm:grid-cols-3">
-                      <div>
+                    <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-5 border-t border-black/5 pt-4 sm:grid-cols-3">
+                      <div className="flex flex-col">
                         <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
                           <Headset className="h-3 w-3" /> Remote Support
                         </div>
-                        <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
-                          {row.remoteSupportTime}
-                        </span>
-                        <div className="mt-1 text-[11px] text-gray-400">{row.helpdeskAvailability}</div>
-                        {row.remoteSupportNote && <p className="mt-1 text-xs leading-snug text-gray-500">{row.remoteSupportNote}</p>}
+                        <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <span className={cn('inline-flex w-fit items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
+                            {row.remoteSupportTime}
+                          </span>
+                          {row.helpdeskAvailability && (
+                            <span className="text-[10px] font-semibold text-gray-400">{row.helpdeskAvailability}</span>
+                          )}
+                        </div>
+                        {row.remoteSupportNote && <p className="mt-1.5 text-xs leading-snug text-gray-500">{row.remoteSupportNote}</p>}
                       </div>
-                      <div>
+                      <div className="flex flex-col">
                         <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
                           <MapPinned className="h-3 w-3" /> Onsite Support
                         </div>
-                        <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
+                        <span
+                          className={cn(
+                            'mt-1.5 inline-flex w-fit items-center rounded-lg px-2.5 py-1 text-base font-bold',
+                            styles.chip,
+                          )}
+                        >
                           {row.onsiteSupportTime}
                         </span>
-                        {row.onsiteSupportNote && <p className="mt-1 text-xs leading-snug text-gray-500">{row.onsiteSupportNote}</p>}
+                        {row.onsiteSupportNote && <p className="mt-1.5 text-xs leading-snug text-gray-500">{row.onsiteSupportNote}</p>}
                       </div>
-                      <div>
+                      <div className="flex flex-col">
                         <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-400">
                           <TimerReset className="h-3 w-3" /> Target Resolution
                         </div>
-                        <span className={cn('mt-1.5 inline-flex items-center rounded-lg px-2.5 py-1 text-base font-bold', styles.chip)}>
+                        <span
+                          className={cn(
+                            'mt-1.5 inline-flex w-fit items-center rounded-lg px-2.5 py-1 text-base font-bold',
+                            styles.chip,
+                          )}
+                        >
                           {row.resolutionTarget}
                         </span>
-                        {row.resolutionApproach && <p className="mt-1 text-xs leading-snug text-gray-500">{row.resolutionApproach}</p>}
+                        {row.resolutionApproach && <p className="mt-1.5 text-xs leading-snug text-gray-500">{row.resolutionApproach}</p>}
                       </div>
                     </div>
                   </div>
