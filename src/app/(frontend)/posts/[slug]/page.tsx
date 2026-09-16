@@ -16,6 +16,9 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
+import { extractHeadings } from '@/utilities/extractHeadings'
+import { PostTableOfContents } from '@/components/PostTableOfContents'
+import { CtaButton } from '@/components/site/CtaButton'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -52,6 +55,14 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
+  const headings = extractHeadings(post.content)
+
+  const curatedRelated = (post.relatedPosts || []).filter(
+    (related): related is Post => typeof related === 'object' && related !== null,
+  )
+  const relatedDocs =
+    curatedRelated.length > 0 ? curatedRelated : await fetchFallbackRecentPosts({ excludeId: post.id, locale })
+
   return (
     <article className="">
       <PageClient />
@@ -65,12 +76,21 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
+          <div className="mx-auto max-w-[48rem]">
+            <PostTableOfContents headings={headings} />
+          </div>
+
           <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
+
+          <CtaButton
+            className="mx-auto mt-4 max-w-[48rem]"
+            text="Want help getting this right for your business?"
+            label="Talk to Our Experts"
+            url="/contact"
+          />
+
+          {relatedDocs.length > 0 && (
+            <RelatedPosts title="You Might Also Like" className="mt-12 max-w-5xl mx-auto" docs={relatedDocs} />
           )}
         </div>
       </div>
@@ -113,6 +133,36 @@ const fetchPostBySlug = async ({
   })
 
   return result.docs?.[0] || null
+}
+
+// Shown under a post whenever it has no manually curated relatedPosts, so
+// every post ends with a "keep reading" section instead of a dead end.
+const fetchFallbackRecentPosts = async ({
+  excludeId,
+  locale,
+}: {
+  excludeId: string
+  locale: 'en' | 'ar'
+}): Promise<Post[]> => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'posts',
+    depth: 1,
+    draft: false,
+    limit: 3,
+    locale,
+    overrideAccess: false,
+    pagination: false,
+    sort: '-publishedAt',
+    where: {
+      id: {
+        not_equals: excludeId,
+      },
+    },
+  })
+
+  return result.docs || []
 }
 
 // Draft/preview requests always read fresh so editors see live content;

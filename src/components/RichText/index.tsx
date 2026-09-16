@@ -21,6 +21,7 @@ import type {
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
+import { createHeadingIdGenerator, flattenLexicalText } from '@/utilities/headingId'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -38,25 +39,44 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return slug === 'home' ? '/' : `/${slug}`
 }
 
-const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
-  ...defaultConverters,
-  ...LinkJSXConverter({ internalDocToHref }),
-  blocks: {
-    banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
-    mediaBlock: ({ node }) => (
-      <MediaBlock
-        className="col-start-1 col-span-3"
-        imgClassName="m-0"
-        {...node.fields}
-        captionClassName="mx-auto max-w-[48rem]"
-        enableGutter={false}
-        disableInnerContainer={true}
-      />
-    ),
-    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
-  },
-})
+const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => {
+  // Fresh per RichText render so ids stay in sync with extractHeadings, which
+  // walks the same document from scratch for the table-of-contents card.
+  const nextHeadingId = createHeadingIdGenerator()
+
+  return {
+    ...defaultConverters,
+    ...LinkJSXConverter({ internalDocToHref }),
+    heading: ({ node, nodesToJSX }) => {
+      const Tag = node.tag as keyof React.JSX.IntrinsicElements
+      const children = nodesToJSX({ nodes: node.children })
+      if (node.tag === 'h2' || node.tag === 'h3') {
+        const id = nextHeadingId(flattenLexicalText(node).trim())
+        return (
+          <Tag id={id} className="scroll-mt-28">
+            {children}
+          </Tag>
+        )
+      }
+      return <Tag>{children}</Tag>
+    },
+    blocks: {
+      banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
+      mediaBlock: ({ node }) => (
+        <MediaBlock
+          className="col-start-1 col-span-3"
+          imgClassName="m-0"
+          {...node.fields}
+          captionClassName="mx-auto max-w-[48rem]"
+          enableGutter={false}
+          disableInnerContainer={true}
+        />
+      ),
+      code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+      cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+    },
+  }
+}
 
 type Props = {
   data: DefaultTypedEditorState
