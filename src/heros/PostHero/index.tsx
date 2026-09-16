@@ -1,10 +1,13 @@
 import React from 'react'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 import type { Post } from '@/payload-types'
 
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { Media } from '@/components/Media'
 import { estimateReadingTime } from '@/utilities/estimateReadingTime'
+import { PostShareButtons } from '@/components/PostShareButtons'
 
 const formatPostDate = (timestamp: string): string =>
   new Date(timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -12,7 +15,7 @@ const formatPostDate = (timestamp: string): string =>
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, populatedAuthors, publishedAt, title, heroImage, content } = post
+  const { categories, populatedAuthors, publishedAt, title, heroImage, content, slug } = post
 
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
@@ -34,6 +37,14 @@ export const PostHero: React.FC<{
       <div className="absolute pointer-events-none inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
       <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-foreground pb-10">
         <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2 text-white">
+          <Link
+            href="/posts"
+            className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-white/80 transition-colors hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Blog
+          </Link>
+
           {categories && categories.length > 0 && (
             <div className="uppercase text-sm mb-6 font-semibold tracking-wide text-white/90">
               {categories.map((category, index) => {
@@ -69,6 +80,12 @@ export const PostHero: React.FC<{
               </>
             )}
           </div>
+
+          {slug && (
+            <div className="mt-5">
+              <PostShareButtons slug={slug} title={title || ''} />
+            </div>
+          )}
         </div>
       </div>
     </div>
