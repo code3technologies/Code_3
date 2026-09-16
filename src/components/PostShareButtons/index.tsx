@@ -1,22 +1,21 @@
 import React from 'react'
-import { Facebook, Linkedin, Twitter } from 'lucide-react'
+import { Instagram, Linkedin } from 'lucide-react'
 import { getServerSideURL } from '@/utilities/getURL'
 
-export const PostShareButtons: React.FC<{ slug: string; title: string }> = ({ slug, title }) => {
+// Instagram has no web share-intent for an arbitrary URL (it's app-only), so
+// unlike the other platforms that icon links to CODE3's own profile rather
+// than sharing this specific post.
+const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/code3.technologies'
+
+export const PostShareButtons: React.FC<{ slug: string }> = ({ slug }) => {
   const url = `${getServerSideURL()}/posts/${slug}`
   const encodedUrl = encodeURIComponent(url)
-  const encodedTitle = encodeURIComponent(title)
 
   const links = [
     {
-      label: 'Share on X',
-      href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
-      Icon: Twitter,
-    },
-    {
-      label: 'Share on Facebook',
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-      Icon: Facebook,
+      label: 'CODE3 on Instagram',
+      href: INSTAGRAM_PROFILE_URL,
+      Icon: Instagram,
     },
     {
       label: 'Share on LinkedIn',

@@ -26,7 +26,7 @@ export const PostHero: React.FC<{
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4 pb-5">
         <div className="flex flex-wrap items-center gap-4">
-          {slug && <PostShareButtons slug={slug} title={title || ''} />}
+          {slug && <PostShareButtons slug={slug} />}
           {publishedAt && (
             <time dateTime={publishedAt} className="text-sm text-gray-500">
               {formatPostDate(publishedAt)}
