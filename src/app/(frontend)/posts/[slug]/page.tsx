@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import { unstable_cache } from 'next/cache'
 import React from 'react'
+import Link from 'next/link'
 import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
@@ -18,7 +19,6 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
-import { CtaButton } from '@/components/site/CtaButton'
 
 // Intentionally no generateStaticParams here: this route used to prerender
 // every post at build time, and each post now also runs an extra DB query
@@ -53,7 +53,7 @@ export default async function Post({ params: paramsPromise }: Args) {
     curatedRelated.length > 0 ? curatedRelated : await fetchFallbackRecentPosts({ excludeId: post.id, locale })
 
   return (
-    <article className="">
+    <article>
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -61,26 +61,38 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
+      <div className="pt-28 pb-16 md:pt-32">
+        <div className="container mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-14">
+            <div className="min-w-0">
+              <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <div className="mx-auto max-w-[48rem]">
-            <PostTableOfContents headings={headings} />
+              <PostTableOfContents headings={headings} />
+
+              <RichText data={post.content} enableGutter={false} />
+
+              <p className="mt-4 border-t border-border pt-6 text-base leading-relaxed text-gray-700">
+                <Link href="/contact" className="font-semibold text-primary_red hover:underline">
+                  Talk to CODE3 today
+                </Link>{' '}
+                and get expert guidance on the right solution for your business.
+              </p>
+            </div>
+
+            {relatedDocs.length > 0 && (
+              <aside className="lg:sticky lg:top-28 lg:self-start">
+                <RelatedPosts
+                  layout="sidebar"
+                  title={
+                    <>
+                      <span className="text-primary_red">Recent</span> Blogs
+                    </>
+                  }
+                  docs={relatedDocs}
+                />
+              </aside>
+            )}
           </div>
-
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-
-          <CtaButton
-            className="mx-auto mt-4 max-w-[48rem]"
-            text="Want help getting this right for your business?"
-            label="Talk to Our Experts"
-            url="/contact"
-          />
-
-          {relatedDocs.length > 0 && (
-            <RelatedPosts title="You Might Also Like" className="mt-12 max-w-5xl mx-auto" docs={relatedDocs} />
-          )}
         </div>
       </div>
     </article>
