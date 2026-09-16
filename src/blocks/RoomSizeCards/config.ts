@@ -30,17 +30,51 @@ export const RoomSizeCards: Block = {
       localized: true,
     },
     {
+      name: 'unitLabel',
+      type: 'text',
+      label: 'Unit Label',
+      defaultValue: 'People',
+      localized: true,
+      admin: {
+        description: 'Shown next to the big value on each card, e.g. "People" or "Fiber Spec".',
+      },
+    },
+    {
+      name: 'icon',
+      type: 'select',
+      label: 'Card Icon',
+      defaultValue: 'users',
+      options: [
+        { label: 'People', value: 'users' },
+        { label: 'Cable', value: 'cable' },
+        { label: 'Network', value: 'network' },
+        { label: 'Wi-Fi', value: 'wifi' },
+        { label: 'Server', value: 'server' },
+      ],
+    },
+    {
       name: 'tiers',
       type: 'array',
       label: 'Room Tiers',
       admin: {
-        description: 'List from smallest to largest — the size bar on each card fills more as you go down the list.',
+        description: 'List from smallest/first to largest/last — the color ramp on each card gets darker as you go down the list.',
       },
       minRows: 2,
       maxRows: 6,
       fields: [
         { name: 'label', type: 'text', required: true, localized: true, admin: { description: 'e.g. "Huddle Rooms"' } },
-        { name: 'minCapacity', type: 'number', required: true },
+        {
+          name: 'valueLabel',
+          type: 'text',
+          admin: {
+            description: 'Overrides the big value shown on the card, e.g. "OS2". Leave blank to auto-compute from min/max capacity below.',
+          },
+        },
+        {
+          name: 'minCapacity',
+          type: 'number',
+          admin: { description: 'Used to compute the big value unless Value Label above is set.' },
+        },
         {
           name: 'maxCapacity',
           type: 'number',

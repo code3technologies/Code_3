@@ -2439,7 +2439,12 @@ export interface RoomSizeCardsBlock {
   title: string;
   subtitle?: string | null;
   /**
-   * List from smallest to largest — the size bar on each card fills more as you go down the list.
+   * Shown next to the big value on each card, e.g. "People" or "Fiber Spec".
+   */
+  unitLabel?: string | null;
+  icon?: ('users' | 'cable' | 'network' | 'wifi' | 'server') | null;
+  /**
+   * List from smallest/first to largest/last — the color ramp on each card gets darker as you go down the list.
    */
   tiers?:
     | {
@@ -2447,7 +2452,14 @@ export interface RoomSizeCardsBlock {
          * e.g. "Huddle Rooms"
          */
         label: string;
-        minCapacity: number;
+        /**
+         * Overrides the big value shown on the card, e.g. "OS2". Leave blank to auto-compute from min/max capacity below.
+         */
+        valueLabel?: string | null;
+        /**
+         * Used to compute the big value unless Value Label above is set.
+         */
+        minCapacity?: number | null;
         /**
          * Leave blank for the top tier to show "X+"
          */
@@ -6369,10 +6381,13 @@ export interface RoomSizeCardsBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
+  unitLabel?: T;
+  icon?: T;
   tiers?:
     | T
     | {
         label?: T;
+        valueLabel?: T;
         minCapacity?: T;
         maxCapacity?: T;
         description?: T;
