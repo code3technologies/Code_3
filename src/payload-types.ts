@@ -407,6 +407,7 @@ export interface Page {
     | CCTVEstimatorBlock
     | AICameraEstimatorBlock
     | FiberEstimatorBlock
+    | AuditoriumEstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -4682,6 +4683,71 @@ export interface FiberEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AuditoriumEstimatorBlock".
+ */
+export interface AuditoriumEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  venueTypeLabel?: string | null;
+  venueTypeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  audienceSizeLabel?: string | null;
+  audienceSizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  primaryRequirementLabel?: string | null;
+  primaryRequirementOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  visualLabel?: string | null;
+  visualOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  audioLabel?: string | null;
+  audioOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  additionalLabel?: string | null;
+  additionalOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'auditoriumEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5298,6 +5364,7 @@ export interface PagesSelect<T extends boolean = true> {
         cctvEstimator?: T | CCTVEstimatorBlockSelect<T>;
         aiCameraEstimator?: T | AICameraEstimatorBlockSelect<T>;
         fiberEstimator?: T | FiberEstimatorBlockSelect<T>;
+        auditoriumEstimator?: T | AuditoriumEstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -7951,6 +8018,64 @@ export interface FiberEstimatorBlockSelect<T extends boolean = true> {
       };
   existingLabel?: T;
   existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AuditoriumEstimatorBlock_select".
+ */
+export interface AuditoriumEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  venueTypeLabel?: T;
+  venueTypeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  audienceSizeLabel?: T;
+  audienceSizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  primaryRequirementLabel?: T;
+  primaryRequirementOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  visualLabel?: T;
+  visualOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  audioLabel?: T;
+  audioOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  additionalLabel?: T;
+  additionalOptions?:
     | T
     | {
         text?: T;
