@@ -20,25 +20,14 @@ import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
 import { CtaButton } from '@/components/site/CtaButton'
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const posts = await payload.find({
-    collection: 'posts',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  })
-
-  const params = posts.docs.map(({ slug }) => {
-    return { slug }
-  })
-
-  return params
-}
+// Intentionally no generateStaticParams here: this route used to prerender
+// every post at build time, and each post now also runs an extra DB query
+// for its fallback "related posts" when none are curated. Under a slow build
+// connection that's enough per-page work to hit the same 60s static-generation
+// timeout that once failed the whole production build for /posts/page/[pageNumber]
+// (see that route's comment). Posts are cached via unstable_cache + revalidatePost's
+// `post_${slug}` tag regardless, so removing this only changes *when* the first
+// render happens (on first visit instead of at build time), not the caching behavior.
 
 type Args = {
   params: Promise<{
