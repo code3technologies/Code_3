@@ -52,6 +52,52 @@ function UsersIcon() {
   )
 }
 
+function CableIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M4 9a2 2 0 002 2h1a2 2 0 002-2V4M17 9a2 2 0 01-2 2h-1a2 2 0 01-2-2V4M9 14a2 2 0 002 2h2a2 2 0 002-2M12 16v4" />
+    </svg>
+  )
+}
+
+function NetworkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <circle cx="12" cy="5" r="2" />
+      <circle cx="5" cy="19" r="2" />
+      <circle cx="19" cy="19" r="2" />
+      <path d="M12 7v6M12 13l-6 4M12 13l6 4" />
+    </svg>
+  )
+}
+
+function WifiIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M5 12.5a11 11 0 0114 0M8 16a6.5 6.5 0 018 0" />
+      <circle cx="12" cy="19.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function ServerIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <rect x="3" y="4" width="18" height="6" rx="1.5" />
+      <rect x="3" y="14" width="18" height="6" rx="1.5" />
+      <path d="M7 7h.01M7 17h.01" />
+    </svg>
+  )
+}
+
+const ICONS: Record<string, () => React.JSX.Element> = {
+  users: UsersIcon,
+  cable: CableIcon,
+  network: NetworkIcon,
+  wifi: WifiIcon,
+  server: ServerIcon,
+}
+
 function ArrowIcon() {
   return (
     <svg
@@ -72,8 +118,21 @@ function ArrowIcon() {
   )
 }
 
-export const RoomSizeCardsBlock: React.FC<Props> = ({ badge, className, title, subtitle, tiers = [], ctaText, ctaLabel, ctaUrl }) => {
+export const RoomSizeCardsBlock: React.FC<Props> = ({
+  badge,
+  className,
+  title,
+  subtitle,
+  unitLabel,
+  icon,
+  tiers = [],
+  ctaText,
+  ctaLabel,
+  ctaUrl,
+}) => {
   if (!tiers || tiers.length === 0) return null
+  const Icon = ICONS[icon || 'users'] || UsersIcon
+  const safeUnitLabel = unitLabel || 'People'
 
   return (
     <section className={cn('bg-white py-7 md:py-9', className)}>
@@ -90,7 +149,8 @@ export const RoomSizeCardsBlock: React.FC<Props> = ({ badge, className, title, s
         >
           {tiers.map((tier, index) => {
             const progress = tiers.length > 1 ? index / (tiers.length - 1) : 1
-            const capacityLabel = tier.maxCapacity ? `${tier.minCapacity}-${tier.maxCapacity}` : `${tier.minCapacity}+`
+            const capacityLabel =
+              tier.valueLabel || (tier.maxCapacity ? `${tier.minCapacity}-${tier.maxCapacity}` : `${tier.minCapacity}+`)
 
             const rgb = colorAtProgress(progress)
             const isDark = luminance(rgb) < 140
@@ -115,7 +175,7 @@ export const RoomSizeCardsBlock: React.FC<Props> = ({ badge, className, title, s
                   className="flex h-9 w-9 flex-none items-center justify-center rounded-full"
                   style={{ backgroundColor: iconBg, color: iconColor }}
                 >
-                  <UsersIcon />
+                  <Icon />
                 </span>
 
                 <div className="mt-4 flex items-baseline gap-1.5">
@@ -126,7 +186,7 @@ export const RoomSizeCardsBlock: React.FC<Props> = ({ badge, className, title, s
                     className={cn('text-xs font-semibold uppercase tracking-wide', !isDark && 'text-gray-400')}
                     style={labelColor ? { color: labelColor } : undefined}
                   >
-                    People
+                    {safeUnitLabel}
                   </span>
                 </div>
 

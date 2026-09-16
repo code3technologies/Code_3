@@ -406,6 +406,7 @@ export interface Page {
     | BGMEstimatorBlock
     | CCTVEstimatorBlock
     | AICameraEstimatorBlock
+    | FiberEstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -2438,7 +2439,12 @@ export interface RoomSizeCardsBlock {
   title: string;
   subtitle?: string | null;
   /**
-   * List from smallest to largest — the size bar on each card fills more as you go down the list.
+   * Shown next to the big value on each card, e.g. "People" or "Fiber Spec".
+   */
+  unitLabel?: string | null;
+  icon?: ('users' | 'cable' | 'network' | 'wifi' | 'server') | null;
+  /**
+   * List from smallest/first to largest/last — the color ramp on each card gets darker as you go down the list.
    */
   tiers?:
     | {
@@ -2446,7 +2452,14 @@ export interface RoomSizeCardsBlock {
          * e.g. "Huddle Rooms"
          */
         label: string;
-        minCapacity: number;
+        /**
+         * Overrides the big value shown on the card, e.g. "OS2". Leave blank to auto-compute from min/max capacity below.
+         */
+        valueLabel?: string | null;
+        /**
+         * Used to compute the big value unless Value Label above is set.
+         */
+        minCapacity?: number | null;
         /**
          * Leave blank for the top tier to show "X+"
          */
@@ -4618,6 +4631,57 @@ export interface AICameraEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FiberEstimatorBlock".
+ */
+export interface FiberEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  projectTypeLabel?: string | null;
+  projectTypeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  distanceLabel?: string | null;
+  distanceOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  needLabel?: string | null;
+  needOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingLabel?: string | null;
+  existingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'fiberEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5233,6 +5297,7 @@ export interface PagesSelect<T extends boolean = true> {
         bgmEstimator?: T | BGMEstimatorBlockSelect<T>;
         cctvEstimator?: T | CCTVEstimatorBlockSelect<T>;
         aiCameraEstimator?: T | AICameraEstimatorBlockSelect<T>;
+        fiberEstimator?: T | FiberEstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -6316,10 +6381,13 @@ export interface RoomSizeCardsBlockSelect<T extends boolean = true> {
   badge?: T;
   title?: T;
   subtitle?: T;
+  unitLabel?: T;
+  icon?: T;
   tiers?:
     | T
     | {
         label?: T;
+        valueLabel?: T;
         minCapacity?: T;
         maxCapacity?: T;
         description?: T;
@@ -7839,6 +7907,50 @@ export interface AICameraEstimatorBlockSelect<T extends boolean = true> {
       };
   existingCctvLabel?: T;
   existingCctvOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FiberEstimatorBlock_select".
+ */
+export interface FiberEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  projectTypeLabel?: T;
+  projectTypeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  distanceLabel?: T;
+  distanceOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  needLabel?: T;
+  needOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingLabel?: T;
+  existingOptions?:
     | T
     | {
         text?: T;

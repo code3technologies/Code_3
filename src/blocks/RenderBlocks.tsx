@@ -100,6 +100,7 @@ import { PASystemEstimatorBlock } from './PASystemEstimator/Component'
 import { BGMEstimatorBlock } from './BGMEstimator/Component'
 import { CCTVEstimatorBlock } from './CCTVEstimator/Component'
 import { AICameraEstimatorBlock } from './AICameraEstimator/Component'
+import { FiberEstimatorBlock } from './FiberEstimator/Component'
 
 interface BlockProps {
   disableInnerContainer?: boolean
@@ -202,6 +203,7 @@ const blockComponents = {
   bgmEstimator: BGMEstimatorBlock,
   cctvEstimator: CCTVEstimatorBlock,
   aiCameraEstimator: AICameraEstimatorBlock,
+  fiberEstimator: FiberEstimatorBlock,
   resultsShowcase: ResultsShowcaseBlock,
   processTimeline: ProcessTimelineBlock,
   coverageTable: CoverageTableBlock,
