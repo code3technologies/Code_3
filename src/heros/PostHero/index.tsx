@@ -24,8 +24,70 @@ export const PostHero: React.FC<{
 
   return (
     <div>
-      {hasHeroImage ? (
-        <div className="relative -mt-[10.4rem] aspect-[16/7] w-full overflow-hidden bg-gray-100 md:aspect-[3/1]">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-5">
+        <div className="flex flex-wrap items-center gap-4">
+          {slug && <PostShareButtons slug={slug} title={title || ''} />}
+          {publishedAt && (
+            <time dateTime={publishedAt} className="text-sm text-gray-500">
+              {formatPostDate(publishedAt)}
+            </time>
+          )}
+        </div>
+
+        <Link
+          href="/posts"
+          className="group inline-flex flex-none items-center gap-2 rounded-full bg-primary_red px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-secondary_red"
+        >
+          Back
+          <CornerUpLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+        </Link>
+      </div>
+
+      <div className="border-t border-border" />
+
+      <div className="pt-6 pb-8">
+        {categories && categories.length > 0 && (
+          <div className="uppercase text-sm mb-4 font-semibold tracking-wide text-primary_red">
+            {categories.map((category, index) => {
+              if (typeof category === 'object' && category !== null) {
+                const { title: categoryTitle } = category
+
+                const titleToUse = categoryTitle || 'Untitled category'
+
+                const isLast = index === categories.length - 1
+
+                return (
+                  <React.Fragment key={index}>
+                    {titleToUse}
+                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
+                  </React.Fragment>
+                )
+              }
+              return null
+            })}
+          </div>
+        )}
+
+        <h1 className="mb-5 text-3xl font-bold leading-tight text-foreground md:text-4xl">{title}</h1>
+
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
+          {hasAuthors && (
+            <span className="flex items-center gap-1.5">
+              <User className="h-4 w-4" />
+              by {formatAuthors(populatedAuthors)}
+            </span>
+          )}
+          {readingTime > 0 && (
+            <span className="flex items-center gap-1.5">
+              <Clock className="h-4 w-4" />
+              {readingTime} min read
+            </span>
+          )}
+        </div>
+      </div>
+
+      {hasHeroImage && (
+        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-gray-100">
           <Media
             resource={heroImage}
             fill
@@ -35,75 +97,7 @@ export const PostHero: React.FC<{
             className="absolute inset-0"
           />
         </div>
-      ) : (
-        <div className="-mt-[10.4rem] h-[10.4rem]" aria-hidden="true" />
       )}
-
-      <div className="bg-white pt-8">
-        <div className="container mx-auto max-w-[48rem]">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-5">
-            <div className="flex flex-wrap items-center gap-4">
-              {slug && <PostShareButtons slug={slug} title={title || ''} />}
-              {publishedAt && (
-                <time dateTime={publishedAt} className="text-sm text-gray-500">
-                  {formatPostDate(publishedAt)}
-                </time>
-              )}
-            </div>
-
-            <Link
-              href="/posts"
-              className="group inline-flex flex-none items-center gap-2 rounded-full bg-primary_red px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-secondary_red"
-            >
-              Back
-              <CornerUpLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
-            </Link>
-          </div>
-
-          <div className="border-t border-border" />
-
-          <div className="pt-6 pb-8">
-            {categories && categories.length > 0 && (
-              <div className="uppercase text-sm mb-4 font-semibold tracking-wide text-primary_red">
-                {categories.map((category, index) => {
-                  if (typeof category === 'object' && category !== null) {
-                    const { title: categoryTitle } = category
-
-                    const titleToUse = categoryTitle || 'Untitled category'
-
-                    const isLast = index === categories.length - 1
-
-                    return (
-                      <React.Fragment key={index}>
-                        {titleToUse}
-                        {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                      </React.Fragment>
-                    )
-                  }
-                  return null
-                })}
-              </div>
-            )}
-
-            <h1 className="mb-5 text-3xl font-bold leading-tight text-foreground md:text-4xl">{title}</h1>
-
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
-              {hasAuthors && (
-                <span className="flex items-center gap-1.5">
-                  <User className="h-4 w-4" />
-                  by {formatAuthors(populatedAuthors)}
-                </span>
-              )}
-              {readingTime > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <Clock className="h-4 w-4" />
-                  {readingTime} min read
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
