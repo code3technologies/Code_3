@@ -87,15 +87,8 @@ export const PostHero: React.FC<{
       </div>
 
       {hasHeroImage && (
-        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-gray-100">
-          <Media
-            resource={heroImage}
-            fill
-            priority
-            imgClassName="object-cover"
-            pictureClassName="absolute inset-0"
-            className="absolute inset-0"
-          />
+        <div className="mb-8 overflow-hidden rounded-2xl bg-gray-100">
+          <Media resource={heroImage} priority imgClassName="h-auto w-full" />
         </div>
       )}
     </div>
