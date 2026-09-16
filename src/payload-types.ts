@@ -406,6 +406,7 @@ export interface Page {
     | BGMEstimatorBlock
     | CCTVEstimatorBlock
     | AICameraEstimatorBlock
+    | FiberEstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -4618,6 +4619,57 @@ export interface AICameraEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FiberEstimatorBlock".
+ */
+export interface FiberEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  projectTypeLabel?: string | null;
+  projectTypeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  distanceLabel?: string | null;
+  distanceOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  needLabel?: string | null;
+  needOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingLabel?: string | null;
+  existingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'fiberEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5233,6 +5285,7 @@ export interface PagesSelect<T extends boolean = true> {
         bgmEstimator?: T | BGMEstimatorBlockSelect<T>;
         cctvEstimator?: T | CCTVEstimatorBlockSelect<T>;
         aiCameraEstimator?: T | AICameraEstimatorBlockSelect<T>;
+        fiberEstimator?: T | FiberEstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -7839,6 +7892,50 @@ export interface AICameraEstimatorBlockSelect<T extends boolean = true> {
       };
   existingCctvLabel?: T;
   existingCctvOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FiberEstimatorBlock_select".
+ */
+export interface FiberEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  projectTypeLabel?: T;
+  projectTypeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  distanceLabel?: T;
+  distanceOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  needLabel?: T;
+  needOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingLabel?: T;
+  existingOptions?:
     | T
     | {
         text?: T;
