@@ -49,6 +49,25 @@ export const GET = async (req: Request) => {
   }
   revalidateTag('pages-sitemap')
 
+  // Posts are a much smaller collection (dozens, not hundreds), so unlike
+  // pages above they're always fully revalidated in one pass rather than
+  // paginated via from/size.
+  const postsRes = await payload.find({
+    collection: 'posts',
+    where: { _status: { equals: 'published' } },
+    limit: 1000,
+    pagination: false,
+    depth: 0,
+    locale: 'en',
+  })
+  const postsRevalidated: string[] = []
+  for (const doc of postsRes.docs as any[]) {
+    const path = `/posts/${doc.slug}`
+    revalidatePath(path)
+    revalidateTag(`post_${doc.slug}`)
+    postsRevalidated.push(path)
+  }
+
   return NextResponse.json({
     ok: true,
     from,
@@ -58,6 +77,8 @@ export const GET = async (req: Request) => {
     page: res.page,
     revalidatedCount: revalidated.length,
     revalidated,
+    postsRevalidatedCount: postsRevalidated.length,
+    postsRevalidated,
     at: Date.now(),
   })
 }
