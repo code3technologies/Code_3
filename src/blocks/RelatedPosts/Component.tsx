@@ -11,7 +11,7 @@ export type RelatedPostsProps = {
   className?: string
   docs?: Post[]
   introContent?: DefaultTypedEditorState
-  title?: string
+  title?: React.ReactNode
 }
 
 export const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { CornerUpLeft, User, Clock } from 'lucide-react'
 
 import type { Post } from '@/payload-types'
 
@@ -23,69 +23,85 @@ export const PostHero: React.FC<{
   const readingTime = estimateReadingTime(content)
 
   return (
-    <div className="relative -mt-[10.4rem] flex items-end min-h-[70vh] bg-primary_red overflow-hidden">
-      {hasHeroImage && (
-        <Media
-          resource={heroImage}
-          fill
-          priority
-          imgClassName="object-cover"
-          pictureClassName="absolute inset-0"
-          className="absolute inset-0"
-        />
+    <div>
+      {hasHeroImage ? (
+        <div className="relative -mt-[10.4rem] aspect-[16/7] w-full overflow-hidden bg-gray-100 md:aspect-[3/1]">
+          <Media
+            resource={heroImage}
+            fill
+            priority
+            imgClassName="object-cover"
+            pictureClassName="absolute inset-0"
+            className="absolute inset-0"
+          />
+        </div>
+      ) : (
+        <div className="-mt-[10.4rem] h-[10.4rem]" aria-hidden="true" />
       )}
-      <div className="absolute pointer-events-none inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-foreground pb-10">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2 text-white">
-          <Link
-            href="/posts"
-            className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-white/80 transition-colors hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
-          </Link>
 
-          {categories && categories.length > 0 && (
-            <div className="uppercase text-sm mb-6 font-semibold tracking-wide text-white/90">
-              {categories.map((category, index) => {
-                if (typeof category === 'object' && category !== null) {
-                  const { title: categoryTitle } = category
-
-                  const titleToUse = categoryTitle || 'Untitled category'
-
-                  const isLast = index === categories.length - 1
-
-                  return (
-                    <React.Fragment key={index}>
-                      {titleToUse}
-                      {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                    </React.Fragment>
-                  )
-                }
-                return null
-              })}
+      <div className="bg-white pt-8">
+        <div className="container mx-auto max-w-[48rem]">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-5">
+            <div className="flex flex-wrap items-center gap-4">
+              {slug && <PostShareButtons slug={slug} title={title || ''} />}
+              {publishedAt && (
+                <time dateTime={publishedAt} className="text-sm text-gray-500">
+                  {formatPostDate(publishedAt)}
+                </time>
+              )}
             </div>
-          )}
 
-          <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-white/85">
-            {hasAuthors && <span className="font-medium text-white">{formatAuthors(populatedAuthors)}</span>}
-            {hasAuthors && publishedAt && <span aria-hidden="true">&middot;</span>}
-            {publishedAt && <time dateTime={publishedAt}>{formatPostDate(publishedAt)}</time>}
-            {readingTime > 0 && (
-              <>
-                <span aria-hidden="true">&middot;</span>
-                <span>{readingTime} min read</span>
-              </>
-            )}
+            <Link
+              href="/posts"
+              className="group inline-flex flex-none items-center gap-2 rounded-full bg-primary_red px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-secondary_red"
+            >
+              Back
+              <CornerUpLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+            </Link>
           </div>
 
-          {slug && (
-            <div className="mt-5">
-              <PostShareButtons slug={slug} title={title || ''} />
+          <div className="border-t border-border" />
+
+          <div className="pt-6 pb-8">
+            {categories && categories.length > 0 && (
+              <div className="uppercase text-sm mb-4 font-semibold tracking-wide text-primary_red">
+                {categories.map((category, index) => {
+                  if (typeof category === 'object' && category !== null) {
+                    const { title: categoryTitle } = category
+
+                    const titleToUse = categoryTitle || 'Untitled category'
+
+                    const isLast = index === categories.length - 1
+
+                    return (
+                      <React.Fragment key={index}>
+                        {titleToUse}
+                        {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
+                      </React.Fragment>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+            )}
+
+            <h1 className="mb-5 text-3xl font-bold leading-tight text-foreground md:text-4xl">{title}</h1>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
+              {hasAuthors && (
+                <span className="flex items-center gap-1.5">
+                  <User className="h-4 w-4" />
+                  by {formatAuthors(populatedAuthors)}
+                </span>
+              )}
+              {readingTime > 0 && (
+                <span className="flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  {readingTime} min read
+                </span>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

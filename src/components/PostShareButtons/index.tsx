@@ -26,8 +26,8 @@ export const PostShareButtons: React.FC<{ slug: string; title: string }> = ({ sl
   ]
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-xs font-semibold uppercase tracking-wide text-white/70">Share</span>
+    <div className="flex items-center gap-2.5">
+      <span className="text-sm text-gray-500">Share</span>
       {links.map(({ label, href, Icon }) => (
         <a
           key={label}
@@ -35,9 +35,9 @@ export const PostShareButtons: React.FC<{ slug: string; title: string }> = ({ sl
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white hover:text-primary_red"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-gray-500 transition-colors hover:border-primary_red hover:bg-primary_red hover:text-white"
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-3.5 w-3.5" />
         </a>
       ))}
     </div>

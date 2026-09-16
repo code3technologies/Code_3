@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import { unstable_cache } from 'next/cache'
 import React from 'react'
+import Link from 'next/link'
 import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
@@ -18,7 +19,6 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
-import { CtaButton } from '@/components/site/CtaButton'
 
 // Intentionally no generateStaticParams here: this route used to prerender
 // every post at build time, and each post now also runs an extra DB query
@@ -71,15 +71,23 @@ export default async function Post({ params: paramsPromise }: Args) {
 
           <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
 
-          <CtaButton
-            className="mx-auto mt-4 max-w-[48rem]"
-            text="Want help getting this right for your business?"
-            label="Talk to Our Experts"
-            url="/contact"
-          />
+          <p className="mx-auto mt-4 max-w-[48rem] border-t border-border pt-6 text-base leading-relaxed text-gray-700">
+            <Link href="/contact" className="font-semibold text-primary_red hover:underline">
+              Talk to CODE3 today
+            </Link>{' '}
+            and get expert guidance on the right solution for your business.
+          </p>
 
           {relatedDocs.length > 0 && (
-            <RelatedPosts title="You Might Also Like" className="mt-12 max-w-5xl mx-auto" docs={relatedDocs} />
+            <RelatedPosts
+              title={
+                <>
+                  <span className="text-primary_red">Recent</span> Blogs
+                </>
+              }
+              className="mt-12 max-w-5xl mx-auto"
+              docs={relatedDocs}
+            />
           )}
         </div>
       </div>
