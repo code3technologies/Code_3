@@ -10,24 +10,38 @@ import { Reveal } from '@/components/site/Reveal'
 import {
   Activity,
   Banknote,
+  Cable,
   Camera,
+  CheckCircle2,
+  ClipboardList,
   Cpu,
   FileText,
   Fingerprint,
+  Handshake,
   HardDrive,
   Headset,
+  Layers,
   LayoutDashboard,
   Lightbulb,
   Lock,
+  Network,
+  Phone,
+  PlugZap,
+  Radar,
+  Recycle,
   RefreshCw,
   RotateCw,
+  Server,
   Settings2,
   ShieldCheck,
+  Snowflake,
   Ticket,
   TrendingUp,
+  Truck,
   Users,
   Wifi,
   Wrench,
+  Zap,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -48,6 +62,25 @@ function CheckIcon({ className = 'h-4 w-4' }: { className?: string }) {
 // any future item list gets a sensible icon rather than just AMC's 9.
 function getKeywordIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  // Data center / server room relocation keywords — checked first since they're
+  // more specific than the generic terms below (e.g. "network core" vs "network").
+  if (t.includes('server')) return Server
+  if (t.includes('storage')) return HardDrive
+  if (t.includes('asset') || t.includes('inventor')) return ClipboardList
+  if (t.includes('disconnect')) return PlugZap
+  if (t.includes('packed') || t.includes('transport')) return Truck
+  if (t.includes('rack') || t.includes('cabinet')) return Layers
+  if (t.includes('power') || t.includes('ups')) return Zap
+  if (t.includes('cooling') || t.includes('environmental')) return Snowflake
+  if (t.includes('connectivity')) return Activity
+  if (t.includes('validated') || t.includes('validation')) return CheckCircle2
+  if (t.includes('monitoring') || t.includes('sensor')) return Radar
+  if (t.includes('handover')) return Handshake
+  if (t.includes('cabling') || t.includes('cable')) return Cable
+  if (t.includes('telephony') || t.includes('voip') || t.includes('phone')) return Phone
+  if (t.includes('amc')) return Wrench
+  if (t.includes('disposal') || t.includes('recycl')) return Recycle
+  if (t.includes('network core')) return Network
   if (t.includes('troubleshoot')) return Wrench
   if (t.includes('configuration')) return Settings2
   if (t.includes('testing')) return Activity
