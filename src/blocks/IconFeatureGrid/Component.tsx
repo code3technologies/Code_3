@@ -342,20 +342,31 @@ export const IconFeatureGridBlock: React.FC<Props> = ({
               'group flex rounded-2xl border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md',
               hasDescriptions ? 'flex-col gap-2 p-5 text-left' : 'flex-col items-center gap-2.5 p-4 text-center md:p-5',
             )
-            const inner = (
+            const iconEl = (
+              <span
+                className={cn(
+                  'flex flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red transition-transform duration-300 group-hover:scale-105',
+                  hasDescriptions ? 'h-12 w-12' : 'h-11 w-11',
+                )}
+              >
+                <Icon className={hasDescriptions ? 'h-6 w-6' : 'h-5 w-5'} />
+              </span>
+            )
+            const textEl = <span className="text-sm font-semibold leading-snug text-foreground">{item.text}</span>
+            const inner = hasDescriptions ? (
               <>
-                <span
-                  className={cn(
-                    'flex flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red transition-transform duration-300 group-hover:scale-105',
-                    hasDescriptions ? 'h-12 w-12' : 'h-11 w-11',
-                  )}
-                >
-                  <Icon className={hasDescriptions ? 'h-6 w-6' : 'h-5 w-5'} />
-                </span>
-                <span className="text-sm font-semibold leading-snug text-foreground">{item.text}</span>
+                <div className="flex items-center gap-3">
+                  {iconEl}
+                  {textEl}
+                </div>
                 {item.description && (
                   <span className="text-sm leading-relaxed text-gray-600">{item.description}</span>
                 )}
+              </>
+            ) : (
+              <>
+                {iconEl}
+                {textEl}
               </>
             )
 
