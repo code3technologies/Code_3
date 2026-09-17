@@ -74,15 +74,17 @@ export const TileShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
                   isRed ? 'bg-primary_red' : 'bg-foreground',
                 )}
               >
-                <span
-                  className={cn(
-                    'flex h-10 w-10 flex-none items-center justify-center rounded-xl',
-                    isRed ? 'bg-white/15 text-white' : 'bg-white/10 text-white',
-                  )}
-                >
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="text-base font-bold leading-snug text-white">{item.title}</h3>
+                <div className="flex items-center gap-3">
+                  <span
+                    className={cn(
+                      'flex h-10 w-10 flex-none items-center justify-center rounded-xl',
+                      isRed ? 'bg-white/15 text-white' : 'bg-white/10 text-white',
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-base font-bold leading-snug text-white">{item.title}</h3>
+                </div>
                 <p className={cn('text-sm leading-relaxed', isRed ? 'text-white/85' : 'text-white/65')}>
                   {item.description}
                 </p>
