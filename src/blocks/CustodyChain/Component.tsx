@@ -93,11 +93,11 @@ export const CustodyChainBlock: React.FC<Props> = ({
                     <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red transition-transform duration-300 group-hover:scale-105">
                       <Icon className="h-5 w-5" />
                     </span>
+                    <h3 className="flex-1 text-base font-semibold text-foreground">{step.text}</h3>
                     <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary_red text-xs font-bold text-white">
                       {index + 1}
                     </span>
                   </div>
-                  <h3 className="text-base font-semibold text-foreground">{step.text}</h3>
                   {step.description && (
                     <p className="text-sm leading-relaxed text-gray-600">{step.description}</p>
                   )}

@@ -101,10 +101,12 @@ export const FlowShowcaseBlock: React.FC<Props> = ({ className, badge, title, in
                   >
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className="mb-3 flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-white text-primary_red shadow-lg">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="text-base font-bold leading-snug text-white">{step.label}</h3>
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-white text-primary_red shadow-lg">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="text-base font-bold leading-snug text-white">{step.label}</h3>
+                  </div>
                   {step.description && (
                     <p className="mt-1.5 text-sm leading-relaxed text-white/65">{step.description}</p>
                   )}

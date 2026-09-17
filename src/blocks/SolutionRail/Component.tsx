@@ -124,10 +124,12 @@ export const SolutionRailBlock: React.FC<Props> = ({ className, badge, title, in
                 }}
                 className="flex w-[260px] flex-none snap-start flex-col gap-3 rounded-2xl border-t-4 border-t-primary_red bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_16px_32px_-16px_rgba(0,0,0,0.18)] sm:w-[300px]"
               >
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="text-base font-semibold leading-snug text-foreground">{item.title}</h3>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-base font-semibold leading-snug text-foreground">{item.title}</h3>
+                </div>
                 <p className="text-sm leading-relaxed text-gray-600">{item.description}</p>
               </div>
             )
