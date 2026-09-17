@@ -58,7 +58,7 @@ export const DeliveryProcessBlock: React.FC<Props> = ({
   return (
     <section className={cn('bg-white py-8 md:py-10', className)}>
       <div className="container mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mb-16">
+        <Reveal className="max-w-4xl mb-16">
           {badge && <Eyebrow>{badge}</Eyebrow>}
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
             {title}
