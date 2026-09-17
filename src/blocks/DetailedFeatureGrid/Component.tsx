@@ -231,10 +231,12 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
                 key={item.id || index}
                 className="flex flex-col gap-3 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md"
               >
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <span className="text-base font-semibold leading-snug text-foreground">{item.title}</span>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="text-base font-semibold leading-snug text-foreground">{item.title}</span>
+                </div>
                 {item.tag && (
                   <span className="inline-flex w-fit items-center rounded-full bg-primary_red/10 px-3 py-1 text-xs font-bold text-primary_red">
                     {item.tag}
