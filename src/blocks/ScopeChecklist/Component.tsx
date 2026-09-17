@@ -9,21 +9,30 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import {
   Activity,
+  AlertTriangle,
+  ArrowUpCircle,
   Banknote,
   Cable,
   Camera,
+  CalendarCheck,
   CheckCircle2,
+  CircleAlert,
   ClipboardList,
   Cpu,
   FileText,
   Fingerprint,
+  Flag,
+  FolderKanban,
   Handshake,
   HardDrive,
   Headset,
+  KeyRound,
   Layers,
   LayoutDashboard,
   Lightbulb,
   Lock,
+  MessageSquare,
+  MonitorCheck,
   Network,
   Phone,
   PlugZap,
@@ -31,11 +40,14 @@ import {
   Recycle,
   RefreshCw,
   RotateCw,
+  ScrollText,
   Server,
   Settings2,
   ShieldCheck,
   Snowflake,
+  Target,
   Ticket,
+  Trash2,
   TrendingUp,
   Truck,
   Users,
@@ -62,6 +74,26 @@ function CheckIcon({ className = 'h-4 w-4' }: { className?: string }) {
 // any future item list gets a sensible icon rather than just AMC's 9.
 function getKeywordIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  // IT outsourcing / service-management / security-access keywords — checked
+  // first since some (e.g. "mfa where supported") would otherwise be caught by
+  // a broader generic term below (e.g. "support").
+  if (t.includes('mfa') || t.includes('credential')) return KeyRound
+  if (t.includes('access')) return Lock
+  if (t.includes('account')) return Users
+  if (t.includes('approval')) return CheckCircle2
+  if (t.includes('logging')) return ScrollText
+  if (t.includes('removal')) return Trash2
+  if (t.includes('document')) return FileText
+  if (t.includes('scope')) return Layers
+  if (t.includes('priority')) return Flag
+  if (t.includes('escalation')) return ArrowUpCircle
+  if (t.includes('response') || t.includes('resolution') || t.includes('target')) return Target
+  if (t.includes('communication')) return MessageSquare
+  if (t.includes('review')) return CalendarCheck
+  if (t.includes('issue')) return CircleAlert
+  if (t.includes('alert')) return AlertTriangle
+  if (t.includes('device') || t.includes('status')) return MonitorCheck
+  if (t.includes('project')) return FolderKanban
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
