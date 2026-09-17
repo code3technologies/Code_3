@@ -96,6 +96,7 @@ import { BGMEstimator } from '@/blocks/BGMEstimator/config'
 import { CCTVEstimator } from '@/blocks/CCTVEstimator/config'
 import { AICameraEstimator } from '@/blocks/AICameraEstimator/config'
 import { FiberEstimator } from '@/blocks/FiberEstimator/config'
+import { LedWallEstimator } from '@/blocks/LedWallEstimator/config'
 import { AuditoriumEstimator } from '@/blocks/AuditoriumEstimator/config'
 import { SpecComparisonTable } from '@/blocks/SpecComparisonTable/config'
 import { ResultsShowcase } from '@/blocks/ResultsShowcase/config'
@@ -335,6 +336,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 CCTVEstimator,
                 AICameraEstimator,
                 FiberEstimator,
+                LedWallEstimator,
                 AuditoriumEstimator,
               ],
               required: true,

@@ -407,6 +407,7 @@ export interface Page {
     | CCTVEstimatorBlock
     | AICameraEstimatorBlock
     | FiberEstimatorBlock
+    | LedWallEstimatorBlock
     | AuditoriumEstimatorBlock
   )[];
   meta?: {
@@ -4683,6 +4684,64 @@ export interface FiberEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LedWallEstimatorBlock".
+ */
+export interface LedWallEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  environmentLabel?: string | null;
+  environmentOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  applicationLabel?: string | null;
+  applicationOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  viewingDistanceLabel?: string | null;
+  viewingDistanceOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  contentTypeLabel?: string | null;
+  contentTypeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  existingLabel?: string | null;
+  existingOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ledWallEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "AuditoriumEstimatorBlock".
  */
 export interface AuditoriumEstimatorBlock {
@@ -5364,6 +5423,7 @@ export interface PagesSelect<T extends boolean = true> {
         cctvEstimator?: T | CCTVEstimatorBlockSelect<T>;
         aiCameraEstimator?: T | AICameraEstimatorBlockSelect<T>;
         fiberEstimator?: T | FiberEstimatorBlockSelect<T>;
+        ledWallEstimator?: T | LedWallEstimatorBlockSelect<T>;
         auditoriumEstimator?: T | AuditoriumEstimatorBlockSelect<T>;
       };
   meta?:
@@ -8011,6 +8071,57 @@ export interface FiberEstimatorBlockSelect<T extends boolean = true> {
       };
   needLabel?: T;
   needOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  existingLabel?: T;
+  existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LedWallEstimatorBlock_select".
+ */
+export interface LedWallEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  environmentLabel?: T;
+  environmentOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  applicationLabel?: T;
+  applicationOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  viewingDistanceLabel?: T;
+  viewingDistanceOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  contentTypeLabel?: T;
+  contentTypeOptions?:
     | T
     | {
         text?: T;
