@@ -408,6 +408,7 @@ export interface Page {
     | AICameraEstimatorBlock
     | FiberEstimatorBlock
     | LedWallEstimatorBlock
+    | ItOutsourcingEstimatorBlock
     | AuditoriumEstimatorBlock
   )[];
   meta?: {
@@ -4742,6 +4743,57 @@ export interface LedWallEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ItOutsourcingEstimatorBlock".
+ */
+export interface ItOutsourcingEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  businessSizeLabel?: string | null;
+  businessSizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  locationsLabel?: string | null;
+  locationsOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  currentModelLabel?: string | null;
+  currentModelOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  engagementLabel?: string | null;
+  engagementOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'itOutsourcingEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "AuditoriumEstimatorBlock".
  */
 export interface AuditoriumEstimatorBlock {
@@ -5424,6 +5476,7 @@ export interface PagesSelect<T extends boolean = true> {
         aiCameraEstimator?: T | AICameraEstimatorBlockSelect<T>;
         fiberEstimator?: T | FiberEstimatorBlockSelect<T>;
         ledWallEstimator?: T | LedWallEstimatorBlockSelect<T>;
+        itOutsourcingEstimator?: T | ItOutsourcingEstimatorBlockSelect<T>;
         auditoriumEstimator?: T | AuditoriumEstimatorBlockSelect<T>;
       };
   meta?:
@@ -8129,6 +8182,50 @@ export interface LedWallEstimatorBlockSelect<T extends boolean = true> {
       };
   existingLabel?: T;
   existingOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ItOutsourcingEstimatorBlock_select".
+ */
+export interface ItOutsourcingEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  businessSizeLabel?: T;
+  businessSizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  locationsLabel?: T;
+  locationsOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  currentModelLabel?: T;
+  currentModelOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  engagementLabel?: T;
+  engagementOptions?:
     | T
     | {
         text?: T;

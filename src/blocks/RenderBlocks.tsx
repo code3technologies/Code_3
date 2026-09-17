@@ -102,6 +102,7 @@ import { CCTVEstimatorBlock } from './CCTVEstimator/Component'
 import { AICameraEstimatorBlock } from './AICameraEstimator/Component'
 import { FiberEstimatorBlock } from './FiberEstimator/Component'
 import { LedWallEstimatorBlock } from './LedWallEstimator/Component'
+import { ItOutsourcingEstimatorBlock } from './ItOutsourcingEstimator/Component'
 import { AuditoriumEstimatorBlock } from './AuditoriumEstimator/Component'
 
 interface BlockProps {
@@ -207,6 +208,7 @@ const blockComponents = {
   aiCameraEstimator: AICameraEstimatorBlock,
   fiberEstimator: FiberEstimatorBlock,
   ledWallEstimator: LedWallEstimatorBlock,
+  itOutsourcingEstimator: ItOutsourcingEstimatorBlock,
   auditoriumEstimator: AuditoriumEstimatorBlock,
   resultsShowcase: ResultsShowcaseBlock,
   processTimeline: ProcessTimelineBlock,
