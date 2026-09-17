@@ -46,12 +46,14 @@ export const PricingFactorsBlock: React.FC<Props> = ({
                 <div className="absolute right-3 top-3 text-3xl font-black text-red-500/10 transition-colors group-hover:text-red-500/15">
                   ✕
                 </div>
-                {factor.icon && (
-                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary_red/10 text-xl leading-none">
-                    {factor.icon}
-                  </span>
-                )}
-                <p className="relative mt-3 text-sm font-bold text-foreground">{factor.text}</p>
+                <div className="relative flex items-center gap-3">
+                  {factor.icon && (
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary_red/10 text-xl leading-none">
+                      {factor.icon}
+                    </span>
+                  )}
+                  <p className="text-sm font-bold text-foreground">{factor.text}</p>
+                </div>
                 {factor.description && (
                   <p className="relative mt-1.5 text-xs leading-relaxed text-gray-500">{factor.description}</p>
                 )}

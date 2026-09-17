@@ -170,35 +170,46 @@ function ChecklistGrid({ badge, title, subtitle, items, note, iconStyle, ctaText
           )
           const KeywordIcon = useKeywordIcons ? getKeywordIcon(item.text) : null
           const logo = item.logo && typeof item.logo === 'object' ? (item.logo as Media) : null
-          const content = (
-            <>
-              <span
-                className={cn(
-                  'flex flex-none items-center justify-center rounded-full',
-                  logo ? 'bg-white ring-1 ring-border' : 'bg-[#FDEBEC] text-primary_red',
-                  hasDescriptions ? 'h-10 w-10' : 'h-7 w-7',
-                )}
-              >
-                {logo?.url ? (
-                  <Image
-                    src={logo.url}
-                    alt={logo.alt || item.text || ''}
-                    width={hasDescriptions ? 22 : 16}
-                    height={hasDescriptions ? 22 : 16}
-                    className="h-auto w-auto max-h-[65%] max-w-[65%] object-contain"
-                  />
-                ) : KeywordIcon ? (
-                  <KeywordIcon className={hasDescriptions ? 'h-5 w-5' : 'h-4 w-4'} />
-                ) : (
-                  <CheckIcon />
-                )}
-              </span>
-              <span className={cn(hasDescriptions ? 'text-base font-semibold text-foreground' : 'text-sm font-medium text-foreground')}>
-                {item.text}
-              </span>
-              {hasDescriptions && item.description && (
-                <span className="text-sm leading-relaxed text-gray-600">{item.description}</span>
+          const iconEl = (
+            <span
+              className={cn(
+                'flex flex-none items-center justify-center rounded-full',
+                logo ? 'bg-white ring-1 ring-border' : 'bg-[#FDEBEC] text-primary_red',
+                hasDescriptions ? 'h-10 w-10' : 'h-7 w-7',
               )}
+            >
+              {logo?.url ? (
+                <Image
+                  src={logo.url}
+                  alt={logo.alt || item.text || ''}
+                  width={hasDescriptions ? 22 : 16}
+                  height={hasDescriptions ? 22 : 16}
+                  className="h-auto w-auto max-h-[65%] max-w-[65%] object-contain"
+                />
+              ) : KeywordIcon ? (
+                <KeywordIcon className={hasDescriptions ? 'h-5 w-5' : 'h-4 w-4'} />
+              ) : (
+                <CheckIcon />
+              )}
+            </span>
+          )
+          const titleEl = (
+            <span className={cn(hasDescriptions ? 'text-base font-semibold text-foreground' : 'text-sm font-medium text-foreground')}>
+              {item.text}
+            </span>
+          )
+          const content = hasDescriptions ? (
+            <>
+              <div className="flex items-center gap-3">
+                {iconEl}
+                {titleEl}
+              </div>
+              {item.description && <span className="text-sm leading-relaxed text-gray-600">{item.description}</span>}
+            </>
+          ) : (
+            <>
+              {iconEl}
+              {titleEl}
             </>
           )
 
