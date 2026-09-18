@@ -20,6 +20,7 @@ import {
   ClipboardList,
   Cloud,
   Cpu,
+  Database,
   FileSpreadsheet,
   FileText,
   Fingerprint,
@@ -157,6 +158,15 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('file server')) return Server
   if (t.includes('google workspace')) return Cloud
   if (t.includes('dropbox')) return FolderOpen
+  // Azure workload keywords
+  if (t.includes('virtual machine')) return Cpu
+  if (t.includes('virtual desktop')) return Monitor
+  if (t.includes('database')) return Database
+  if (t.includes('analytics')) return Database
+  if (t.includes('disaster recovery')) return RefreshCw
+  if (t.includes('hybrid')) return Network
+  if (t.includes('development')) return Settings2
+  if (t.includes('application')) return Cpu
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
