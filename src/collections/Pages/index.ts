@@ -99,6 +99,7 @@ import { FiberEstimator } from '@/blocks/FiberEstimator/config'
 import { LedWallEstimator } from '@/blocks/LedWallEstimator/config'
 import { ItOutsourcingEstimator } from '@/blocks/ItOutsourcingEstimator/config'
 import { AuditoriumEstimator } from '@/blocks/AuditoriumEstimator/config'
+import { Microsoft365Estimator } from '@/blocks/Microsoft365Estimator/config'
 import { SpecComparisonTable } from '@/blocks/SpecComparisonTable/config'
 import { ResultsShowcase } from '@/blocks/ResultsShowcase/config'
 import { ProcessTimeline } from '@/blocks/ProcessTimeline/config'
@@ -340,6 +341,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 LedWallEstimator,
                 ItOutsourcingEstimator,
                 AuditoriumEstimator,
+                Microsoft365Estimator,
               ],
               required: true,
               admin: {
