@@ -104,6 +104,7 @@ import { FiberEstimatorBlock } from './FiberEstimator/Component'
 import { LedWallEstimatorBlock } from './LedWallEstimator/Component'
 import { ItOutsourcingEstimatorBlock } from './ItOutsourcingEstimator/Component'
 import { AuditoriumEstimatorBlock } from './AuditoriumEstimator/Component'
+import { Microsoft365EstimatorBlock } from './Microsoft365Estimator/Component'
 
 interface BlockProps {
   disableInnerContainer?: boolean
@@ -209,6 +210,7 @@ const blockComponents = {
   fiberEstimator: FiberEstimatorBlock,
   ledWallEstimator: LedWallEstimatorBlock,
   itOutsourcingEstimator: ItOutsourcingEstimatorBlock,
+  microsoft365Estimator: Microsoft365EstimatorBlock,
   auditoriumEstimator: AuditoriumEstimatorBlock,
   resultsShowcase: ResultsShowcaseBlock,
   processTimeline: ProcessTimelineBlock,

@@ -410,6 +410,7 @@ export interface Page {
     | LedWallEstimatorBlock
     | ItOutsourcingEstimatorBlock
     | AuditoriumEstimatorBlock
+    | Microsoft365EstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -4859,6 +4860,57 @@ export interface AuditoriumEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Microsoft365EstimatorBlock".
+ */
+export interface Microsoft365EstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  businessSizeLabel?: string | null;
+  businessSizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  currentSetupLabel?: string | null;
+  currentSetupOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  priorityLabel?: string | null;
+  priorityOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  workStyleLabel?: string | null;
+  workStyleOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'microsoft365Estimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5478,6 +5530,7 @@ export interface PagesSelect<T extends boolean = true> {
         ledWallEstimator?: T | LedWallEstimatorBlockSelect<T>;
         itOutsourcingEstimator?: T | ItOutsourcingEstimatorBlockSelect<T>;
         auditoriumEstimator?: T | AuditoriumEstimatorBlockSelect<T>;
+        microsoft365Estimator?: T | Microsoft365EstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -8284,6 +8337,50 @@ export interface AuditoriumEstimatorBlockSelect<T extends boolean = true> {
       };
   additionalLabel?: T;
   additionalOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Microsoft365EstimatorBlock_select".
+ */
+export interface Microsoft365EstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  businessSizeLabel?: T;
+  businessSizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  currentSetupLabel?: T;
+  currentSetupOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  priorityLabel?: T;
+  priorityOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  workStyleLabel?: T;
+  workStyleOptions?:
     | T
     | {
         text?: T;
