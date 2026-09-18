@@ -118,6 +118,11 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('room control') || t.includes('room automation')) return Cpu
   if (t.includes('automation')) return Settings2
   if (t.includes('building technology') || t.includes('technology integration')) return Network
+  // Microsoft 365 / managed-IT cross-link keywords
+  if (t.includes('managed it')) return Headset
+  if (t.includes('azure')) return Server
+  if (t.includes('outsourcing')) return Handshake
+  if (t.includes('office')) return LayoutDashboard
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
