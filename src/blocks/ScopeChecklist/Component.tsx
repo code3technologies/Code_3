@@ -150,6 +150,13 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('data protection')) return FileText
   if (t.includes('vulnerab')) return AlertTriangle
   if (t.includes('incident')) return CircleAlert
+  // Microsoft 365 migration keywords
+  if (t.includes('teams')) return MessageSquare
+  if (t.includes('calendar')) return CalendarCheck
+  if (t.includes('file share')) return FolderOpen
+  if (t.includes('file server')) return Server
+  if (t.includes('google workspace')) return Cloud
+  if (t.includes('dropbox')) return FolderOpen
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
