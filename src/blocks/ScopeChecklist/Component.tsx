@@ -140,6 +140,16 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('defender')) return ShieldCheck
   if (t.includes('purview')) return ClipboardList
   if (t.includes('microsoft 365')) return Cloud
+  // IT security consultation keywords
+  if (t.includes('infrastructure')) return Server
+  if (t.includes('firewall')) return ShieldCheck
+  if (t.includes('endpoint')) return MonitorCheck
+  if (t.includes('email')) return Mail
+  if (t.includes('cloud')) return Cloud
+  if (t.includes('identit')) return Users
+  if (t.includes('data protection')) return FileText
+  if (t.includes('vulnerab')) return AlertTriangle
+  if (t.includes('incident')) return CircleAlert
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
