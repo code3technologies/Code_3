@@ -105,7 +105,7 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('project')) return FolderKanban
   // AV programming / control-system equipment keywords
   if (t.includes('projector')) return Projector
-  if (t.includes('video conferencing') || t.includes('video conference')) return Video
+  if (t.includes('audio visual') || t.includes('video conferencing') || t.includes('video conference')) return Video
   if (t.includes('microphone') || t.includes('mic')) return Mic
   if (t.includes('speaker')) return Volume2
   if (t.includes('audio processor') || t.includes('processor')) return Sliders
@@ -114,6 +114,10 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('touch panel') || t.includes('touchscreen') || t.includes('touch screen')) return TabletSmartphone
   if (t.includes('motorized screen') || t.includes('screen') || t.includes('display')) return Monitor
   if (t.includes('lighting')) return Lightbulb
+  // Smart building / building-automation keywords
+  if (t.includes('room control') || t.includes('room automation')) return Cpu
+  if (t.includes('automation')) return Settings2
+  if (t.includes('building technology') || t.includes('technology integration')) return Network
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
