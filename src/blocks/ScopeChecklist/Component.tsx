@@ -166,6 +166,7 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('disaster recovery')) return RefreshCw
   if (t.includes('hybrid')) return Network
   if (t.includes('development')) return Settings2
+  if (t.includes('container')) return Layers
   if (t.includes('application')) return Cpu
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
