@@ -411,6 +411,7 @@ export interface Page {
     | ItOutsourcingEstimatorBlock
     | AuditoriumEstimatorBlock
     | Microsoft365EstimatorBlock
+    | CopilotEstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -4911,6 +4912,57 @@ export interface Microsoft365EstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CopilotEstimatorBlock".
+ */
+export interface CopilotEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  businessSizeLabel?: string | null;
+  businessSizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  environmentLabel?: string | null;
+  environmentOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  priorityLabel?: string | null;
+  priorityOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  rolloutLabel?: string | null;
+  rolloutOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'copilotEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5531,6 +5583,7 @@ export interface PagesSelect<T extends boolean = true> {
         itOutsourcingEstimator?: T | ItOutsourcingEstimatorBlockSelect<T>;
         auditoriumEstimator?: T | AuditoriumEstimatorBlockSelect<T>;
         microsoft365Estimator?: T | Microsoft365EstimatorBlockSelect<T>;
+        copilotEstimator?: T | CopilotEstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -8381,6 +8434,50 @@ export interface Microsoft365EstimatorBlockSelect<T extends boolean = true> {
       };
   workStyleLabel?: T;
   workStyleOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CopilotEstimatorBlock_select".
+ */
+export interface CopilotEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  businessSizeLabel?: T;
+  businessSizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  environmentLabel?: T;
+  environmentOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  priorityLabel?: T;
+  priorityOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  rolloutLabel?: T;
+  rolloutOptions?:
     | T
     | {
         text?: T;
