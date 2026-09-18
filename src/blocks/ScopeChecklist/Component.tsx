@@ -18,7 +18,9 @@ import {
   CheckCircle2,
   CircleAlert,
   ClipboardList,
+  Cloud,
   Cpu,
+  FileSpreadsheet,
   FileText,
   Fingerprint,
   Flag,
@@ -31,6 +33,7 @@ import {
   LayoutDashboard,
   Lightbulb,
   Lock,
+  Mail,
   MessageSquare,
   Mic,
   Monitor,
@@ -123,6 +126,12 @@ function getKeywordIcon(text?: string | null): LucideIcon {
   if (t.includes('azure')) return Server
   if (t.includes('outsourcing')) return Handshake
   if (t.includes('office')) return LayoutDashboard
+  // Microsoft 365 application keywords
+  if (t.includes('microsoft word')) return FileText
+  if (t.includes('excel')) return FileSpreadsheet
+  if (t.includes('powerpoint')) return Presentation
+  if (t.includes('outlook')) return Mail
+  if (t.includes('microsoft 365')) return Cloud
   // Data center / server room relocation keywords — checked first since they're
   // more specific than the generic terms below (e.g. "network core" vs "network").
   if (t.includes('server')) return Server
