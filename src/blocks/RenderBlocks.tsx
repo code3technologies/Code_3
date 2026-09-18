@@ -106,6 +106,7 @@ import { ItOutsourcingEstimatorBlock } from './ItOutsourcingEstimator/Component'
 import { AuditoriumEstimatorBlock } from './AuditoriumEstimator/Component'
 import { Microsoft365EstimatorBlock } from './Microsoft365Estimator/Component'
 import { CopilotEstimatorBlock } from './CopilotEstimator/Component'
+import { Microsoft365MigrationEstimatorBlock } from './Microsoft365MigrationEstimator/Component'
 
 interface BlockProps {
   disableInnerContainer?: boolean
@@ -213,6 +214,7 @@ const blockComponents = {
   itOutsourcingEstimator: ItOutsourcingEstimatorBlock,
   microsoft365Estimator: Microsoft365EstimatorBlock,
   copilotEstimator: CopilotEstimatorBlock,
+  microsoft365MigrationEstimator: Microsoft365MigrationEstimatorBlock,
   auditoriumEstimator: AuditoriumEstimatorBlock,
   resultsShowcase: ResultsShowcaseBlock,
   processTimeline: ProcessTimelineBlock,

@@ -412,6 +412,7 @@ export interface Page {
     | AuditoriumEstimatorBlock
     | Microsoft365EstimatorBlock
     | CopilotEstimatorBlock
+    | Microsoft365MigrationEstimatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -4963,6 +4964,57 @@ export interface CopilotEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Microsoft365MigrationEstimatorBlock".
+ */
+export interface Microsoft365MigrationEstimatorBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  businessSizeLabel?: string | null;
+  businessSizeOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  sourceLabel?: string | null;
+  sourceOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  priorityLabel?: string | null;
+  priorityOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  approachLabel?: string | null;
+  approachOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  disclaimer?: string | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'microsoft365MigrationEstimator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5584,6 +5636,7 @@ export interface PagesSelect<T extends boolean = true> {
         auditoriumEstimator?: T | AuditoriumEstimatorBlockSelect<T>;
         microsoft365Estimator?: T | Microsoft365EstimatorBlockSelect<T>;
         copilotEstimator?: T | CopilotEstimatorBlockSelect<T>;
+        microsoft365MigrationEstimator?: T | Microsoft365MigrationEstimatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -8478,6 +8531,50 @@ export interface CopilotEstimatorBlockSelect<T extends boolean = true> {
       };
   rolloutLabel?: T;
   rolloutOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  disclaimer?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Microsoft365MigrationEstimatorBlock_select".
+ */
+export interface Microsoft365MigrationEstimatorBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  businessSizeLabel?: T;
+  businessSizeOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  sourceLabel?: T;
+  sourceOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  priorityLabel?: T;
+  priorityOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  approachLabel?: T;
+  approachOptions?:
     | T
     | {
         text?: T;
