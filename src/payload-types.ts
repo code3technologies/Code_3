@@ -344,6 +344,7 @@ export interface Page {
     | DowntimeEstimatorBlock
     | AssuranceStripBlock
     | ScopeChecklistBlock
+    | AccordionSectionBlock
     | SpecComparisonTableBlock
     | ResultsShowcaseBlock
     | ProcessTimelineBlock
@@ -2052,6 +2053,49 @@ export interface ScopeChecklistBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'scopeChecklist';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionSectionBlock".
+ */
+export interface AccordionSectionBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Each item is a collapsible section — a compact summary is always visible, and the detailed checklist expands on click. Use this to compress a long page: keep the top-level cards short and put the granular technical detail here.
+   */
+  items?:
+    | {
+        title: string;
+        /**
+         * A one-sentence summary shown even when this item is collapsed.
+         */
+        summary?: string | null;
+        detailSubtitle?: string | null;
+        detailItems?:
+          | {
+              text: string;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short line shown next to the button.
+   */
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave the label blank to hide the button entirely.
+   */
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordionSection';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5568,6 +5612,7 @@ export interface PagesSelect<T extends boolean = true> {
         downtimeEstimator?: T | DowntimeEstimatorBlockSelect<T>;
         assuranceStrip?: T | AssuranceStripBlockSelect<T>;
         scopeChecklist?: T | ScopeChecklistBlockSelect<T>;
+        accordionSection?: T | AccordionSectionBlockSelect<T>;
         specComparisonTable?: T | SpecComparisonTableBlockSelect<T>;
         resultsShowcase?: T | ResultsShowcaseBlockSelect<T>;
         processTimeline?: T | ProcessTimelineBlockSelect<T>;
@@ -6475,6 +6520,36 @@ export interface ScopeChecklistBlockSelect<T extends boolean = true> {
   ctaLabel?: T;
   ctaUrl?: T;
   ctaText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionSectionBlock_select".
+ */
+export interface AccordionSectionBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        summary?: T;
+        detailSubtitle?: T;
+        detailItems?:
+          | T
+          | {
+              text?: T;
+              description?: T;
+              id?: T;
+            };
+        note?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   id?: T;
   blockName?: T;
 }

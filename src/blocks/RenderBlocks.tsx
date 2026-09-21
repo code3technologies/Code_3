@@ -38,6 +38,7 @@ import { ServiceCoverageBlock } from './ServiceCoverage/Component'
 import { DowntimeEstimatorBlock } from './DowntimeEstimator/Component'
 import { AssuranceStripBlock } from './AssuranceStrip/Component'
 import { ScopeChecklistBlock } from './ScopeChecklist/Component'
+import { AccordionSectionBlock } from './AccordionSection/Component'
 import { SpecComparisonTableBlock } from './SpecComparisonTable/Component'
 import { ResultsShowcaseBlock } from './ResultsShowcase/Component'
 import { ProcessTimelineBlock } from './ProcessTimeline/Component'
@@ -151,6 +152,7 @@ const blockComponents = {
   downtimeEstimator: DowntimeEstimatorBlock,
   assuranceStrip: AssuranceStripBlock,
   scopeChecklist: ScopeChecklistBlock,
+  accordionSection: AccordionSectionBlock,
   specComparisonTable: SpecComparisonTableBlock,
   roomPanelDemo: RoomPanelDemoBlock,
   categorizedIntegrations: CategorizedIntegrationsBlock,
