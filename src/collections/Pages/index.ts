@@ -51,6 +51,7 @@ import { ServiceCoverage } from '@/blocks/ServiceCoverage/config'
 import { DowntimeEstimator } from '@/blocks/DowntimeEstimator/config'
 import { AssuranceStrip } from '@/blocks/AssuranceStrip/config'
 import { ScopeChecklist } from '@/blocks/ScopeChecklist/config'
+import { AccordionSection } from '@/blocks/AccordionSection/config'
 import { BusinessNeeds } from '@/blocks/BusinessNeeds/config'
 import { SubServicesNav } from '@/blocks/SubServicesNav/config'
 import { RoomClassification } from '@/blocks/RoomClassification/config'
@@ -277,6 +278,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 DowntimeEstimator,
                 AssuranceStrip,
                 ScopeChecklist,
+                AccordionSection,
                 SpecComparisonTable,
                 ResultsShowcase,
                 ProcessTimeline,
