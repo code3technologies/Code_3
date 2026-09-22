@@ -13,6 +13,16 @@ import config from '@payload-config'
 // Paginated via ?from=&size= to stay within a serverless function's time
 // budget. Requires ?key=<PAYLOAD_SECRET>. Kept in the repo (unlike earlier
 // one-off tmp- versions) so this doesn't need to be re-added each time.
+//
+// `revalidatePath()` invalidates Next.js's Full Route Cache for that route,
+// which forces the whole route to re-render on next visit — including any
+// independent fetch() calls inside it (e.g. Testimonials' live Google Places
+// call) that have nothing to do with the page's own `page_<slug>` tag. Doing
+// this for every published page/post in one call (the default below) is a
+// full-site cache purge, not a targeted one — every page's Testimonials block
+// ends up doing a fresh, slow (up to 4s) Google API round-trip on next visit.
+// Prefer ?slug= for a single content edit; only omit it for genuine
+// site-wide invalidations (e.g. after a schema/component deploy).
 
 const getPagePath = (doc: { slug?: string | null; serviceCategory?: string | null }) => {
   if (doc.slug === 'home') return '/'
@@ -25,6 +35,42 @@ export const GET = async (req: Request) => {
   const key = url.searchParams.get('key')
   if (key !== process.env.PAYLOAD_SECRET) {
     return NextResponse.json({ ok: false }, { status: 401 })
+  }
+
+  const slug = url.searchParams.get('slug')
+  if (slug) {
+    const payload = await getPayload({ config })
+
+    const pageRes = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      limit: 1,
+      depth: 0,
+      locale: 'en',
+    })
+    const pageDoc = pageRes.docs[0] as { slug?: string | null; serviceCategory?: string | null } | undefined
+    if (pageDoc) {
+      const path = getPagePath(pageDoc)
+      revalidatePath(path)
+      revalidateTag(`page_${slug}`)
+      return NextResponse.json({ ok: true, type: 'page', slug, path, at: Date.now() })
+    }
+
+    const postRes = await payload.find({
+      collection: 'posts',
+      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      limit: 1,
+      depth: 0,
+      locale: 'en',
+    })
+    if (postRes.docs[0]) {
+      const path = `/posts/${slug}`
+      revalidatePath(path)
+      revalidateTag(`post_${slug}`)
+      return NextResponse.json({ ok: true, type: 'post', slug, path, at: Date.now() })
+    }
+
+    return NextResponse.json({ ok: false, error: `No published page or post with slug "${slug}"` }, { status: 404 })
   }
 
   const from = Number(url.searchParams.get('from') || '0')
