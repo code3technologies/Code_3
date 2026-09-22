@@ -126,11 +126,16 @@ export const ContactUsBlock: React.FC<Props> = async ({
                       <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
                         {card.icon}
                       </span>
-                      <span>
+                      <span className="min-w-0">
                         <span className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
                           {card.label}
                         </span>
-                        <span className="block text-sm font-medium text-foreground">{card.value}</span>
+                        <span
+                          title={card.value}
+                          className="block overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium text-foreground sm:text-sm"
+                        >
+                          {card.value}
+                        </span>
                       </span>
                     </>
                   )
