@@ -58,14 +58,8 @@ export const TestimonialsBlock: React.FC<Props> = async ({
         ? fallbackQuotes
         : FALLBACK_QUOTES
 
-  // A marquee needs enough unique cards that the loop doesn't read as the same
-  // handful of reviews repeating - Google's API caps real reviews at 5 (often
-  // fewer once bare-rating reviews are filtered out), so below this threshold
-  // we show a plain static grid instead of tripling a small set into an
-  // obviously-repetitive scroll.
-  const MARQUEE_THRESHOLD = 6
-  const useMarquee = cards.length >= MARQUEE_THRESHOLD
-  const duplicatedCards = useMarquee ? [...cards, ...cards, ...cards] : cards
+  // Duplicate the list so the marquee loop is seamless (matches the TrustedBrands pattern).
+  const duplicatedCards = cards.length > 0 ? [...cards, ...cards, ...cards] : cards
 
   return (
     <section className={cn('bg-white py-8 md:py-10 overflow-hidden', className)}>
@@ -74,55 +68,34 @@ export const TestimonialsBlock: React.FC<Props> = async ({
           {badge && <Eyebrow>{badge}</Eyebrow>}
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">{title}</h2>
           {googleReviews && typeof googleReviews.rating === 'number' && (
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <GoogleRatingBadge
-                rating={googleReviews.rating}
-                userRatingsTotal={googleReviews.userRatingsTotal}
-                mapsUrl={googleReviews.mapsUrl}
-              />
-              {googleReviews.mapsUrl && (
-                <a
-                  href={googleReviews.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold text-primary_red hover:underline"
-                >
-                  See all Google Reviews &rarr;
-                </a>
-              )}
-            </div>
+            <GoogleRatingBadge
+              rating={googleReviews.rating}
+              userRatingsTotal={googleReviews.userRatingsTotal}
+              mapsUrl={googleReviews.mapsUrl}
+              className="mt-4"
+            />
           )}
         </Reveal>
       </div>
 
-      {useMarquee ? (
-        <Reveal delayMs={100} className="relative w-full">
-          {/* Gradient fade masks */}
-          <div className="absolute -left-1 top-0 w-16 md:w-24 h-full bg-gradient-to-r from-white via-white/30 to-transparent z-10 pointer-events-none" />
-          <div className="absolute -right-1 top-0 w-16 md:w-24 h-full bg-gradient-to-l from-white via-white/30 to-transparent z-10 pointer-events-none" />
+      <Reveal delayMs={100} className="relative w-full">
+        {/* Gradient fade masks */}
+        <div className="absolute -left-1 top-0 w-16 md:w-24 h-full bg-gradient-to-r from-white via-white/30 to-transparent z-10 pointer-events-none" />
+        <div className="absolute -right-1 top-0 w-16 md:w-24 h-full bg-gradient-to-l from-white via-white/30 to-transparent z-10 pointer-events-none" />
 
-          <div className="flex overflow-hidden">
-            <div
-              className="flex items-stretch gap-6 animate-scroll-veryslow hover:[animation-play-state:paused]"
-              style={{ width: 'max-content' }}
-            >
-              {duplicatedCards.map((t, i) => (
-                <div key={t.name + i} className="w-[320px] sm:w-[380px] flex-none">
-                  <TestimonialCard t={t} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-      ) : (
-        <div className="container mx-auto px-4 sm:px-6">
-          <Reveal delayMs={100} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {cards.map((t, i) => (
-              <TestimonialCard key={t.name + i} t={t} />
+        <div className="flex overflow-hidden">
+          <div
+            className="flex items-stretch gap-6 animate-scroll-veryslow hover:[animation-play-state:paused]"
+            style={{ width: 'max-content' }}
+          >
+            {duplicatedCards.map((t, i) => (
+              <div key={t.name + i} className="w-[320px] sm:w-[380px] flex-none">
+                <TestimonialCard t={t} />
+              </div>
             ))}
-          </Reveal>
+          </div>
         </div>
-      )}
+      </Reveal>
 
       <div className="container mx-auto px-4 sm:px-6">
         <CtaButton text={ctaText} label={ctaLabel} url={ctaUrl} className="mt-8" />
