@@ -1,367 +1,190 @@
-'use client'
-
 import type { ContactUsBlock as ContactUsBlockProps } from 'src/payload-types'
+import type { Footer } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
-import React, { useCallback, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
-import { getClientSideURL } from '@/utilities/getURL'
-import { reportContactConversion } from '@/utilities/reportConversion'
-import { SuccessModal } from './SuccessModale'
-import { Button } from '@/components/ui/button'
+import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getLocale } from '@/utilities/getLocale'
+import { getGoogleReviews } from '@/blocks/Testimonials/getGoogleReviews'
+import { GoogleRatingBadge } from '@/blocks/Testimonials/GoogleRatingBadge'
+import { ContactForm } from './ContactForm'
 
 type Props = ContactUsBlockProps & {
   className?: string
 }
 
-export const ContactUsBlock: React.FC<Props> = ({
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5 flex-none">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.68 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.32 1.85.55 2.81.68A2 2 0 0122 16.92z" />
+    </svg>
+  )
+}
+
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5 flex-none">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M2 7l10 6 10-6" />
+    </svg>
+  )
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5 flex-none">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  )
+}
+
+function ClockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5 flex-none">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 3" />
+    </svg>
+  )
+}
+
+const STEPS = [
+  { title: 'You reach out', description: 'Submit the form or contact us directly - whichever is easiest for you.' },
+  { title: 'We review your requirement', description: 'Our team looks at what you need and follows up to understand it properly.' },
+  { title: 'We propose the right solution', description: "No generic pitch - a recommendation based on your actual business." },
+]
+
+export const ContactUsBlock: React.FC<Props> = async ({
   className,
   heading,
   subtitle,
   description,
-  formFields = {
-    fullNameLabel: 'Full name',
-    fullNamePlaceholder: 'Enter your full name',
-    emailLabel: 'Email',
-    emailPlaceholder: 'you@company.com',
-    phoneLabel: 'Phone number',
-    subjectLabel: 'Subject',
-    messageLabel: 'Message',
-    messagePlaceholder: 'Leave us a message...',
-    privacyText: 'You agree to our friendly privacy policy.',
-    privacyLink: '#',
-    submitButtonText: 'Send message',
-  },
-  countryOptions = [
-    { value: '+971', label: 'UAE' },
-    { value: '+91', label: 'IND' },
-  ],
-  subjectOptions = [
-    { value: 'general', label: 'General Inquiry' },
-    { value: 'technical', label: 'Technical Support' },
-    { value: 'sales', label: 'Sales Inquiry' },
-    { value: 'partnership', label: 'Partnership' },
-  ],
+  formFields,
+  countryOptions,
+  subjectOptions,
 }) => {
-  const formMethods = useForm({
-    defaultValues: {
-      fullname: '',
-      email: '',
-      country: countryOptions?.[0]?.value || 'UAE',
-      phone: '',
-      subject: subjectOptions?.[0]?.value || 'general',
-      message: '',
-      privacy: false,
-    },
-  })
+  const locale = await getLocale()
+  const [footerData, googleReviews] = await Promise.all([
+    getCachedGlobal('footer', 1, locale)() as Promise<Footer>,
+    getGoogleReviews(),
+  ])
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = formMethods
+  const contactInfo = footerData?.contactInfo
+  const phone = contactInfo?.phone
+  const email = contactInfo?.email
+  const address = contactInfo?.address
+  const addressLine = [address?.building, address?.poBox].filter(Boolean).join(', ')
+  const workingHours = contactInfo?.workingHours
+  const hoursText =
+    workingHours?.days && workingHours?.time
+      ? `${workingHours.days} : ${workingHours.time}`
+      : workingHours?.days || workingHours?.time
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const mapsSearchQuery = [address?.companyName, address?.building, address?.poBox].filter(Boolean).join(', ')
+  const mapsSearchUrl = mapsSearchQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsSearchQuery)}`
+    : undefined
 
-  const onSubmit = useCallback(async (data: Record<string, unknown>) => {
-    const dataToSend = Object.entries(data).map(([name, value]) => ({
-      field: name,
-      value,
-    }))
-
-    setIsLoading(true)
-
-    try {
-      // First, fetch the form by title to get its ID
-      const formReq = await fetch(
-        `${getClientSideURL()}/api/forms?where[title][equals]=Contact Form`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'GET',
-        },
-      )
-
-      if (!formReq.ok) {
-        setIsLoading(false)
-        setError({
-          message: 'Could not find contact form. Please ensure the form exists in the CMS.',
-          status: formReq.status.toString(),
-        })
-        return
-      }
-
-      const formData = await formReq.json()
-      const formId = formData?.docs?.[0]?.id
-
-      if (!formId) {
-        setIsLoading(false)
-        setError({
-          message:
-            'Contact form not found. Please ensure a form with title "Contact Form" exists in the CMS.',
-        })
-        return
-      }
-
-      // Now submit with the actual form ID
-      const req = await fetch(`${getClientSideURL()}/api/enquiries`, {
-        body: JSON.stringify({
-          form: formId,
-          submissionData: dataToSend,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      })
-
-      const res = await req.json()
-
-      if (req.status >= 400) {
-        setIsLoading(false)
-        setError({
-          message: res.errors?.[0]?.message || res.message || 'Internal Server Error',
-          status: req.status.toString(),
-        })
-        return
-      }
-
-      setIsLoading(false)
-      setShowSuccessModal(true)
-      setHasSubmitted(true)
-      reportContactConversion('contact_form')
-    } catch (err) {
-      console.warn(err)
-      setIsLoading(false)
-      setError({
-        message: err instanceof Error ? err.message : 'Something went wrong.',
-      })
-    }
-  }, [])
-
-  const fieldClassName =
-    'w-full px-4 py-3 rounded-lg outline-none border border-border bg-white text-gray-900 placeholder-gray-400 transition-colors focus:border-primary_red'
+  type InfoCard = { icon: React.ReactElement; label: string; value: string; href?: string }
+  const infoCards: InfoCard[] = [
+    phone ? { icon: <PhoneIcon />, label: 'Call Us', value: phone, href: `tel:${phone.replace(/\s/g, '')}` } : null,
+    email ? { icon: <MailIcon />, label: 'Email Us', value: email, href: `mailto:${email}` } : null,
+    addressLine ? { icon: <PinIcon />, label: 'Visit Us', value: addressLine, href: mapsSearchUrl } : null,
+    hoursText ? { icon: <ClockIcon />, label: 'Working Hours', value: hoursText } : null,
+  ].filter((c): c is InfoCard => c !== null)
 
   return (
-    <>
-      <section className={cn('bg-white py-8 md:py-10', className)}>
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {/* Left: heading */}
-            <Reveal>
-              {heading && <Eyebrow>{heading}</Eyebrow>}
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground">
-                {subtitle}
-              </h1>
-              {description && (
-                <p className="mt-4 max-w-md text-gray-600 leading-relaxed">{description}</p>
-              )}
-            </Reveal>
+    <section className={cn('bg-white py-8 md:py-10', className)}>
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Left: heading + trust content */}
+          <Reveal>
+            {heading && <Eyebrow>{heading}</Eyebrow>}
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground">
+              {subtitle}
+            </h1>
+            {description && (
+              <p className="mt-4 max-w-md text-gray-600 leading-relaxed">{description}</p>
+            )}
 
-            {/* Right: form */}
-            <Reveal delayMs={100}>
-              <FormProvider {...formMethods}>
-                {error && (
-                  <div className="mb-4 rounded-lg border border-primary_red/20 bg-[#FDEBEC] px-4 py-3 text-sm text-primary_red">
-                    {error.status || '500'}: {error.message || 'Something went wrong.'}
-                  </div>
-                )}
-                {isLoading && !hasSubmitted && (
-                  <p className="mb-4 text-sm text-gray-500">Loading, please wait...</p>
-                )}
-                {!hasSubmitted && (
-                  <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-2">
-                          {formFields.fullNameLabel}
-                        </label>
-                        <input
-                          type="text"
-                          id="fullname"
-                          {...register('fullname', { required: 'Full name is required' })}
-                          placeholder={formFields.fullNamePlaceholder || 'Enter your full name'}
-                          className={fieldClassName}
-                        />
-                        {errors.fullname && (
-                          <div className="mt-2 text-primary_red text-sm">{errors.fullname.message as string}</div>
-                        )}
-                      </div>
+            {typeof googleReviews?.rating === 'number' && (
+              <GoogleRatingBadge
+                rating={googleReviews.rating}
+                userRatingsTotal={googleReviews.userRatingsTotal}
+                mapsUrl={googleReviews.mapsUrl}
+                className="mt-6"
+              />
+            )}
 
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          {formFields.emailLabel}
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          {...register('email', {
-                            required: 'Email is required',
-                            pattern: {
-                              value: /^\S+@\S+$/i,
-                              message: 'Invalid email address',
-                            },
-                          })}
-                          placeholder={formFields.emailPlaceholder || 'you@company.com'}
-                          className={fieldClassName}
-                        />
-                        {errors.email && (
-                          <div className="mt-2 text-primary_red text-sm">{errors.email.message as string}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                          {formFields.phoneLabel}
-                        </label>
-                        <div className="flex gap-2">
-                          <select
-                            {...register('country')}
-                            className="rounded-lg border border-border bg-white px-3 py-3 text-gray-700 outline-none focus:border-primary_red"
-                          >
-                            {countryOptions?.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
-                          <input
-                            type="tel"
-                            id="phone"
-                            maxLength={12}
-                            {...register('phone', {
-                              required: 'Phone number is required',
-                              pattern: {
-                                value: /^[0-9]+$/,
-                                message: 'Phone number must contain only digits',
-                              },
-                              minLength: {
-                                value: 8,
-                                message: 'Phone number must be at least 8 digits',
-                              },
-                              maxLength: {
-                                value: 12,
-                                message: 'Phone number cannot exceed 12 digits',
-                              },
-                            })}
-                            placeholder={formFields.phonePlaceholder || '555 000 000'}
-                            onKeyDown={(e) => {
-                              if (
-                                e.key === 'Backspace' ||
-                                e.key === 'Delete' ||
-                                e.key === 'Tab' ||
-                                e.key === 'Escape' ||
-                                e.key === 'Enter' ||
-                                e.key === 'ArrowLeft' ||
-                                e.key === 'ArrowRight' ||
-                                e.key === 'ArrowUp' ||
-                                e.key === 'ArrowDown'
-                              )
-                                return
-                              if (!/[0-9]/.test(e.key)) e.preventDefault()
-                            }}
-                            onPaste={(e) => {
-                              const pastedData = e.clipboardData.getData('text')
-                              if (!/^[0-9]+$/.test(pastedData)) {
-                                e.preventDefault()
-                              }
-                            }}
-                            inputMode="numeric"
-                            pattern="[0-9]*"
-                            className={cn(fieldClassName, 'flex-1')}
-                          />
-                        </div>
-                        {errors.phone && (
-                          <div className="mt-2 text-primary_red text-sm">{errors.phone.message as string}</div>
-                        )}
-                      </div>
-
-                      <div>
-                        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                          {formFields.subjectLabel}
-                        </label>
-                        <select id="subject" {...register('subject')} className={cn(fieldClassName, 'cursor-pointer')}>
-                          {subjectOptions?.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                        {formFields.messageLabel}
-                      </label>
-                      <textarea
-                        id="message"
-                        {...register('message', { required: 'Message is required' })}
-                        rows={5}
-                        placeholder={formFields.messagePlaceholder || 'Leave us a message...'}
-                        className={cn(fieldClassName, 'resize-none')}
-                      ></textarea>
-                      {errors.message && (
-                        <div className="mt-2 text-primary_red text-sm">{errors.message.message as string}</div>
-                      )}
-                    </div>
-
-                    <div className="flex items-start">
-                      <input
-                        type="checkbox"
-                        id="privacy"
-                        {...register('privacy', {
-                          required: 'You must agree to the privacy policy',
-                        })}
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-primary_red"
-                      />
-                      <label htmlFor="privacy" className="ml-3 text-sm text-gray-600">
-                        {formFields.privacyText?.split('privacy policy')[0] || 'You agree to our friendly '}
-                        <a href={formFields.privacyLink || '#'} className="text-foreground underline">
-                          privacy policy
-                        </a>
-                        {formFields.privacyText?.split('privacy policy')[1] || '.'}
-                      </label>
-                    </div>
-                    {errors.privacy && (
-                      <div className="mt-2 text-primary_red text-sm">{errors.privacy.message as string}</div>
-                    )}
-
-                    <Button
-                      variant="default"
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            {infoCards.length > 0 && (
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {infoCards.map((card, i) => {
+                  const content = (
+                    <>
+                      <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#FDEBEC] text-primary_red">
+                        {card.icon}
+                      </span>
+                      <span>
+                        <span className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                          {card.label}
+                        </span>
+                        <span className="block text-sm font-medium text-foreground">{card.value}</span>
+                      </span>
+                    </>
+                  )
+                  const cardClassName =
+                    'flex items-start gap-3 rounded-xl border border-border bg-gray-50/60 p-4 transition-colors'
+                  return card.href ? (
+                    <a
+                      key={i}
+                      href={card.href}
+                      target={card.href.startsWith('http') ? '_blank' : undefined}
+                      rel={card.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className={cn(cardClassName, 'hover:border-primary_red/40 hover:bg-[#FDEBEC]/40')}
                     >
-                      {isLoading ? 'Sending...' : formFields.submitButtonText}
-                    </Button>
-                  </form>
-                )}
-              </FormProvider>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+                      {content}
+                    </a>
+                  ) : (
+                    <div key={i} className={cardClassName}>
+                      {content}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
 
-      <SuccessModal
-        isOpen={showSuccessModal}
-        onClose={() => {
-          setShowSuccessModal(false)
-          setHasSubmitted(false)
-          formMethods.reset()
-        }}
-        title="Message Sent Successfully!"
-        message="Thank you for reaching out. We'll get back to you as soon as possible."
-        buttonText="Done"
-      />
-    </>
+            <div className="mt-10">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                What Happens Next
+              </h2>
+              <ol className="mt-4 space-y-4">
+                {STEPS.map((step, i) => (
+                  <li key={step.title} className="flex gap-3">
+                    <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-foreground text-xs font-semibold text-white">
+                      {i + 1}
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold text-foreground">{step.title}</span>
+                      <span className="block text-sm text-gray-600">{step.description}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
+
+          {/* Right: form */}
+          <Reveal delayMs={100}>
+            <ContactForm
+              formFields={formFields}
+              countryOptions={countryOptions}
+              subjectOptions={subjectOptions}
+            />
+          </Reveal>
+        </div>
+      </div>
+    </section>
   )
 }
