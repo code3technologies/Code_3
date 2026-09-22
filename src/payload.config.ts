@@ -68,6 +68,17 @@ export default buildConfig({
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
+    // On Vercel, concurrent requests can spin up separate serverless function
+    // instances, each calling getPayload() in its own process and opening its
+    // own connection pool. Mongoose's default maxPoolSize is 100 - under load,
+    // several instances each trying to open up to 100 connections can exceed
+    // the Atlas cluster's connection limit, causing new connections (and the
+    // requests waiting on them) to queue and time out. Capping it keeps each
+    // instance's footprint small so many can run concurrently without
+    // exhausting the cluster's total connection budget.
+    connectOptions: {
+      maxPoolSize: 10,
+    },
   }),
   collections: [
     Pages,
