@@ -119,7 +119,7 @@ export const ContactUsBlock: React.FC<Props> = async ({
             )}
 
             {infoCards.length > 0 && (
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="mt-8 grid grid-cols-1 gap-4">
                 {infoCards.map((card, i) => {
                   const content = (
                     <>
