@@ -19,6 +19,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
+import { getPostCta } from '@/utilities/postCategoryCta'
 
 // Intentionally no generateStaticParams here: this route used to prerender
 // every post at build time, and each post now also runs an extra DB query
@@ -52,6 +53,8 @@ export default async function Post({ params: paramsPromise }: Args) {
   const relatedDocs =
     curatedRelated.length > 0 ? curatedRelated : await fetchFallbackRecentPosts({ excludeId: post.id, locale })
 
+  const cta = getPostCta(post.categories)
+
   return (
     <article>
       <PageClient />
@@ -72,10 +75,10 @@ export default async function Post({ params: paramsPromise }: Args) {
               <RichText data={post.content} enableGutter={false} />
 
               <p className="mt-4 border-t border-border pt-6 text-base leading-relaxed text-gray-700">
-                <Link href="/contact" className="font-semibold text-primary_red hover:underline">
-                  Talk to CODE3 today
+                <Link href={cta.href} className="font-semibold text-primary_red hover:underline">
+                  {cta.label}
                 </Link>{' '}
-                and get expert guidance on the right solution for your business.
+                {cta.trailingText}
               </p>
             </div>
 
