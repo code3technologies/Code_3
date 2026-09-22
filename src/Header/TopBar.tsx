@@ -31,26 +31,17 @@ function ClockIcon() {
 
 function InstagramIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 flex-none">
-      <defs>
-        <linearGradient id="topbar-instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#feda75" />
-          <stop offset="25%" stopColor="#fa7e1e" />
-          <stop offset="50%" stopColor="#d62976" />
-          <stop offset="75%" stopColor="#962fbf" />
-          <stop offset="100%" stopColor="#4f5bd5" />
-        </linearGradient>
-      </defs>
-      <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#topbar-instagram-gradient)" strokeWidth="1.8" />
-      <circle cx="12" cy="12" r="4.2" stroke="url(#topbar-instagram-gradient)" strokeWidth="1.8" />
-      <circle cx="17.5" cy="6.5" r="1" fill="url(#topbar-instagram-gradient)" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5 flex-none">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
     </svg>
   )
 }
 
 function LinkedInIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="#0A66C2" className="h-5 w-5 flex-none">
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 flex-none">
       <path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v6.31h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.15 1.46-2.15 2.96v5.7h-4v-12z" />
     </svg>
   )
