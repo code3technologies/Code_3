@@ -152,6 +152,15 @@ export default buildConfig({
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_USER || 'enquiries@code3.ae',
     defaultFromName: 'Code 3',
+    // The SMTP credentials are currently rejecting login (535 auth error on
+    // every request), and without skipVerify the adapter does a live,
+    // blocking SMTP handshake as part of building the Payload config -
+    // meaning every cold server/serverless start pays that failing
+    // handshake's latency before any page can render. Skipping verification
+    // doesn't affect whether mail actually sends (that's a separate,
+    // credentials problem - see the note where SMTP_USER/SMTP_PASS are read),
+    // it just stops gating page loads on it.
+    skipVerify: true,
     transportOptions: {
       host: process.env.SMTP_HOST,
       port: 587,
