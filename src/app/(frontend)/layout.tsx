@@ -19,6 +19,7 @@ import { WhatsAppButton } from '@/components/WhatsAppButton'
 import { PhoneButton } from '@/components/PhoneButton'
 import { LocaleLinkGuard } from '@/components/LocaleLinkGuard'
 import { CartDrawer } from '@/components/DeviceCatalog/CartDrawer'
+import { OrganizationSchema } from '@/components/StructuredData/OrganizationSchema'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InitTheme />
+        <OrganizationSchema />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
         {/* Microsoft Clarity heatmaps + session recordings */}
