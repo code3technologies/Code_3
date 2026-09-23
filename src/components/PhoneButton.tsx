@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useDeviceCart } from '@/providers/DeviceCart'
-import { reportContactClickConversion } from '@/utilities/reportConversion'
 
 const PHONE_NUMBER = '+971505042547'
 
@@ -26,7 +25,6 @@ export function PhoneButton() {
     <a
       href={`tel:${PHONE_NUMBER}`}
       aria-label="Call CODE3"
-      onClick={() => reportContactClickConversion('phone')}
       style={{
         position: 'fixed',
         bottom: '155px',
