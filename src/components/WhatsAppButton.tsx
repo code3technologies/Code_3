@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useDeviceCart } from '@/providers/DeviceCart'
+import { reportContactClickConversion } from '@/utilities/reportConversion'
 
 const WHATSAPP_NUMBER = '971505042547' // no + or spaces, country code included
 const DEFAULT_MESSAGE = "Hi CODE3, I'd like to know more about your services."
@@ -32,6 +33,7 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with CODE3 on WhatsApp"
+      onClick={() => reportContactClickConversion('whatsapp')}
       style={{
         position: 'fixed',
         bottom: '81px',
