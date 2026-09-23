@@ -98,6 +98,38 @@ function FeaturedStatCarousel() {
   )
 }
 
+// FeaturedStatCarousel above is lg:block-only (designed for the wide,
+// side-by-side layout), which left the same real estate completely empty
+// below that breakpoint - a big chunk of real traffic (tablets, unmaximized
+// laptop windows) saw nothing but background between the CTAs and the
+// scroll cue. This is the lg:hidden counterpart: same four real stats, laid
+// out as a compact static grid that fits the stacked mobile/tablet layout
+// instead of the wide carousel treatment.
+function MobileStatStrip() {
+  return (
+    <div className="w-full lg:hidden">
+      <span className="text-xs font-semibold uppercase tracking-[0.15em] text-white/50">
+        Proven Track Record
+      </span>
+      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {HERO_STATS.map((stat) => {
+          const Icon = stat.icon
+          return (
+            <div
+              key={stat.label}
+              className="flex flex-col items-start gap-1.5 rounded-xl border border-white/10 bg-white/5 p-3"
+            >
+              <Icon className="h-5 w-5 text-white/70" />
+              <div className="text-xl font-extrabold leading-none text-white">{stat.value}</div>
+              <div className="text-xs leading-snug text-white/70">{stat.label}</div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // Minimal, low-effort fill for the empty strip at the bottom of the hero -
 // just hints there's more below without adding real content/clutter. Uses
 // Tailwind's built-in animate-bounce rather than a custom keyframe, since a
@@ -243,6 +275,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             </div>
 
             <FeaturedStatCarousel />
+
+            <MobileStatStrip />
           </div>
         </div>
 
