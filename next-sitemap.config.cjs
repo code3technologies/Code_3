@@ -30,6 +30,16 @@ module.exports = {
       // Google - Gemini / AI features (separate from standard Googlebot search indexing)
       { userAgent: 'Google-Extended', allow: '/', disallow: '/admin/*' },
       { userAgent: 'Googlebot', allow: '/', disallow: '/admin/*' },
+      // Perplexity
+      { userAgent: 'PerplexityBot', allow: '/', disallow: '/admin/*' },
+      // Meta AI
+      { userAgent: 'meta-externalagent', allow: '/', disallow: '/admin/*' },
+      // Amazon (Alexa / AI features)
+      { userAgent: 'Amazonbot', allow: '/', disallow: '/admin/*' },
+      // Apple Intelligence
+      { userAgent: 'Applebot-Extended', allow: '/', disallow: '/admin/*' },
+      // Common Crawl - used to train many third-party AI models
+      { userAgent: 'CCBot', allow: '/', disallow: '/admin/*' },
     ],
     additionalSitemaps: [`${SITE_URL}/pages-sitemap.xml`, `${SITE_URL}/posts-sitemap.xml`],
   },
