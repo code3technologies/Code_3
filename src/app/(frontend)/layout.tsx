@@ -18,6 +18,7 @@ import { caMechano, notoSansArabic, openSauceSans } from '@/fonts'
 import { WhatsAppButton } from '@/components/WhatsAppButton'
 import { PhoneButton } from '@/components/PhoneButton'
 import { LocaleLinkGuard } from '@/components/LocaleLinkGuard'
+import { TrackedContactLinks } from '@/components/TrackedContactLinks'
 import { CartDrawer } from '@/components/DeviceCatalog/CartDrawer'
 import { OrganizationSchema } from '@/components/StructuredData/OrganizationSchema'
 import './globals.css'
@@ -70,6 +71,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <GoogleTagManager gtmId={GTM_ID} />
         <Providers>
           <LocaleLinkGuard />
+          <TrackedContactLinks />
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
