@@ -8,7 +8,10 @@ import { getServerSideURL } from '@/utilities/getURL'
 // same rationale as the sitewide ProfessionalService and per-page FAQPage
 // schema added earlier.
 export const ServiceSchema = ({ page, path }: { page: Page; path: string }) => {
-  const siteUrl = getServerSideURL()
+  // NEXT_PUBLIC_SERVER_URL is set with a trailing slash in Vercel, which
+  // produced a double slash when concatenated with path (which already
+  // starts with one) - see the same fix in next-sitemap.config.cjs.
+  const siteUrl = getServerSideURL().replace(/\/+$/, '')
   const parentTitle =
     typeof page.parentService === 'object' && page.parentService ? page.parentService.title : undefined
 
