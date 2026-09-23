@@ -60,7 +60,7 @@ export function GoogleRatingBadge({
       {typeof userRatingsTotal === 'number' && (
         <span className="flex items-center gap-1.5 text-sm font-medium text-gray-500 group-hover:text-primary_red">
           <GoogleIcon />
-          {userRatingsTotal} Google review{userRatingsTotal === 1 ? '' : 's'}
+          Google reviews
         </span>
       )}
     </>
