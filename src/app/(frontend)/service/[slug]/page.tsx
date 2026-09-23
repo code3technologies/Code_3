@@ -12,6 +12,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
+import { ServiceSchema } from '@/components/StructuredData/ServiceSchema'
 import type { Page } from '@/payload-types'
 
 export async function generateStaticParams() {
@@ -66,6 +67,7 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
   return (
     <article className="relative">
       <PageClient />
+      <ServiceSchema page={page} path={url} />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
