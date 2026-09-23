@@ -162,11 +162,15 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
         {isGrid ? (
           <>
             <ClearQuickEnquiry />
-            <div className={cn('grid grid-cols-2 gap-4', gridColumns === '5' ? 'sm:grid-cols-5' : 'sm:grid-cols-4')}>
+            <div className="flex flex-wrap justify-center gap-4">
               {safeBrands.map((brand, index) => (
                 <div
                   key={`${brand.name}-${index}`}
-                  className="group flex min-h-[5.5rem] items-center justify-center rounded-2xl border border-border/70 bg-gray-50/60 p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary_red/40 hover:bg-white hover:shadow-md md:min-h-[6.5rem]"
+                  className={cn(
+                    'group flex min-h-[5.5rem] items-center justify-center rounded-2xl border border-border/70 bg-gray-50/60 p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary_red/40 hover:bg-white hover:shadow-md md:min-h-[6.5rem]',
+                    'w-[calc((100%-1rem)/2)]',
+                    gridColumns === '5' ? 'sm:w-[calc((100%-4rem)/5)]' : 'sm:w-[calc((100%-3rem)/4)]',
+                  )}
                 >
                   <BrandLogo brand={brand} index={index} wrap />
                 </div>
