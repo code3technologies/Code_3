@@ -13,6 +13,7 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
 import { ServiceSchema } from '@/components/StructuredData/ServiceSchema'
+import { Breadcrumbs, type BreadcrumbItem } from '@/components/Breadcrumbs'
 import type { Page } from '@/payload-types'
 
 export async function generateStaticParams() {
@@ -70,6 +71,14 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
+  const prefix = locale === 'ar' ? '/ar' : ''
+  const parent = typeof page.parentService === 'object' && page.parentService ? page.parentService : null
+  const breadcrumbs: BreadcrumbItem[] = [
+    { name: locale === 'ar' ? 'الرئيسية' : 'Home', href: prefix || '/' },
+    ...(parent ? [{ name: parent.title, href: `${prefix}/service/${parent.slug}` }] : []),
+    { name: page.title },
+  ]
+
   return (
     <article className="relative">
       <PageClient />
@@ -79,6 +88,7 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
+      <Breadcrumbs items={breadcrumbs} />
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} currentPage={page} />
     </article>

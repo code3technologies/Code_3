@@ -61,8 +61,8 @@ export const Card: React.FC<{
     >
       {/* Hero Image */}
       <div className="relative w-full h-48 overflow-hidden bg-gray-200">
-        {heroImage && typeof heroImage !== 'string' && <Media resource={heroImage} size="33vw" />}
-        {metaImage && typeof metaImage !== 'string' && !heroImage && <Media resource={metaImage} size="33vw" />}
+        {heroImage && typeof heroImage !== 'string' && <Media resource={heroImage} alt={titleToUse} size="33vw" />}
+        {metaImage && typeof metaImage !== 'string' && !heroImage && <Media resource={metaImage} alt={titleToUse} size="33vw" />}
         {!heroImage && !metaImage && <div className="w-full h-full flex items-center justify-center text-gray-400">No image</div>}
       </div>
 

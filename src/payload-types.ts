@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    'case-studies': CaseStudy;
     media: Media;
     categories: Category;
     devices: Device;
@@ -90,6 +91,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     devices: DevicesSelect<false> | DevicesSelect<true>;
@@ -5059,6 +5061,66 @@ export interface Microsoft365MigrationEstimatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-studies".
+ */
+export interface CaseStudy {
+  id: string;
+  title: string;
+  /**
+   * Leave blank to keep the client anonymous (shown as e.g. "A UAE logistics company").
+   */
+  clientName?: string | null;
+  /**
+   * Shown when the client is anonymous, e.g. "A UAE logistics company".
+   */
+  clientDescriptor?: string | null;
+  /**
+   * e.g. Healthcare, Logistics
+   */
+  industry?: string | null;
+  clientLogo?: (string | null) | Media;
+  heroImage?: (string | null) | Media;
+  /**
+   * One or two sentences shown on the listing page and in search results.
+   */
+  summary: string;
+  challenge: string;
+  solution: string;
+  /**
+   * Measurable outcomes, e.g. value "40%" and label "fewer support tickets".
+   */
+  results?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Service pages delivered on this project. Each links back from the case study.
+   */
+  services?: (string | Page)[] | null;
+  /**
+   * Optional client quote.
+   */
+  testimonialQuote?: string | null;
+  /**
+   * e.g. "IT Manager, Client Name".
+   */
+  testimonialAuthor?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5420,6 +5482,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: string | Post;
+      } | null)
+    | ({
+        relationTo: 'case-studies';
+        value: string | CaseStudy;
       } | null)
     | ({
         relationTo: 'media';
@@ -8697,6 +8763,43 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-studies_select".
+ */
+export interface CaseStudiesSelect<T extends boolean = true> {
+  title?: T;
+  clientName?: T;
+  clientDescriptor?: T;
+  industry?: T;
+  clientLogo?: T;
+  heroImage?: T;
+  summary?: T;
+  challenge?: T;
+  solution?: T;
+  results?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  services?: T;
+  testimonialQuote?: T;
+  testimonialAuthor?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -9482,6 +9585,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'case-studies';
+          value: string | CaseStudy;
         } | null);
     global?: string | null;
     user?: (string | null) | User;
