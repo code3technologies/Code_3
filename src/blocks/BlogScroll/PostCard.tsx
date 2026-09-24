@@ -34,6 +34,7 @@ export function PostCard({ post }: { post: BlogScrollPost }) {
         {hasImage ? (
           <Media
             resource={post.heroImage!}
+            alt={post.title}
             fill
             size="320px"
             imgClassName="object-cover transition-transform duration-300 group-hover:scale-105"
