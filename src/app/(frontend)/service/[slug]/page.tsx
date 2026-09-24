@@ -14,6 +14,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
 import { ServiceSchema } from '@/components/StructuredData/ServiceSchema'
 import { Breadcrumbs, type BreadcrumbItem } from '@/components/Breadcrumbs'
+import { RelatedCaseStudy } from '@/components/RelatedCaseStudy'
 import type { Page } from '@/payload-types'
 
 export async function generateStaticParams() {
@@ -71,6 +72,9 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
+  const faqIndex = layout.findIndex((block) => block.blockType === 'faq')
+  const caseStudyIndex = faqIndex === -1 ? layout.length : faqIndex
+
   const prefix = locale === 'ar' ? '/ar' : ''
   const parent = typeof page.parentService === 'object' && page.parentService ? page.parentService : null
   const breadcrumbs: BreadcrumbItem[] = [
@@ -90,7 +94,10 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
 
       <Breadcrumbs items={breadcrumbs} />
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} currentPage={page} />
+      {/* Case study card sits just before the FAQ (or at the end if the page has none). */}
+      <RenderBlocks blocks={layout.slice(0, caseStudyIndex)} currentPage={page} />
+      <RelatedCaseStudy serviceId={page.id} locale={locale} />
+      <RenderBlocks blocks={layout.slice(caseStudyIndex)} currentPage={page} />
     </article>
   )
 }

@@ -325,6 +325,7 @@ export interface Page {
     | CareersBlock
     | AboutUsBannerBlock
     | TrustedBrandsBlock
+    | CaseStudiesBlock
     | PartnersDirectoryBlock
     | QuickEnquiryBlock
     | MeetingRoomAssessmentBlock
@@ -1318,6 +1319,23 @@ export interface TrustedBrandsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'trustedBrands';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudiesBlock".
+ */
+export interface CaseStudiesBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * How many of the latest case studies to show.
+   */
+  limit?: number | null;
+  ctaLabel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'caseStudies';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5084,8 +5102,47 @@ export interface CaseStudy {
    * One or two sentences shown on the listing page and in search results.
    */
   summary: string;
+  /**
+   * e.g. "IT AMC & Managed IT Support"
+   */
+  serviceLabel?: string | null;
+  /**
+   * e.g. "Dubai, UAE"
+   */
+  location?: string | null;
+  /**
+   * Short intro to the problem.
+   */
   challenge: string;
+  /**
+   * Specific symptoms, shown as the "Before" list.
+   */
+  challengePoints?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short intro to what was delivered.
+   */
   solution: string;
+  /**
+   * Shown as a numbered timeline, in order.
+   */
+  solutionSteps?:
+    | {
+        title: string;
+        description?: string | null;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Measurable outcomes, e.g. value "40%" and label "fewer support tickets".
    */
@@ -5093,9 +5150,35 @@ export interface CaseStudy {
     | {
         value: string;
         label: string;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Closing paragraph on what changed for the client.
+   */
+  businessImpact?: string | null;
+  /**
+   * e.g. "From Reactive IT Support to Proactive Maintenance"
+   */
+  transformationTitle?: string | null;
+  transformationText?: string | null;
+  /**
+   * Shown as a row of connected pills, e.g. Preventive Maintenance, Remote Support...
+   */
+  transformationChips?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeading?: string | null;
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Defaults to /contact.
+   */
+  ctaUrl?: string | null;
   /**
    * Service pages delivered on this project. Each links back from the case study.
    */
@@ -5657,6 +5740,7 @@ export interface PagesSelect<T extends boolean = true> {
         careers?: T | CareersBlockSelect<T>;
         aboutUsBanner?: T | AboutUsBannerBlockSelect<T>;
         trustedBrands?: T | TrustedBrandsBlockSelect<T>;
+        caseStudies?: T | CaseStudiesBlockSelect<T>;
         partnersDirectory?: T | PartnersDirectoryBlockSelect<T>;
         quickEnquiry?: T | QuickEnquiryBlockSelect<T>;
         meetingRoomAssessment?: T | MeetingRoomAssessmentBlockSelect<T>;
@@ -6100,6 +6184,19 @@ export interface TrustedBrandsBlockSelect<T extends boolean = true> {
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudiesBlock_select".
+ */
+export interface CaseStudiesBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  limit?: T;
+  ctaLabel?: T;
   id?: T;
   blockName?: T;
 }
@@ -8773,15 +8870,50 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   clientLogo?: T;
   heroImage?: T;
   summary?: T;
+  serviceLabel?: T;
+  location?: T;
   challenge?: T;
+  challengePoints?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
   solution?: T;
+  solutionSteps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   results?:
     | T
     | {
         value?: T;
         label?: T;
+        description?: T;
         id?: T;
       };
+  businessImpact?: T;
+  transformationTitle?: T;
+  transformationText?: T;
+  transformationChips?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaHeading?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   services?: T;
   testimonialQuote?: T;
   testimonialAuthor?: T;

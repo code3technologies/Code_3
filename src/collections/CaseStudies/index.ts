@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { slugField } from '@/fields/slug'
+import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateCaseStudy, revalidateCaseStudyDelete } from './hooks/revalidateCaseStudy'
 
 // Real client projects (challenge -> solution -> results). Nothing appears on
@@ -30,6 +31,12 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'industry', 'clientName', 'updatedAt'],
     hidden: ({ user }) => user?.role !== 'admin',
+    preview: (data, { req }) =>
+      generatePreviewPath({
+        slug: typeof data?.slug === 'string' ? data.slug : '',
+        collection: 'case-studies',
+        req,
+      }),
   },
   fields: [
     { name: 'title', type: 'text', required: true, localized: true },
@@ -58,8 +65,45 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
       localized: true,
       admin: { description: 'One or two sentences shown on the listing page and in search results.' },
     },
-    { name: 'challenge', type: 'textarea', required: true, localized: true },
-    { name: 'solution', type: 'textarea', required: true, localized: true },
+    { name: 'serviceLabel', type: 'text', localized: true, admin: { description: 'e.g. "IT AMC & Managed IT Support"' } },
+    { name: 'location', type: 'text', localized: true, admin: { description: 'e.g. "Dubai, UAE"' } },
+    {
+      name: 'challenge',
+      type: 'textarea',
+      required: true,
+      localized: true,
+      admin: { description: 'Short intro to the problem.' },
+    },
+    {
+      name: 'challengePoints',
+      type: 'array',
+      labels: { singular: 'Challenge point', plural: 'Challenge points' },
+      admin: { description: 'Specific symptoms, shown as the "Before" list.' },
+      fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+    },
+    {
+      name: 'solution',
+      type: 'textarea',
+      required: true,
+      localized: true,
+      admin: { description: 'Short intro to what was delivered.' },
+    },
+    {
+      name: 'solutionSteps',
+      type: 'array',
+      labels: { singular: 'Step', plural: 'Steps' },
+      admin: { description: 'Shown as a numbered timeline, in order.' },
+      fields: [
+        { name: 'title', type: 'text', required: true, localized: true },
+        { name: 'description', type: 'textarea', localized: true },
+        {
+          name: 'bullets',
+          type: 'array',
+          labels: { singular: 'Bullet', plural: 'Bullets' },
+          fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+        },
+      ],
+    },
     {
       name: 'results',
       type: 'array',
@@ -68,8 +112,23 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
       fields: [
         { name: 'value', type: 'text', required: true },
         { name: 'label', type: 'text', required: true, localized: true },
+        { name: 'description', type: 'textarea', localized: true },
       ],
     },
+    { name: 'businessImpact', type: 'textarea', localized: true, admin: { description: 'Closing paragraph on what changed for the client.' } },
+    { name: 'transformationTitle', type: 'text', localized: true, admin: { description: 'e.g. "From Reactive IT Support to Proactive Maintenance"' } },
+    { name: 'transformationText', type: 'textarea', localized: true },
+    {
+      name: 'transformationChips',
+      type: 'array',
+      labels: { singular: 'Item', plural: 'Items' },
+      admin: { description: 'Shown as a row of connected pills, e.g. Preventive Maintenance, Remote Support...' },
+      fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+    },
+    { name: 'ctaHeading', type: 'text', localized: true },
+    { name: 'ctaText', type: 'textarea', localized: true },
+    { name: 'ctaLabel', type: 'text', localized: true },
+    { name: 'ctaUrl', type: 'text', admin: { description: 'Defaults to /contact.' } },
     {
       name: 'services',
       type: 'relationship',

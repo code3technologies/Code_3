@@ -4,6 +4,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getLocale, type Locale } from '@/utilities/getLocale'
 import { getCachedBrandDevices } from '@/components/DeviceCatalog/getBrandDevices'
+import { hasPublishedCaseStudies } from '@/utilities/getCaseStudies'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
@@ -149,17 +150,40 @@ const getNavData = (locale: Locale) =>
 
 export async function Header() {
   const locale = await getLocale()
-  const [headerData, { navigationPages, techPartners }, productBrands] = await Promise.all([
+  const [headerData, { navigationPages, techPartners }, productBrands, showCaseStudies] = await Promise.all([
     getCachedGlobal('header', 1, locale)(),
     getNavData(locale)(),
     getProductBrandsData()(),
+    hasPublishedCaseStudies(),
   ])
+
+  // Add "Case Studies" to the Company dropdown only once one is published, so
+  // the menu never links to a 404. The Company group is the one containing
+  // "Technology Partners".
+  let data = (headerData as Header) || null
+  if (showCaseStudies && data?.navItems) {
+    data = {
+      ...data,
+      navItems: data.navItems.map((item) => {
+        const subs = item.subItems || []
+        const isCompany = subs.some((sub) => sub.label.trim().toLowerCase() === 'technology partners')
+        if (!isCompany || subs.some((sub) => sub.link === '/case-studies')) return item
+        return {
+          ...item,
+          subItems: [
+            ...subs,
+            { label: locale === 'ar' ? 'دراسات الحالة' : 'Case Studies', link: '/case-studies', openInNewTab: false },
+          ],
+        }
+      }),
+    }
+  }
 
   return (
     <>
       <TopBar locale={locale} />
       <HeaderClient
-        data={(headerData as Header) || null}
+        data={data}
         navigationPages={navigationPages}
         techPartners={techPartners}
         productBrands={productBrands}
