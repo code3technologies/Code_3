@@ -5084,8 +5084,47 @@ export interface CaseStudy {
    * One or two sentences shown on the listing page and in search results.
    */
   summary: string;
+  /**
+   * e.g. "IT AMC & Managed IT Support"
+   */
+  serviceLabel?: string | null;
+  /**
+   * e.g. "Dubai, UAE"
+   */
+  location?: string | null;
+  /**
+   * Short intro to the problem.
+   */
   challenge: string;
+  /**
+   * Specific symptoms, shown as the "Before" list.
+   */
+  challengePoints?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Short intro to what was delivered.
+   */
   solution: string;
+  /**
+   * Shown as a numbered timeline, in order.
+   */
+  solutionSteps?:
+    | {
+        title: string;
+        description?: string | null;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Measurable outcomes, e.g. value "40%" and label "fewer support tickets".
    */
@@ -5093,9 +5132,35 @@ export interface CaseStudy {
     | {
         value: string;
         label: string;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Closing paragraph on what changed for the client.
+   */
+  businessImpact?: string | null;
+  /**
+   * e.g. "From Reactive IT Support to Proactive Maintenance"
+   */
+  transformationTitle?: string | null;
+  transformationText?: string | null;
+  /**
+   * Shown as a row of connected pills, e.g. Preventive Maintenance, Remote Support...
+   */
+  transformationChips?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeading?: string | null;
+  ctaText?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Defaults to /contact.
+   */
+  ctaUrl?: string | null;
   /**
    * Service pages delivered on this project. Each links back from the case study.
    */
@@ -8773,15 +8838,50 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   clientLogo?: T;
   heroImage?: T;
   summary?: T;
+  serviceLabel?: T;
+  location?: T;
   challenge?: T;
+  challengePoints?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
   solution?: T;
+  solutionSteps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   results?:
     | T
     | {
         value?: T;
         label?: T;
+        description?: T;
         id?: T;
       };
+  businessImpact?: T;
+  transformationTitle?: T;
+  transformationText?: T;
+  transformationChips?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaHeading?: T;
+  ctaText?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   services?: T;
   testimonialQuote?: T;
   testimonialAuthor?: T;
