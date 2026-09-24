@@ -11,6 +11,20 @@ import { shimmer, toBase64 } from '@/utilities/shimmer'
 
 const { breakpoints } = cssVariables
 
+// Last-resort alt text when a media record has none: a readable name from the
+// file name ("Lulu Group Logo.jpg" -> "Lulu Group Logo"), dropping the random
+// blob suffix and generated size suffix so it never reads as "abc123XyZ".
+const altFromFilename = (filename?: string | null): string => {
+  if (!filename) return ''
+  return filename
+    .replace(/\.[a-z0-9]+$/i, '')
+    .replace(/-\d+x\d+$/, '')
+    .replace(/-[A-Za-z0-9]{20,}$/, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export const ImageMedia: React.FC<MediaProps> = (props) => {
   const {
     alt: altFromProps,
@@ -45,7 +59,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     const externalAlt =
       altFromProps ||
       (resource && typeof resource === 'object' ? resource.alt || '' : '') ||
-      'alt text not provided'
+      (resource && typeof resource === 'object' ? altFromFilename(resource.filename) : '')
 
     return (
       <picture className={cn(pictureClassName)}>
@@ -63,11 +77,11 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   }
 
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
+    const { alt: altFromResource, height: fullHeight, url, width: fullWidth, filename } = resource
 
     width = fullWidth!
     height = fullHeight!
-    alt = altFromResource || ''
+    alt = altFromResource || altFromProps || altFromFilename(filename)
 
     const cacheTag = resource.updatedAt
     src = getMediaUrl(url, cacheTag)
@@ -90,7 +104,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   return (
     <picture className={cn(pictureClassName)}>
       <NextImage
-        alt={alt || 'alt text not provided'}
+        alt={alt || ''}
         className={cn(imgClassName)}
         fill={fill}
         height={!fill ? height : undefined}
