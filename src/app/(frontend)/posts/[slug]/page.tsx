@@ -43,7 +43,12 @@ export default async function Post({ params: paramsPromise }: Args) {
   const url = (locale === 'ar' ? '/ar' : '') + '/posts/' + slug
   const post = await queryPostBySlug({ slug, locale, draft })
 
-  if (!post) return <PayloadRedirects url={url} />
+  // Calling this directly (rather than returning it as JSX) runs its
+  // notFound()/redirect() call as part of this route's own render instead
+  // of a separately-scheduled child component - see the [slug] and
+  // service/[slug] routes for the full explanation of the soft-404 bug
+  // this fixes.
+  if (!post) return await PayloadRedirects({ url })
 
   const headings = extractHeadings(post.content)
 

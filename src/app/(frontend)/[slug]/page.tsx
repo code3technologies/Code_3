@@ -81,7 +81,13 @@ export default async function Page({ params: paramsPromise }: Args) {
   }
 
   if (!page) {
-    return <PayloadRedirects url={url} />
+    // Calling this directly (rather than returning it as JSX) runs its
+    // notFound()/redirect() call as part of this route's own render instead
+    // of a separately-scheduled child component - the latter let the 200
+    // status for the streamed shell commit before the notFound() signal
+    // arrived, so every unmatched slug was served as a soft 404 (visibly
+    // showing the not-found UI, but with an HTTP 200 status).
+    return await PayloadRedirects({ url })
   }
 
   const { hero, layout } = page
