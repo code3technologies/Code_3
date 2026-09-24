@@ -5111,6 +5111,10 @@ export interface CaseStudy {
    */
   location?: string | null;
   /**
+   * e.g. "Yealink & Logitech" - shown in the header card.
+   */
+  technology?: string | null;
+  /**
    * Short intro to the problem.
    */
   challenge: string;
@@ -5159,6 +5163,16 @@ export interface CaseStudy {
    */
   businessImpact?: string | null;
   /**
+   * Optional "Technology used" cards, e.g. one per vendor.
+   */
+  technologyUsed?:
+    | {
+        name: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * e.g. "From Reactive IT Support to Proactive Maintenance"
    */
   transformationTitle?: string | null;
@@ -5172,6 +5186,10 @@ export interface CaseStudy {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Use Sequence for a process, Combined for things that work together.
+   */
+  transformationStyle?: ('combine' | 'sequence') | null;
   ctaHeading?: string | null;
   ctaText?: string | null;
   ctaLabel?: string | null;
@@ -8872,6 +8890,7 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   summary?: T;
   serviceLabel?: T;
   location?: T;
+  technology?: T;
   challenge?: T;
   challengePoints?:
     | T
@@ -8902,6 +8921,13 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         id?: T;
       };
   businessImpact?: T;
+  technologyUsed?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        id?: T;
+      };
   transformationTitle?: T;
   transformationText?: T;
   transformationChips?:
@@ -8910,6 +8936,7 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
+  transformationStyle?: T;
   ctaHeading?: T;
   ctaText?: T;
   ctaLabel?: T;
