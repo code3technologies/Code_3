@@ -5,6 +5,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
+import { permanentRedirect } from 'next/navigation'
 import { unstable_cache } from 'next/cache'
 import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
@@ -78,6 +79,25 @@ export default async function Page({ params: paramsPromise }: Args) {
   // Remove this code once your website is seeded
   if (!page && slug === 'home') {
     page = homeStatic as Page
+  }
+
+  // Service pages live under /service/, but the sitemap used to list them at
+  // the bare slug, so Google indexed those URLs. Send them to the real page.
+  if (!page && !draft) {
+    const payload = await getPayload({ config: configPromise })
+    const servicePage = await payload.find({
+      collection: 'pages',
+      depth: 0,
+      limit: 1,
+      pagination: false,
+      select: { slug: true },
+      where: {
+        and: [{ slug: { equals: slug } }, { serviceCategory: { not_equals: 'none' } }],
+      },
+    })
+    if (servicePage.docs[0]) {
+      permanentRedirect(`${locale === 'ar' ? '/ar' : ''}/service/${slug}`)
+    }
   }
 
   if (!page) {

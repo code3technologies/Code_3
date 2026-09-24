@@ -6,10 +6,13 @@ import { unstable_cache } from 'next/cache'
 const getPagesSitemap = unstable_cache(
   async () => {
     const payload = await getPayload({ config })
-    const SITE_URL =
+    // NEXT_PUBLIC_SERVER_URL has a trailing slash in Vercel, which produced
+    // "//" in every URL below.
+    const SITE_URL = (
       process.env.NEXT_PUBLIC_SERVER_URL ||
       process.env.VERCEL_PROJECT_PRODUCTION_URL ||
       'https://example.com'
+    ).replace(/\/+$/, '')
 
     const results = await payload.find({
       collection: 'pages',
@@ -25,6 +28,7 @@ const getPagesSitemap = unstable_cache(
       },
       select: {
         slug: true,
+        serviceCategory: true,
         updatedAt: true,
       },
     })
@@ -46,8 +50,14 @@ const getPagesSitemap = unstable_cache(
       ? results.docs
           .filter((page) => Boolean(page?.slug))
           .map((page) => {
+            // Service pages are served under /service/ (same rule as
+            // getPagePath in admin-revalidate-all and generateMeta's
+            // canonical) - listing them at the bare slug pointed Google at
+            // URLs that duplicate/404 instead of the real ones.
+            const isService = !!page.serviceCategory && page.serviceCategory !== 'none'
+            const path = page.slug === 'home' ? '/' : isService ? `/service/${page.slug}` : `/${page.slug}`
             return {
-              loc: page?.slug === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${page?.slug}`,
+              loc: `${SITE_URL}${path}`,
               lastmod: page.updatedAt || dateFallback,
             }
           })
