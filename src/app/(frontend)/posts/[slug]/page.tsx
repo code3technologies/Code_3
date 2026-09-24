@@ -19,6 +19,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getLocale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { getPostCta } from '@/utilities/postCategoryCta'
 
 // Intentionally no generateStaticParams here: this route used to prerender
@@ -69,7 +70,15 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <div className="pt-28 pb-16 md:pt-32">
+      <Breadcrumbs
+        items={[
+          { name: locale === 'ar' ? 'الرئيسية' : 'Home', href: locale === 'ar' ? '/ar' : '/' },
+          { name: locale === 'ar' ? 'المدونة' : 'Blog', href: (locale === 'ar' ? '/ar' : '') + '/posts' },
+          { name: post.title },
+        ]}
+      />
+
+      <div className="pt-10 pb-16 md:pt-12">
         <div className="container mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-14">
             <div className="min-w-0">
