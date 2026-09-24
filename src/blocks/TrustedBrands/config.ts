@@ -92,7 +92,7 @@ export const TrustedBrands: Block = {
       type: 'array',
       label: 'Brand Logos',
       minRows: 3,
-      maxRows: 60,
+      maxRows: 100,
       fields: [
         {
           name: 'name',
