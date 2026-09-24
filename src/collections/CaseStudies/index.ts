@@ -67,6 +67,7 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
     },
     { name: 'serviceLabel', type: 'text', localized: true, admin: { description: 'e.g. "IT AMC & Managed IT Support"' } },
     { name: 'location', type: 'text', localized: true, admin: { description: 'e.g. "Dubai, UAE"' } },
+    { name: 'technology', type: 'text', localized: true, admin: { description: 'e.g. "Yealink & Logitech" - shown in the header card.' } },
     {
       name: 'challenge',
       type: 'textarea',
@@ -116,6 +117,16 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
       ],
     },
     { name: 'businessImpact', type: 'textarea', localized: true, admin: { description: 'Closing paragraph on what changed for the client.' } },
+    {
+      name: 'technologyUsed',
+      type: 'array',
+      labels: { singular: 'Technology', plural: 'Technologies' },
+      admin: { description: 'Optional "Technology used" cards, e.g. one per vendor.' },
+      fields: [
+        { name: 'name', type: 'text', required: true },
+        { name: 'description', type: 'textarea', localized: true },
+      ],
+    },
     { name: 'transformationTitle', type: 'text', localized: true, admin: { description: 'e.g. "From Reactive IT Support to Proactive Maintenance"' } },
     { name: 'transformationText', type: 'textarea', localized: true },
     {
@@ -124,6 +135,16 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
       labels: { singular: 'Item', plural: 'Items' },
       admin: { description: 'Shown as a row of connected pills, e.g. Preventive Maintenance, Remote Support...' },
       fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+    },
+    {
+      name: 'transformationStyle',
+      type: 'select',
+      defaultValue: 'combine',
+      options: [
+        { label: 'Combined (items joined by +)', value: 'combine' },
+        { label: 'Sequence (steps joined by arrows)', value: 'sequence' },
+      ],
+      admin: { description: 'Use Sequence for a process, Combined for things that work together.' },
     },
     { name: 'ctaHeading', type: 'text', localized: true },
     { name: 'ctaText', type: 'textarea', localized: true },

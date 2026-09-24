@@ -77,9 +77,12 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
   const points = study.challengePoints || []
   const steps = study.solutionSteps || []
   const chips = study.transformationChips || []
+  const techUsed = study.technologyUsed || []
+  const isSequence = study.transformationStyle === 'sequence'
   const meta = [
     { label: 'Client', value: client },
     { label: 'Service', value: study.serviceLabel },
+    { label: 'Technology', value: study.technology },
     { label: 'Location', value: study.location },
   ].filter((m) => m.value)
 
@@ -112,11 +115,11 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
                 <span className="h-1.5 w-1.5 rounded-full bg-white" />
                 Case Study{study.industry ? ` · ${study.industry}` : ''}
               </span>
-              <h1 className="mt-5 text-3xl font-semibold leading-[1.12] tracking-tight text-white md:text-4xl lg:text-[2.75rem]">{study.title}</h1>
+              <h1 className="mt-5 text-3xl font-semibold leading-[1.2] tracking-tight text-white md:text-4xl lg:text-[2.75rem]">{study.title}</h1>
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">{study.summary}</p>
 
               {meta.length > 0 && (
-                <dl className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
+                <dl className="mt-8 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   {meta.map((m) => (
                     <div key={m.label} className="rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
                       <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/55">{m.label}</dt>
@@ -279,6 +282,28 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
         </section>
       )}
 
+      {/* ───────── Technology used ───────── */}
+      {techUsed.length > 0 && (
+        <section className="container mx-auto px-4 pb-16 sm:px-6 md:pb-24">
+          <Reveal className="mx-auto max-w-4xl">
+            <span className="text-sm font-semibold uppercase tracking-[0.14em] text-primary_red">Technology used</span>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {techUsed.map((t, i) => (
+                <div key={t.id || i} className="flex gap-4 rounded-2xl border border-border bg-gray-50/70 p-6">
+                  <span className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-primary_red text-lg font-bold text-white">
+                    {t.name.charAt(0).toUpperCase()}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground">{t.name}</h3>
+                    {t.description && <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{t.description}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+      )}
+
       {/* ───────── Reactive -> proactive ───────── */}
       {(study.transformationTitle || chips.length > 0) && (
         <section className="border-y border-border bg-[#FDEBEC]/50 py-16 md:py-20">
@@ -298,7 +323,11 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
                   {chips.map((c, i) => (
                     <li key={c.id || i} className="flex items-center gap-2">
                       <span className="rounded-full border border-primary_red/25 bg-white px-4 py-2 text-sm font-semibold text-foreground shadow-sm">{c.text}</span>
-                      {i < chips.length - 1 && <span aria-hidden className="text-lg font-bold text-primary_red/60">+</span>}
+                      {i < chips.length - 1 && (
+                        <span aria-hidden className="text-lg font-bold text-primary_red/60">
+                          {isSequence ? '→' : '+'}
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
