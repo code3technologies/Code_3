@@ -10,7 +10,12 @@ const revalidateAll = (slug?: string | null) => {
     revalidateTag(`case_study_${slug}`)
   }
   revalidatePath('/case-studies')
+  revalidateTag('case-studies-list')
   revalidateTag('pages-sitemap')
+  // The homepage strip, service-page cards and the header/footer link all
+  // depend on whether/which case studies are published, so refresh every
+  // route. Publishing a case study is rare, so the cost is negligible.
+  revalidatePath('/', 'layout')
 }
 
 export const revalidateCaseStudy: CollectionAfterChangeHook<CaseStudy> = ({

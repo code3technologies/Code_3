@@ -11,6 +11,7 @@ import { MapFacade } from './MapFacade'
 import Link from 'next/link'
 import { unstable_cache } from 'next/cache'
 import { getLocale } from '@/utilities/getLocale'
+import { hasPublishedCaseStudies } from '@/utilities/getCaseStudies'
 
 interface ServicePageData {
   id: string
@@ -136,6 +137,8 @@ export async function Footer() {
   ])
 
   const navItems = footerData?.navItems || []
+  // Only link Case Studies once one is published (avoids a footer link to a 404).
+  const showCaseStudies = await hasPublishedCaseStudies()
   const description = footerData?.description
   const contactInfo = footerData?.contactInfo
   const bottomBar = footerData?.bottomBar
@@ -260,6 +263,14 @@ export async function Footer() {
                     {...link}
                   />
                 ))}
+                {showCaseStudies && (
+                  <Link
+                    href="/case-studies"
+                    className="text-white/80 hover:text-white hover:underline transition-colors text-sm"
+                  >
+                    Case Studies
+                  </Link>
+                )}
               </nav>
             </div>
           )}

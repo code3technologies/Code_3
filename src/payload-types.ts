@@ -325,6 +325,7 @@ export interface Page {
     | CareersBlock
     | AboutUsBannerBlock
     | TrustedBrandsBlock
+    | CaseStudiesBlock
     | PartnersDirectoryBlock
     | QuickEnquiryBlock
     | MeetingRoomAssessmentBlock
@@ -1318,6 +1319,23 @@ export interface TrustedBrandsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'trustedBrands';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudiesBlock".
+ */
+export interface CaseStudiesBlock {
+  badge?: string | null;
+  title: string;
+  subtitle?: string | null;
+  /**
+   * How many of the latest case studies to show.
+   */
+  limit?: number | null;
+  ctaLabel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'caseStudies';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5722,6 +5740,7 @@ export interface PagesSelect<T extends boolean = true> {
         careers?: T | CareersBlockSelect<T>;
         aboutUsBanner?: T | AboutUsBannerBlockSelect<T>;
         trustedBrands?: T | TrustedBrandsBlockSelect<T>;
+        caseStudies?: T | CaseStudiesBlockSelect<T>;
         partnersDirectory?: T | PartnersDirectoryBlockSelect<T>;
         quickEnquiry?: T | QuickEnquiryBlockSelect<T>;
         meetingRoomAssessment?: T | MeetingRoomAssessmentBlockSelect<T>;
@@ -6165,6 +6184,19 @@ export interface TrustedBrandsBlockSelect<T extends boolean = true> {
   ctaText?: T;
   ctaLabel?: T;
   ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudiesBlock_select".
+ */
+export interface CaseStudiesBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  subtitle?: T;
+  limit?: T;
+  ctaLabel?: T;
   id?: T;
   blockName?: T;
 }

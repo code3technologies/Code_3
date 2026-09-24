@@ -31,6 +31,7 @@ import { AboutUsBanner } from '@/blocks/AboutUsBanner/config'
 import { CurrentOpenings } from '@/blocks/CurrentOpenings/config'
 import { Careers } from '@/blocks/CareersBanner/config'
 import { TrustedBrands } from '@/blocks/TrustedBrands/config'
+import { CaseStudies } from '@/blocks/CaseStudies/config'
 import { PartnersDirectory } from '@/blocks/PartnersDirectory/config'
 import { QuickEnquiry } from '@/blocks/QuickEnquiry/config'
 import { MeetingRoomAssessment } from '@/blocks/MeetingRoomAssessment/config'
@@ -257,6 +258,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 Careers,
                 AboutUsBanner,
                 TrustedBrands,
+                CaseStudies,
                 PartnersDirectory,
                 QuickEnquiry,
                 MeetingRoomAssessment,
