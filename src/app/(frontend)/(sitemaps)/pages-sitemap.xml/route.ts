@@ -63,7 +63,23 @@ const getPagesSitemap = unstable_cache(
           })
       : []
 
-    return [...defaultSitemap, ...sitemap]
+    // Product pages at /service/device/<slug> are public and indexable but
+    // were missing from every sitemap.
+    const devices = await payload.find({
+      collection: 'devices',
+      depth: 0,
+      limit: 500,
+      pagination: false,
+      select: { slug: true, updatedAt: true },
+    })
+    const deviceSitemap = devices.docs
+      .filter((device) => Boolean(device?.slug))
+      .map((device) => ({
+        loc: `${SITE_URL}/service/device/${device.slug}`,
+        lastmod: device.updatedAt || dateFallback,
+      }))
+
+    return [...defaultSitemap, ...sitemap, ...deviceSitemap]
   },
   ['pages-sitemap'],
   {
