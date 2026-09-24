@@ -6,10 +6,13 @@ import { unstable_cache } from 'next/cache'
 const getPostsSitemap = unstable_cache(
   async () => {
     const payload = await getPayload({ config })
-    const SITE_URL =
+    // NEXT_PUBLIC_SERVER_URL has a trailing slash in Vercel, which produced
+    // "//posts/..." (a 308 redirect) for every post.
+    const SITE_URL = (
       process.env.NEXT_PUBLIC_SERVER_URL ||
       process.env.VERCEL_PROJECT_PRODUCTION_URL ||
       'https://example.com'
+    ).replace(/\/+$/, '')
 
     const results = await payload.find({
       collection: 'posts',
