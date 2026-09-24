@@ -79,7 +79,28 @@ const getPagesSitemap = unstable_cache(
         lastmod: device.updatedAt || dateFallback,
       }))
 
-    return [...defaultSitemap, ...sitemap, ...deviceSitemap]
+    const caseStudies = await payload.find({
+      collection: 'case-studies',
+      overrideAccess: false,
+      draft: false,
+      depth: 0,
+      limit: 500,
+      pagination: false,
+      select: { slug: true, updatedAt: true },
+    })
+    const caseStudySitemap = caseStudies.docs.length
+      ? [
+          { loc: `${SITE_URL}/case-studies`, lastmod: dateFallback },
+          ...caseStudies.docs
+            .filter((study) => Boolean(study?.slug))
+            .map((study) => ({
+              loc: `${SITE_URL}/case-studies/${study.slug}`,
+              lastmod: study.updatedAt || dateFallback,
+            })),
+        ]
+      : []
+
+    return [...defaultSitemap, ...sitemap, ...deviceSitemap, ...caseStudySitemap]
   },
   ['pages-sitemap'],
   {

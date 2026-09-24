@@ -8,6 +8,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { CaseStudies } from './collections/CaseStudies'
 import { Devices } from './collections/Devices'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -83,6 +84,7 @@ export default buildConfig({
   collections: [
     Pages,
     Posts,
+    CaseStudies,
     Media,
     Categories,
     Devices,
