@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { unstable_cache } from 'next/cache'
 import { getLocale } from '@/utilities/getLocale'
 import { hasPublishedCaseStudies } from '@/utilities/getCaseStudies'
+import { NewsletterSignup } from '@/components/NewsletterSignup'
 
 interface ServicePageData {
   id: string
@@ -247,6 +248,7 @@ export async function Footer() {
               <Logo href="/" logo={logo} width={180} height={58} alt="Company Logo" variant="white" />
             </div>
             <p className="text-white/75 text-sm leading-relaxed max-w-sm">{description}</p>
+            <NewsletterSignup source="footer" variant="footer" locale={locale} className="mt-8 max-w-sm" />
           </div>
 
           {/* Quick Links */}

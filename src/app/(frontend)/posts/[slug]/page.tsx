@@ -20,6 +20,7 @@ import { getLocale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { getPostCta } from '@/utilities/postCategoryCta'
 
 // Intentionally no generateStaticParams here: this route used to prerender
@@ -94,6 +95,8 @@ export default async function Post({ params: paramsPromise }: Args) {
                 </Link>{' '}
                 {cta.trailingText}
               </p>
+
+              <NewsletterSignup source="blog-post" locale={locale} className="mt-8" />
             </div>
 
             {relatedDocs.length > 0 && (
