@@ -30,3 +30,17 @@ export function reportContactClickConversion(channel: 'phone' | 'whatsapp') {
     page_url: window.location.href,
   })
 }
+
+/**
+ * Fires when someone joins the newsletter (footer / blog). Needs a matching
+ * GTM trigger on "newsletter_signup" to count as a goal, same as the others.
+ */
+export function reportNewsletterSignup(source: string) {
+  if (typeof window === 'undefined') return
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({
+    event: 'newsletter_signup',
+    source,
+    page_url: window.location.href,
+  })
+}

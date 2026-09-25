@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     posts: Post;
     'case-studies': CaseStudy;
+    subscribers: Subscriber;
     media: Media;
     categories: Category;
     devices: Device;
@@ -92,6 +93,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     devices: DevicesSelect<false> | DevicesSelect<true>;
@@ -5243,6 +5245,25 @@ export interface CaseStudy {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: string;
+  email: string;
+  /**
+   * Where they signed up, e.g. footer or blog-post.
+   */
+  source?: string | null;
+  locale?: string | null;
+  /**
+   * Page URL at signup.
+   */
+  signupPage?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "devices".
  */
 export interface Device {
@@ -5608,6 +5629,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'case-studies';
         value: string | CaseStudy;
+      } | null)
+    | ({
+        relationTo: 'subscribers';
+        value: string | Subscriber;
       } | null)
     | ({
         relationTo: 'media';
@@ -8992,6 +9017,18 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  source?: T;
+  locale?: T;
+  signupPage?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

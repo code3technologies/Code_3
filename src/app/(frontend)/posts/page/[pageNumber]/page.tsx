@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 import PageClient from './page.client'
+import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { notFound } from 'next/navigation'
 
 export const revalidate = 600
@@ -55,6 +56,10 @@ export default async function Page({ params: paramsPromise }: Args) {
       <Suspense fallback={<div className="container py-8">Loading posts...</div>}>
         <CollectionArchive posts={posts.docs} categories={categories.docs} />
       </Suspense>
+
+      <div className="container mt-16 max-w-3xl">
+        <NewsletterSignup source="blog-listing" />
+      </div>
     </div>
   )
 }
