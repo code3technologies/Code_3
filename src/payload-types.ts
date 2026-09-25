@@ -5163,6 +5163,27 @@ export interface CaseStudy {
    */
   businessImpact?: string | null;
   /**
+   * Optional grouped-list section, e.g. "Issues commonly resolved remotely".
+   */
+  capabilitiesTitle?: string | null;
+  capabilities?:
+    | {
+        title: string;
+        items?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  capabilitiesNote?: string | null;
+  /**
+   * Heading for the technology cards. Defaults to "Technology used".
+   */
+  technologyHeading?: string | null;
+  /**
    * Optional "Technology used" cards, e.g. one per vendor.
    */
   technologyUsed?:
@@ -8921,6 +8942,21 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         id?: T;
       };
   businessImpact?: T;
+  capabilitiesTitle?: T;
+  capabilities?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  capabilitiesNote?: T;
+  technologyHeading?: T;
   technologyUsed?:
     | T
     | {

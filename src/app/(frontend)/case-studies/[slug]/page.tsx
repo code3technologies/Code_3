@@ -78,6 +78,7 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
   const steps = study.solutionSteps || []
   const chips = study.transformationChips || []
   const techUsed = study.technologyUsed || []
+  const groups = study.capabilities || []
   const isSequence = study.transformationStyle === 'sequence'
   const meta = [
     { label: 'Client', value: client },
@@ -261,6 +262,38 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
         </section>
       )}
 
+      {/* ───────── Grouped capabilities (e.g. issues commonly resolved) ───────── */}
+      {groups.length > 0 && (
+        <section className="container mx-auto px-4 pt-16 sm:px-6 md:pt-24">
+          <Reveal className="max-w-2xl">
+            <span className="text-sm font-semibold uppercase tracking-[0.14em] text-primary_red">In scope</span>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground md:text-4xl">
+              {study.capabilitiesTitle || 'What this covers'}
+            </h2>
+          </Reveal>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {groups.map((g, i) => (
+              <Reveal key={g.id || i} delayMs={Math.min(i * 60, 240)}>
+                <div className="h-full rounded-2xl border border-border bg-white p-6 shadow-sm">
+                  <h3 className="text-base font-semibold text-foreground">{g.title}</h3>
+                  <ul className="mt-3 grid gap-2">
+                    {(g.items || []).map((item, j) => (
+                      <li key={item.id || j} className="flex items-start gap-2 text-sm leading-snug text-gray-700">
+                        <Check />
+                        <span>{item.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          {study.capabilitiesNote && (
+            <p className="mt-6 max-w-3xl text-sm leading-relaxed text-gray-600">{study.capabilitiesNote}</p>
+          )}
+        </section>
+      )}
+
       {/* ───────── Business impact ───────── */}
       {study.businessImpact && (
         <section className="container mx-auto px-4 py-16 sm:px-6 md:py-24">
@@ -286,7 +319,7 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
       {techUsed.length > 0 && (
         <section className="container mx-auto px-4 pb-16 sm:px-6 md:pb-24">
           <Reveal className="mx-auto max-w-4xl">
-            <span className="text-sm font-semibold uppercase tracking-[0.14em] text-primary_red">Technology used</span>
+            <span className="text-sm font-semibold uppercase tracking-[0.14em] text-primary_red">{study.technologyHeading || 'Technology used'}</span>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {techUsed.map((t, i) => (
                 <div key={t.id || i} className="flex gap-4 rounded-2xl border border-border bg-gray-50/70 p-6">
