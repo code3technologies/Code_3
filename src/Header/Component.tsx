@@ -168,12 +168,17 @@ export async function Header() {
         const subs = item.subItems || []
         const isCompany = subs.some((sub) => sub.label.trim().toLowerCase() === 'technology partners')
         if (!isCompany || subs.some((sub) => sub.link === '/case-studies')) return item
+        const caseStudiesItem = {
+          label: locale === 'ar' ? 'دراسات الحالة' : 'Case Studies',
+          link: '/case-studies',
+          openInNewTab: false,
+        }
+        // Sit right after "Blogs"; fall back to the end if there's no blog link.
+        const blogIndex = subs.findIndex((sub) => /^(blogs?|المدونة)$/i.test(sub.label.trim()))
+        const insertAt = blogIndex >= 0 ? blogIndex + 1 : subs.length
         return {
           ...item,
-          subItems: [
-            ...subs,
-            { label: locale === 'ar' ? 'دراسات الحالة' : 'Case Studies', link: '/case-studies', openInNewTab: false },
-          ],
+          subItems: [...subs.slice(0, insertAt), caseStudiesItem, ...subs.slice(insertAt)],
         }
       }),
     }
