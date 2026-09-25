@@ -118,6 +118,33 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
     },
     { name: 'businessImpact', type: 'textarea', localized: true, admin: { description: 'Closing paragraph on what changed for the client.' } },
     {
+      name: 'capabilitiesTitle',
+      type: 'text',
+      localized: true,
+      admin: { description: 'Optional grouped-list section, e.g. "Issues commonly resolved remotely".' },
+    },
+    {
+      name: 'capabilities',
+      type: 'array',
+      labels: { singular: 'Group', plural: 'Groups' },
+      fields: [
+        { name: 'title', type: 'text', required: true, localized: true },
+        {
+          name: 'items',
+          type: 'array',
+          labels: { singular: 'Item', plural: 'Items' },
+          fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+        },
+      ],
+    },
+    { name: 'capabilitiesNote', type: 'textarea', localized: true },
+    {
+      name: 'technologyHeading',
+      type: 'text',
+      localized: true,
+      admin: { description: 'Heading for the technology cards. Defaults to "Technology used".' },
+    },
+    {
       name: 'technologyUsed',
       type: 'array',
       labels: { singular: 'Technology', plural: 'Technologies' },
