@@ -1,43 +1,11 @@
 'use client'
 import React from 'react'
-import { CheckCircle2, Handshake, Smile, Users, type LucideIcon } from 'lucide-react'
 
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Reveal } from '@/components/site/Reveal'
 import { cn } from '@/utilities/ui'
-
-// Mirrors the real, already-published numbers (and icons) shown in the Stats
-// block further down this same page - kept as a compact row right in the
-// hero for immediate credibility.
-const HERO_STATS: { value: string; label: string; icon: LucideIcon }[] = [
-  { value: '30+', label: 'Experienced Professionals', icon: Users },
-  { value: '50+', label: 'Technology Partners', icon: Handshake },
-  { value: '1500+', label: 'Projects Delivered', icon: CheckCircle2 },
-  { value: '400+', label: 'Satisfied Customers', icon: Smile },
-]
-
-function HeroStats() {
-  return (
-    <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-8 gap-y-4">
-      {HERO_STATS.map((stat) => {
-        const Icon = stat.icon
-        return (
-          <div key={stat.label} className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-white/10">
-              <Icon className="h-4 w-4 text-white/80" />
-            </span>
-            <span className="text-left leading-tight">
-              <span className="block text-base font-bold text-white">{stat.value}</span>
-              <span className="block text-[11px] text-white/55">{stat.label}</span>
-            </span>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
 
 // Minimal, low-effort fill for the empty strip at the bottom of the hero -
 // just hints there's more below without adding real content/clutter.
@@ -185,10 +153,6 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 </ul>
               </Reveal>
             )}
-
-            <Reveal durationMs={450} delayMs={280} className="mt-12">
-              <HeroStats />
-            </Reveal>
           </div>
         </div>
 
