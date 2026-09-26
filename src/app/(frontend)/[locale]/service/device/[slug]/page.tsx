@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { DeviceHero } from '@/components/DeviceCatalog/DeviceHero'
@@ -16,16 +14,9 @@ import {
   getCachedReusedBlocks,
 } from '@/components/DeviceCatalog/getDeviceDetailData'
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
-    collection: 'devices',
-    limit: 200,
-    pagination: false,
-    select: { slug: true },
-  })
-  return result.docs.map(({ slug }) => ({ slug: slug as string }))
-}
+// Intentionally no generateStaticParams here - see the comment on
+// ../../[slug]/page.tsx. ~200 devices x 2 locales was part of the batch that
+// overwhelmed the build's DB connection.
 
 type Args = {
   params: Promise<{ slug: string }>

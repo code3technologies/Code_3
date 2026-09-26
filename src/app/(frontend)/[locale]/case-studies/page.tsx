@@ -9,6 +9,14 @@ import type { Locale } from '@/utilities/getLocale'
 import { getPublishedCaseStudies } from '@/utilities/getCaseStudies'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
+// Forced dynamic - the build has repeatedly timed out (60s worker budget)
+// when many pages compete for a build-worker slot alongside other
+// DB-querying pages under a slow shared MongoDB Atlas connection. The
+// underlying getPublishedCaseStudies() call is still unstable_cache-wrapped,
+// so this just moves the (cheap) first fetch from build time to first
+// request instead of losing the caching behavior entirely.
+export const dynamic = 'force-dynamic'
+
 type Args = {
   params: Promise<{ locale?: string }>
 }
