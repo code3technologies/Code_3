@@ -18,6 +18,7 @@ import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Eyebrow } from '@/components/site/Eyebrow'
+import { Reveal } from '@/components/site/Reveal'
 import { cn } from '@/utilities/ui'
 
 // Mirrors the real, already-published numbers (and icons) shown in the Stats
@@ -249,34 +250,49 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
         <div className="container relative z-10 mx-auto flex flex-1 items-center px-4 py-6 sm:px-6">
           <div className="flex w-full flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
-              <Eyebrow className="mb-1.5 text-red-300">IT Solutions & Technology Services</Eyebrow>
+              {/* The headline itself renders immediately, un-animated - it's
+                  the hero's largest text and this project has specifically
+                  worked to keep Largest Contentful Paint fast; delaying its
+                  final paint for a fade-in would cut against that. Everything
+                  around it gets a quick staggered entrance instead. */}
+              <Reveal durationMs={450}>
+                <Eyebrow className="mb-1.5 text-red-300">IT Solutions & Technology Services</Eyebrow>
+              </Reveal>
               <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-white md:text-4xl">
                 {HeroText}
               </h1>
               {subText && (
-                <p className="mt-2 text-sm leading-normal text-white/80 md:text-base">{subText}</p>
+                <Reveal durationMs={450} delayMs={90}>
+                  <p className="mt-2 text-sm leading-normal text-white/80 md:text-base">{subText}</p>
+                </Reveal>
               )}
               {Array.isArray(links) && links.length > 0 && (
-                <ul className="mt-4 flex w-full flex-col gap-2.5 sm:flex-row">
-                  {links.map(({ link }, i) => (
-                    <li key={i}>
-                      <CMSLink
-                        {...link}
-                        size="sm"
-                        className={cn(
-                          'w-full sm:w-auto',
-                          link.appearance === 'default' && 'shadow-[0_8px_30px_-6px_rgba(201,14,29,0.65)]',
-                        )}
-                      />
-                    </li>
-                  ))}
-                </ul>
+                <Reveal durationMs={450} delayMs={180}>
+                  <ul className="mt-4 flex w-full flex-col gap-2.5 sm:flex-row">
+                    {links.map(({ link }, i) => (
+                      <li key={i}>
+                        <CMSLink
+                          {...link}
+                          size="sm"
+                          className={cn(
+                            'w-full sm:w-auto',
+                            link.appearance === 'default' && 'shadow-[0_8px_30px_-6px_rgba(201,14,29,0.65)]',
+                          )}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
               )}
             </div>
 
-            <FeaturedStatCarousel />
+            <Reveal durationMs={550} delayMs={120} direction="right">
+              <FeaturedStatCarousel />
+            </Reveal>
 
-            <MobileStatStrip />
+            <Reveal durationMs={450} delayMs={260}>
+              <MobileStatStrip />
+            </Reveal>
           </div>
         </div>
 

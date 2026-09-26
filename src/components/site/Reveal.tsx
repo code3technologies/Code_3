@@ -17,11 +17,17 @@ export function Reveal({
   className,
   delayMs = 0,
   direction = 'up',
+  durationMs = 900,
 }: {
   children: React.ReactNode
   className?: string
   delayMs?: number
   direction?: Direction
+  // Above-the-fold content (a hero) needs a snappier duration than the
+  // default - a slow fade-in on the page's largest/first element can push
+  // back when the browser considers it "painted" for Largest Contentful
+  // Paint, which this project has specifically worked to keep fast.
+  durationMs?: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
@@ -53,11 +59,11 @@ export function Reveal({
         // A gentle overshoot easing (a touch of "spring") reads as more
         // deliberate/cinematic than a linear ease-out, while staying subtle
         // enough not to feel bouncy on small UI text.
-        'transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+        'transition-[opacity,transform] ease-[cubic-bezier(0.16,1,0.3,1)]',
         inView && 'opacity-100 scale-100 translate-x-0 translate-y-0',
         className,
       )}
-      style={delayMs ? { transitionDelay: `${delayMs}ms` } : undefined}
+      style={{ transitionDuration: `${durationMs}ms`, transitionDelay: delayMs ? `${delayMs}ms` : undefined }}
     >
       {children}
     </div>
