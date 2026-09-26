@@ -16,6 +16,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "hover:scale-105 active:scale-100 text-primary underline-offset-4 hover:underline",
         exploreLink: "text-primary_red/85 hover:text-primary_red/90 hover hover:scale-105 active:scale-100 duration-200 flex items-start gap-3 group p-0 h-auto justify-start w-max",
+        gradientArrow: "group bg-gradient-to-r from-primary_red to-secondary_red text-white shadow-[0_8px_24px_-8px_rgba(201,14,29,0.55)] duration-300 hover:shadow-[0_10px_28px_-6px_rgba(201,14,29,0.65)] active:scale-[.97] sm:text-base",
       },
       size: {
         default: "h-10 px-4 py-2",

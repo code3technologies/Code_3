@@ -68,13 +68,21 @@ export const CallToActionBlock: React.FC<Props> = ({
             )}
             {links && links.length > 0 && (
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                {links.map(({ link }, i) => (
-                  <CMSLink
-                    key={i}
-                    {...link}
-                    className={cn(isRedGradient && link.appearance !== 'outline' && 'bg-white !text-primary_red hover:bg-white/90')}
-                  />
-                ))}
+                {links.map(({ link }, i) => {
+                  const isPrimary = link.appearance !== 'outline'
+                  return (
+                    <CMSLink
+                      key={i}
+                      {...link}
+                      // The red-gradient panel already carries the brand color in its
+                      // background, so its primary CTA stays a white pill (a red-on-red
+                      // button would disappear); the plain dark panel gets the new
+                      // gradient-arrow treatment instead.
+                      appearance={isPrimary && !isRedGradient ? 'gradientArrow' : link.appearance}
+                      className={cn(isRedGradient && isPrimary && 'bg-white !text-primary_red hover:bg-white/90')}
+                    />
+                  )
+                })}
               </div>
             )}
           </div>
