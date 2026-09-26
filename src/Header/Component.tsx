@@ -2,7 +2,7 @@ import { HeaderClient } from './Component.client'
 import { TopBar } from './TopBar'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { getLocale, type Locale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { getCachedBrandDevices } from '@/components/DeviceCatalog/getBrandDevices'
 import { hasPublishedCaseStudies } from '@/utilities/getCaseStudies'
 import configPromise from '@payload-config'
@@ -148,8 +148,7 @@ const getNavData = (locale: Locale) =>
     { tags: ['pages-sitemap'] },
   )
 
-export async function Header() {
-  const locale = await getLocale()
+export async function Header({ locale }: { locale: Locale }) {
   const [headerData, { navigationPages, techPartners }, productBrands, showCaseStudies] = await Promise.all([
     getCachedGlobal('header', 1, locale)(),
     getNavData(locale)(),

@@ -5,12 +5,17 @@ import React from 'react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { CaseStudyCard } from '@/components/CaseStudyCard'
 import { Eyebrow } from '@/components/site/Eyebrow'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { getPublishedCaseStudies } from '@/utilities/getCaseStudies'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
-export default async function CaseStudiesPage() {
-  const locale = await getLocale()
+type Args = {
+  params: Promise<{ locale?: string }>
+}
+
+export default async function CaseStudiesPage({ params: paramsPromise }: Args) {
+  const { locale: rawLocale } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const studies = await getPublishedCaseStudies(locale)
 
   // Nothing published yet: don't expose an empty section.

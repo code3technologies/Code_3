@@ -6,13 +6,14 @@ import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { getGoogleReviews } from '@/blocks/Testimonials/getGoogleReviews'
 import { GoogleRatingBadge } from '@/blocks/Testimonials/GoogleRatingBadge'
 import { ContactForm } from './ContactForm'
 
 type Props = ContactUsBlockProps & {
   className?: string
+  locale?: Locale
 }
 
 function PhoneIcon() {
@@ -64,8 +65,9 @@ export const ContactUsBlock: React.FC<Props> = async ({
   formFields,
   countryOptions,
   subjectOptions,
+  locale: localeProp,
 }) => {
-  const locale = await getLocale()
+  const locale: Locale = localeProp === 'ar' ? 'ar' : 'en'
   const [footerData, googleReviews] = await Promise.all([
     getCachedGlobal('footer', 1, locale)() as Promise<Footer>,
     getGoogleReviews(),

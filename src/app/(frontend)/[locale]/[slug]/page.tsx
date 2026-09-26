@@ -1,12 +1,17 @@
-// app/(frontend)/[slug]/page.tsx
+// app/(frontend)/[locale]/[slug]/page.tsx
+//
+// This is the PUBLIC version of this route: it never calls draftMode(), so it
+// stays eligible for static/ISR rendering. Live-preview requests are routed by
+// middleware to the mirrored, always-dynamic copy under
+// app/(frontend)/preview-render/[locale]/[slug]/page.tsx instead - see
+// src/middleware.ts. Keep the two in sync; shared fetch logic lives in
+// @/utilities/queries/pageQuery.
 import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
 import { permanentRedirect } from 'next/navigation'
-import { unstable_cache } from 'next/cache'
 import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
@@ -14,8 +19,8 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
+import { queryPageBySlug } from '@/utilities/queries/pageQuery'
 import type { Page } from '@/payload-types'
 
 export async function generateStaticParams() {
@@ -58,14 +63,14 @@ export async function generateStaticParams() {
 
 type Args = {
   params: Promise<{
+    locale?: string
     slug?: string
   }>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
-  const locale = await getLocale()
+  const { locale: rawLocale, slug = 'home' } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const url = (locale === 'ar' ? '/ar' : '') + '/' + slug
 
   let page: Page | null
@@ -73,7 +78,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   page = await queryPageBySlug({
     slug,
     locale,
-    draft,
+    draft: false,
   })
 
   // Remove this code once your website is seeded
@@ -83,7 +88,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   // Service pages live under /service/, but the sitemap used to list them at
   // the bare slug, so Google indexed those URLs. Send them to the real page.
-  if (!page && !draft) {
+  if (!page) {
     const payload = await getPayload({ config: configPromise })
     const servicePage = await payload.find({
       collection: 'pages',
@@ -118,85 +123,20 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
-
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} currentPage={page} />
+      <RenderBlocks blocks={layout} currentPage={page} locale={locale} />
     </article>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
-  const locale = await getLocale()
+  const { locale: rawLocale, slug = 'home' } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const page = await queryPageBySlug({
     slug,
     locale,
-    draft,
+    draft: false,
   })
 
   return generateMeta({ doc: page })
-}
-
-const fetchPageBySlug = async ({
-  slug,
-  locale,
-  draft,
-}: {
-  slug: string
-  locale: 'en' | 'ar'
-  draft: boolean
-}): Promise<Page | null> => {
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'pages',
-    depth: 1,
-    draft,
-    limit: 1,
-    locale,
-    pagination: false,
-    overrideAccess: draft,
-    where: {
-      and: [
-        {
-          slug: {
-            equals: slug,
-          },
-        },
-        {
-          or: [
-            {
-              serviceCategory: {
-                equals: 'none',
-              },
-            },
-            {
-              serviceCategory: {
-                exists: false,
-              },
-            },
-          ],
-        },
-      ],
-    },
-  })
-
-  return (result.docs?.[0] as Page) || null
-}
-
-// Draft/preview requests always read fresh so editors see live content;
-// published requests go through a cross-request cache keyed by slug+locale
-// and invalidated by revalidatePage's `page_${slug}` tag.
-const queryPageBySlug = async (args: {
-  slug: string
-  locale: 'en' | 'ar'
-  draft: boolean
-}): Promise<Page | null> => {
-  if (args.draft) return fetchPageBySlug(args)
-
-  return unstable_cache(() => fetchPageBySlug(args), ['page', args.slug, args.locale], {
-    tags: [`page_${args.slug}`],
-  })()
 }

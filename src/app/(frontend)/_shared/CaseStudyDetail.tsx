@@ -1,46 +1,18 @@
-import type { Metadata } from 'next'
+// Shared between app/(frontend)/[locale]/case-studies/[slug]/page.tsx and
+// app/(frontend)/preview-render/[locale]/case-studies/[slug]/page.tsx - the
+// presentational body is identical for ordinary visitors and live-preview
+// sessions; only how the data is fetched (published-only vs. draft-aware)
+// differs between the two. See src/middleware.ts for why those two trees exist.
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import React from 'react'
-import { draftMode } from 'next/headers'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
-import { unstable_cache } from 'next/cache'
 
-import type { Page } from '@/payload-types'
+import type { CaseStudy, Page } from '@/payload-types'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Media } from '@/components/Media'
 import { Reveal } from '@/components/site/Reveal'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { getLocale } from '@/utilities/getLocale'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { CountUp } from './CountUp'
-
-type Args = { params: Promise<{ slug: string }> }
-
-const fetchCaseStudy = async ({ slug, locale, draft }: { slug: string; locale: 'en' | 'ar'; draft: boolean }) => {
-  const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
-    collection: 'case-studies',
-    depth: 1,
-    draft,
-    limit: 1,
-    locale,
-    overrideAccess: draft,
-    pagination: false,
-    where: { slug: { equals: slug } },
-  })
-  return result.docs?.[0] || null
-}
-
-// Draft/preview reads fresh; published reads are cached and invalidated by
-// the case_study_<slug> tag from revalidateCaseStudy.
-const queryCaseStudy = (args: { slug: string; locale: 'en' | 'ar'; draft: boolean }) => {
-  if (args.draft) return fetchCaseStudy(args)
-  return unstable_cache(() => fetchCaseStudy(args), ['case-study', args.slug, args.locale], {
-    tags: [`case_study_${args.slug}`],
-  })()
-}
+import type { Locale } from '@/utilities/getLocale'
+import { CountUp } from '../[locale]/case-studies/[slug]/CountUp'
 
 const isNumeric = (value: string) => /^\d/.test(value.trim())
 
@@ -61,14 +33,15 @@ function Check() {
   )
 }
 
-export default async function CaseStudyPage({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
-  const { slug } = await paramsPromise
-  const locale = await getLocale()
-  const study = await queryCaseStudy({ slug, locale, draft })
-
-  if (!study) notFound()
-
+export function CaseStudyDetail({
+  study,
+  locale,
+  draft,
+}: {
+  study: CaseStudy
+  locale: Locale
+  draft: boolean
+}) {
   const prefix = locale === 'ar' ? '/ar' : ''
   const client = study.clientName || study.clientDescriptor
   const services = (study.services || []).filter((s): s is Page => typeof s === 'object' && s !== null)
@@ -416,22 +389,4 @@ export default async function CaseStudyPage({ params: paramsPromise }: Args) {
       </section>
     </article>
   )
-}
-
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { isEnabled: draft } = await draftMode()
-  const { slug } = await paramsPromise
-  const locale = await getLocale()
-  const study = await queryCaseStudy({ slug, locale, draft })
-
-  if (!study) return { title: 'Case Study | CODE3' }
-
-  const title = study.meta?.title || `${study.title} | CODE3`
-  const description = study.meta?.description || study.summary
-  return {
-    title,
-    description,
-    alternates: { canonical: `/case-studies/${study.slug}` },
-    openGraph: mergeOpenGraph({ title, description, url: `/case-studies/${study.slug}` }),
-  }
 }
