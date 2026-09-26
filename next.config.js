@@ -72,6 +72,17 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  // Default is 60s. The shared MongoDB Atlas M0 tier this project's build
+  // connects to has enough latency variance that even a single reasonably
+  // busy page (the homepage in particular, which fetches header nav data,
+  // multiple trusted-brands rows, the case-studies strip, and the stats
+  // block) occasionally needs a second or third retry to land under 60s -
+  // Next hard-fails the whole build if all retries miss the timeout, rather
+  // than just that one page. This buys real headroom for that variance
+  // without changing what's cached or how - see the [locale] page/service/
+  // device route comments for the separate, complementary fix that already
+  // reduced how many pages need to be generated at build time at all.
+  staticPageGenerationTimeout: 180,
   experimental: {
     // Every dynamic route's rendered output depends on the x-locale header set by
     // middleware, but the client Router Cache keys entries by the post-rewrite
