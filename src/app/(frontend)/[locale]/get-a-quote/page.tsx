@@ -4,6 +4,13 @@ import React from 'react'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { QuoteForm } from './QuoteForm.client'
 
+// Forced dynamic - this page has no data fetching of its own, but the build
+// has repeatedly timed out (60s worker budget) when many pages compete for a
+// build-worker slot alongside DB-querying pages under a slow shared MongoDB
+// Atlas connection. Excluding this page from prerendering costs nothing since
+// it's static content anyway; it renders just as fast per-request.
+export const dynamic = 'force-dynamic'
+
 export default function GetAQuotePage() {
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-gray-50/70 to-white pb-20 pt-10 md:pt-12">

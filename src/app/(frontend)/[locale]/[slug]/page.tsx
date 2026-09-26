@@ -23,43 +23,16 @@ import type { Locale } from '@/utilities/getLocale'
 import { queryPageBySlug } from '@/utilities/queries/pageQuery'
 import type { Page } from '@/payload-types'
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-    where: {
-      or: [
-        {
-          serviceCategory: {
-            equals: 'none',
-          },
-        },
-        {
-          serviceCategory: {
-            exists: false,
-          },
-        },
-      ],
-    },
-  })
-
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
-
-  return params
-}
+// Intentionally no generateStaticParams here. This route now sits under the
+// [locale] segment, so returning every slug here would make Next build
+// (slug count x 2 locales) pages at deploy time - that overwhelmed the
+// shared MongoDB Atlas M0 connection during a real build (480 static pages
+// attempted at once, most timing out at Vercel's 60s per-page limit; see
+// the near-identical, deliberate omission on posts/[slug] and its comment
+// for the original version of this problem). Pages are still cached via
+// unstable_cache + revalidatePage's `page_${slug}` tag regardless, so
+// removing this only changes *when* the first render happens (on first
+// visit instead of at build time), not the caching behavior.
 
 type Args = {
   params: Promise<{

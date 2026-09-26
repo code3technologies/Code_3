@@ -4,8 +4,6 @@
 // counterpart: app/(frontend)/preview-render/[locale]/service/[slug]/page.tsx.
 import type { Metadata } from 'next'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import React from 'react'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
@@ -17,30 +15,11 @@ import { Breadcrumbs, type BreadcrumbItem } from '@/components/Breadcrumbs'
 import { RelatedCaseStudy } from '@/components/RelatedCaseStudy'
 import { queryServicePageBySlug } from '@/utilities/queries/servicePageQuery'
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-    where: {
-      serviceCategory: {
-        not_equals: 'none',
-      },
-    },
-  })
-
-  const params = pages.docs.map(({ slug }) => {
-    return { slug }
-  })
-
-  return params
-}
+// Intentionally no generateStaticParams here - see the comment on
+// [locale]/[slug]/page.tsx. This route was already dynamic (never
+// build-time-generated) before the [locale] segment existed, since it called
+// draftMode(); the [locale] restructuring made it briefly *eligible* for
+// build-time generation for the first time, which is what surfaced this.
 
 type Args = {
   params: Promise<{
