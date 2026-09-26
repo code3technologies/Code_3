@@ -34,39 +34,58 @@ const SPARKLE_POSITIONS = [
 const GRAIN_BG =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")"
 
-// Four background "scenes" for the card visuals, cycled by index so no two
-// neighbouring cards look identical - varied by gradient shape/position
-// rather than by introducing new colors, so the grid stays on-brand.
+// Six accent hues for the card visuals, cycled by index so the grid reads as
+// varied rather than one repeating red gradient - each still sits on a
+// near-black base and the page's actual brand chrome (nav, buttons, CTAs)
+// stays red throughout; only these thumbnail scenes borrow a wider, muted
+// palette, the same way a services/feature grid usually differentiates
+// tiles by accent color. 6 (not 4) so a 4-column grid doesn't repeat the
+// same hue in the same column every row.
 const CARD_SCENES = [
-  { background: 'radial-gradient(120% 120% at 15% 15%, #C90E1D 0%, #2a0a0a 65%)', glow: 'bg-primary_red/50' },
-  { background: 'radial-gradient(120% 120% at 85% 85%, #FF3B4B 0%, #1a0808 65%)', glow: 'bg-secondary_red/45' },
-  { background: 'linear-gradient(135deg, #8b0f1f 0%, #2a0a0a 70%)', glow: 'bg-white/10' },
-  { background: 'radial-gradient(100% 140% at 50% 100%, #C90E1D 0%, #12060a 70%)', glow: 'bg-secondary_red/40' },
+  { accent: '#C90E1D', tint: 'bg-[#C90E1D]/25' }, // crimson (brand red)
+  { accent: '#D97706', tint: 'bg-[#D97706]/25' }, // amber
+  { accent: '#7C3AED', tint: 'bg-[#7C3AED]/25' }, // violet
+  { accent: '#0D9488', tint: 'bg-[#0D9488]/25' }, // teal
+  { accent: '#2563EB', tint: 'bg-[#2563EB]/25' }, // blue
+  { accent: '#DB2777', tint: 'bg-[#DB2777]/25' }, // rose
 ]
 
 function CardVisual({ icon, index }: { icon: HomeServiceCard['icon']; index: number }) {
   const scene = CARD_SCENES[index % CARD_SCENES.length]
+  const corner = index % 4
+  const position =
+    corner === 0
+      ? { top: '10%', left: '15%' }
+      : corner === 1
+        ? { top: '10%', right: '15%' }
+        : corner === 2
+          ? { bottom: '10%', right: '15%' }
+          : { bottom: '10%', left: '15%' }
+
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl">
-      <div aria-hidden className="absolute inset-0" style={{ background: scene.background }} />
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-[#0c0708]">
       <div
         aria-hidden
-        className={cn('pointer-events-none absolute h-40 w-40 animate-drift rounded-full blur-[60px]', scene.glow)}
+        className="pointer-events-none absolute h-48 w-48 animate-drift rounded-full blur-[55px]"
         style={{
-          top: index % 2 === 0 ? '10%' : '55%',
-          left: index % 3 === 0 ? '60%' : '5%',
+          ...position,
+          backgroundColor: scene.accent,
+          opacity: 0.55,
           animationDuration: `${14 + (index % 5)}s`,
           animationDelay: `-${index * 2}s`,
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 opacity-[0.1] mix-blend-overlay"
         style={{ backgroundImage: GRAIN_BG }}
       />
       <div className="relative z-10 flex h-full items-center justify-center">
         <span
-          className="flex h-16 w-16 animate-gentle-pulse items-center justify-center rounded-2xl bg-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+          className={cn(
+            'flex h-16 w-16 animate-gentle-pulse items-center justify-center rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-sm',
+            scene.tint,
+          )}
           style={{ animationDuration: `${5 + (index % 3)}s`, animationDelay: `-${index}s` }}
         >
           <ServiceIcon preset={icon} className="h-8 w-8 text-white" />
