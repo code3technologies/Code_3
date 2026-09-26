@@ -23,16 +23,18 @@ import type { Locale } from '@/utilities/getLocale'
 import { queryPageBySlug } from '@/utilities/queries/pageQuery'
 import type { Page } from '@/payload-types'
 
-// Intentionally no generateStaticParams here. This route now sits under the
-// [locale] segment, so returning every slug here would make Next build
-// (slug count x 2 locales) pages at deploy time - that overwhelmed the
-// shared MongoDB Atlas M0 connection during a real build (480 static pages
-// attempted at once, most timing out at Vercel's 60s per-page limit; see
-// the near-identical, deliberate omission on posts/[slug] and its comment
-// for the original version of this problem). Pages are still cached via
-// unstable_cache + revalidatePage's `page_${slug}` tag regardless, so
-// removing this only changes *when* the first render happens (on first
-// visit instead of at build time), not the caching behavior.
+// Returning [] (rather than omitting generateStaticParams entirely) is
+// deliberate - see the comment on service/[slug]/page.tsx. Enumerating every
+// slug here (as this used to) would make Next build (slug count x 2 locales)
+// pages at deploy time, which overwhelmed the shared MongoDB Atlas M0
+// connection during a real build (480 static pages attempted at once, most
+// timing out at Vercel's 60s per-page limit). Returning [] avoids that
+// entirely while still making every real slug render-once-then-cache at the
+// edge via dynamicParams (default true), invalidated by revalidatePage's
+// `page_${slug}` tag as before.
+export function generateStaticParams() {
+  return []
+}
 
 type Args = {
   params: Promise<{

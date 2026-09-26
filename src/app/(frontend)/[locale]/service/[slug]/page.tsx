@@ -15,11 +15,19 @@ import { Breadcrumbs, type BreadcrumbItem } from '@/components/Breadcrumbs'
 import { RelatedCaseStudy } from '@/components/RelatedCaseStudy'
 import { queryServicePageBySlug } from '@/utilities/queries/servicePageQuery'
 
-// Intentionally no generateStaticParams here - see the comment on
-// [locale]/[slug]/page.tsx. This route was already dynamic (never
-// build-time-generated) before the [locale] segment existed, since it called
-// draftMode(); the [locale] restructuring made it briefly *eligible* for
-// build-time generation for the first time, which is what surfaced this.
+// Returning [] (rather than omitting generateStaticParams entirely) is
+// deliberate: Next only treats a dynamic segment as "render on first visit,
+// then cache at the edge like ISR" when generateStaticParams exists at all -
+// omit it completely and every request is fully server-rendered forever,
+// never cached. Returning [] costs nothing at build time (no DB query, so
+// this doesn't reintroduce the build-timeout problem an earlier version of
+// this route hit by eagerly querying every slug) while still opting in to
+// that on-demand-then-cached behavior for every real slug via dynamicParams
+// (default true). Cache invalidation on publish is unaffected - it already
+// goes through revalidatePath/revalidateTag, not a time-based revalidate.
+export function generateStaticParams() {
+  return []
+}
 
 type Args = {
   params: Promise<{

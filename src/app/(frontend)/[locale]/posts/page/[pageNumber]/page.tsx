@@ -74,9 +74,17 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   }
 }
 
-// Intentionally no generateStaticParams here: this route previously prerendered
-// every page at build time, and a slow/degraded DB connection during a
-// production build turned that into a 60s+ timeout that failed the entire
-// deployment (not just this page). With `revalidate` set above, Next.js still
-// caches each page after its first on-demand render, so this trades a slightly
-// slower first visit for the whole site never being blocked by this route again.
+// Returning [] (rather than omitting generateStaticParams entirely) is
+// deliberate. This route previously prerendered every page at build time,
+// and a slow/degraded DB connection during a production build turned that
+// into a 60s+ timeout that failed the entire deployment (not just this
+// page) - returning [] keeps that build cost at zero. The `revalidate`
+// above alone was not enough to get this cached at Vercel's edge: without a
+// generateStaticParams function at all, Next treats the route as fully
+// dynamic forever (confirmed against production - every request came back
+// `X-Vercel-Cache: MISS`, `Cache-Control: private, no-cache`), regardless of
+// `revalidate`. generateStaticParams needs to exist (even empty) for
+// dynamicParams' on-demand "render once, then cache" behavior to apply.
+export function generateStaticParams() {
+  return []
+}

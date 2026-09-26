@@ -12,6 +12,16 @@ import type { Locale } from '@/utilities/getLocale'
 import { queryCaseStudy } from '@/utilities/queries/caseStudyQuery'
 import { CaseStudyDetail } from '../../../_shared/CaseStudyDetail'
 
+// Returning [] gets this route on-demand-cached at the edge (render once,
+// then serve from cache, invalidated by revalidateCaseStudy's
+// `case_study_${slug}` tag) instead of fully server-rendered on every
+// request - see the comment on ../../[slug]/page.tsx. There are only a
+// handful of case studies, so this isn't a build-time-cost concern the way
+// pages/services/devices/posts were; it just never had this at all before.
+export function generateStaticParams() {
+  return []
+}
+
 type Args = { params: Promise<{ locale?: string; slug: string }> }
 
 export default async function CaseStudyPage({ params: paramsPromise }: Args) {
