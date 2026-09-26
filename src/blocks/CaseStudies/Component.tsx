@@ -7,17 +7,18 @@ import { CaseStudyCard } from '@/components/CaseStudyCard'
 import { CaseStudyFeature } from '@/components/RelatedCaseStudy'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { getPublishedCaseStudies } from '@/utilities/getCaseStudies'
 
-export const CaseStudiesBlock: React.FC<CaseStudiesBlockProps> = async ({
+export const CaseStudiesBlock: React.FC<CaseStudiesBlockProps & { locale?: Locale }> = async ({
   badge,
   title,
   subtitle,
   limit,
   ctaLabel,
+  locale: localeProp,
 }) => {
-  const locale = await getLocale()
+  const locale: Locale = localeProp === 'ar' ? 'ar' : 'en'
   const studies = (await getPublishedCaseStudies(locale)).slice(0, limit || 3)
 
   if (studies.length === 0) return null

@@ -1,21 +1,21 @@
-// app/(frontend)/service/[slug]/page.tsx
+// app/(frontend)/[locale]/service/[slug]/page.tsx
+//
+// PUBLIC version - see the note in [locale]/[slug]/page.tsx. Preview
+// counterpart: app/(frontend)/preview-render/[locale]/service/[slug]/page.tsx.
 import type { Metadata } from 'next'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
-import { unstable_cache } from 'next/cache'
 import React from 'react'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { ServiceSchema } from '@/components/StructuredData/ServiceSchema'
 import { Breadcrumbs, type BreadcrumbItem } from '@/components/Breadcrumbs'
 import { RelatedCaseStudy } from '@/components/RelatedCaseStudy'
-import type { Page } from '@/payload-types'
+import { queryServicePageBySlug } from '@/utilities/queries/servicePageQuery'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -44,20 +44,20 @@ export async function generateStaticParams() {
 
 type Args = {
   params: Promise<{
+    locale?: string
     slug: string
   }>
 }
 
 export default async function ServicePage({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
-  const { slug } = await paramsPromise
-  const locale = await getLocale()
+  const { locale: rawLocale, slug } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const url = (locale === 'ar' ? '/ar' : '') + '/service/' + slug
 
   const page = await queryServicePageBySlug({
     slug,
     locale,
-    draft,
+    draft: false,
   })
 
   if (!page) {
@@ -90,80 +90,24 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
-
       <Breadcrumbs items={breadcrumbs} />
       <RenderHero {...hero} />
       {/* Case study card sits just before the FAQ (or at the end if the page has none). */}
-      <RenderBlocks blocks={layout.slice(0, caseStudyIndex)} currentPage={page} />
+      <RenderBlocks blocks={layout.slice(0, caseStudyIndex)} currentPage={page} locale={locale} />
       <RelatedCaseStudy serviceId={page.id} locale={locale} />
-      <RenderBlocks blocks={layout.slice(caseStudyIndex)} currentPage={page} />
+      <RenderBlocks blocks={layout.slice(caseStudyIndex)} currentPage={page} locale={locale} />
     </article>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { isEnabled: draft } = await draftMode()
-  const { slug } = await paramsPromise
-  const locale = await getLocale()
+  const { locale: rawLocale, slug } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const page = await queryServicePageBySlug({
     slug,
     locale,
-    draft,
+    draft: false,
   })
 
   return generateMeta({ doc: page })
-}
-
-const fetchServicePageBySlug = async ({
-  slug,
-  locale,
-  draft,
-}: {
-  slug: string
-  locale: 'en' | 'ar'
-  draft: boolean
-}): Promise<Page | null> => {
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'pages',
-    depth: 2,
-    draft,
-    limit: 1,
-    locale,
-    pagination: false,
-    overrideAccess: draft,
-    where: {
-      and: [
-        {
-          slug: {
-            equals: slug,
-          },
-        },
-        {
-          serviceCategory: {
-            not_equals: 'none',
-          },
-        },
-      ],
-    },
-  })
-
-  return (result.docs?.[0] as Page) || null
-}
-
-// Draft/preview requests always read fresh so editors see live content;
-// published requests go through a cross-request cache keyed by slug+locale
-// and invalidated by revalidatePage's `page_${slug}` tag.
-const queryServicePageBySlug = async (args: {
-  slug: string
-  locale: 'en' | 'ar'
-  draft: boolean
-}): Promise<Page | null> => {
-  if (args.draft) return fetchServicePageBySlug(args)
-
-  return unstable_cache(() => fetchServicePageBySlug(args), ['service-page', args.slug, args.locale], {
-    tags: [`page_${args.slug}`],
-  })()
 }

@@ -1,3 +1,8 @@
+// Shared between app/(frontend)/[locale]/layout.tsx and
+// app/(frontend)/preview-render/[locale]/layout.tsx - identical for ordinary
+// visitors and live-preview sessions, so it's factored out once instead of
+// duplicated across the two route trees. See src/middleware.ts for why those
+// two trees exist.
 import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
@@ -12,8 +17,7 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getSiteVerification } from '@/utilities/getSiteVerification'
-import { getLocale } from '@/utilities/getLocale'
-import { draftMode } from 'next/headers'
+import type { Locale } from '@/utilities/getLocale'
 import { caMechano, notoSansArabic, openSauceSans } from '@/fonts'
 import { WhatsAppButton } from '@/components/WhatsAppButton'
 import { PhoneButton } from '@/components/PhoneButton'
@@ -21,15 +25,19 @@ import { LocaleLinkGuard } from '@/components/LocaleLinkGuard'
 import { TrackedContactLinks } from '@/components/TrackedContactLinks'
 import { CartDrawer } from '@/components/DeviceCatalog/CartDrawer'
 import { OrganizationSchema } from '@/components/StructuredData/OrganizationSchema'
-import './globals.css'
+import '../globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-WJKX5PV5'
 const CLARITY_PROJECT_ID = 'xy1owi92ov'
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled } = await draftMode()
-  const locale = await getLocale()
+export function RootLayoutContent({
+  children,
+  locale,
+}: {
+  children: React.ReactNode
+  locale: Locale
+}) {
   return (
     <html
       className={cn(
@@ -72,14 +80,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Providers>
           <LocaleLinkGuard />
           <TrackedContactLinks />
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
-          <Header />
+          {/* No server-side draftMode() check here on purpose - reading it would
+              force every page under this layout to render dynamically, which is
+              exactly what this route structure exists to avoid. AdminBar fetches
+              its own preview state client-side from /api/draft-status instead. */}
+          <AdminBar />
+          <Header locale={locale} />
           {children}
-          <Footer />
+          <Footer locale={locale} />
           <PhoneButton />
           <WhatsAppButton />
           <CartDrawer />
@@ -89,7 +97,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   )
 }
 
-export const metadata: Metadata = {
+export const rootMetadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   openGraph: mergeOpenGraph(),
   twitter: {

@@ -5,7 +5,7 @@ import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import './index.scss'
@@ -37,10 +37,25 @@ export const AdminBar: React.FC<{
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
+  // Fetched client-side instead of passed down from the server layout - the
+  // layout deliberately never calls draftMode() itself, since that would force
+  // every page on the site to render dynamically. See /api/draft-status.
+  const [preview, setPreview] = useState(false)
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()
+
+  const refreshPreviewStatus = React.useCallback(() => {
+    fetch('/api/draft-status')
+      .then((res) => res.json())
+      .then((data) => setPreview(Boolean(data?.isEnabled)))
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    refreshPreviewStatus()
+  }, [refreshPreviewStatus])
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
     setShow(Boolean(user?.id))
@@ -56,6 +71,7 @@ export const AdminBar: React.FC<{
       <div className="container">
         <PayloadAdminBar
           {...adminBarProps}
+          preview={preview}
           className="py-2 text-foreground"
           classNames={{
             controls: 'font-medium text-foreground',
@@ -72,6 +88,7 @@ export const AdminBar: React.FC<{
           onAuthChange={onAuthChange}
           onPreviewExit={() => {
             fetch('/next/exit-preview').then(() => {
+              refreshPreviewStatus()
               router.push('/')
               router.refresh()
             })

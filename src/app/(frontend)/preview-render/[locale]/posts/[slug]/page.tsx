@@ -1,11 +1,12 @@
+// app/(frontend)/preview-render/[locale]/posts/[slug]/page.tsx
+//
+// PREVIEW version of app/(frontend)/[locale]/posts/[slug]/page.tsx - see the
+// note there and in src/middleware.ts.
 import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
-import { unstable_cache } from 'next/cache'
 import React from 'react'
 import Link from 'next/link'
 import RichText from '@/components/RichText'
@@ -14,42 +15,32 @@ import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
+import PageClient from '../../../../[locale]/posts/[slug]/page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { getPostCta } from '@/utilities/postCategoryCta'
+import { queryPostBySlug, fetchFallbackRecentPosts } from '@/utilities/queries/postQuery'
 
-// Intentionally no generateStaticParams here: this route used to prerender
-// every post at build time, and each post now also runs an extra DB query
-// for its fallback "related posts" when none are curated. Under a slow build
-// connection that's enough per-page work to hit the same 60s static-generation
-// timeout that once failed the whole production build for /posts/page/[pageNumber]
-// (see that route's comment). Posts are cached via unstable_cache + revalidatePost's
-// `post_${slug}` tag regardless, so removing this only changes *when* the first
-// render happens (on first visit instead of at build time), not the caching behavior.
+export const dynamic = 'force-dynamic'
 
 type Args = {
   params: Promise<{
+    locale?: string
     slug?: string
   }>
 }
 
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = '' } = await paramsPromise
-  const locale = await getLocale()
+  const { locale: rawLocale, slug = '' } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const url = (locale === 'ar' ? '/ar' : '') + '/posts/' + slug
   const post = await queryPostBySlug({ slug, locale, draft })
 
-  // Calling this directly (rather than returning it as JSX) runs its
-  // notFound()/redirect() call as part of this route's own render instead
-  // of a separately-scheduled child component - see the [slug] and
-  // service/[slug] routes for the full explanation of the soft-404 bug
-  // this fixes.
   if (!post) return await PayloadRedirects({ url })
 
   const headings = extractHeadings(post.content)
@@ -121,78 +112,9 @@ export default async function Post({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { isEnabled: draft } = await draftMode()
-  const { slug = '' } = await paramsPromise
-  const locale = await getLocale()
+  const { locale: rawLocale, slug = '' } = await paramsPromise
+  const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const post = await queryPostBySlug({ slug, locale, draft })
 
   return generateMeta({ doc: post })
-}
-
-const fetchPostBySlug = async ({
-  slug,
-  locale,
-  draft,
-}: {
-  slug: string
-  locale: 'en' | 'ar'
-  draft: boolean
-}) => {
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'posts',
-    draft,
-    limit: 1,
-    locale,
-    overrideAccess: draft,
-    pagination: false,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
-
-  return result.docs?.[0] || null
-}
-
-// Shown under a post whenever it has no manually curated relatedPosts, so
-// every post ends with a "keep reading" section instead of a dead end.
-const fetchFallbackRecentPosts = async ({
-  excludeId,
-  locale,
-}: {
-  excludeId: string
-  locale: 'en' | 'ar'
-}): Promise<Post[]> => {
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    draft: false,
-    limit: 3,
-    locale,
-    overrideAccess: false,
-    pagination: false,
-    sort: '-publishedAt',
-    where: {
-      id: {
-        not_equals: excludeId,
-      },
-    },
-  })
-
-  return result.docs || []
-}
-
-// Draft/preview requests always read fresh so editors see live content;
-// published requests go through a cross-request cache keyed by slug+locale
-// and invalidated by revalidatePost's `post_${slug}` tag.
-const queryPostBySlug = async (args: { slug: string; locale: 'en' | 'ar'; draft: boolean }) => {
-  if (args.draft) return fetchPostBySlug(args)
-
-  return unstable_cache(() => fetchPostBySlug(args), ['post', args.slug, args.locale], {
-    tags: [`post_${args.slug}`],
-  })()
 }

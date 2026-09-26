@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
+import type { Locale } from '@/utilities/getLocale'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
@@ -229,8 +230,9 @@ const blockComponents = {
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
   currentPage?: Page | null
+  locale?: Locale
 }> = (props) => {
-  const { blocks, currentPage } = props
+  const { blocks, currentPage, locale } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -246,7 +248,13 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <div className="" key={index}>
-                  <Block {...block} blockId={(block as any).blockId} disableInnerContainer={true} currentPage={currentPage} />
+                  <Block
+                    {...block}
+                    blockId={(block as any).blockId}
+                    disableInnerContainer={true}
+                    currentPage={currentPage}
+                    locale={locale}
+                  />
                 </div>
               )
             }

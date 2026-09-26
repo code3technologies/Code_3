@@ -10,7 +10,7 @@ import { ScrollToTopButton, ScrollToTopButtonMobile } from './ScrollToTopButton'
 import { MapFacade } from './MapFacade'
 import Link from 'next/link'
 import { unstable_cache } from 'next/cache'
-import { getLocale } from '@/utilities/getLocale'
+import type { Locale } from '@/utilities/getLocale'
 import { hasPublishedCaseStudies } from '@/utilities/getCaseStudies'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 
@@ -130,8 +130,7 @@ const getFooterServicePages = (locale: 'en' | 'ar') =>
     { tags: ['pages-sitemap'] },
   )
 
-export async function Footer() {
-  const locale = await getLocale()
+export async function Footer({ locale }: { locale: Locale }) {
   const [footerData, servicePages] = await Promise.all([
     getCachedGlobal('footer', 1, locale)() as Promise<Footer>,
     getFooterServicePages(locale)(),
