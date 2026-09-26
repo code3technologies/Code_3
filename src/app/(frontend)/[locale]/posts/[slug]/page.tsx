@@ -23,14 +23,20 @@ import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { getPostCta } from '@/utilities/postCategoryCta'
 import { queryPostBySlug, fetchFallbackRecentPosts } from '@/utilities/queries/postQuery'
 
-// Intentionally no generateStaticParams here: this route used to prerender
-// every post at build time, and each post now also runs an extra DB query
-// for its fallback "related posts" when none are curated. Under a slow build
-// connection that's enough per-page work to hit the same 60s static-generation
-// timeout that once failed the whole production build for /posts/page/[pageNumber]
-// (see that route's comment). Posts are cached via unstable_cache + revalidatePost's
-// `post_${slug}` tag regardless, so removing this only changes *when* the first
-// render happens (on first visit instead of at build time), not the caching behavior.
+// Returning [] (rather than omitting generateStaticParams entirely) is
+// deliberate - see the comment on ../[slug]/page.tsx: without a
+// generateStaticParams function at all, Next never treats this route as
+// cacheable and every request is fully server-rendered forever, which is
+// what this route had actually been doing despite the unstable_cache
+// wrapper below. Enumerating every post here previously caused the same
+// build-timeout problem this whole page's [locale] siblings hit (each post
+// also runs an extra DB query for its fallback "related posts" when none
+// are curated) - returning [] keeps that build cost at zero while finally
+// making posts render-once-then-cache at the edge, invalidated by
+// revalidatePost's `post_${slug}` tag as before.
+export function generateStaticParams() {
+  return []
+}
 
 type Args = {
   params: Promise<{

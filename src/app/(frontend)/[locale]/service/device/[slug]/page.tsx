@@ -14,9 +14,13 @@ import {
   getCachedReusedBlocks,
 } from '@/components/DeviceCatalog/getDeviceDetailData'
 
-// Intentionally no generateStaticParams here - see the comment on
-// ../../[slug]/page.tsx. ~200 devices x 2 locales was part of the batch that
-// overwhelmed the build's DB connection.
+// Returning [] (rather than omitting generateStaticParams entirely) is
+// deliberate - see the comment on ../[slug]/page.tsx. Enumerating every
+// device here (as this used to) was part of the batch (~200 devices x 2
+// locales) that overwhelmed the build's shared MongoDB Atlas connection.
+export function generateStaticParams() {
+  return []
+}
 
 type Args = {
   params: Promise<{ slug: string }>
