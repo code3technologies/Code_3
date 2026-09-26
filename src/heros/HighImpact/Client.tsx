@@ -34,6 +34,48 @@ const SPARKLE_POSITIONS = [
 const GRAIN_BG =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")"
 
+// Four background "scenes" for the card visuals, cycled by index so no two
+// neighbouring cards look identical - varied by gradient shape/position
+// rather than by introducing new colors, so the grid stays on-brand.
+const CARD_SCENES = [
+  { background: 'radial-gradient(120% 120% at 15% 15%, #C90E1D 0%, #2a0a0a 65%)', glow: 'bg-primary_red/50' },
+  { background: 'radial-gradient(120% 120% at 85% 85%, #FF3B4B 0%, #1a0808 65%)', glow: 'bg-secondary_red/45' },
+  { background: 'linear-gradient(135deg, #8b0f1f 0%, #2a0a0a 70%)', glow: 'bg-white/10' },
+  { background: 'radial-gradient(100% 140% at 50% 100%, #C90E1D 0%, #12060a 70%)', glow: 'bg-secondary_red/40' },
+]
+
+function CardVisual({ icon, index }: { icon: HomeServiceCard['icon']; index: number }) {
+  const scene = CARD_SCENES[index % CARD_SCENES.length]
+  return (
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl">
+      <div aria-hidden className="absolute inset-0" style={{ background: scene.background }} />
+      <div
+        aria-hidden
+        className={cn('pointer-events-none absolute h-40 w-40 animate-drift rounded-full blur-[60px]', scene.glow)}
+        style={{
+          top: index % 2 === 0 ? '10%' : '55%',
+          left: index % 3 === 0 ? '60%' : '5%',
+          animationDuration: `${14 + (index % 5)}s`,
+          animationDelay: `-${index * 2}s`,
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-overlay"
+        style={{ backgroundImage: GRAIN_BG }}
+      />
+      <div className="relative z-10 flex h-full items-center justify-center">
+        <span
+          className="flex h-16 w-16 animate-gentle-pulse items-center justify-center rounded-2xl bg-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+          style={{ animationDuration: `${5 + (index % 3)}s`, animationDelay: `-${index}s` }}
+        >
+          <ServiceIcon preset={icon} className="h-8 w-8 text-white" />
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export function HighImpactHeroClient({
   HeroText,
   subText,
@@ -126,26 +168,28 @@ export function HighImpactHeroClient({
         </Reveal>
 
         {/* Card grid */}
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {visible.map((service, i) => (
             <Reveal key={service.id} durationMs={400} delayMs={Math.min(i * 40, 320)}>
               <Link
                 href={`/service/${service.slug}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur transition-colors hover:border-white/25 hover:bg-white/[0.08]"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition-colors hover:border-white/25"
               >
-                <div>
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
-                    <ServiceIcon preset={service.icon} className="h-5 w-5 text-white" />
-                  </span>
-                  <h3 className="mt-4 text-base font-semibold leading-snug text-white">{service.title}</h3>
-                  <span className="mt-1.5 inline-block text-xs font-medium uppercase tracking-wide text-white/45">
-                    {service.category === 'infrastructure' ? 'IT Infra Services' : 'Digital Services'}
+                <div className="transition-transform duration-500 group-hover:scale-[1.04]">
+                  <CardVisual icon={service.icon} index={i} />
+                </div>
+                <div className="flex flex-1 flex-col justify-between p-5">
+                  <div>
+                    <h3 className="text-base font-semibold leading-snug text-white">{service.title}</h3>
+                    <span className="mt-1.5 inline-block text-xs font-medium uppercase tracking-wide text-white/45">
+                      {service.category === 'infrastructure' ? 'IT Infra Services' : 'Digital Services'}
+                    </span>
+                  </div>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary_red">
+                    Learn more
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                   </span>
                 </div>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary_red">
-                  Learn more
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-                </span>
               </Link>
             </Reveal>
           ))}
