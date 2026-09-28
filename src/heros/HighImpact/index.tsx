@@ -1,11 +1,46 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
+import { Cloud, Network, Server, ShieldCheck, Wifi, type LucideIcon } from 'lucide-react'
 
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Reveal } from '@/components/site/Reveal'
 import { cn } from '@/utilities/ui'
+
+// Fades and lifts the ambient background layer as the visitor scrolls past
+// the hero - separate from the entrance animations above (which only ever
+// run once on load), this responds continuously to scroll position. Only
+// the background reacts; the text content stays in normal document flow.
+function useScrollFade() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let raf = 0
+    const update = () => {
+      const rect = el.getBoundingClientRect()
+      // 0 at the top of the viewport, 1 once the hero has scrolled fully past.
+      const p = Math.min(Math.max(-rect.top / Math.max(rect.height, 1), 0), 1)
+      setProgress(p)
+      raf = 0
+    }
+    const onScroll = () => {
+      if (raf) return
+      raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return { ref, progress }
+}
 
 // Subtle mouse-parallax for the ambient background blobs (desktop only - a
 // touch device never fires mousemove, so this is inert there, not just
@@ -63,6 +98,34 @@ const SPARKLE_POSITIONS = [
   { top: '40%', left: '3%' },
 ]
 
+// Purely decorative - a handful of thin outlined "IT services" icons
+// drifting slowly through the hero's open background space, each on its own
+// timing. Reinforces the network/infrastructure theme without competing
+// with the text (very low opacity, hidden on small screens where there's no
+// spare room for them).
+const FLOATING_ICONS: { Icon: LucideIcon; style: React.CSSProperties; duration: string; delay: string }[] = [
+  { Icon: Cloud, style: { top: '12%', left: '62%' }, duration: '19s', delay: '0s' },
+  { Icon: Wifi, style: { top: '18%', right: '8%' }, duration: '23s', delay: '-6s' },
+  { Icon: ShieldCheck, style: { top: '62%', left: '68%' }, duration: '21s', delay: '-11s' },
+  { Icon: Server, style: { bottom: '20%', left: '6%' }, duration: '25s', delay: '-4s' },
+  { Icon: Network, style: { bottom: '16%', right: '28%' }, duration: '20s', delay: '-9s' },
+]
+
+function FloatingTechIcons() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
+      {FLOATING_ICONS.map(({ Icon, style, duration, delay }, i) => (
+        <Icon
+          key={i}
+          strokeWidth={1}
+          className="animate-drift absolute h-9 w-9 text-white/[0.09]"
+          style={{ ...style, animationDuration: duration, animationDelay: delay }}
+        />
+      ))}
+    </div>
+  )
+}
+
 // A single tiled SVG noise filter, layered over the gradient at very low
 // opacity - the same "grain over a color wash" treatment that keeps a dark
 // gradient hero from reading as a flat, generic AI-gradient blob.
@@ -85,6 +148,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
   const { lead, accent } = splitHeadline(HeroText || '', 2)
   const parallaxNear = useParallax(22)
   const parallaxFar = useParallax(10)
+  const scrollFade = useScrollFade()
 
   return (
     <section ref={parallaxNear.ref} className="relative w-full overflow-hidden">
@@ -92,41 +156,54 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
           (100px on mobile, 116px from sm up, where the top info bar shows),
           so the next section never peeks into view until the visitor
           scrolls - regardless of how short the content itself is. */}
-      <div className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]">
-        {/* Dark atmospheric base - deep red bleeding to near-black, rather
-            than a flat two-stop gradient. */}
+      <div
+        ref={scrollFade.ref}
+        className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]"
+      >
+        {/* Ambient background layer - fades and lifts slightly as the visitor
+            scrolls past the hero (useScrollFade), continuous and separate
+            from the one-time entrance animations on the text content below. */}
         <div
-          aria-hidden
           className="absolute inset-0"
-          style={{ background: 'radial-gradient(120% 100% at 50% 0%, #6e0f18 0%, #2a0a0a 55%, #0c0505 100%)' }}
-        />
-        {/* Organic drifting color wash, off-center on either side rather than
-            symmetric - each on its own timing so they never move in lockstep.
-            Each blob sits in its own transform wrapper (mouse-parallax,
-            nearer blobs move more) with the drift keyframe animation applied
-            to the blob itself one level in - two independent transforms on
-            different elements, so they compose instead of fighting for the
-            same CSS property. */}
-        <div
-          className="pointer-events-none absolute -left-32 top-0 h-[36rem] w-[36rem] transition-transform duration-300 ease-out"
-          style={{ transform: `translate3d(${parallaxFar.offset.x}px, ${parallaxFar.offset.y}px, 0)` }}
+          style={{
+            opacity: 1 - scrollFade.progress * 0.7,
+            transform: `translateY(${scrollFade.progress * -36}px)`,
+          }}
         >
+          {/* Dark atmospheric base - deep red bleeding to near-black, rather
+              than a flat two-stop gradient. */}
           <div
             aria-hidden
-            className="h-full w-full animate-drift rounded-full bg-primary_red/30 blur-[140px]"
-            style={{ animationDuration: '18s' }}
+            className="absolute inset-0"
+            style={{ background: 'radial-gradient(120% 100% at 50% 0%, #6e0f18 0%, #2a0a0a 55%, #0c0505 100%)' }}
           />
-        </div>
-        <div
-          className="pointer-events-none absolute -right-24 bottom-0 h-[30rem] w-[30rem] transition-transform duration-300 ease-out"
-          style={{ transform: `translate3d(${parallaxNear.offset.x * -1}px, ${parallaxNear.offset.y * -1}px, 0)` }}
-        >
+          {/* Organic drifting color wash, off-center on either side rather than
+              symmetric - each on its own timing so they never move in lockstep.
+              Each blob sits in its own transform wrapper (mouse-parallax,
+              nearer blobs move more) with the drift keyframe animation applied
+              to the blob itself one level in - two independent transforms on
+              different elements, so they compose instead of fighting for the
+              same CSS property. */}
           <div
-            aria-hidden
-            className="h-full w-full animate-drift rounded-full bg-secondary_red/25 blur-[130px]"
-            style={{ animationDuration: '22s', animationDelay: '-7s' }}
-          />
-        </div>
+            className="pointer-events-none absolute -left-32 top-0 h-[36rem] w-[36rem] transition-transform duration-300 ease-out"
+            style={{ transform: `translate3d(${parallaxFar.offset.x}px, ${parallaxFar.offset.y}px, 0)` }}
+          >
+            <div
+              aria-hidden
+              className="h-full w-full animate-drift rounded-full bg-primary_red/30 blur-[140px]"
+              style={{ animationDuration: '18s' }}
+            />
+          </div>
+          <div
+            className="pointer-events-none absolute -right-24 bottom-0 h-[30rem] w-[30rem] transition-transform duration-300 ease-out"
+            style={{ transform: `translate3d(${parallaxNear.offset.x * -1}px, ${parallaxNear.offset.y * -1}px, 0)` }}
+          >
+            <div
+              aria-hidden
+              className="h-full w-full animate-drift rounded-full bg-secondary_red/25 blur-[130px]"
+              style={{ animationDuration: '22s', animationDelay: '-7s' }}
+            />
+          </div>
         <div
           className="pointer-events-none absolute left-1/2 top-1/4 h-[24rem] w-[24rem] transition-transform duration-300 ease-out"
           style={{ transform: `translate3d(calc(-50% + ${parallaxNear.offset.x}px), ${parallaxNear.offset.y}px, 0)` }}
@@ -153,6 +230,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             />
           ))}
         </div>
+        <FloatingTechIcons />
+        </div>
 
         {/* flex-1 + items-center: content grows to fill whatever space is
             left above the scroll cue and centers itself within it - keeps
@@ -162,7 +241,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
           <div className="mx-auto flex max-w-4xl flex-col items-center">
             <Reveal durationMs={450}>
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white/80 backdrop-blur">
-                <span className="h-1.5 w-1.5 animate-gentle-pulse rounded-full bg-secondary_red" />
+                {/* A radiating ping ring behind the steady dot, like a radar/
+                    signal sweep - the dot itself stays a fixed size so the
+                    ring reads as something emitted FROM it. */}
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary_red opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary_red" />
+                </span>
                 IT Solutions & Technology Services
               </span>
             </Reveal>
