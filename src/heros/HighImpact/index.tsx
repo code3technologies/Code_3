@@ -128,6 +128,23 @@ const FLOATING_ICONS: { Icon: LucideIcon; style: React.CSSProperties; duration: 
   { Icon: Network, style: { bottom: '16%', right: '28%' }, duration: '20s', delay: '-9s' },
 ]
 
+// Connects a couple of the floating icons with a thin dashed line whose
+// dash pattern travels along it - reads as a signal/data pulse moving
+// between two nodes rather than a static wire, tying back to the
+// "network infrastructure" positioning without a full diagram.
+function NetworkConnector() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className="hero-network-line pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+    >
+      <line x1="62" y1="12" x2="72" y2="84" stroke="#FF3B4B" strokeOpacity="0.25" strokeWidth="0.15" strokeDasharray="2 3" />
+    </svg>
+  )
+}
+
 function FloatingTechIcons() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
@@ -139,6 +156,7 @@ function FloatingTechIcons() {
           style={{ ...style, animationDuration: duration, animationDelay: delay }}
         />
       ))}
+      <NetworkConnector />
     </div>
   )
 }
@@ -181,7 +199,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
           so the next section never peeks into view until the visitor
           scrolls - regardless of how short the content itself is. */}
       <div className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]">
-        <div className="absolute inset-0">
+        {/* hero-bg-breathe: a very slow, subtle scale on the whole background
+            layer - a "Ken Burns" breathe rather than anything that reads as
+            movement on its own, just keeps the frame from ever sitting
+            perfectly still. */}
+        <div className="hero-bg-breathe absolute inset-0">
           {/* Dark atmospheric base - deep red bleeding to near-black, rather
               than a flat two-stop gradient. */}
           <div
@@ -189,6 +211,20 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             className="absolute inset-0"
             style={{ background: 'radial-gradient(120% 100% at 50% 0%, #6e0f18 0%, #2a0a0a 55%, #0c0505 100%)' }}
           />
+          {/* Diagonal light streaks, swaying slowly - angled bars of light
+              rather than a flat gradient, each on its own timing (staggered
+              negative delays start them mid-cycle rather than all in sync).
+              Reuses the sitewide animate-streak-sway keyframe. */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className="absolute -top-1/4 left-[10%] h-[180%] w-16 animate-streak-sway bg-gradient-to-b from-transparent via-white/[0.05] to-transparent"
+              style={{ animationDuration: '14s' }}
+            />
+            <div
+              className="absolute -top-1/4 left-[70%] h-[180%] w-24 animate-streak-sway bg-gradient-to-b from-transparent via-secondary_red/[0.18] to-transparent"
+              style={{ animationDuration: '16s', animationDelay: '-8s' }}
+            />
+          </div>
           {/* Organic drifting color wash, off-center on either side rather than
               symmetric - each on its own timing so they never move in lockstep.
               Each blob sits in its own transform wrapper (mouse-parallax,
@@ -326,8 +362,17 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
               }
+              .hero-bg-breathe { animation: hero-bg-breathe 14s ease-in-out infinite; }
+              @keyframes hero-bg-breathe {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.04); }
+              }
+              .hero-network-line line { animation: hero-network-line 1.5s linear infinite; }
+              @keyframes hero-network-line {
+                to { stroke-dashoffset: -20; }
+              }
               @media (prefers-reduced-motion: reduce) {
-                .hero-shimmer-text, .hero-grain-pan, .hero-badge-spin { animation: none; }
+                .hero-shimmer-text, .hero-grain-pan, .hero-badge-spin, .hero-bg-breathe, .hero-network-line line { animation: none; }
               }
             `}</style>
 
