@@ -179,8 +179,72 @@ function splitHeadline(text: string, accentWordCount = 1) {
   }
 }
 
+// Cycles the accent word through a few close synonyms instead of sitting on
+// one word forever - content-level motion rather than another background
+// decoration. The CMS-provided word is always shown first (and is what's in
+// the DOM at first paint, un-animated - see the note where this is used),
+// so this only changes what's on screen a couple of seconds later. These
+// words are hardcoded here rather than pulled from the CMS; swap the array
+// if the wording should say something different.
+const ACCENT_ALTERNATES = ['Secure', 'Efficient', 'Reliable']
+
+function RotatingAccent({ base }: { base: string }) {
+  const words = React.useMemo(() => [base, ...ACCENT_ALTERNATES.filter((w) => w !== base)], [base])
+  const [index, setIndex] = useState(0)
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduceMotion(mql.matches)
+    if (mql.matches) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % words.length), 2600)
+    return () => clearInterval(id)
+  }, [words.length])
+
+  // Longest word in the rotation reserves the line's width up front (as an
+  // invisible copy) so the headline never reflows/jumps as shorter or longer
+  // words swap in - only the visible word crossfades.
+  const longest = words.reduce((a, b) => (b.length > a.length ? b : a), '')
+
+  // The shimmer gradient has to live on the same element as the text node
+  // itself - background-clip/background-image aren't inherited CSS
+  // properties, so setting them once on a wrapper and nesting plain child
+  // spans inside it (as an earlier version of this did) leaves the actual
+  // words with transparent color and no gradient to clip against, i.e.
+  // invisible. Each stacked word span below carries its own copy instead.
+  const gradientStyle: React.CSSProperties = {
+    backgroundImage: 'linear-gradient(90deg, #FF3B4B 0%, #ffffff 35%, #FF3B4B 60%, #ffb3ba 80%, #FF3B4B 100%)',
+    backgroundSize: '250% 100%',
+  }
+
+  return (
+    <span className="relative inline-grid">
+      <span aria-hidden className="hero-shimmer-text invisible bg-clip-text text-transparent" style={gradientStyle}>
+        {longest}
+      </span>
+      {/* All of the rotating words are decorative to assistive tech - the
+          one stable, non-changing announcement is the sr-only span below,
+          carrying the actual CMS-authored word rather than whichever
+          alternate happens to be visible at the moment a screen reader
+          reaches this point. */}
+      <span aria-hidden="true" className="contents">
+        {words.map((word, i) => (
+          <span
+            key={word}
+            className="hero-shimmer-text col-start-1 row-start-1 bg-clip-text text-transparent transition-opacity duration-500 ease-in-out"
+            style={{ ...gradientStyle, opacity: reduceMotion ? (i === 0 ? 1 : 0) : i === index ? 1 : 0 }}
+          >
+            {word}
+          </span>
+        ))}
+      </span>
+      <span className="sr-only">{base}</span>
+    </span>
+  )
+}
+
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subText }) => {
-  const { lead, accent } = splitHeadline(HeroText || '', 2)
+  const { lead, accent } = splitHeadline(HeroText || '', 1)
   const parallaxNear = useParallax(22)
   const parallaxFar = useParallax(10)
   const spotlight = useSpotlight()
@@ -334,16 +398,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 doesn't affect when the text itself is considered painted. */}
             <h1 className="mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]">
               {lead && <>{lead}{' '}</>}
-              <span
-                className="hero-shimmer-text bg-clip-text text-transparent"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(90deg, #FF3B4B 0%, #ffffff 35%, #FF3B4B 60%, #ffb3ba 80%, #FF3B4B 100%)',
-                  backgroundSize: '250% 100%',
-                }}
-              >
-                {accent}
-              </span>
+              <RotatingAccent base={accent} />
             </h1>
             <style>{`
               .hero-shimmer-text { animation: hero-shimmer 6s ease-in-out infinite; }
