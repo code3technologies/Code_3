@@ -1,6 +1,17 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import { Cloud, Network, Server, ShieldCheck, Wifi, type LucideIcon } from 'lucide-react'
+import {
+  Cloud,
+  Network,
+  Server,
+  ShieldCheck,
+  Wifi,
+  Users,
+  Handshake,
+  CheckCircle2,
+  Smile,
+  type LucideIcon,
+} from 'lucide-react'
 
 import type { Page } from '@/payload-types'
 
@@ -243,6 +254,53 @@ function RotatingAccent({ base }: { base: string }) {
   )
 }
 
+const HERO_STATS: Array<{ value: string; label: string; icon: LucideIcon }> = [
+  { value: '30+', label: 'Experienced Professionals', icon: Users },
+  { value: '50+', label: 'Technology Partners', icon: Handshake },
+  { value: '1500+', label: 'Projects Delivered', icon: CheckCircle2 },
+  { value: '400+', label: 'Satisfied Customers', icon: Smile },
+]
+
+// Same crossfade technique as RotatingAccent: an invisible copy of the
+// longest label reserves the row's width so the icon/value/label don't
+// jump around as they cycle, while the real, currently-visible stat is
+// absolutely positioned and remounted (via `key`) to replay the fade.
+function RotatingStat() {
+  const [index, setIndex] = useState(0)
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduceMotion(mql.matches)
+    if (mql.matches) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % HERO_STATS.length), 2600)
+    return () => clearInterval(id)
+  }, [])
+
+  const longest = HERO_STATS.reduce((a, b) => (b.label.length > a.label.length ? b : a))
+  const stat = HERO_STATS[reduceMotion ? 0 : index]
+  const Icon = stat.icon
+  const LongestIcon = longest.icon
+
+  return (
+    <span className="relative inline-flex items-center justify-center">
+      <span aria-hidden className="invisible flex select-none items-center gap-3">
+        <LongestIcon className="h-7 w-7 shrink-0 sm:h-8 sm:w-8" />
+        <span className="text-2xl font-semibold sm:text-3xl">{longest.value}</span>
+        <span className="text-base sm:text-lg">{longest.label}</span>
+      </span>
+      <span
+        key={reduceMotion ? 'static' : index}
+        className="hero-word-fade absolute inset-0 flex items-center justify-center gap-3"
+      >
+        <Icon className="h-7 w-7 shrink-0 text-secondary_red sm:h-8 sm:w-8" aria-hidden />
+        <span className="text-2xl font-semibold text-white sm:text-3xl">{stat.value}</span>
+        <span className="text-base text-white/60 sm:text-lg">{stat.label}</span>
+      </span>
+    </span>
+  )
+}
+
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subText }) => {
   const { lead, accent } = splitHeadline(HeroText || '', 1)
   const parallaxNear = useParallax(22)
@@ -363,7 +421,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             left above the scroll cue and centers itself within it - keeps
             the cue pinned at the bottom in normal flow, never overlapping
             the centered content even on very short viewports. */}
-        <div className="container relative z-10 mx-auto flex flex-1 items-center justify-center px-4 py-10 text-center sm:px-6">
+        <div className="container relative z-10 mx-auto flex flex-1 items-center justify-center px-4 py-6 text-center sm:px-6 sm:py-8">
           <div className="mx-auto flex max-w-4xl flex-col items-center">
             <Reveal durationMs={450}>
               {/* Rotating conic-gradient ring standing in for the badge's
@@ -396,7 +454,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 The accent phrase gets a slow shimmer instead (a moving
                 background-position, not an opacity/transform change), which
                 doesn't affect when the text itself is considered painted. */}
-            <h1 className="mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]">
+            <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]">
               {lead && <>{lead}{' '}</>}
               <RotatingAccent base={accent} />
             </h1>
@@ -438,7 +496,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
 
             {subText && (
               <Reveal durationMs={450} delayMs={90}>
-                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
+                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
                   {subText}
                 </p>
               </Reveal>
@@ -446,7 +504,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
 
             {Array.isArray(links) && links.length > 0 && (
               <Reveal durationMs={450} delayMs={180}>
-                <ul className="mt-8 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">
+                <ul className="mt-6 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">
                   {links.map(({ link }, i) => {
                     const isPrimary = link.appearance !== 'outline'
                     return (
@@ -484,6 +542,12 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 </ul>
               </Reveal>
             )}
+
+            <Reveal durationMs={450} delayMs={260}>
+              <div className="mt-6 flex items-center justify-center">
+                <RotatingStat />
+              </div>
+            </Reveal>
           </div>
         </div>
 
