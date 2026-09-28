@@ -8,40 +8,6 @@ import { CMSLink } from '@/components/Link'
 import { Reveal } from '@/components/site/Reveal'
 import { cn } from '@/utilities/ui'
 
-// Fades and lifts the ambient background layer as the visitor scrolls past
-// the hero - separate from the entrance animations above (which only ever
-// run once on load), this responds continuously to scroll position. Only
-// the background reacts; the text content stays in normal document flow.
-function useScrollFade() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [progress, setProgress] = useState(0)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    let raf = 0
-    const update = () => {
-      const rect = el.getBoundingClientRect()
-      // 0 at the top of the viewport, 1 once the hero has scrolled fully past.
-      const p = Math.min(Math.max(-rect.top / Math.max(rect.height, 1), 0), 1)
-      setProgress(p)
-      raf = 0
-    }
-    const onScroll = () => {
-      if (raf) return
-      raf = requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [])
-
-  return { ref, progress }
-}
-
 // Subtle mouse-parallax for the ambient background blobs (desktop only - a
 // touch device never fires mousemove, so this is inert there, not just
 // hidden). Small, capped offsets so it reads as the background responding
@@ -69,6 +35,29 @@ function useParallax(maxOffset = 18) {
   }, [maxOffset])
 
   return { ref, offset }
+}
+
+// Small magnetic tilt on the primary CTA - follows the cursor with a capped
+// rotation/lift while hovered, then springs back to flat. Desktop-only in
+// effect (touch devices never fire mousemove on a hovered element the same
+// way, so this stays inert rather than needing a separate check).
+function useMagneticTilt(maxTilt = 8) {
+  const ref = useRef<HTMLLIElement>(null)
+  const [style, setStyle] = useState<React.CSSProperties>({})
+
+  const handleMove = (e: React.MouseEvent<HTMLLIElement>) => {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const px = (e.clientX - rect.left) / rect.width - 0.5
+    const py = (e.clientY - rect.top) / rect.height - 0.5
+    setStyle({
+      transform: `perspective(400px) rotateX(${-py * maxTilt}deg) rotateY(${px * maxTilt}deg) translateY(-2px)`,
+    })
+  }
+  const handleLeave = () => setStyle({ transform: 'perspective(400px) rotateX(0) rotateY(0) translateY(0)' })
+
+  return { ref, style, handleMove, handleLeave }
 }
 
 // Minimal, low-effort fill for the empty strip at the bottom of the hero -
@@ -148,7 +137,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
   const { lead, accent } = splitHeadline(HeroText || '', 2)
   const parallaxNear = useParallax(22)
   const parallaxFar = useParallax(10)
-  const scrollFade = useScrollFade()
+  const tilt = useMagneticTilt(8)
 
   return (
     <section ref={parallaxNear.ref} className="relative w-full overflow-hidden">
@@ -156,20 +145,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
           (100px on mobile, 116px from sm up, where the top info bar shows),
           so the next section never peeks into view until the visitor
           scrolls - regardless of how short the content itself is. */}
-      <div
-        ref={scrollFade.ref}
-        className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]"
-      >
-        {/* Ambient background layer - fades and lifts slightly as the visitor
-            scrolls past the hero (useScrollFade), continuous and separate
-            from the one-time entrance animations on the text content below. */}
-        <div
-          className="absolute inset-0"
-          style={{
-            opacity: 1 - scrollFade.progress * 0.7,
-            transform: `translateY(${scrollFade.progress * -36}px)`,
-          }}
-        >
+      <div className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]">
+        <div className="absolute inset-0">
           {/* Dark atmospheric base - deep red bleeding to near-black, rather
               than a flat two-stop gradient. */}
           <div
@@ -214,11 +191,14 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             style={{ animationDuration: '26s', animationDelay: '-13s' }}
           />
         </div>
-        {/* Grain, blended over the gradient - see GRAIN_BG comment above. */}
+        {/* Grain, blended over the gradient - see GRAIN_BG comment above.
+            Slowly panned (background-position, not transform, so it doesn't
+            need its own extra wrapper element) rather than held static -
+            reads as a living texture instead of a flat filter. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
-          style={{ backgroundImage: GRAIN_BG }}
+          className="hero-grain-pan pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+          style={{ backgroundImage: GRAIN_BG, backgroundSize: '160% 160%' }}
         />
         {/* Sparse sparkle points */}
         <div aria-hidden className="pointer-events-none absolute inset-0 hidden sm:block">
@@ -277,8 +257,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
               }
+              .hero-grain-pan { animation: hero-grain-pan 40s linear infinite; }
+              @keyframes hero-grain-pan {
+                0% { background-position: 0% 0%; }
+                100% { background-position: 100% 100%; }
+              }
               @media (prefers-reduced-motion: reduce) {
-                .hero-shimmer-text { animation: none; }
+                .hero-shimmer-text, .hero-grain-pan { animation: none; }
               }
             `}</style>
 
@@ -296,7 +281,14 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                   {links.map(({ link }, i) => {
                     const isPrimary = link.appearance !== 'outline'
                     return (
-                      <li key={i} className={cn('relative w-full sm:w-auto', isPrimary && 'group')}>
+                      <li
+                        key={i}
+                        ref={isPrimary ? tilt.ref : undefined}
+                        onMouseMove={isPrimary ? tilt.handleMove : undefined}
+                        onMouseLeave={isPrimary ? tilt.handleLeave : undefined}
+                        className={cn('relative w-full transition-transform duration-200 ease-out sm:w-auto', isPrimary && 'group')}
+                        style={isPrimary ? tilt.style : undefined}
+                      >
                         {/* Ambient glow behind the primary CTA only - a separate
                             element rather than animating the button's own
                             box-shadow, so it doesn't fight the button's own
