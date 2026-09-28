@@ -46,7 +46,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return {
     title,
     description,
-    alternates: { canonical: `/case-studies/${study.slug}` },
+    alternates: {
+      canonical: `/case-studies/${study.slug}`,
+      languages: { en: `/case-studies/${study.slug}`, ar: `/ar/case-studies/${study.slug}` },
+    },
     openGraph: mergeOpenGraph({ title, description, url: `/case-studies/${study.slug}` }),
   }
 }
