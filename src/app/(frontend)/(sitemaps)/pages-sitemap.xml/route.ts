@@ -2,6 +2,7 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
+import { buildLocalizedSitemapEntries } from '@/utilities/localizedSitemapEntry'
 
 const getPagesSitemap = unstable_cache(
   async () => {
@@ -49,22 +50,21 @@ const getPagesSitemap = unstable_cache(
     const sitemap = results.docs
       ? results.docs
           .filter((page) => Boolean(page?.slug))
-          .map((page) => {
+          .flatMap((page) => {
             // Service pages are served under /service/ (same rule as
             // getPagePath in admin-revalidate-all and generateMeta's
             // canonical) - listing them at the bare slug pointed Google at
             // URLs that duplicate/404 instead of the real ones.
             const isService = !!page.serviceCategory && page.serviceCategory !== 'none'
             const path = page.slug === 'home' ? '/' : isService ? `/service/${page.slug}` : `/${page.slug}`
-            return {
-              loc: `${SITE_URL}${path}`,
-              lastmod: page.updatedAt || dateFallback,
-            }
+            return buildLocalizedSitemapEntries(SITE_URL, path, page.updatedAt || dateFallback)
           })
       : []
 
     // Product pages at /service/device/<slug> are public and indexable but
-    // were missing from every sitemap.
+    // were missing from every sitemap. Not yet locale-aware (no /ar/
+    // metadata differentiation - see DeviceDetailPage's generateMetadata),
+    // so only the English URL is listed here.
     const devices = await payload.find({
       collection: 'devices',
       depth: 0,
@@ -90,13 +90,12 @@ const getPagesSitemap = unstable_cache(
     })
     const caseStudySitemap = caseStudies.docs.length
       ? [
-          { loc: `${SITE_URL}/case-studies`, lastmod: dateFallback },
+          ...buildLocalizedSitemapEntries(SITE_URL, '/case-studies', dateFallback),
           ...caseStudies.docs
             .filter((study) => Boolean(study?.slug))
-            .map((study) => ({
-              loc: `${SITE_URL}/case-studies/${study.slug}`,
-              lastmod: study.updatedAt || dateFallback,
-            })),
+            .flatMap((study) =>
+              buildLocalizedSitemapEntries(SITE_URL, `/case-studies/${study.slug}`, study.updatedAt || dateFallback),
+            ),
         ]
       : []
 
