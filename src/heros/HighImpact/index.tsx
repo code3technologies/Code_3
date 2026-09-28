@@ -1,282 +1,553 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-  CheckCircle2,
-  ChevronDown,
   Cloud,
-  Handshake,
   Network,
   Server,
   ShieldCheck,
-  Smile,
-  Users,
   Wifi,
+  Users,
+  Handshake,
+  CheckCircle2,
+  Smile,
   type LucideIcon,
 } from 'lucide-react'
 
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
-import { Eyebrow } from '@/components/site/Eyebrow'
+import { Reveal } from '@/components/site/Reveal'
 import { cn } from '@/utilities/ui'
 
-// Mirrors the real, already-published numbers (and icons) shown in the Stats
-// block further down this same page - kept as compact glass cards right in
-// the hero for immediate credibility, like a floating stat strip.
-const HERO_STATS: { value: string; label: string; icon: LucideIcon }[] = [
+// Subtle mouse-parallax for the ambient background blobs (desktop only - a
+// touch device never fires mousemove, so this is inert there, not just
+// hidden). Small, capped offsets so it reads as the background responding
+// gently to the cursor rather than the page feeling unstable.
+function useParallax(maxOffset = 18) {
+  const ref = useRef<HTMLElement>(null)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      const px = (e.clientX - rect.left) / rect.width - 0.5
+      const py = (e.clientY - rect.top) / rect.height - 0.5
+      setOffset({ x: px * maxOffset * 2, y: py * maxOffset * 2 })
+    }
+    const handleLeave = () => setOffset({ x: 0, y: 0 })
+    el.addEventListener('mousemove', handleMove)
+    el.addEventListener('mouseleave', handleLeave)
+    return () => {
+      el.removeEventListener('mousemove', handleMove)
+      el.removeEventListener('mouseleave', handleLeave)
+    }
+  }, [maxOffset])
+
+  return { ref, offset }
+}
+
+// A soft light that follows the cursor across the whole hero - a separate
+// effect from the blob parallax (which moves existing background shapes);
+// this adds a new light source of its own. Positioned in pixels relative to
+// the section, not normalized, since it needs to sit exactly under the
+// cursor rather than at a capped offset.
+function useSpotlight() {
+  const ref = useRef<HTMLElement>(null)
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+    }
+    const handleLeave = () => setPos(null)
+    el.addEventListener('mousemove', handleMove)
+    el.addEventListener('mouseleave', handleLeave)
+    return () => {
+      el.removeEventListener('mousemove', handleMove)
+      el.removeEventListener('mouseleave', handleLeave)
+    }
+  }, [])
+
+  return { ref, pos }
+}
+
+// Small magnetic tilt on the primary CTA - follows the cursor with a capped
+// rotation/lift while hovered, then springs back to flat. Desktop-only in
+// effect (touch devices never fire mousemove on a hovered element the same
+// way, so this stays inert rather than needing a separate check).
+function useMagneticTilt(maxTilt = 8) {
+  const ref = useRef<HTMLLIElement>(null)
+  const [style, setStyle] = useState<React.CSSProperties>({})
+
+  const handleMove = (e: React.MouseEvent<HTMLLIElement>) => {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const px = (e.clientX - rect.left) / rect.width - 0.5
+    const py = (e.clientY - rect.top) / rect.height - 0.5
+    setStyle({
+      transform: `perspective(400px) rotateX(${-py * maxTilt}deg) rotateY(${px * maxTilt}deg) translateY(-2px)`,
+    })
+  }
+  const handleLeave = () => setStyle({ transform: 'perspective(400px) rotateX(0) rotateY(0) translateY(0)' })
+
+  return { ref, style, handleMove, handleLeave }
+}
+
+// Minimal, low-effort fill for the empty strip at the bottom of the hero -
+// just hints there's more below without adding real content/clutter.
+function ScrollCue() {
+  return (
+    <div className="relative z-10 flex flex-none flex-col items-center gap-1.5 py-5 text-white/50">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.15em]">Scroll to explore</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 animate-bounce">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </div>
+  )
+}
+
+// Fine, sparse points scattered across the hero - reads as depth/atmosphere
+// rather than a flat gradient. Fixed positions (not randomized) so server
+// and client render identically.
+const SPARKLE_POSITIONS = [
+  { top: '18%', left: '12%' },
+  { top: '28%', left: '82%' },
+  { top: '68%', left: '8%' },
+  { top: '76%', left: '90%' },
+  { top: '14%', left: '48%' },
+  { top: '85%', left: '55%' },
+  { top: '52%', left: '95%' },
+  { top: '40%', left: '3%' },
+]
+
+// Purely decorative - a handful of thin outlined "IT services" icons
+// drifting slowly through the hero's open background space, each on its own
+// timing. Reinforces the network/infrastructure theme without competing
+// with the text (very low opacity, hidden on small screens where there's no
+// spare room for them).
+const FLOATING_ICONS: { Icon: LucideIcon; style: React.CSSProperties; duration: string; delay: string }[] = [
+  { Icon: Cloud, style: { top: '12%', left: '62%' }, duration: '19s', delay: '0s' },
+  { Icon: Wifi, style: { top: '18%', right: '8%' }, duration: '23s', delay: '-6s' },
+  { Icon: ShieldCheck, style: { top: '62%', left: '68%' }, duration: '21s', delay: '-11s' },
+  { Icon: Server, style: { bottom: '20%', left: '6%' }, duration: '25s', delay: '-4s' },
+  { Icon: Network, style: { bottom: '16%', right: '28%' }, duration: '20s', delay: '-9s' },
+]
+
+// Connects a couple of the floating icons with a thin dashed line whose
+// dash pattern travels along it - reads as a signal/data pulse moving
+// between two nodes rather than a static wire, tying back to the
+// "network infrastructure" positioning without a full diagram.
+function NetworkConnector() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className="hero-network-line pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+    >
+      <line x1="62" y1="12" x2="72" y2="84" stroke="#FF3B4B" strokeOpacity="0.25" strokeWidth="0.15" strokeDasharray="2 3" />
+    </svg>
+  )
+}
+
+function FloatingTechIcons() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
+      {FLOATING_ICONS.map(({ Icon, style, duration, delay }, i) => (
+        <Icon
+          key={i}
+          strokeWidth={1}
+          className="animate-drift absolute h-9 w-9 text-white/[0.09]"
+          style={{ ...style, animationDuration: duration, animationDelay: delay }}
+        />
+      ))}
+      <NetworkConnector />
+    </div>
+  )
+}
+
+// A single tiled SVG noise filter, layered over the gradient at very low
+// opacity - the same "grain over a color wash" treatment that keeps a dark
+// gradient hero from reading as a flat, generic AI-gradient blob.
+const GRAIN_BG =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")"
+
+// Splits the headline so the closing word(s) can be styled as the emphasis
+// phrase - e.g. "IT Solutions That Keep Your Business Moving" reads as
+// "...Your Business" + accent "Moving".
+function splitHeadline(text: string, accentWordCount = 1) {
+  const words = text.trim().split(/\s+/)
+  if (words.length <= accentWordCount) return { lead: '', accent: text }
+  return {
+    lead: words.slice(0, -accentWordCount).join(' '),
+    accent: words.slice(-accentWordCount).join(' '),
+  }
+}
+
+// Cycles the accent word through a few close synonyms instead of sitting on
+// one word forever - content-level motion rather than another background
+// decoration. The CMS-provided word is always shown first (and is what's in
+// the DOM at first paint, un-animated - see the note where this is used),
+// so this only changes what's on screen a couple of seconds later. These
+// words are hardcoded here rather than pulled from the CMS; swap the array
+// if the wording should say something different.
+const ACCENT_ALTERNATES = ['Secure', 'Efficient', 'Reliable']
+
+function RotatingAccent({ base }: { base: string }) {
+  const words = React.useMemo(() => [base, ...ACCENT_ALTERNATES.filter((w) => w !== base)], [base])
+  const [index, setIndex] = useState(0)
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduceMotion(mql.matches)
+    if (mql.matches) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % words.length), 2600)
+    return () => clearInterval(id)
+  }, [words.length])
+
+  // Longest word in the rotation reserves the line's width up front (as an
+  // invisible copy) so the headline never reflows/jumps as shorter or longer
+  // words swap in - only the visible word crossfades.
+  const longest = words.reduce((a, b) => (b.length > a.length ? b : a), '')
+
+  // The shimmer gradient has to live on the same element as the text node
+  // itself - background-clip/background-image aren't inherited CSS
+  // properties, so setting them once on a wrapper and nesting plain child
+  // spans inside it (as an earlier version of this did) leaves the actual
+  // words with transparent color and no gradient to clip against, i.e.
+  // invisible. Each stacked word span below carries its own copy instead.
+  const gradientStyle: React.CSSProperties = {
+    backgroundImage: 'linear-gradient(90deg, #FF3B4B 0%, #ffffff 35%, #FF3B4B 60%, #ffb3ba 80%, #FF3B4B 100%)',
+    backgroundSize: '250% 100%',
+  }
+
+  // Only the current word is ever real DOM text - the alternates render one
+  // at a time (key={index} remounts the visible span on each change,
+  // triggering the fade-in below from scratch) rather than all four sitting
+  // in the DOM simultaneously at opacity 0. That earlier approach left every
+  // alternate selectable and copyable (Ctrl+A / "select all" picks up text
+  // regardless of opacity or aria-hidden) - a page copy or screen reader
+  // landing on it would see every word stacked in a row, not just the
+  // CMS-authored one.
+  const visible = reduceMotion ? base : words[index]
+
+  return (
+    <span className="relative inline-block">
+      <span aria-hidden className="hero-shimmer-text invisible select-none bg-clip-text text-transparent" style={gradientStyle}>
+        {longest}
+      </span>
+      <span
+        key={index}
+        className="hero-shimmer-text hero-word-fade absolute inset-0 bg-clip-text text-transparent"
+        style={gradientStyle}
+      >
+        {visible}
+      </span>
+    </span>
+  )
+}
+
+const HERO_STATS: Array<{ value: string; label: string; icon: LucideIcon }> = [
   { value: '30+', label: 'Experienced Professionals', icon: Users },
   { value: '50+', label: 'Technology Partners', icon: Handshake },
   { value: '1500+', label: 'Projects Delivered', icon: CheckCircle2 },
   { value: '400+', label: 'Satisfied Customers', icon: Smile },
 ]
 
-// Fills the empty right-hand side on wide screens by cycling through all
-// four real stats one at a time - more dynamic than a single static figure,
-// and it actually surfaces all the numbers instead of just the biggest one.
-function FeaturedStatCarousel() {
+// Same crossfade technique as RotatingAccent: an invisible copy of the
+// longest label reserves the row's width so the icon/value/label don't
+// jump around as they cycle, while the real, currently-visible stat is
+// absolutely positioned and remounted (via `key`) to replay the fade.
+function RotatingStat() {
   const [index, setIndex] = useState(0)
+  const [reduceMotion, setReduceMotion] = useState(false)
 
   useEffect(() => {
-    const id = setInterval(() => setIndex((i) => (i + 1) % HERO_STATS.length), 3500)
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduceMotion(mql.matches)
+    if (mql.matches) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % HERO_STATS.length), 2600)
     return () => clearInterval(id)
   }, [])
 
+  const longest = HERO_STATS.reduce((a, b) => (b.label.length > a.label.length ? b : a))
+  const stat = HERO_STATS[reduceMotion ? 0 : index]
+  const Icon = stat.icon
+  const LongestIcon = longest.icon
+
   return (
-    // pr- clearance keeps this clear of the fixed phone/WhatsApp buttons,
-    // which sit in the same bottom/right-ish zone this right-aligned block
-    // would otherwise butt right up against.
-    <div className="hidden shrink-0 pr-2 text-right lg:block lg:border-l lg:border-white/10 lg:pl-10 lg:pr-24">
-      <span className="text-sm font-semibold uppercase tracking-[0.15em] text-white/50">
-        Proven Track Record
+    <span className="relative inline-flex items-center justify-center">
+      <span aria-hidden className="invisible flex select-none items-center gap-3">
+        <LongestIcon className="h-7 w-7 shrink-0 sm:h-8 sm:w-8" />
+        <span className="text-2xl font-semibold sm:text-3xl">{longest.value}</span>
+        <span className="text-base sm:text-lg">{longest.label}</span>
       </span>
-
-      {/* A row of all four panels laid out side by side, shifted by -100%*index -
-          panels are spatially separate rather than stacked, so mid-transition
-          the outgoing one slides fully away while the next slides in with no
-          overlapping/ghosted text (a stacked opacity crossfade did that). */}
-      <div className="relative mt-5 h-[17rem] w-[23rem] overflow-hidden">
-        <div
-          className="flex h-full transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${index * 100}%)` }}
-        >
-          {HERO_STATS.map((stat) => {
-            const Icon = stat.icon
-            return (
-              <div
-                key={stat.label}
-                className="flex h-full w-[23rem] flex-none flex-col items-end justify-start"
-              >
-                <span className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
-                  <Icon className="h-8 w-8 text-white" />
-                </span>
-                <div className="bg-gradient-to-br from-white to-white/50 bg-clip-text text-7xl font-extrabold leading-none tracking-tight text-transparent xl:text-8xl">
-                  {stat.value}
-                </div>
-                <div className="mt-3 min-h-[4.5rem] max-w-[23rem] text-2xl font-semibold leading-snug text-white">
-                  {stat.label}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="flex justify-end gap-2">
-        {HERO_STATS.map((stat, i) => (
-          <button
-            key={stat.label}
-            onClick={() => setIndex(i)}
-            aria-label={`Show ${stat.label}`}
-            className={cn(
-              'h-2 rounded-full transition-all duration-300',
-              i === index ? 'w-6 bg-white' : 'w-2 bg-white/30 hover:bg-white/50',
-            )}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// FeaturedStatCarousel above is lg:block-only (designed for the wide,
-// side-by-side layout), which left the same real estate completely empty
-// below that breakpoint - a big chunk of real traffic (tablets, unmaximized
-// laptop windows) saw nothing but background between the CTAs and the
-// scroll cue. This is the lg:hidden counterpart: same four real stats, laid
-// out as a compact static grid that fits the stacked mobile/tablet layout
-// instead of the wide carousel treatment.
-function MobileStatStrip() {
-  return (
-    <div className="w-full lg:hidden">
-      <span className="text-xs font-semibold uppercase tracking-[0.15em] text-white/50">
-        Proven Track Record
+      <span
+        key={reduceMotion ? 'static' : index}
+        className="hero-word-fade absolute inset-0 flex items-center justify-center gap-3"
+      >
+        <Icon className="h-7 w-7 shrink-0 text-secondary_red sm:h-8 sm:w-8" aria-hidden />
+        <span className="text-2xl font-semibold text-white sm:text-3xl">{stat.value}</span>
+        <span className="text-base text-white/60 sm:text-lg">{stat.label}</span>
       </span>
-      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {HERO_STATS.map((stat) => {
-          const Icon = stat.icon
-          return (
-            <div
-              key={stat.label}
-              className="flex flex-col items-start gap-1.5 rounded-xl border border-white/10 bg-white/5 p-3"
-            >
-              <Icon className="h-5 w-5 text-white/70" />
-              <div className="text-xl font-extrabold leading-none text-white">{stat.value}</div>
-              <div className="text-xs leading-snug text-white/70">{stat.label}</div>
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// Minimal, low-effort fill for the empty strip at the bottom of the hero -
-// just hints there's more below without adding real content/clutter. Uses
-// Tailwind's built-in animate-bounce rather than a custom keyframe, since a
-// couple of custom-keyframe additions to tailwind.config earlier needed a
-// dev-server restart before they actually took effect.
-function ScrollCue() {
-  return (
-    <div className="relative z-10 flex flex-none flex-col items-center gap-1.5 py-5 text-white/50">
-      <span className="text-[11px] font-semibold uppercase tracking-[0.15em]">Scroll to explore</span>
-      <ChevronDown className="h-4 w-4 animate-bounce" />
-    </div>
-  )
-}
-
-// Purely decorative - no text, no claims, just a handful of thin outlined
-// "IT services" icons scattered through the hero's open background space,
-// each drifting slowly on its own timing (reusing animate-drift, same as
-// the ambient glow blobs). Scattered by percentage position so they land in
-// whatever empty space exists rather than a fixed pixel spot.
-function FloatingTechIcons() {
-  const icons: { Icon: LucideIcon; style: React.CSSProperties; duration: string; delay: string }[] = [
-    { Icon: Cloud, style: { top: '10%', left: '58%' }, duration: '18s', delay: '0s' },
-    { Icon: Wifi, style: { top: '14%', right: '6%' }, duration: '22s', delay: '-5s' },
-    { Icon: ShieldCheck, style: { top: '58%', left: '63%' }, duration: '20s', delay: '-10s' },
-    { Icon: Server, style: { bottom: '18%', left: '4%' }, duration: '24s', delay: '-3s' },
-    { Icon: Network, style: { bottom: '14%', right: '30%' }, duration: '19s', delay: '-8s' },
-  ]
-
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
-      {icons.map(({ Icon, style, duration, delay }, i) => (
-        <Icon
-          key={i}
-          strokeWidth={1}
-          className="animate-drift absolute h-9 w-9 text-white/[0.08]"
-          style={{ ...style, animationDuration: duration, animationDelay: delay }}
-        />
-      ))}
-    </div>
+    </span>
   )
 }
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subText }) => {
+  const { lead, accent } = splitHeadline(HeroText || '', 1)
+  const parallaxNear = useParallax(22)
+  const parallaxFar = useParallax(10)
+  const spotlight = useSpotlight()
+  const tilt = useMagneticTilt(8)
+
   return (
-    <section className="relative w-full overflow-hidden">
+    <section
+      ref={(node) => {
+        parallaxNear.ref.current = node
+        spotlight.ref.current = node
+      }}
+      className="relative w-full overflow-hidden"
+    >
       {/* Fills exactly the viewport height remaining below the sticky header
           (100px on mobile, 116px from sm up, where the top info bar shows),
           so the next section never peeks into view until the visitor
           scrolls - regardless of how short the content itself is. */}
       <div className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]">
-        {/* Abstract background - the same dark-red gradient already used for
-            the Infra Services sidebar / Products menu, for consistency */}
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(135deg, #b3121f 0%, #8b0f1f 40%, #2d0e0e 100%)' }}
-        />
-        {/* Ambient glow accents - brighter/larger than before so the hero's
-            empty areas read as deliberate depth rather than flat dead space.
-            Each drifts slowly on its own timing so they never move in
-            lockstep - reads as organic rather than mechanical. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 -top-32 h-[32rem] w-[32rem] animate-drift rounded-full bg-white/20 blur-[130px]"
-          style={{ animationDuration: '16s' }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-40 -left-24 h-[26rem] w-[26rem] animate-drift rounded-full bg-black/30 blur-[120px]"
-          style={{ animationDuration: '20s', animationDelay: '-6s' }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute right-0 top-1/3 h-[26rem] w-[26rem] animate-drift rounded-full bg-secondary_red/25 blur-[150px]"
-          style={{ animationDuration: '24s', animationDelay: '-12s' }}
-        />
-        {/* Subtle dot-grid texture for a tech feel */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.18]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
-          }}
-        />
-        {/* Diagonal light streaks - the dynamic, "designed" visual interest a
-            flat gradient alone doesn't give; angled bars of light that sway
-            slowly back and forth, each on its own timing (staggered negative
-            delays start them mid-cycle rather than all in sync). The rotate
-            lives inside the animate-streak-sway keyframe itself now, since an
-            animated transform fully replaces a static one. */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* hero-bg-breathe: a very slow, subtle scale on the whole background
+            layer - a "Ken Burns" breathe rather than anything that reads as
+            movement on its own, just keeps the frame from ever sitting
+            perfectly still. */}
+        <div className="hero-bg-breathe absolute inset-0">
+          {/* Dark atmospheric base - deep red bleeding to near-black, rather
+              than a flat two-stop gradient. */}
           <div
-            className="absolute -top-1/4 left-[8%] h-[180%] w-20 animate-streak-sway bg-gradient-to-b from-transparent via-white/[0.07] to-transparent"
-            style={{ animationDuration: '13s' }}
+            aria-hidden
+            className="absolute inset-0"
+            style={{ background: 'radial-gradient(120% 100% at 50% 0%, #97192a 0%, #571a1e 55%, #33161a 100%)' }}
           />
+          {/* Diagonal light streaks, swaying slowly - angled bars of light
+              rather than a flat gradient, each on its own timing (staggered
+              negative delays start them mid-cycle rather than all in sync).
+              Reuses the sitewide animate-streak-sway keyframe. */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className="absolute -top-1/4 left-[10%] h-[180%] w-16 animate-streak-sway bg-gradient-to-b from-transparent via-white/[0.05] to-transparent"
+              style={{ animationDuration: '14s' }}
+            />
+            <div
+              className="absolute -top-1/4 left-[70%] h-[180%] w-24 animate-streak-sway bg-gradient-to-b from-transparent via-secondary_red/[0.18] to-transparent"
+              style={{ animationDuration: '16s', animationDelay: '-8s' }}
+            />
+          </div>
+          {/* Organic drifting color wash, off-center on either side rather than
+              symmetric - each on its own timing so they never move in lockstep.
+              Each blob sits in its own transform wrapper (mouse-parallax,
+              nearer blobs move more) with the drift keyframe animation applied
+              to the blob itself one level in - two independent transforms on
+              different elements, so they compose instead of fighting for the
+              same CSS property. */}
           <div
-            className="absolute -top-1/4 left-[38%] h-[180%] w-12 animate-streak-sway bg-gradient-to-b from-transparent via-white/[0.05] to-transparent"
-            style={{ animationDuration: '17s', animationDelay: '-4s' }}
-          />
+            className="pointer-events-none absolute -left-32 top-0 h-[36rem] w-[36rem] transition-transform duration-300 ease-out"
+            style={{ transform: `translate3d(${parallaxFar.offset.x}px, ${parallaxFar.offset.y}px, 0)` }}
+          >
+            <div
+              aria-hidden
+              className="h-full w-full animate-drift rounded-full bg-primary_red/30 blur-[140px]"
+              style={{ animationDuration: '18s' }}
+            />
+          </div>
           <div
-            className="absolute -top-1/4 left-[68%] h-[180%] w-28 animate-streak-sway bg-gradient-to-b from-transparent via-secondary_red/[0.25] to-transparent"
-            style={{ animationDuration: '15s', animationDelay: '-9s' }}
-          />
+            className="pointer-events-none absolute -right-24 bottom-0 h-[30rem] w-[30rem] transition-transform duration-300 ease-out"
+            style={{ transform: `translate3d(${parallaxNear.offset.x * -1}px, ${parallaxNear.offset.y * -1}px, 0)` }}
+          >
+            <div
+              aria-hidden
+              className="h-full w-full animate-drift rounded-full bg-secondary_red/25 blur-[130px]"
+              style={{ animationDuration: '22s', animationDelay: '-7s' }}
+            />
+          </div>
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/4 h-[24rem] w-[24rem] transition-transform duration-300 ease-out"
+          style={{ transform: `translate3d(calc(-50% + ${parallaxNear.offset.x}px), ${parallaxNear.offset.y}px, 0)` }}
+        >
           <div
-            className="absolute -top-1/4 left-[85%] h-[180%] w-10 animate-streak-sway bg-gradient-to-b from-transparent via-white/[0.06] to-transparent"
-            style={{ animationDuration: '19s', animationDelay: '-2s' }}
+            aria-hidden
+            className="h-full w-full animate-drift rounded-full bg-white/[0.06] blur-[120px]"
+            style={{ animationDuration: '26s', animationDelay: '-13s' }}
           />
         </div>
-
+        {/* Soft light that follows the cursor (desktop only - null position
+            until the first mousemove, so nothing renders for touch visitors). */}
+        {spotlight.pos && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 hidden sm:block"
+            style={{
+              background: `radial-gradient(420px circle at ${spotlight.pos.x}px ${spotlight.pos.y}px, rgba(255,255,255,0.08), transparent 70%)`,
+            }}
+          />
+        )}
+        {/* Grain, blended over the gradient - see GRAIN_BG comment above.
+            Slowly panned (background-position, not transform, so it doesn't
+            need its own extra wrapper element) rather than held static -
+            reads as a living texture instead of a flat filter. */}
+        <div
+          aria-hidden
+          className="hero-grain-pan pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+          style={{ backgroundImage: GRAIN_BG, backgroundSize: '160% 160%' }}
+        />
+        {/* Sparse sparkle points */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden sm:block">
+          {SPARKLE_POSITIONS.map((pos, i) => (
+            <span
+              key={i}
+              className="absolute h-1 w-1 animate-gentle-pulse rounded-full bg-white/40"
+              style={{ ...pos, animationDuration: `${4 + (i % 3)}s`, animationDelay: `-${i}s` }}
+            />
+          ))}
+        </div>
         <FloatingTechIcons />
+        </div>
 
         {/* flex-1 + items-center: content grows to fill whatever space is
             left above the scroll cue and centers itself within it - keeps
             the cue pinned at the bottom in normal flow, never overlapping
             the centered content even on very short viewports. */}
-        <div className="container relative z-10 mx-auto flex flex-1 items-center px-4 py-6 sm:px-6">
-          <div className="flex w-full flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <Eyebrow className="mb-1.5 text-red-300">IT Solutions & Technology Services</Eyebrow>
-              <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-white md:text-4xl">
-                {HeroText}
-              </h1>
-              {subText && (
-                <p className="mt-2 text-sm leading-normal text-white/80 md:text-base">{subText}</p>
-              )}
-              {Array.isArray(links) && links.length > 0 && (
-                <ul className="mt-4 flex w-full flex-col gap-2.5 sm:flex-row">
-                  {links.map(({ link }, i) => (
-                    <li key={i}>
-                      <CMSLink
-                        {...link}
-                        size="sm"
-                        className={cn(
-                          'w-full sm:w-auto',
-                          link.appearance === 'default' && 'shadow-[0_8px_30px_-6px_rgba(201,14,29,0.65)]',
+        <div className="container relative z-10 mx-auto flex flex-1 items-center justify-center px-4 py-6 text-center sm:px-6 sm:py-8">
+          <div className="mx-auto flex max-w-4xl flex-col items-center">
+            <Reveal durationMs={450}>
+              {/* Rotating conic-gradient ring standing in for the badge's
+                  border: an oversized gradient square, centered and spinning
+                  inside an overflow-hidden pill, clipped down to a 1px ring
+                  by the badge surface sitting on top of it (p-px reserves
+                  that 1px). Rotating the oversized square (rather than the
+                  pill itself) keeps the badge's own text from spinning too. */}
+              <span className="relative inline-flex overflow-hidden rounded-full p-px">
+                <span
+                  aria-hidden
+                  className="hero-badge-spin absolute inset-[-50%]"
+                  style={{ background: 'conic-gradient(from 0deg, transparent 0%, #FF3B4B 15%, transparent 35%)' }}
+                />
+                <span className="relative inline-flex items-center gap-2 rounded-full bg-[#3a1418] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white/80 backdrop-blur">
+                  {/* A radiating ping ring behind the steady dot, like a radar/
+                      signal sweep - the dot itself stays a fixed size so the
+                      ring reads as something emitted FROM it. */}
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary_red opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary_red" />
+                  </span>
+                  IT Solutions & Technology Services
+                </span>
+              </span>
+            </Reveal>
+
+            {/* Left un-animated on purpose - the hero's largest text and
+                likely LCP candidate; a fade-in would delay its final paint.
+                The accent phrase gets a slow shimmer instead (a moving
+                background-position, not an opacity/transform change), which
+                doesn't affect when the text itself is considered painted. */}
+            <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]">
+              {lead && <>{lead}{' '}</>}
+              <RotatingAccent base={accent} />
+            </h1>
+            <style>{`
+              .hero-shimmer-text { animation: hero-shimmer 6s ease-in-out infinite; }
+              @keyframes hero-shimmer {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+              .hero-grain-pan { animation: hero-grain-pan 40s linear infinite; }
+              @keyframes hero-grain-pan {
+                0% { background-position: 0% 0%; }
+                100% { background-position: 100% 100%; }
+              }
+              .hero-badge-spin { animation: hero-badge-spin 4s linear infinite; }
+              @keyframes hero-badge-spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+              .hero-bg-breathe { animation: hero-bg-breathe 14s ease-in-out infinite; }
+              @keyframes hero-bg-breathe {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.04); }
+              }
+              .hero-network-line line { animation: hero-network-line 1.5s linear infinite; }
+              @keyframes hero-network-line {
+                to { stroke-dashoffset: -20; }
+              }
+              .hero-word-fade { animation: hero-word-fade 500ms ease-out; }
+              @keyframes hero-word-fade {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .hero-shimmer-text, .hero-grain-pan, .hero-badge-spin, .hero-bg-breathe, .hero-network-line line, .hero-word-fade { animation: none; }
+              }
+            `}</style>
+
+            {subText && (
+              <Reveal durationMs={450} delayMs={90}>
+                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
+                  {subText}
+                </p>
+              </Reveal>
+            )}
+
+            {Array.isArray(links) && links.length > 0 && (
+              <Reveal durationMs={450} delayMs={180}>
+                <ul className="mt-6 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">
+                  {links.map(({ link }, i) => {
+                    const isPrimary = link.appearance !== 'outline'
+                    return (
+                      <li
+                        key={i}
+                        ref={isPrimary ? tilt.ref : undefined}
+                        onMouseMove={isPrimary ? tilt.handleMove : undefined}
+                        onMouseLeave={isPrimary ? tilt.handleLeave : undefined}
+                        className={cn('relative w-full transition-transform duration-200 ease-out sm:w-auto', isPrimary && 'group')}
+                        style={isPrimary ? tilt.style : undefined}
+                      >
+                        {/* Ambient glow behind the primary CTA only - a separate
+                            element rather than animating the button's own
+                            box-shadow, so it doesn't fight the button's own
+                            static shadow/hover-shadow utility classes. */}
+                        {isPrimary && (
+                          <span
+                            aria-hidden
+                            className="pointer-events-none absolute -inset-1.5 -z-10 animate-pulse rounded-full bg-secondary_red/50 blur-lg"
+                          />
                         )}
-                      />
-                    </li>
-                  ))}
+                        <CMSLink
+                          {...link}
+                          size="lg"
+                          appearance={isPrimary ? 'gradientArrow' : 'outline'}
+                          className={cn(
+                            'w-full sm:w-auto',
+                            !isPrimary &&
+                              'border-white/25 bg-white/5 text-white hover:border-white/40 hover:bg-white/10',
+                          )}
+                        />
+                      </li>
+                    )
+                  })}
                 </ul>
-              )}
-            </div>
+              </Reveal>
+            )}
 
-            <FeaturedStatCarousel />
-
-            <MobileStatStrip />
+            <Reveal durationMs={450} delayMs={260}>
+              <div className="mt-6 flex items-center justify-center">
+                <RotatingStat />
+              </div>
+            </Reveal>
           </div>
         </div>
 
