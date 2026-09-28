@@ -224,7 +224,9 @@ export const CaseStudies: CollectionConfig<'case-studies'> = {
     afterDelete: [revalidateCaseStudyDelete],
   },
   versions: {
-    drafts: { autosave: { interval: 100 }, schedulePublish: true },
+    // See the comment on the same setting in Pages/index.ts - 100ms was
+    // hammering the shared DB connection roughly 10x/second while editing.
+    drafts: { autosave: { interval: 2000 }, schedulePublish: true },
     maxPerDoc: 25,
   },
 }

@@ -244,7 +244,9 @@ export const Posts: CollectionConfig<'posts'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        // See the comment on the same setting in Pages/index.ts - 100ms was
+        // hammering the shared DB connection roughly 10x/second while editing.
+        interval: 2000,
       },
       schedulePublish: true,
     },
