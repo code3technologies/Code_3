@@ -63,6 +63,6 @@ export const metadata: Metadata = {
   title: 'Case Studies | CODE3',
   description:
     'Real IT projects delivered by CODE3 for businesses across Dubai and the UAE - the challenge, the solution and the results.',
-  alternates: { canonical: '/case-studies' },
+  alternates: { canonical: '/case-studies', languages: { en: '/case-studies', ar: '/ar/case-studies' } },
   openGraph: mergeOpenGraph({ title: 'Case Studies | CODE3', url: '/case-studies' }),
 }

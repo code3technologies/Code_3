@@ -1,6 +1,8 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getServerSideURL } from '@/utilities/getURL'
+import { getGoogleReviews } from '@/blocks/Testimonials/getGoogleReviews'
+import { UAE_AREA_SERVED } from '@/utilities/uaeAreaServed'
 import type { Footer, Media } from '@/payload-types'
 
 // Sitewide ProfessionalService/LocalBusiness structured data - one script in
@@ -8,7 +10,10 @@ import type { Footer, Media } from '@/payload-types'
 // engines can reliably resolve "who is CODE3" (name, contact info, socials)
 // without needing to infer it from prose on any one page.
 export const OrganizationSchema = async () => {
-  const footerData = (await getCachedGlobal('footer', 1, 'en')()) as Footer
+  const [footerData, reviewsData] = await Promise.all([
+    getCachedGlobal('footer', 1, 'en')() as Promise<Footer>,
+    getGoogleReviews(),
+  ])
 
   const contactInfo = footerData?.contactInfo
   const address = contactInfo?.address
@@ -38,11 +43,17 @@ export const OrganizationSchema = async () => {
       addressLocality: 'Dubai',
       addressCountry: 'AE',
     },
-    areaServed: {
-      '@type': 'Country',
-      name: 'United Arab Emirates',
-    },
+    areaServed: UAE_AREA_SERVED,
     ...(sameAs.length > 0 ? { sameAs } : {}),
+    ...(reviewsData?.rating && reviewsData.userRatingsTotal
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: reviewsData.rating,
+            reviewCount: reviewsData.userRatingsTotal,
+          },
+        }
+      : {}),
   }
 
   return (

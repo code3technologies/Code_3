@@ -1,5 +1,6 @@
 import type { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { UAE_AREA_SERVED } from '@/utilities/uaeAreaServed'
 
 // Every page rendered by /service/[slug] is a real service offering (that
 // route only ever queries pages with serviceCategory !== 'none'), so this
@@ -26,10 +27,7 @@ export const ServiceSchema = ({ page, path }: { page: Page; path: string }) => {
       name: 'CODE3 Technologies',
       url: siteUrl,
     },
-    areaServed: {
-      '@type': 'Country',
-      name: 'United Arab Emirates',
-    },
+    areaServed: UAE_AREA_SERVED,
     ...(parentTitle ? { category: parentTitle } : {}),
   }
 
