@@ -1,11 +1,40 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Reveal } from '@/components/site/Reveal'
 import { cn } from '@/utilities/ui'
+
+// Subtle mouse-parallax for the ambient background blobs (desktop only - a
+// touch device never fires mousemove, so this is inert there, not just
+// hidden). Small, capped offsets so it reads as the background responding
+// gently to the cursor rather than the page feeling unstable.
+function useParallax(maxOffset = 18) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      const px = (e.clientX - rect.left) / rect.width - 0.5
+      const py = (e.clientY - rect.top) / rect.height - 0.5
+      setOffset({ x: px * maxOffset * 2, y: py * maxOffset * 2 })
+    }
+    const handleLeave = () => setOffset({ x: 0, y: 0 })
+    el.addEventListener('mousemove', handleMove)
+    el.addEventListener('mouseleave', handleLeave)
+    return () => {
+      el.removeEventListener('mousemove', handleMove)
+      el.removeEventListener('mouseleave', handleLeave)
+    }
+  }, [maxOffset])
+
+  return { ref, offset }
+}
 
 // Minimal, low-effort fill for the empty strip at the bottom of the hero -
 // just hints there's more below without adding real content/clutter.
@@ -54,9 +83,11 @@ function splitHeadline(text: string, accentWordCount = 1) {
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subText }) => {
   const { lead, accent } = splitHeadline(HeroText || '', 2)
+  const parallaxNear = useParallax(22)
+  const parallaxFar = useParallax(10)
 
   return (
-    <section className="relative w-full overflow-hidden">
+    <section ref={parallaxNear.ref} className="relative w-full overflow-hidden">
       {/* Fills exactly the viewport height remaining below the sticky header
           (100px on mobile, 116px from sm up, where the top info bar shows),
           so the next section never peeks into view until the visitor
@@ -70,22 +101,42 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
           style={{ background: 'radial-gradient(120% 100% at 50% 0%, #6e0f18 0%, #2a0a0a 55%, #0c0505 100%)' }}
         />
         {/* Organic drifting color wash, off-center on either side rather than
-            symmetric - each on its own timing so they never move in lockstep. */}
+            symmetric - each on its own timing so they never move in lockstep.
+            Each blob sits in its own transform wrapper (mouse-parallax,
+            nearer blobs move more) with the drift keyframe animation applied
+            to the blob itself one level in - two independent transforms on
+            different elements, so they compose instead of fighting for the
+            same CSS property. */}
         <div
-          aria-hidden
-          className="pointer-events-none absolute -left-32 top-0 h-[36rem] w-[36rem] animate-drift rounded-full bg-primary_red/30 blur-[140px]"
-          style={{ animationDuration: '18s' }}
-        />
+          className="pointer-events-none absolute -left-32 top-0 h-[36rem] w-[36rem] transition-transform duration-300 ease-out"
+          style={{ transform: `translate3d(${parallaxFar.offset.x}px, ${parallaxFar.offset.y}px, 0)` }}
+        >
+          <div
+            aria-hidden
+            className="h-full w-full animate-drift rounded-full bg-primary_red/30 blur-[140px]"
+            style={{ animationDuration: '18s' }}
+          />
+        </div>
         <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 bottom-0 h-[30rem] w-[30rem] animate-drift rounded-full bg-secondary_red/25 blur-[130px]"
-          style={{ animationDuration: '22s', animationDelay: '-7s' }}
-        />
+          className="pointer-events-none absolute -right-24 bottom-0 h-[30rem] w-[30rem] transition-transform duration-300 ease-out"
+          style={{ transform: `translate3d(${parallaxNear.offset.x * -1}px, ${parallaxNear.offset.y * -1}px, 0)` }}
+        >
+          <div
+            aria-hidden
+            className="h-full w-full animate-drift rounded-full bg-secondary_red/25 blur-[130px]"
+            style={{ animationDuration: '22s', animationDelay: '-7s' }}
+          />
+        </div>
         <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/4 h-[24rem] w-[24rem] -translate-x-1/2 animate-drift rounded-full bg-white/[0.06] blur-[120px]"
-          style={{ animationDuration: '26s', animationDelay: '-13s' }}
-        />
+          className="pointer-events-none absolute left-1/2 top-1/4 h-[24rem] w-[24rem] transition-transform duration-300 ease-out"
+          style={{ transform: `translate3d(calc(-50% + ${parallaxNear.offset.x}px), ${parallaxNear.offset.y}px, 0)` }}
+        >
+          <div
+            aria-hidden
+            className="h-full w-full animate-drift rounded-full bg-white/[0.06] blur-[120px]"
+            style={{ animationDuration: '26s', animationDelay: '-13s' }}
+          />
+        </div>
         {/* Grain, blended over the gradient - see GRAIN_BG comment above. */}
         <div
           aria-hidden
@@ -117,13 +168,34 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             </Reveal>
 
             {/* Left un-animated on purpose - the hero's largest text and
-                likely LCP candidate; a fade-in would delay its final paint. */}
+                likely LCP candidate; a fade-in would delay its final paint.
+                The accent phrase gets a slow shimmer instead (a moving
+                background-position, not an opacity/transform change), which
+                doesn't affect when the text itself is considered painted. */}
             <h1 className="mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]">
               {lead && <>{lead}{' '}</>}
-              <span className="bg-gradient-to-r from-white via-white to-secondary_red bg-clip-text text-transparent">
+              <span
+                className="hero-shimmer-text bg-clip-text text-transparent"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(90deg, #FF3B4B 0%, #ffffff 35%, #FF3B4B 60%, #ffb3ba 80%, #FF3B4B 100%)',
+                  backgroundSize: '250% 100%',
+                }}
+              >
                 {accent}
               </span>
             </h1>
+            <style>{`
+              .hero-shimmer-text { animation: hero-shimmer 6s ease-in-out infinite; }
+              @keyframes hero-shimmer {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .hero-shimmer-text { animation: none; }
+              }
+            `}</style>
 
             {subText && (
               <Reveal durationMs={450} delayMs={90}>
@@ -136,20 +208,33 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             {Array.isArray(links) && links.length > 0 && (
               <Reveal durationMs={450} delayMs={180}>
                 <ul className="mt-8 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">
-                  {links.map(({ link }, i) => (
-                    <li key={i} className="w-full sm:w-auto">
-                      <CMSLink
-                        {...link}
-                        size="lg"
-                        appearance={link.appearance === 'outline' ? 'outline' : 'gradientArrow'}
-                        className={cn(
-                          'w-full sm:w-auto',
-                          link.appearance === 'outline' &&
-                            'border-white/25 bg-white/5 text-white hover:border-white/40 hover:bg-white/10',
+                  {links.map(({ link }, i) => {
+                    const isPrimary = link.appearance !== 'outline'
+                    return (
+                      <li key={i} className={cn('relative w-full sm:w-auto', isPrimary && 'group')}>
+                        {/* Ambient glow behind the primary CTA only - a separate
+                            element rather than animating the button's own
+                            box-shadow, so it doesn't fight the button's own
+                            static shadow/hover-shadow utility classes. */}
+                        {isPrimary && (
+                          <span
+                            aria-hidden
+                            className="pointer-events-none absolute -inset-1.5 -z-10 animate-pulse rounded-full bg-secondary_red/50 blur-lg"
+                          />
                         )}
-                      />
-                    </li>
-                  ))}
+                        <CMSLink
+                          {...link}
+                          size="lg"
+                          appearance={isPrimary ? 'gradientArrow' : 'outline'}
+                          className={cn(
+                            'w-full sm:w-auto',
+                            !isPrimary &&
+                              'border-white/25 bg-white/5 text-white hover:border-white/40 hover:bg-white/10',
+                          )}
+                        />
+                      </li>
+                    )
+                  })}
                 </ul>
               </Reveal>
             )}
