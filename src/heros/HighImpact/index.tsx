@@ -13,7 +13,7 @@ import { cn } from '@/utilities/ui'
 // hidden). Small, capped offsets so it reads as the background responding
 // gently to the cursor rather than the page feeling unstable.
 function useParallax(maxOffset = 18) {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLElement>(null)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
@@ -35,6 +35,34 @@ function useParallax(maxOffset = 18) {
   }, [maxOffset])
 
   return { ref, offset }
+}
+
+// A soft light that follows the cursor across the whole hero - a separate
+// effect from the blob parallax (which moves existing background shapes);
+// this adds a new light source of its own. Positioned in pixels relative to
+// the section, not normalized, since it needs to sit exactly under the
+// cursor rather than at a capped offset.
+function useSpotlight() {
+  const ref = useRef<HTMLElement>(null)
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+    }
+    const handleLeave = () => setPos(null)
+    el.addEventListener('mousemove', handleMove)
+    el.addEventListener('mouseleave', handleLeave)
+    return () => {
+      el.removeEventListener('mousemove', handleMove)
+      el.removeEventListener('mouseleave', handleLeave)
+    }
+  }, [])
+
+  return { ref, pos }
 }
 
 // Small magnetic tilt on the primary CTA - follows the cursor with a capped
@@ -137,10 +165,17 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
   const { lead, accent } = splitHeadline(HeroText || '', 2)
   const parallaxNear = useParallax(22)
   const parallaxFar = useParallax(10)
+  const spotlight = useSpotlight()
   const tilt = useMagneticTilt(8)
 
   return (
-    <section ref={parallaxNear.ref} className="relative w-full overflow-hidden">
+    <section
+      ref={(node) => {
+        parallaxNear.ref.current = node
+        spotlight.ref.current = node
+      }}
+      className="relative w-full overflow-hidden"
+    >
       {/* Fills exactly the viewport height remaining below the sticky header
           (100px on mobile, 116px from sm up, where the top info bar shows),
           so the next section never peeks into view until the visitor
@@ -191,6 +226,17 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
             style={{ animationDuration: '26s', animationDelay: '-13s' }}
           />
         </div>
+        {/* Soft light that follows the cursor (desktop only - null position
+            until the first mousemove, so nothing renders for touch visitors). */}
+        {spotlight.pos && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 hidden sm:block"
+            style={{
+              background: `radial-gradient(420px circle at ${spotlight.pos.x}px ${spotlight.pos.y}px, rgba(255,255,255,0.08), transparent 70%)`,
+            }}
+          />
+        )}
         {/* Grain, blended over the gradient - see GRAIN_BG comment above.
             Slowly panned (background-position, not transform, so it doesn't
             need its own extra wrapper element) rather than held static -
@@ -220,15 +266,28 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
         <div className="container relative z-10 mx-auto flex flex-1 items-center justify-center px-4 py-10 text-center sm:px-6">
           <div className="mx-auto flex max-w-4xl flex-col items-center">
             <Reveal durationMs={450}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white/80 backdrop-blur">
-                {/* A radiating ping ring behind the steady dot, like a radar/
-                    signal sweep - the dot itself stays a fixed size so the
-                    ring reads as something emitted FROM it. */}
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary_red opacity-75" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary_red" />
+              {/* Rotating conic-gradient ring standing in for the badge's
+                  border: an oversized gradient square, centered and spinning
+                  inside an overflow-hidden pill, clipped down to a 1px ring
+                  by the badge surface sitting on top of it (p-px reserves
+                  that 1px). Rotating the oversized square (rather than the
+                  pill itself) keeps the badge's own text from spinning too. */}
+              <span className="relative inline-flex overflow-hidden rounded-full p-px">
+                <span
+                  aria-hidden
+                  className="hero-badge-spin absolute inset-[-50%]"
+                  style={{ background: 'conic-gradient(from 0deg, transparent 0%, #FF3B4B 15%, transparent 35%)' }}
+                />
+                <span className="relative inline-flex items-center gap-2 rounded-full bg-[#3a1418] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white/80 backdrop-blur">
+                  {/* A radiating ping ring behind the steady dot, like a radar/
+                      signal sweep - the dot itself stays a fixed size so the
+                      ring reads as something emitted FROM it. */}
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary_red opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary_red" />
+                  </span>
+                  IT Solutions & Technology Services
                 </span>
-                IT Solutions & Technology Services
               </span>
             </Reveal>
 
@@ -262,8 +321,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
                 0% { background-position: 0% 0%; }
                 100% { background-position: 100% 100%; }
               }
+              .hero-badge-spin { animation: hero-badge-spin 4s linear infinite; }
+              @keyframes hero-badge-spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
               @media (prefers-reduced-motion: reduce) {
-                .hero-shimmer-text, .hero-grain-pan { animation: none; }
+                .hero-shimmer-text, .hero-grain-pan, .hero-badge-spin { animation: none; }
               }
             `}</style>
 
