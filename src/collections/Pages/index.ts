@@ -415,7 +415,12 @@ export const Pages: CollectionConfig<'pages'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        // 100ms fired a full document save to the DB roughly 10x/second while
+        // actively editing, competing with live-site traffic on the same
+        // shared MongoDB connection and making the whole admin UI feel slow.
+        // Payload's own default is 2000ms - there's no evidence live preview
+        // ever needed faster than that.
+        interval: 2000,
       },
       schedulePublish: true,
     },
