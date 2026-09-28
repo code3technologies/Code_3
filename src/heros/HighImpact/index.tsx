@@ -217,28 +217,28 @@ function RotatingAccent({ base }: { base: string }) {
     backgroundSize: '250% 100%',
   }
 
+  // Only the current word is ever real DOM text - the alternates render one
+  // at a time (key={index} remounts the visible span on each change,
+  // triggering the fade-in below from scratch) rather than all four sitting
+  // in the DOM simultaneously at opacity 0. That earlier approach left every
+  // alternate selectable and copyable (Ctrl+A / "select all" picks up text
+  // regardless of opacity or aria-hidden) - a page copy or screen reader
+  // landing on it would see every word stacked in a row, not just the
+  // CMS-authored one.
+  const visible = reduceMotion ? base : words[index]
+
   return (
-    <span className="relative inline-grid">
-      <span aria-hidden className="hero-shimmer-text invisible bg-clip-text text-transparent" style={gradientStyle}>
+    <span className="relative inline-block">
+      <span aria-hidden className="hero-shimmer-text invisible select-none bg-clip-text text-transparent" style={gradientStyle}>
         {longest}
       </span>
-      {/* All of the rotating words are decorative to assistive tech - the
-          one stable, non-changing announcement is the sr-only span below,
-          carrying the actual CMS-authored word rather than whichever
-          alternate happens to be visible at the moment a screen reader
-          reaches this point. */}
-      <span aria-hidden="true" className="contents">
-        {words.map((word, i) => (
-          <span
-            key={word}
-            className="hero-shimmer-text col-start-1 row-start-1 bg-clip-text text-transparent transition-opacity duration-500 ease-in-out"
-            style={{ ...gradientStyle, opacity: reduceMotion ? (i === 0 ? 1 : 0) : i === index ? 1 : 0 }}
-          >
-            {word}
-          </span>
-        ))}
+      <span
+        key={index}
+        className="hero-shimmer-text hero-word-fade absolute inset-0 bg-clip-text text-transparent"
+        style={gradientStyle}
+      >
+        {visible}
       </span>
-      <span className="sr-only">{base}</span>
     </span>
   )
 }
@@ -273,7 +273,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
           <div
             aria-hidden
             className="absolute inset-0"
-            style={{ background: 'radial-gradient(120% 100% at 50% 0%, #6e0f18 0%, #2a0a0a 55%, #0c0505 100%)' }}
+            style={{ background: 'radial-gradient(120% 100% at 50% 0%, #97192a 0%, #571a1e 55%, #33161a 100%)' }}
           />
           {/* Diagonal light streaks, swaying slowly - angled bars of light
               rather than a flat gradient, each on its own timing (staggered
@@ -426,8 +426,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
               @keyframes hero-network-line {
                 to { stroke-dashoffset: -20; }
               }
+              .hero-word-fade { animation: hero-word-fade 500ms ease-out; }
+              @keyframes hero-word-fade {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
               @media (prefers-reduced-motion: reduce) {
-                .hero-shimmer-text, .hero-grain-pan, .hero-badge-spin, .hero-bg-breathe, .hero-network-line line { animation: none; }
+                .hero-shimmer-text, .hero-grain-pan, .hero-badge-spin, .hero-bg-breathe, .hero-network-line line, .hero-word-fade { animation: none; }
               }
             `}</style>
 
