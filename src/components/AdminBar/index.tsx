@@ -41,6 +41,12 @@ export const AdminBar: React.FC<{
   // layout deliberately never calls draftMode() itself, since that would force
   // every page on the site to render dynamically. See /api/draft-status.
   const [preview, setPreview] = useState(false)
+  // PayloadAdminBar fires its own /api/users/me auth check as soon as it
+  // mounts, on every page load for every visitor (not just logged-in admins)
+  // - that request competes for bandwidth during the critical initial render.
+  // The bar is invisible to the ~100% of visitors who aren't admins anyway,
+  // so there's no visible cost to deferring the mount a couple seconds.
+  const [ready, setReady] = useState(false)
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
@@ -54,12 +60,20 @@ export const AdminBar: React.FC<{
   }, [])
 
   useEffect(() => {
+    const id = setTimeout(() => setReady(true), 2000)
+    return () => clearTimeout(id)
+  }, [])
+
+  useEffect(() => {
+    if (!ready) return
     refreshPreviewStatus()
-  }, [refreshPreviewStatus])
+  }, [ready, refreshPreviewStatus])
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
     setShow(Boolean(user?.id))
   }, [])
+
+  if (!ready) return null
 
   return (
     <div
