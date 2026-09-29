@@ -23,7 +23,7 @@ export function generateStaticParams() {
 }
 
 type Args = {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale?: string; slug: string }>
 }
 
 export default async function DeviceDetailPage({ params: paramsPromise }: Args) {
@@ -56,8 +56,14 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     return { title: 'Device Not Found | CODE3' }
   }
 
+  const path = `/service/device/${slug}`
+
   return {
     title: `${device.title} | ${device.brand} Video Conferencing | CODE3`,
     description: `${device.title} - genuine ${device.brand} video conferencing hardware for ${device.roomSize?.toLowerCase()} rooms. Request a quote from CODE3 Technologies.`,
+    alternates: {
+      canonical: path,
+      languages: { en: path, ar: `/ar${path}` },
+    },
   }
 }
