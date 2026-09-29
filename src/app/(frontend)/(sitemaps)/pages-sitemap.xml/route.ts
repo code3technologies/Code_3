@@ -62,9 +62,7 @@ const getPagesSitemap = unstable_cache(
       : []
 
     // Product pages at /service/device/<slug> are public and indexable but
-    // were missing from every sitemap. Not yet locale-aware (no /ar/
-    // metadata differentiation - see DeviceDetailPage's generateMetadata),
-    // so only the English URL is listed here.
+    // were missing from every sitemap.
     const devices = await payload.find({
       collection: 'devices',
       depth: 0,
@@ -74,10 +72,9 @@ const getPagesSitemap = unstable_cache(
     })
     const deviceSitemap = devices.docs
       .filter((device) => Boolean(device?.slug))
-      .map((device) => ({
-        loc: `${SITE_URL}/service/device/${device.slug}`,
-        lastmod: device.updatedAt || dateFallback,
-      }))
+      .flatMap((device) =>
+        buildLocalizedSitemapEntries(SITE_URL, `/service/device/${device.slug}`, device.updatedAt || dateFallback),
+      )
 
     const caseStudies = await payload.find({
       collection: 'case-studies',
