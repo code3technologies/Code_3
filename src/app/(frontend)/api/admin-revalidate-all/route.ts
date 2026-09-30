@@ -37,6 +37,16 @@ export const GET = async (req: Request) => {
     return NextResponse.json({ ok: false }, { status: 401 })
   }
 
+  // Globals (footer, header) aren't versioned/published like pages, so there's
+  // no doc to look up - just invalidate their Data Cache tag directly. Every
+  // page reads them through the same tag, so this cascades to every route's
+  // cached render on next visit, the same way ?slug= does for a single page.
+  const global = url.searchParams.get('global')
+  if (global) {
+    revalidateTag(`global_${global}`)
+    return NextResponse.json({ ok: true, type: 'global', global, at: Date.now() })
+  }
+
   const slug = url.searchParams.get('slug')
   if (slug) {
     const payload = await getPayload({ config })
