@@ -1,17 +1,18 @@
-'use client'
-
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { cn } from '@/utilities/ui'
 
 type Direction = 'up' | 'down' | 'left' | 'right'
 
 const OFFSET: Record<Direction, string> = {
-  up: 'translate-y-7',
-  down: '-translate-y-7',
-  left: 'translate-x-7',
-  right: '-translate-x-7',
+  up: 'translateY(28px)',
+  down: 'translateY(-28px)',
+  left: 'translateX(28px)',
+  right: 'translateX(-28px)',
 }
 
+// Server component - the actual fade-in-on-scroll is done in CSS (see the
+// `.reveal` rules in globals.css), so this is no longer a client component
+// and carries zero hydration cost, however many times it's used on a page.
 export function Reveal({
   children,
   className,
@@ -29,41 +30,16 @@ export function Reveal({
   // Paint, which this project has specifically worked to keep fast.
   durationMs?: number
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [inView, setInView] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setInView(true)
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.15 },
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <div
-      ref={ref}
-      className={cn(
-        'opacity-0 scale-[0.97] motion-reduce:opacity-100 motion-reduce:scale-100 motion-reduce:translate-x-0 motion-reduce:translate-y-0',
-        OFFSET[direction],
-        // A gentle overshoot easing (a touch of "spring") reads as more
-        // deliberate/cinematic than a linear ease-out, while staying subtle
-        // enough not to feel bouncy on small UI text.
-        'transition-[opacity,transform] ease-[cubic-bezier(0.16,1,0.3,1)]',
-        inView && 'opacity-100 scale-100 translate-x-0 translate-y-0',
-        className,
-      )}
-      style={{ transitionDuration: `${durationMs}ms`, transitionDelay: delayMs ? `${delayMs}ms` : undefined }}
+      className={cn('reveal', className)}
+      style={
+        {
+          '--reveal-offset': OFFSET[direction],
+          '--reveal-duration': `${durationMs}ms`,
+          '--reveal-delay': `${delayMs}ms`,
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>
