@@ -61,6 +61,12 @@ export const ServicesBlockClient: React.FC<
     { key: 'digital', label: 'Digital Services' },
   ]
 
+  // Only offer a category as a tab if it actually has published services -
+  // otherwise switching to it just shows an empty "No services found" state.
+  const availableCategories = categories.filter(({ key }) =>
+    servicePages.some((page) => page.serviceCategory === key),
+  )
+
   const getServiceOverviewData = (page: Page): ServiceOverviewBlock | undefined => {
     if (!page.layout) return undefined
     
@@ -92,6 +98,16 @@ export const ServicesBlockClient: React.FC<
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (
+      availableCategories.length > 0 &&
+      !availableCategories.some((c) => c.key === activeCategory)
+    ) {
+      setActiveCategory(availableCategories[0].key)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [servicePages])
 
   useEffect(() => {
     if (!mounted || !contentRef.current || window.innerWidth < 640) {
@@ -368,6 +384,7 @@ export const ServicesBlockClient: React.FC<
 
   return (
     <section
+      id="infra-services"
       ref={sectionRef}
       className={cn('bg-white relative', className)}
       style={{ height: sectionHeight }}
@@ -386,27 +403,29 @@ export const ServicesBlockClient: React.FC<
             <p className="text-[#535862] text-sm sm:text-base max-w-2xl mx-auto">{subtitle}</p>
           </div>
 
-          <div ref={containerRef} className="flex justify-center mb-12 sm:mb-16 px-4">
-            <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-1 shadow-sm">
-              {categories.map(({ key, label }) => {
-                const isActive = key === activeCategory
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setActiveCategory(key)}
-                    className={cn(
-                      'px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300',
-                      isActive
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-[#717680]',
-                    )}
-                  >
-                    {label}
-                  </button>
-                )
-              })}
+          {availableCategories.length > 1 && (
+            <div ref={containerRef} className="flex justify-center mb-12 sm:mb-16 px-4">
+              <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-1 shadow-sm">
+                {availableCategories.map(({ key, label }) => {
+                  const isActive = key === activeCategory
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setActiveCategory(key)}
+                      className={cn(
+                        'px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300',
+                        isActive
+                          ? 'bg-white text-black shadow-sm'
+                          : 'text-[#717680]',
+                      )}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Changed this container */}
           <div className="max-w-7xl mx-auto flex-1 w-full px-4">
@@ -438,27 +457,29 @@ export const ServicesBlockClient: React.FC<
             <p className="text-[#535862] text-xs sm:text-sm leading-relaxed">{subtitle}</p>
           </div>
 
-          <div className="flex justify-center mb-6 sm:mb-8">
-            <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-1 shadow-sm">
-              {categories.map(({ key, label }) => {
-                const isActive = key === activeCategory
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setActiveCategory(key)}
-                    className={cn(
-                      'px-5 py-2 rounded-full text-xs font-medium transition-colors duration-300',
-                      isActive
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-[#717680]',
-                    )}
-                  >
-                    {label}
-                  </button>
-                )
-              })}
+          {availableCategories.length > 1 && (
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="flex bg-[#FAF8F8] rounded-full border border-[#D7D4D4] p-1 shadow-sm">
+                {availableCategories.map(({ key, label }) => {
+                  const isActive = key === activeCategory
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setActiveCategory(key)}
+                      className={cn(
+                        'px-5 py-2 rounded-full text-xs font-medium transition-colors duration-300',
+                        isActive
+                          ? 'bg-white text-black shadow-sm'
+                          : 'text-[#717680]',
+                      )}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="space-y-8">
             {displayedMobileServices.map((page, index) => (
