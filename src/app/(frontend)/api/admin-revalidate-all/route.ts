@@ -41,9 +41,13 @@ export const GET = async (req: Request) => {
   if (slug) {
     const payload = await getPayload({ config })
 
+    // No _status filter here on purpose - this route's whole job is to force
+    // a path to re-render against current data, including the case where a
+    // page was *unpublished* (its own lookup would otherwise never find it,
+    // so the stale published render would keep serving from cache forever).
     const pageRes = await payload.find({
       collection: 'pages',
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: { slug: { equals: slug } },
       limit: 1,
       depth: 0,
       locale: 'en',
@@ -58,7 +62,7 @@ export const GET = async (req: Request) => {
 
     const postRes = await payload.find({
       collection: 'posts',
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: { slug: { equals: slug } },
       limit: 1,
       depth: 0,
       locale: 'en',
@@ -70,7 +74,7 @@ export const GET = async (req: Request) => {
       return NextResponse.json({ ok: true, type: 'post', slug, path, at: Date.now() })
     }
 
-    return NextResponse.json({ ok: false, error: `No published page or post with slug "${slug}"` }, { status: 404 })
+    return NextResponse.json({ ok: false, error: `No page or post with slug "${slug}"` }, { status: 404 })
   }
 
   const from = Number(url.searchParams.get('from') || '0')
