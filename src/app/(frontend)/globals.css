@@ -282,7 +282,7 @@
     animation-duration: var(--reveal-duration, 900ms);
     animation-delay: var(--reveal-delay, 0ms);
     animation-timeline: view();
-    animation-range: entry 0% cover 35%;
+    animation-range: entry 0% cover 15%;
   }
 
   @keyframes reveal-in {
