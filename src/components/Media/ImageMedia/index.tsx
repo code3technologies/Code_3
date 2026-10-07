@@ -67,6 +67,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
           alt={externalAlt}
           className={cn(imgClassName)}
           loading={loading}
+          fetchPriority={priority ? 'high' : undefined}
           src={externalUrl}
           style={
             fill ? { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' } : undefined

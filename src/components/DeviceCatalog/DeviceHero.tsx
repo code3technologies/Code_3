@@ -32,6 +32,7 @@ function ImageGallery({ device }: { device: Device }) {
           <Media
             resource={activeImage}
             fill
+            priority
             size="(max-width: 768px) 100vw, 400px"
             imgClassName="object-contain p-8"
           />
