@@ -9,7 +9,6 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 import Script from 'next/script'
-import { GoogleTagManager } from '@next/third-parties/google'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
@@ -78,7 +77,26 @@ export function RootLayoutContent({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        <GoogleTagManager gtmId={GTM_ID} />
+        {/* Manual GTM injection (not @next/third-parties' <GoogleTagManager>) -
+            that component hardcodes next/script's default "afterInteractive"
+            strategy with no way to override it, so GTM's own ~155KB script
+            (plus whatever it pulls in, e.g. GA4's ~177KB gtag.js) competed
+            directly with hydration for main-thread time on every page load.
+            lazyOnload defers it to browser idle time instead; the dataLayer
+            push below is unchanged from the standard GTM snippet. */}
+        <Script id="gtm-init" strategy="lazyOnload">
+          {`
+            (function(w,l){
+              w[l]=w[l]||[];
+              w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+            })(window,'dataLayer');
+          `}
+        </Script>
+        <Script
+          id="gtm-script"
+          strategy="lazyOnload"
+          src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
+        />
         <Providers>
           <LocaleLinkGuard />
           <TrackedContactLinks />
