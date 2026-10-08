@@ -94,6 +94,10 @@ const nextConfig = {
     staleTimes: {
       dynamic: 0,
     },
+    // Ensures per-icon chunking for lucide-react's named imports (already used
+    // correctly everywhere in this codebase) rather than relying on webpack's
+    // own tree-shaking to catch it - standard, zero-risk Next.js optimization.
+    optimizePackageImports: ['lucide-react'],
   },
 }
 
