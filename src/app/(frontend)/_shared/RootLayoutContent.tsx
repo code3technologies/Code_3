@@ -56,8 +56,10 @@ export function RootLayoutContent({
         <OrganizationSchema />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-        {/* Microsoft Clarity heatmaps + session recordings */}
-        <Script id="microsoft-clarity" strategy="afterInteractive">
+        {/* Microsoft Clarity heatmaps + session recordings. lazyOnload (not
+            afterInteractive) so it loads during browser idle time instead of
+            competing with hydration for main-thread time on first load. */}
+        <Script id="microsoft-clarity" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

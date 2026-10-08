@@ -480,14 +480,22 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   const links = data?.links
   const calendlyUrl = data?.calendlyUrl
 
-  const allNavItems = (data?.navItems || []).sort((a: NavigationItem, b: NavigationItem) => (a.order || 0) - (b.order || 0))
+  // Memoized: these re-derive from the full sitewide nav-pages list (grows with
+  // every published page) and were previously recomputed on every render,
+  // including unrelated re-renders like hover/menu-toggle state changes.
+  const allNavItems = React.useMemo(
+    () => [...(data?.navItems || [])].sort((a: NavigationItem, b: NavigationItem) => (a.order || 0) - (b.order || 0)),
+    [data?.navItems],
+  )
 
   const servicePages = navigationPages as NavigationPageData[]
-  const infraPages = servicePages.filter(
-    (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && !p.isSubService,
+  const infraPages = React.useMemo(
+    () => servicePages.filter((p: NavigationPageData) => p.serviceCategory === 'infrastructure' && !p.isSubService),
+    [servicePages],
   )
-  const infraSubServices = servicePages.filter(
-    (p: NavigationPageData) => p.serviceCategory === 'infrastructure' && p.isSubService,
+  const infraSubServices = React.useMemo(
+    () => servicePages.filter((p: NavigationPageData) => p.serviceCategory === 'infrastructure' && p.isSubService),
+    [servicePages],
   )
 
   const getSubServices = (
