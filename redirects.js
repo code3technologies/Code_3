@@ -162,7 +162,19 @@ const redirects = async () => {
     { source: '/service/audio-visual-av-solutions', destination: '/service/audio-visual-av-solutions-dubai-uae', permanent: true },
   ]
 
-  const redirects = [internetExplorerRedirect, ...serviceSlugRedirects]
+  // Legacy orphaned page (outside the service-category hierarchy, 9 blocks)
+  // covering the same topic as the full-depth /service/microsoft-365-dubai-uae
+  // page - redirecting consolidates any existing SEO value instead of splitting
+  // it across two pages on the same subject.
+  const legacyPageRedirects = [
+    {
+      source: '/microsoft-365-and-collaboration-tools',
+      destination: '/service/microsoft-365-dubai-uae',
+      permanent: true,
+    },
+  ]
+
+  const redirects = [internetExplorerRedirect, ...serviceSlugRedirects, ...legacyPageRedirects]
 
   return redirects
 }
