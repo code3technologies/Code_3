@@ -9,7 +9,7 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 import Script from 'next/script'
-import { AdminBar } from '@/components/AdminBar'
+import { DynamicAdminBar } from '@/components/AdminBar/DynamicAdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -104,7 +104,7 @@ export function RootLayoutContent({
               force every page under this layout to render dynamically, which is
               exactly what this route structure exists to avoid. AdminBar fetches
               its own preview state client-side from /api/draft-status instead. */}
-          <AdminBar />
+          <DynamicAdminBar />
           <Header locale={locale} />
           {children}
           <Footer locale={locale} />
