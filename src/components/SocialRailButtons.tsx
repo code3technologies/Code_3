@@ -67,8 +67,7 @@ export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="group/social inline-flex h-[42px] items-center justify-end rounded-full text-white shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-colors duration-300 hover:bg-white hover:text-primary_red"
-          style={{ backgroundColor: '#DF3341' }}
+          className="group/social inline-flex h-[42px] items-center justify-end rounded-full border border-white/15 bg-black/35 text-white shadow-[0_4px_14px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors duration-300 hover:border-white/40 hover:bg-white hover:text-primary_red"
         >
           <span className="max-w-0 overflow-hidden whitespace-nowrap pl-0 text-xs font-bold uppercase tracking-wider opacity-0 transition-all duration-300 group-hover/social:max-w-[6rem] group-hover/social:pl-4 group-hover/social:opacity-100">
             {label}
