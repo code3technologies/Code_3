@@ -130,7 +130,7 @@ function HeroSocialRail({ socialLinks }: { socialLinks?: Record<string, string |
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 hidden sm:block">
-      <div className="pointer-events-auto absolute right-4 top-6 flex flex-col items-end gap-3 sm:right-6 lg:right-8">
+      <div className="pointer-events-auto absolute right-4 top-1/2 flex -translate-y-1/2 flex-col items-end gap-3 sm:right-6 lg:right-8">
         {items.map(({ url, Icon, label }) => (
           <a
             key={label}
