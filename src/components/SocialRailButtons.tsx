@@ -20,10 +20,11 @@ function InstagramIcon() {
   )
 }
 
-// Sitewide fixed social rail, stacked directly above PhoneButton (bottom:
-// 155px, 58px tall) with the same 16px gap PhoneButton itself keeps above
-// WhatsAppButton - so bottom: 155 + 58 + 16 = 229px. Each pill is sized by
-// its own content (inline-flex), so the label reveal on hover is a pure CSS
+// Sitewide fixed social rail, pinned near the top of the viewport (clears
+// the sticky header, which is 100px tall on mobile and 116px from sm up -
+// see HighImpactHero's matching min-h calc) rather than stacked with
+// PhoneButton/WhatsAppButton at the bottom. Each pill is sized by its own
+// content (inline-flex), so the label reveal on hover is a pure CSS
 // max-width transition on the label span rather than animating the link
 // itself to/from "auto" width, which CSS can't tween directly.
 export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string, string | null | undefined> }) {
@@ -48,7 +49,7 @@ export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string
     <div
       style={{
         position: 'fixed',
-        bottom: '229px',
+        top: '140px',
         ...(isRtl ? { left: '24px' } : { right: '24px' }),
         zIndex: 9999,
         display: 'flex',
