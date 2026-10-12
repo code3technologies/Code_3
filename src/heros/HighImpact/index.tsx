@@ -99,60 +99,6 @@ function useMagneticTilt(maxTilt = 8) {
   return { ref, style, handleMove, handleLeave }
 }
 
-function LinkedInIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-      <path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v6.31h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.15 1.46-2.15 2.96v5.7h-4v-12z" />
-    </svg>
-  )
-}
-function InstagramIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-      <rect x="2" y="2" width="20" height="20" rx="5" />
-      <circle cx="12" cy="12" r="4.2" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-// Floating vertical rail of social icons on the hero's right edge - each
-// pill is sized by its own content (inline-flex), so the label reveal is a
-// pure CSS max-width transition on the label span rather than trying to
-// animate the link itself to/from "auto" width, which CSS can't tween.
-function HeroSocialRail({ socialLinks }: { socialLinks?: Record<string, string | null | undefined> }) {
-  const items = [
-    { url: socialLinks?.linkedin, Icon: LinkedInIcon, label: 'LinkedIn' },
-    { url: socialLinks?.instagram, Icon: InstagramIcon, label: 'Instagram' },
-  ].filter((item): item is { url: string; Icon: typeof LinkedInIcon; label: string } => Boolean(item.url))
-
-  if (items.length === 0) return null
-
-  return (
-    <div className="pointer-events-none absolute inset-0 z-20 hidden sm:block">
-      <div className="pointer-events-auto absolute right-4 top-1/2 flex -translate-y-1/2 flex-col items-end gap-3 sm:right-6 lg:right-8">
-        {items.map(({ url, Icon, label }) => (
-          <a
-            key={label}
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={label}
-            className="group/social inline-flex h-11 items-center justify-end rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-md transition-colors duration-300 hover:border-white/40 hover:bg-white hover:text-primary_red"
-          >
-            <span className="max-w-0 overflow-hidden whitespace-nowrap pl-0 text-xs font-bold uppercase tracking-wider opacity-0 transition-all duration-300 group-hover/social:max-w-[6rem] group-hover/social:pl-4 group-hover/social:opacity-100">
-              {label}
-            </span>
-            <span className="flex h-11 w-11 flex-none items-center justify-center">
-              <Icon />
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // Minimal, low-effort fill for the empty strip at the bottom of the hero -
 // just hints there's more below without adding real content/clutter.
 function ScrollCue() {
@@ -355,9 +301,7 @@ function RotatingStat() {
   )
 }
 
-export const HighImpactHero: React.FC<
-  Page['hero'] & { socialLinks?: Record<string, string | null | undefined> }
-> = ({ links, HeroText, subText, socialLinks }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subText }) => {
   const { lead, accent } = splitHeadline(HeroText || '', 1)
   const parallaxNear = useParallax(22)
   const parallaxFar = useParallax(10)
@@ -377,7 +321,6 @@ export const HighImpactHero: React.FC<
           so the next section never peeks into view until the visitor
           scrolls - regardless of how short the content itself is. */}
       <div className="relative flex min-h-[calc(100vh-100px)] w-full flex-col sm:min-h-[calc(100vh-116px)]">
-        <HeroSocialRail socialLinks={socialLinks} />
         {/* hero-bg-breathe: a very slow, subtle scale on the whole background
             layer - a "Ken Burns" breathe rather than anything that reads as
             movement on its own, just keeps the frame from ever sitting

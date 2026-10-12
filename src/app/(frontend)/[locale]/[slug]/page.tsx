@@ -98,7 +98,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      <RenderHero {...hero} locale={locale} />
+      <RenderHero {...hero} />
       <RenderBlocks blocks={layout} currentPage={page} locale={locale} />
     </article>
   )
