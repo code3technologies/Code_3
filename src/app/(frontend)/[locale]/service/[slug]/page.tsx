@@ -78,7 +78,7 @@ export default async function ServicePage({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
 
       <Breadcrumbs items={breadcrumbs} />
-      <RenderHero {...hero} />
+      <RenderHero {...hero} locale={locale} />
       {/* Case study card sits just before the FAQ (or at the end if the page has none). */}
       <RenderBlocks blocks={layout.slice(0, caseStudyIndex)} currentPage={page} locale={locale} />
       <RelatedCaseStudy serviceId={page.id} locale={locale} />
