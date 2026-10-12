@@ -5,14 +5,14 @@ import { useDeviceCart } from '@/providers/DeviceCart'
 
 function LinkedInIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]">
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
       <path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v6.31h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.15 1.46-2.15 2.96v5.7h-4v-12z" />
     </svg>
   )
 }
 function InstagramIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-[18px] w-[18px]">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-6 w-6">
       <rect x="2" y="2" width="20" height="20" rx="5" />
       <circle cx="12" cy="12" r="4.2" />
       <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
@@ -54,7 +54,7 @@ export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string
         display: 'flex',
         flexDirection: 'column',
         alignItems: isRtl ? 'flex-start' : 'flex-end',
-        gap: '12px',
+        gap: '16px',
         opacity: visible ? 1 : 0,
         transform: visible ? 'scale(1)' : 'scale(0.6)',
         transition: 'opacity 0.35s ease, transform 0.35s ease',
@@ -67,12 +67,12 @@ export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="group/social inline-flex h-[42px] items-center justify-end rounded-full border border-white/15 bg-black/35 text-white shadow-[0_4px_14px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors duration-300 hover:border-white/40 hover:bg-white hover:text-primary_red"
+          className="group/social inline-flex h-[58px] items-center justify-end rounded-full border border-white/15 bg-black/35 text-white shadow-[0_4px_14px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors duration-300 hover:border-white/40 hover:bg-white hover:text-primary_red"
         >
           <span className="max-w-0 overflow-hidden whitespace-nowrap pl-0 text-xs font-bold uppercase tracking-wider opacity-0 transition-all duration-300 group-hover/social:max-w-[6rem] group-hover/social:pl-4 group-hover/social:opacity-100">
             {label}
           </span>
-          <span className="flex h-[42px] w-[42px] flex-none items-center justify-center">
+          <span className="flex h-[58px] w-[58px] flex-none items-center justify-center">
             <Icon />
           </span>
         </a>
