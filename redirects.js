@@ -172,6 +172,15 @@ const redirects = async () => {
       destination: '/service/microsoft-365-dubai-uae',
       permanent: true,
     },
+    // Flagged as a genuine 404 in Search Console (not an old slug covered by
+    // serviceSlugRedirects above) - ELV (Extra Low Voltage) covers CCTV,
+    // access control and intercom systems, which live under Security &
+    // Surveillance Solutions on the current site.
+    {
+      source: '/service/ict-elv-solutions',
+      destination: '/service/security--surveillance-solutions-dubai-uae',
+      permanent: true,
+    },
   ]
 
   const redirects = [internetExplorerRedirect, ...serviceSlugRedirects, ...legacyPageRedirects]
