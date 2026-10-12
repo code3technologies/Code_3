@@ -20,23 +20,32 @@ import type { Locale } from '@/utilities/getLocale'
 import { caMechano, notoSansArabic, openSauceSans } from '@/fonts'
 import { WhatsAppButton } from '@/components/WhatsAppButton'
 import { PhoneButton } from '@/components/PhoneButton'
+import { SocialRailButtons } from '@/components/SocialRailButtons'
 import { LocaleLinkGuard } from '@/components/LocaleLinkGuard'
 import { TrackedContactLinks } from '@/components/TrackedContactLinks'
 import { CartDrawer } from '@/components/DeviceCatalog/CartDrawer'
 import { OrganizationSchema } from '@/components/StructuredData/OrganizationSchema'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import '../globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-WJKX5PV5'
 const CLARITY_PROJECT_ID = 'xy1owi92ov'
 
-export function RootLayoutContent({
+export async function RootLayoutContent({
   children,
   locale,
 }: {
   children: React.ReactNode
   locale: Locale
 }) {
+  // Same cache key/tag Footer/Component.tsx already fetches this global
+  // with, so this is deduplicated against that call rather than a second
+  // real round-trip.
+  const footer = (await getCachedGlobal('footer', 1, locale)()) as {
+    socialLinks?: Record<string, string | null | undefined>
+  }
+
   return (
     <html
       className={cn(
@@ -110,6 +119,7 @@ export function RootLayoutContent({
           <Footer locale={locale} />
           <PhoneButton />
           <WhatsAppButton />
+          <SocialRailButtons socialLinks={footer?.socialLinks} />
           <CartDrawer />
         </Providers>
       </body>
