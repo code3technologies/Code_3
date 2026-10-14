@@ -20,20 +20,12 @@ function InstagramIcon() {
   )
 }
 
-// Sitewide fixed social rail, stacked directly above PhoneButton, which is
-// stacked above WhatsAppButton. All three chain off WhatsAppButton's own
-// min(81px, 9vh) base via calc() (each +58px height +16px gap) instead of
-// each using its own independently-rounded min(Npx, Mvh) - three separate
-// approximations don't preserve the 16px gaps at every viewport height, so
-// an earlier version of this fix let the three buttons overlap each other
-// on short windows. Chaining off one shared base keeps the gaps exact at
-// every height while still letting the whole stack compress on short/
-// non-maximized windows instead of staying pinned high enough to collide
-// with hero content, as happens on pages like the device category pages
-// whose quote-enquiry card sits in that same top-right corner. Each pill is
-// sized by its own content (inline-flex), so the label reveal on hover is a
-// pure CSS max-width transition on the label span rather than animating the
-// link itself to/from "auto" width, which CSS can't tween directly.
+// Sitewide fixed social rail, stacked directly above PhoneButton (bottom:
+// 155px, 58px tall) with the same 16px gap PhoneButton itself keeps above
+// WhatsAppButton - so bottom: 155 + 58 + 16 = 229px. Each pill is sized by
+// its own content (inline-flex), so the label reveal on hover is a pure CSS
+// max-width transition on the label span rather than animating the link
+// itself to/from "auto" width, which CSS can't tween directly.
 export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string, string | null | undefined> }) {
   const [visible, setVisible] = useState(false)
   const [isRtl, setIsRtl] = useState(false)
@@ -56,10 +48,7 @@ export function SocialRailButtons({ socialLinks }: { socialLinks?: Record<string
     <div
       style={{
         position: 'fixed',
-        // Chained off WhatsAppButton's own min(81px, 9vh) base - see the
-        // comment in PhoneButton.tsx. +74px clears WhatsApp+PhoneButton
-        // (58+16 each), +16px is this rail's own gap above PhoneButton.
-        bottom: 'calc(min(81px, 9vh) + 74px + 74px)',
+        bottom: '229px',
         ...(isRtl ? { left: '24px' } : { right: '24px' }),
         zIndex: 9999,
         display: 'flex',
