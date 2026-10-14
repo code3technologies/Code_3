@@ -97,8 +97,13 @@ const getNavData = (locale: Locale) =>
     })
 
     const allPages = pagesRes.docs || []
+    // Area/city variant pages (e.g. "...-abu-dhabi-uae", "...-sharjah-uae") are
+    // reachable via the footer's Quick Links instead of the mega-menu - with
+    // every service now having up to 2 city duplicates, listing all of them in
+    // the dropdown would bury the actual service categories.
+    const isAreaVariant = (slug: string) => /-(abu-dhabi|sharjah)-uae$/.test(slug)
     const navigationPages: NavigationPageData[] = allPages
-      .filter((p) => p && p.id && p.slug) // Filter out any undefined/null pages or pages without slug
+      .filter((p) => p && p.id && p.slug && !isAreaVariant(p.slug)) // Filter out undefined/null pages, pages without slug, and area variants
       .map((p) => {
         const pageWithParent = p as Page & {
           parentService?: string | { id: string } | null
