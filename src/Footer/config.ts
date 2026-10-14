@@ -136,6 +136,15 @@ export const Footer: GlobalConfig = {
         { name: 'linkedin', type: 'text', label: 'LinkedIn URL' },
         { name: 'instagram', type: 'text', label: 'Instagram URL' },
         { name: 'youtube', type: 'text', label: 'YouTube URL' },
+        {
+          name: 'googleBusiness',
+          type: 'text',
+          label: 'Google Business Profile URL',
+          admin: {
+            description:
+              "Share link from the Google Business Profile listing - included in sitewide structured data (sameAs) so Google ties the website and listing to the same entity. Doesn't show as a footer icon.",
+          },
+        },
       ],
     },
     {
