@@ -181,6 +181,15 @@ const redirects = async () => {
       destination: '/service/security--surveillance-solutions-dubai-uae',
       permanent: true,
     },
+    // /blogs was a leftover archive page from the original template, never
+    // removed - it duplicated the real blog listing at /posts (different
+    // post count, stale cards) while both were linked and both sat in the
+    // sitemap, splitting authority between two URLs for the same content.
+    {
+      source: '/blogs',
+      destination: '/posts',
+      permanent: true,
+    },
   ]
 
   const redirects = [internetExplorerRedirect, ...serviceSlugRedirects, ...legacyPageRedirects]
