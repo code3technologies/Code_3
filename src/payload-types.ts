@@ -9667,6 +9667,10 @@ export interface Footer {
     linkedin?: string | null;
     instagram?: string | null;
     youtube?: string | null;
+    /**
+     * Share link from the Google Business Profile listing - included in sitewide structured data (sameAs) so Google ties the website and listing to the same entity. Doesn't show as a footer icon.
+     */
+    googleBusiness?: string | null;
   };
   bottomBar: {
     copyrightText: string;
@@ -9780,6 +9784,7 @@ export interface FooterSelect<T extends boolean = true> {
         linkedin?: T;
         instagram?: T;
         youtube?: T;
+        googleBusiness?: T;
       };
   bottomBar?:
     | T

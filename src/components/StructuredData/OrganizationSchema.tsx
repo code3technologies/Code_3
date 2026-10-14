@@ -27,6 +27,7 @@ export const OrganizationSchema = async () => {
     socialLinks?.facebook,
     socialLinks?.twitter,
     socialLinks?.youtube,
+    socialLinks?.googleBusiness,
   ].filter((url): url is string => Boolean(url))
 
   const schema = {
