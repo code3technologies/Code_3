@@ -27,7 +27,12 @@ export function PhoneButton() {
       aria-label="Call CODE3"
       style={{
         position: 'fixed',
-        bottom: 'min(155px, 17vh)',
+        // Chained off WhatsAppButton's own min(81px, 9vh) base (+58px height
+        // +16px gap = +74px) instead of an independently-rounded vh value -
+        // three separate min(Npx, Mvh) approximations don't preserve the
+        // 16px gap at every height, so on a short viewport this button and
+        // WhatsAppButton started overlapping each other.
+        bottom: 'calc(min(81px, 9vh) + 74px)',
         ...(isRtl ? { left: '24px' } : { right: '24px' }),
         zIndex: 9999,
         width: '58px',
