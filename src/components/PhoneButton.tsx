@@ -27,7 +27,7 @@ export function PhoneButton() {
       aria-label="Call CODE3"
       style={{
         position: 'fixed',
-        bottom: '155px',
+        bottom: 'min(155px, 17vh)',
         ...(isRtl ? { left: '24px' } : { right: '24px' }),
         zIndex: 9999,
         width: '58px',
