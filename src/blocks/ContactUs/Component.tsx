@@ -186,19 +186,6 @@ export const ContactUsBlock: React.FC<Props> = async ({
             />
           </Reveal>
         </div>
-
-        <Reveal delayMs={150}>
-          <div className="mt-12 overflow-hidden rounded-2xl border border-border">
-            <iframe
-              src="https://storage.googleapis.com/maps-solutions-o93adn395r/locator-plus/x6d1/locator-plus.html"
-              width="100%"
-              height="450"
-              style={{ border: 0 }}
-              loading="lazy"
-              title="CODE3 locations"
-            />
-          </div>
-        </Reveal>
       </div>
     </section>
   )
