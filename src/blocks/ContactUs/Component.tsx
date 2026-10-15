@@ -189,13 +189,17 @@ export const ContactUsBlock: React.FC<Props> = async ({
 
         <Reveal delayMs={150}>
           <div className="mt-12 overflow-hidden rounded-2xl border border-border">
+            {/* Plain pin-on-map embed (the classic "output=embed" query) instead
+                of the Locator Plus widget - that widget's search-for-nearest-
+                location UI is built for multi-branch businesses, and CODE3 has
+                one office, so the search box just added unneeded complexity. */}
             <iframe
-              src="https://storage.googleapis.com/maps-solutions-o93adn395r/locator-plus/x6d1/locator-plus.html"
+              src="https://www.google.com/maps?q=Al+Mozna+Building%2C+Al+Qusais%2C+Dubai%2C+United+Arab+Emirates&output=embed"
               width="100%"
               height="450"
               style={{ border: 0 }}
               loading="lazy"
-              title="CODE3 locations"
+              title="CODE3 location"
             />
           </div>
         </Reveal>
