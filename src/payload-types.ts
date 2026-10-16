@@ -1145,6 +1145,10 @@ export interface WhyChooseUsBlock {
  * via the `definition` "ContactUsBlock".
  */
 export interface ContactUsBlock {
+  /**
+   * Enable only when this block is the page's sole heading (e.g. the dedicated Contact page). Leave off when the page already has its own hero <h1> above this block (e.g. Home, About Us) - a page should have exactly one <h1>.
+   */
+  useH1?: boolean | null;
   heading: string;
   subtitle: string;
   description: string;
@@ -6118,6 +6122,7 @@ export interface WhyChooseUsBlockSelect<T extends boolean = true> {
  * via the `definition` "ContactUsBlock_select".
  */
 export interface ContactUsBlockSelect<T extends boolean = true> {
+  useH1?: T;
   heading?: T;
   subtitle?: T;
   description?: T;

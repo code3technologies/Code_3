@@ -4,6 +4,16 @@ export const ContactUs: Block = {
   slug: 'contactUs',
   fields: [
     {
+      name: 'useH1',
+      type: 'checkbox',
+      label: 'Use <h1> for the subtitle heading',
+      defaultValue: false,
+      admin: {
+        description:
+          "Enable only when this block is the page's sole heading (e.g. the dedicated Contact page). Leave off when the page already has its own hero <h1> above this block (e.g. Home, About Us) - a page should have exactly one <h1>.",
+      },
+    },
+    {
       name: 'heading',
       type: 'text',
       label: 'Main Heading',
