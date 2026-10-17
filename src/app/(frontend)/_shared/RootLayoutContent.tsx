@@ -10,6 +10,7 @@ import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 import Script from 'next/script'
 import { DynamicAdminBar } from '@/components/AdminBar/DynamicAdminBar'
+import { DeferredGTM } from '@/components/DeferredGTM'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -89,23 +90,14 @@ export async function RootLayoutContent({
         {/* Manual GTM injection (not @next/third-parties' <GoogleTagManager>) -
             that component hardcodes next/script's default "afterInteractive"
             strategy with no way to override it, so GTM's own ~155KB script
-            (plus whatever it pulls in, e.g. GA4's ~177KB gtag.js) competed
-            directly with hydration for main-thread time on every page load.
-            lazyOnload defers it to browser idle time instead; the dataLayer
-            push below is unchanged from the standard GTM snippet. */}
-        <Script id="gtm-init" strategy="lazyOnload">
-          {`
-            (function(w,l){
-              w[l]=w[l]||[];
-              w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-            })(window,'dataLayer');
-          `}
-        </Script>
-        <Script
-          id="gtm-script"
-          strategy="lazyOnload"
-          src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
-        />
+            (plus whatever it pulls in - GA4's ~177KB gtag.js and the Zoho
+            SalesIQ widget, both configured as tags inside the GTM container)
+            competed directly with hydration for main-thread time on every
+            page load. lazyOnload (requestIdleCallback) helped but mobile CPU
+            throttling rarely lets the browser go idle before LCP is measured,
+            so DeferredGTM loads it on the visitor's first real interaction
+            instead - see that component for the tradeoff this makes. */}
+        <DeferredGTM gtmId={GTM_ID} />
         <Providers>
           <LocaleLinkGuard />
           <TrackedContactLinks />

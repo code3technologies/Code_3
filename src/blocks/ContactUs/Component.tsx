@@ -65,8 +65,14 @@ export const ContactUsBlock: React.FC<Props> = async ({
   formFields,
   countryOptions,
   subjectOptions,
+  useH1,
   locale: localeProp,
 }) => {
+  // A page should have exactly one <h1>. This block is reused on pages that
+  // already have their own hero <h1> (Home, About Us), so it renders <h2>
+  // there and only promotes to <h1> where it's the page's sole heading
+  // (the dedicated Contact page).
+  const HeadingTag = useH1 ? 'h1' : 'h2'
   const locale: Locale = localeProp === 'ar' ? 'ar' : 'en'
   const [footerData, googleReviews] = await Promise.all([
     getCachedGlobal('footer', 1, locale)() as Promise<Footer>,
@@ -104,9 +110,9 @@ export const ContactUsBlock: React.FC<Props> = async ({
           {/* Left: heading + trust content */}
           <Reveal>
             {heading && <Eyebrow>{heading}</Eyebrow>}
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground">
+            <HeadingTag className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground">
               {subtitle}
-            </h1>
+            </HeadingTag>
             {description && (
               <p className="mt-4 max-w-md text-gray-600 leading-relaxed">{description}</p>
             )}
