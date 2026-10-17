@@ -19,7 +19,6 @@ const FALLBACK_MS = 8000
 export function DeferredGTM({ gtmId }: { gtmId: string }) {
   useEffect(() => {
     let loaded = false
-    let timer: ReturnType<typeof setTimeout>
 
     const load = () => {
       if (loaded) return
@@ -36,7 +35,7 @@ export function DeferredGTM({ gtmId }: { gtmId: string }) {
       document.head.appendChild(script)
     }
 
-    timer = setTimeout(load, FALLBACK_MS)
+    const timer = setTimeout(load, FALLBACK_MS)
     EVENTS.forEach((event) => window.addEventListener(event, load, { once: true, passive: true }))
 
     return () => {
