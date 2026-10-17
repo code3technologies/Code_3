@@ -494,12 +494,14 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
               }
             `}</style>
 
+            {/* Left un-animated for the same reason as the <h1> above - real
+                Lighthouse data (2026-10-17) showed this paragraph, not the
+                headline, as the actual LCP element on this hero; a fade-in
+                here was directly inflating LCP by its own duration+delay. */}
             {subText && (
-              <Reveal durationMs={450} delayMs={90}>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
-                  {subText}
-                </p>
-              </Reveal>
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
+                {subText}
+              </p>
             )}
 
             {Array.isArray(links) && links.length > 0 && (
