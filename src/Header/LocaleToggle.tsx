@@ -2,7 +2,12 @@
 import { usePathname } from 'next/navigation'
 
 export function LocaleToggle({ className = '' }: { className?: string }) {
-  const pathname = usePathname()
+  const rawPathname = usePathname()
+  // middleware.ts rewrites every English request internally to /en/* (while the
+  // real external URL stays unprefixed) and usePathname() leaks that internal
+  // path here, so every link this component built pointed at /en/... - a URL
+  // that 404s. Strip the leaked prefix before building either link.
+  const pathname = rawPathname.replace(/^\/en(?=\/|$)/, '') || '/'
   const isArabic = pathname === '/ar' || pathname.startsWith('/ar/')
   const enPath = isArabic ? pathname.replace(/^\/ar/, '') || '/' : pathname
   const arPath = isArabic ? pathname : `/ar${pathname === '/' ? '' : pathname}`
