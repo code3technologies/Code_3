@@ -19,6 +19,7 @@ import type { Locale } from '@/utilities/getLocale'
 import { extractHeadings } from '@/utilities/extractHeadings'
 import { PostTableOfContents } from '@/components/PostTableOfContents'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { BlogPostingSchema } from '@/components/StructuredData/BlogPostingSchema'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { getPostCta } from '@/utilities/postCategoryCta'
 import { queryPostBySlug, fetchFallbackRecentPosts } from '@/utilities/queries/postQuery'
@@ -71,6 +72,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   return (
     <article>
       <PageClient />
+      <BlogPostingSchema post={post} path={url} />
 
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
