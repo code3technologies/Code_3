@@ -35,7 +35,7 @@ export const Footer: GlobalConfig = {
           appearances: false,
         }),
       ],
-      maxRows: 35,
+      maxRows: 40,
       admin: {
         initCollapsed: true,
         components: {
