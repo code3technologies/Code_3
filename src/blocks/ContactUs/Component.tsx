@@ -9,7 +9,6 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import type { Locale } from '@/utilities/getLocale'
 import { getGoogleReviews } from '@/blocks/Testimonials/getGoogleReviews'
 import { GoogleRatingBadge } from '@/blocks/Testimonials/GoogleRatingBadge'
-import { MapFacade } from '@/Footer/MapFacade'
 import { ContactForm } from './ContactForm'
 
 type Props = ContactUsBlockProps & {
@@ -200,7 +199,13 @@ export const ContactUsBlock: React.FC<Props> = async ({
             <div className="mt-12">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Find Us</h2>
               <div className="mt-4 overflow-hidden rounded-xl border border-border">
-                <MapFacade src={mapEmbedUrl} height={360} theme="light" />
+                <iframe
+                  src={mapEmbedUrl}
+                  className="h-[360px] w-full"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="CODE3 location map"
+                />
               </div>
             </div>
           </Reveal>
