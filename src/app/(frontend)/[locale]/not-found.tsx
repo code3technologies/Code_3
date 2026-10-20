@@ -2,15 +2,19 @@ import Link from 'next/link'
 import React from 'react'
 
 import { Button } from '@/components/ui/button'
-import { Search } from '@/search/Component'
 
-const popularLinks = [
-  { label: 'IT AMC Services', href: '/service/it-amc-dubai-uae' },
-  { label: 'CCTV Surveillance', href: '/cctv-surveillance' },
+const parentServices = [
+  { label: 'Managed IT Service', href: '/service/managed-it-service-dubai-uae' },
+  { label: 'Audio Visual (AV) Solutions', href: '/service/audio-visual-av-solutions-dubai-uae' },
   { label: 'Cyber Security', href: '/service/cyber-security-dubai-uae' },
-  { label: 'Access Control & Biometric Attendance', href: '/service/access-control-and-bio-metric-attendance-system-dubai-uae' },
-  { label: 'Video Conferencing Solutions', href: '/service/video-conferencing-solutions-dubai-uae' },
-  { label: 'Blog', href: '/posts' },
+  { label: 'Security & Surveillance Solutions', href: '/service/security--surveillance-solutions-dubai-uae' },
+  { label: 'Cloud and Microsoft Solutions', href: '/service/cloud-and-microsoft-solutions-dubai-uae' },
+  { label: 'IT Infrastructure Service', href: '/service/it-infrastructure-service-dubai-uae' },
+  { label: 'Network Infrastructure', href: '/service/network-infrastructure-dubai-uae' },
+  { label: 'Backup and Business Continuity', href: '/service/backup-and-business-continuity-dubai-uae' },
+  { label: 'Unified Communication', href: '/service/unified-communication-dubai-uae' },
+  { label: 'Hardware and Software Services', href: '/service/hardware-and-software-services-dubai-uae' },
+  { label: 'Professional Services', href: '/service/professional-services-dubai-uae' },
 ]
 
 export default function NotFound() {
@@ -23,17 +27,13 @@ export default function NotFound() {
           </p>
           <h1 className="text-5xl font-semibold md:text-6xl">This page took a wrong turn</h1>
           <p className="max-w-xl text-base text-background/70 md:text-lg">
-            The page you&rsquo;re looking for doesn&rsquo;t exist or may have moved. Try searching for what
-            you need, or jump straight to one of our most-visited pages below.
+            The page you&rsquo;re looking for doesn&rsquo;t exist or may have moved. Jump straight to one
+            of our services below, or head back home.
           </p>
         </div>
 
-        <div className="w-full max-w-lg text-foreground">
-          <Search />
-        </div>
-
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {popularLinks.map((link) => (
+          {parentServices.map((link) => (
             <Link
               key={link.href}
               href={link.href}
