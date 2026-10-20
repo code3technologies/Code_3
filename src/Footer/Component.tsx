@@ -325,6 +325,10 @@ export async function Footer({ locale }: { locale: Locale }) {
 
           <div className="hidden md:block text-white/70 mt-auto text-sm">
             {bottomBar?.copyrightText}
+            {' | '}
+            <Link href="/privacy-policy" className="hover:text-white hover:underline">
+              Privacy Policy
+            </Link>
           </div>
 
           {socialItems.length > 0 && (
@@ -374,7 +378,13 @@ export async function Footer({ locale }: { locale: Locale }) {
         </Link>
 
         <div className="md:hidden flex justify-between items-center">
-          <div className="text-white/70 text-sm">{bottomBar?.copyrightText}</div>
+          <div className="text-white/70 text-sm">
+            {bottomBar?.copyrightText}
+            {' | '}
+            <Link href="/privacy-policy" className="hover:text-white hover:underline">
+              Privacy Policy
+            </Link>
+          </div>
           <div className="flex items-center gap-3">
             {socialItems.map(({ url, Icon, label }) => (
               <a
