@@ -28,7 +28,7 @@ export default function NotFound() {
           </p>
         </div>
 
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-lg text-foreground">
           <Search />
         </div>
 
