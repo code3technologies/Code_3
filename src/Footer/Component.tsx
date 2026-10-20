@@ -6,7 +6,7 @@ import type { Footer, Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { Media } from '@/components/Media'
-import { ScrollToTopButton, ScrollToTopButtonMobile } from './ScrollToTopButton'
+import { ScrollToTopButton } from './ScrollToTopButton'
 import { MapFacade } from './MapFacade'
 import Link from 'next/link'
 import { unstable_cache } from 'next/cache'
@@ -54,20 +54,6 @@ function MailIcon() {
   )
 }
 
-function TwitterIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-      <path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H1.6l8-9.2L1 2h7l4.8 6.3L18.9 2zm-1.2 18h1.9L7.4 4H5.4l12.3 16z" />
-    </svg>
-  )
-}
-function FacebookIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-      <path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z" />
-    </svg>
-  )
-}
 function LinkedInIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
@@ -84,14 +70,6 @@ function InstagramIcon() {
     </svg>
   )
 }
-function YoutubeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-      <path d="M23 12s0-3.5-.45-5.2a3 3 0 00-2.1-2.1C18.7 4.2 12 4.2 12 4.2s-6.7 0-8.45.5a3 3 0 00-2.1 2.1C1 8.5 1 12 1 12s0 3.5.45 5.2a3 3 0 002.1 2.1c1.75.5 8.45.5 8.45.5s6.7 0 8.45-.5a3 3 0 002.1-2.1C23 15.5 23 12 23 12zM9.75 15.5v-7l6 3.5-6 3.5z" />
-    </svg>
-  )
-}
-
 // Only needs to refetch when a page's slug/category/parentService/status changes -
 // piggyback on the 'pages-sitemap' tag the pages collection already revalidates on
 // every publish/unpublish, instead of refetching on every request.
@@ -153,14 +131,6 @@ export async function Footer({ locale }: { locale: Locale }) {
     if (!subServicesByParent[key]) subServicesByParent[key] = []
     subServicesByParent[key].push(sub)
   }
-
-  const socialItems = [
-    { url: socialLinks?.twitter, Icon: TwitterIcon, label: 'X (Twitter)' },
-    { url: socialLinks?.facebook, Icon: FacebookIcon, label: 'Facebook' },
-    { url: socialLinks?.linkedin, Icon: LinkedInIcon, label: 'LinkedIn' },
-    { url: socialLinks?.instagram, Icon: InstagramIcon, label: 'Instagram' },
-    { url: socialLinks?.youtube, Icon: YoutubeIcon, label: 'YouTube' },
-  ].filter((s) => s.url)
 
   return (
     <footer className="bg-primary_red text-white relative">
@@ -320,35 +290,6 @@ export async function Footer({ locale }: { locale: Locale }) {
 
       {/* Bottom Bar */}
       <div className="grid gap-8 md:gap-4 max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12 border-t border-white/20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
-          <ScrollToTopButton />
-
-          <div className="hidden md:block text-white/70 mt-auto text-sm">
-            {bottomBar?.copyrightText}
-            {' | '}
-            <Link href="/privacy-policy" className="hover:text-white hover:underline">
-              Privacy Policy
-            </Link>
-          </div>
-
-          {socialItems.length > 0 && (
-            <div className="hidden md:flex items-center gap-3 md:col-start-4 md:justify-self-end">
-              {socialItems.map(({ url, Icon, label }) => (
-                <a
-                  key={label}
-                  href={url || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white hover:bg-white hover:text-primary_red transition-colors"
-                >
-                  <Icon />
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-
         <Link href="/services">
           <div className="w-full relative overflow-hidden active:scale-[0.995] transition-all">
             {bottomBar?.exploreServicesImage ? (
@@ -376,32 +317,34 @@ export async function Footer({ locale }: { locale: Locale }) {
             </div>
           </div>
         </Link>
+      </div>
 
-        <div className="md:hidden flex justify-between items-center">
-          <div className="text-white/70 text-sm">
+      {/* Copyright strip */}
+      <div className="bg-foreground">
+        <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4 text-sm text-white/70">
+          <div>
             {bottomBar?.copyrightText}
             {' | '}
             <Link href="/privacy-policy" className="hover:text-white hover:underline">
               Privacy Policy
             </Link>
           </div>
-          <div className="flex items-center gap-3">
-            {socialItems.map(({ url, Icon, label }) => (
-              <a
-                key={label}
-                href={url || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 text-white"
-              >
-                <Icon />
-              </a>
-            ))}
-            <ScrollToTopButtonMobile />
+
+          <div className="flex items-center gap-5">
+            <Link href="/about-us" className="hover:text-white hover:underline">
+              About Us
+            </Link>
+            <Link href="/contact" className="hover:text-white hover:underline">
+              Contact Us
+            </Link>
+            <ScrollToTopButton
+              className="hover:cursor-pointer transition-all duration-300 active:scale-95 rounded-full bg-white/10 hover:bg-white/20 w-max p-2"
+              ariaLabel="Scroll to top"
+            />
           </div>
         </div>
       </div>
+
     </footer>
   )
 }
