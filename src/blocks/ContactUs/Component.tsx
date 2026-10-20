@@ -9,6 +9,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import type { Locale } from '@/utilities/getLocale'
 import { getGoogleReviews } from '@/blocks/Testimonials/getGoogleReviews'
 import { GoogleRatingBadge } from '@/blocks/Testimonials/GoogleRatingBadge'
+import { MapFacade } from '@/Footer/MapFacade'
 import { ContactForm } from './ContactForm'
 
 type Props = ContactUsBlockProps & {
@@ -94,6 +95,7 @@ export const ContactUsBlock: React.FC<Props> = async ({
   const mapsSearchUrl = mapsSearchQuery
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsSearchQuery)}`
     : undefined
+  const mapEmbedUrl = contactInfo?.mapEmbedUrl
 
   type InfoCard = { icon: React.ReactElement; label: string; value: string; href?: string }
   const infoCards: InfoCard[] = [
@@ -192,6 +194,17 @@ export const ContactUsBlock: React.FC<Props> = async ({
             />
           </Reveal>
         </div>
+
+        {mapEmbedUrl && (
+          <Reveal delayMs={150}>
+            <div className="mt-12">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Find Us</h2>
+              <div className="mt-4 overflow-hidden rounded-xl border border-border">
+                <MapFacade src={mapEmbedUrl} height={360} theme="light" />
+              </div>
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   )
