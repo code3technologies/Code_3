@@ -1619,6 +1619,11 @@ export interface ServiceDetailBannerBlock {
   backLinkLabel?: string | null;
   backLinkUrl?: string | null;
   /**
+   * e.g. "Get a Free Quote" — shown as a button under the description. Leave empty to hide it.
+   */
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
    * Optional card shown on the right side of the banner. Leave the heading empty to hide it entirely.
    */
   cardBadge?: string | null;
@@ -6457,6 +6462,8 @@ export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
   floatingIconSet?: T;
   backLinkLabel?: T;
   backLinkUrl?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   cardBadge?: T;
   cardHeading?: T;
   cardDescription?: T;
