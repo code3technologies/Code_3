@@ -160,6 +160,11 @@ const redirects = async () => {
     { source: '/service/backup-and-business-continuity', destination: '/service/backup-and-business-continuity-dubai-uae', permanent: true },
     { source: '/service/security--surveillance-solutions', destination: '/service/security--surveillance-solutions-dubai-uae', permanent: true },
     { source: '/service/audio-visual-av-solutions', destination: '/service/audio-visual-av-solutions-dubai-uae', permanent: true },
+    // Two separate pages ended up covering the same service after the
+    // -dubai-uae slug migration above. data-recovery-services-dubai-uae
+    // outperforms in Search Console (position ~12 vs ~20, better CTR), so
+    // it stays canonical and the weaker duplicate consolidates into it.
+    { source: '/service/data-recovery-dubai-uae', destination: '/service/data-recovery-services-dubai-uae', permanent: true },
   ]
 
   // Legacy orphaned page (outside the service-category hierarchy, 9 blocks)
