@@ -159,7 +159,7 @@ export async function Footer({ locale }: { locale: Locale }) {
             <div className="text-sm">
               <div className="font-semibold">Call Us</div>
               <a
-                href={`tel:${contactInfo?.phone}`}
+                href={`tel:${contactInfo?.phone?.replace(/\s/g, '')}`}
                 className="text-white/75 hover:text-white transition-colors whitespace-nowrap"
               >
                 {contactInfo?.phone}
