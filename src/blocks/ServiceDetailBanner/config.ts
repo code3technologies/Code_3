@@ -84,6 +84,20 @@ export const ServiceDetailBanner: Block = {
       label: 'Back Link URL',
     },
     {
+      name: 'ctaLabel',
+      type: 'text',
+      label: 'CTA Button Label (optional)',
+      localized: true,
+      admin: {
+        description: 'e.g. "Get a Free Quote" — shown as a button under the description. Leave empty to hide it.',
+      },
+    },
+    {
+      name: 'ctaUrl',
+      type: 'text',
+      label: 'CTA Button URL (optional)',
+    },
+    {
       name: 'cardBadge',
       type: 'text',
       label: 'Side Card Badge (optional)',

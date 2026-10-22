@@ -96,6 +96,8 @@ interface ServiceDetailBannerBlockProps {
   cardDescription?: string
   cardLinkText?: string
   cardLinkHref?: string
+  ctaLabel?: string
+  ctaUrl?: string
 }
 
 type Props = ServiceDetailBannerBlockProps
@@ -163,6 +165,8 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
   cardDescription,
   cardLinkText,
   cardLinkHref,
+  ctaLabel,
+  ctaUrl,
 }) => {
   const showCard = Boolean(cardHeading)
 
@@ -200,6 +204,32 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
           <p className={cn('mt-4 leading-relaxed', animatedBackground ? 'text-white/80' : 'text-gray-600')}>
             {description}
           </p>
+        )}
+        {ctaLabel && ctaUrl && (
+          <Link
+            href={ctaUrl}
+            className={cn(
+              'mt-6 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-colors',
+              animatedBackground
+                ? 'bg-white text-primary_red hover:bg-white/90'
+                : 'bg-primary_red text-white hover:bg-primary_red/90',
+            )}
+          >
+            {ctaLabel}
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 17 17 7" />
+              <path d="M7 7h10v10" />
+            </svg>
+          </Link>
         )}
       </Reveal>
 
