@@ -1,0 +1,30 @@
+# CODE3 Technologies
+
+> CODE3 Technologies is a Dubai-based IT infrastructure, cybersecurity, cloud, networking, and audio-visual solutions provider serving businesses across the UAE. 30+ engineers, 1,500+ projects delivered, 50+ technology partners.
+
+CODE3 designs technology around each client's actual business requirements rather than offering one-size-fits-all packages, and takes a proactive approach to identifying and resolving issues before they disrupt operations. Headquartered in Dubai, serving mainland and free zone businesses across Dubai, Abu Dhabi, Sharjah, and the rest of the UAE.
+
+## Services
+
+- [Managed IT Services](https://www.code3.ae/service/managed-it-service-dubai-uae): Ongoing IT support, proactive maintenance, and managed infrastructure.
+- [Cybersecurity](https://www.code3.ae/service/cyber-security-dubai-uae): Security assessments, threat protection, and compliance-focused cybersecurity services.
+- [Cloud & Microsoft Solutions](https://www.code3.ae/service/cloud-and-microsoft-solutions-dubai-uae): Cloud migration, Microsoft 365, and Azure solutions.
+- [IT Infrastructure](https://www.code3.ae/service/it-infrastructure-service-dubai-uae): Server, data center, and core infrastructure design and support.
+- [Network Infrastructure](https://www.code3.ae/service/network-infrastructure-dubai-uae): LAN/WAN, structured cabling, Wi-Fi, and network design.
+- [Backup & Business Continuity](https://www.code3.ae/service/backup-and-business-continuity-dubai-uae): Backup, disaster recovery, and business continuity planning.
+- [Audio Visual (AV) Solutions](https://www.code3.ae/service/audio-visual-av-solutions-dubai-uae): Meeting rooms, boardrooms, video conferencing, and digital signage.
+- [Security & Surveillance](https://www.code3.ae/service/security--surveillance-solutions-dubai-uae): CCTV, access control, visitor management, and queue management systems.
+- [Unified Communication](https://www.code3.ae/service/unified-communication-dubai-uae): VoIP, call center, and communication systems.
+- [Hardware & Software](https://www.code3.ae/service/hardware-and-software-services-dubai-uae): Servers, computers, networking equipment, and licensing.
+- [Professional Services](https://www.code3.ae/service/professional-services-dubai-uae): IT consulting, digital transformation, and advisory services.
+
+## Company
+
+- [About Us](https://www.code3.ae/about-us): Company background, team, and approach.
+- [Contact](https://www.code3.ae/contact): Get in touch for a free consultation or quote.
+- [Case Studies](https://www.code3.ae/case-studies): Real client project outcomes.
+- [Careers](https://www.code3.ae/careers): Open roles at CODE3.
+
+## Blog
+
+- [Blog](https://www.code3.ae/blogs): Articles on IT, cybersecurity, cloud, and AV trends in the UAE.
