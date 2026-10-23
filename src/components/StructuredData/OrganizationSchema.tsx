@@ -36,7 +36,7 @@ export const OrganizationSchema = async () => {
     name: address?.companyName || 'CODE3 Technologies',
     url: siteUrl,
     ...(logo?.url ? { logo: getMediaUrl(logo.url), image: getMediaUrl(logo.url) } : {}),
-    ...(contactInfo?.phone ? { telephone: contactInfo.phone } : {}),
+    ...(contactInfo?.phone ? { telephone: contactInfo.phone.replace(/\s/g, '') } : {}),
     ...(contactInfo?.email ? { email: contactInfo.email } : {}),
     address: {
       '@type': 'PostalAddress',
