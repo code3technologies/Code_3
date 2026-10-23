@@ -133,5 +133,9 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 export function generateMetadata(): Metadata {
   return {
     title: `Search | CODE3`,
+    // Every distinct ?q= value is otherwise a separate, thin, near-duplicate
+    // URL Google has no reason to index - follow:true still lets link equity
+    // flow through to the real pages these results link to.
+    robots: { index: false, follow: true },
   }
 }
