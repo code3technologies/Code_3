@@ -180,6 +180,7 @@ export function MiniContactForm({
             <select
               defaultValue=""
               {...register('companySize', { required: true })}
+              aria-label="Company size"
               className={cn(fieldClassName, 'text-gray-900', onDark && 'lg:text-white [&>option]:text-gray-900')}
             >
               <option value="" disabled>

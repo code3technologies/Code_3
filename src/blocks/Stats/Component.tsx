@@ -82,7 +82,7 @@ function Counter({ target, suffix }: { target: number; suffix?: string | null })
   return (
     <div ref={ref} className="flex items-baseline gap-0.5 text-[clamp(28px,4vw,44px)] font-semibold text-white">
       <span>{value}</span>
-      <span className="text-[0.6em] text-white/80">{suffix}</span>
+      <span className="text-[0.6em] text-white/90">{suffix}</span>
     </div>
   )
 }
@@ -118,7 +118,7 @@ export const StatsBlock: React.FC<Props> = ({ className, stats = [] }) => {
                   )}
                 </span>
                 <Counter target={stat.value} suffix={stat.suffix} />
-                <div className="text-sm text-white/80">{stat.label}</div>
+                <div className="text-sm text-white/90">{stat.label}</div>
               </div>
             ))}
           </div>

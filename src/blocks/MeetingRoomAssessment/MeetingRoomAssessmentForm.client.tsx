@@ -198,6 +198,7 @@ export function MeetingRoomAssessmentForm({
           <select
             defaultValue=""
             {...register('preferredPlatform', { required: true })}
+            aria-label="Preferred platform"
             className={cn(fieldClassName, 'text-gray-900 lg:text-white lg:[&>option]:text-gray-900')}
           >
             <option value="" disabled>

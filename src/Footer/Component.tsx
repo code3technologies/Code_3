@@ -140,16 +140,16 @@ export async function Footer({ locale }: { locale: Locale }) {
             <PinIcon />
             <div className="text-sm">
               <div className="font-semibold">Address</div>
-              <div className="text-white/75">{contactInfo?.address?.companyName}</div>
-              <div className="text-white/75">{contactInfo?.address?.building}</div>
-              <div className="text-white/75">{contactInfo?.address?.poBox}</div>
+              <div className="text-white/90">{contactInfo?.address?.companyName}</div>
+              <div className="text-white/90">{contactInfo?.address?.building}</div>
+              <div className="text-white/90">{contactInfo?.address?.poBox}</div>
             </div>
           </div>
           <div className="flex items-start gap-3 lg:px-6">
             <ClockIcon />
             <div className="text-sm">
               <div className="font-semibold">Working Hours</div>
-              <div className="text-white/75 whitespace-nowrap">
+              <div className="text-white/90 whitespace-nowrap">
                 {contactInfo?.workingHours?.days}: {contactInfo?.workingHours?.time}
               </div>
             </div>
@@ -160,7 +160,7 @@ export async function Footer({ locale }: { locale: Locale }) {
               <div className="font-semibold">Call Us</div>
               <a
                 href={`tel:${contactInfo?.phone?.replace(/\s/g, '')}`}
-                className="text-white/75 hover:text-white transition-colors whitespace-nowrap"
+                className="text-white/90 hover:text-white transition-colors whitespace-nowrap"
               >
                 {contactInfo?.phone}
               </a>
@@ -170,7 +170,7 @@ export async function Footer({ locale }: { locale: Locale }) {
             <MailIcon />
             <div className="text-sm">
               <div className="font-semibold">Mail Us</div>
-              <a href={`mailto:${contactInfo?.email}`} className="text-white/75 hover:text-white transition-colors">
+              <a href={`mailto:${contactInfo?.email}`} className="text-white/90 hover:text-white transition-colors">
                 {contactInfo?.email}
               </a>
             </div>
@@ -215,7 +215,7 @@ export async function Footer({ locale }: { locale: Locale }) {
             <div className="mb-6">
               <Logo href="/" logo={logo} width={180} height={58} alt="Company Logo" variant="white" />
             </div>
-            <p className="text-white/75 text-sm leading-relaxed max-w-sm">{description}</p>
+            <p className="text-white/90 text-sm leading-relaxed max-w-sm">{description}</p>
             <NewsletterSignup source="footer" variant="footer" locale={locale} className="mt-8 max-w-sm" />
           </div>
 
@@ -229,14 +229,14 @@ export async function Footer({ locale }: { locale: Locale }) {
                 {navItems.map(({ link }, i) => (
                   <CMSLink
                     key={i}
-                    className="text-white/80 hover:text-white hover:underline transition-colors text-sm"
+                    className="text-white/90 hover:text-white hover:underline transition-colors text-sm"
                     {...link}
                   />
                 ))}
                 {showCaseStudies && (
                   <Link
                     href="/case-studies"
-                    className="text-white/80 hover:text-white hover:underline transition-colors text-sm"
+                    className="text-white/90 hover:text-white hover:underline transition-colors text-sm"
                   >
                     Case Studies
                   </Link>
@@ -280,7 +280,7 @@ export async function Footer({ locale }: { locale: Locale }) {
                     <li key={sub.id}>
                       <Link
                         href={`/service/${sub.slug}`}
-                        className="text-xs text-white/70 hover:text-white hover:underline transition-colors"
+                        className="text-xs text-white/90 hover:text-white hover:underline transition-colors"
                       >
                         {sub.title}
                       </Link>
@@ -326,7 +326,7 @@ export async function Footer({ locale }: { locale: Locale }) {
 
       {/* Copyright strip */}
       <div className="bg-foreground">
-        <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4 text-sm text-white/70">
+        <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4 text-sm text-white/90">
           <div>
             {bottomBar?.copyrightText}
             {' | '}

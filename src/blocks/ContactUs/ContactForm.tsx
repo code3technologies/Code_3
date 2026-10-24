@@ -201,6 +201,7 @@ export const ContactForm: React.FC<Props> = ({
                 <div className="flex gap-2">
                   <select
                     {...register('country')}
+                    aria-label="Country code"
                     className="rounded-lg border border-border bg-white px-3 py-3 text-gray-700 outline-none focus:border-primary_red"
                   >
                     {countryOptions?.map((option) => (
