@@ -303,7 +303,11 @@ export function QuoteForm() {
           </div>
 
           <div>
-            <select {...register('branches', { required: true })} className={fieldClassName}>
+            <select
+              {...register('branches', { required: true })}
+              aria-label="Number of branches"
+              className={fieldClassName}
+            >
               {BRANCH_OPTIONS.map((b) => (
                 <option key={b} value={b}>
                   {b} {b === '1' ? 'Branch' : 'Branches'}
@@ -344,6 +348,7 @@ export function QuoteForm() {
             <div className="border-l border-border/60 px-3 py-2.5 text-center">
               <select
                 {...register(p.key)}
+                aria-label={`Quantity for ${p.label}`}
                 className="w-full rounded-md border border-border bg-white px-2 py-1.5 text-center text-sm font-medium text-gray-900 outline-none transition-colors focus:border-primary_red"
               >
                 {QUANTITY_OPTIONS.map((qty) => (

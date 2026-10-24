@@ -90,7 +90,7 @@ export function NewsletterSignup({ source, variant = 'card', locale: localeProp,
       )}
     >
       <h3 className={cn('font-semibold', onFooter ? 'text-base' : 'text-xl text-foreground')}>{t.heading}</h3>
-      <p className={cn('mt-1.5 text-sm leading-relaxed', onFooter ? 'text-white/75' : 'text-gray-600')}>{t.text}</p>
+      <p className={cn('mt-1.5 text-sm leading-relaxed', onFooter ? 'text-white/90' : 'text-gray-600')}>{t.text}</p>
 
       {status === 'success' ? (
         <p role="status" className={cn('mt-4 text-sm font-semibold', onFooter ? 'text-white' : 'text-primary_red')}>
@@ -149,7 +149,7 @@ export function NewsletterSignup({ source, variant = 'card', locale: localeProp,
           >
             {status === 'error' ? message : '.'}
           </p>
-          <p className={cn('text-xs leading-relaxed', onFooter ? 'text-white/60' : 'text-gray-500')}>{t.note}</p>
+          <p className={cn('text-xs leading-relaxed', onFooter ? 'text-white/90' : 'text-gray-500')}>{t.note}</p>
         </form>
       )}
     </div>

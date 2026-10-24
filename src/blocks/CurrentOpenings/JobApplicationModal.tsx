@@ -191,6 +191,7 @@ export function JobApplicationModal({ jobTitle, onClose }: { jobTitle: string; o
                 <select
                   {...register('employmentStatus', { required: true })}
                   defaultValue=""
+                  aria-label="Current employment status"
                   className={fieldClassName}
                 >
                   <option value="" disabled>

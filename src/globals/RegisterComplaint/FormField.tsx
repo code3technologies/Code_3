@@ -387,10 +387,11 @@ const FormField: React.FC = () => {
             
             {isPhoneField ? (
               <div className="flex gap-2">
-                <select 
+                <select
                   className="w-32 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={countryCodes[field.name] || '+971'}
                   onChange={(e) => handleCountryCodeChange(field.name, e.target.value)}
+                  aria-label="Country code"
                 >
                   {COUNTRY_CODES.map((country) => (
                     <option key={country.code} value={country.code}>
