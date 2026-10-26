@@ -30,7 +30,10 @@ export async function getGoogleReviews(): Promise<GoogleReviewsData | null> {
 
     // Without a timeout, a slow/hanging Google Places API response blocks the
     // entire page's server render - cap it so a bad external call can't do that.
-    const res = await fetch(url, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(4000) })
+    const res = await fetch(url, {
+      next: { revalidate: 3600, tags: ['google-reviews'] },
+      signal: AbortSignal.timeout(4000),
+    })
     if (!res.ok) return null
 
     const data = await res.json()
