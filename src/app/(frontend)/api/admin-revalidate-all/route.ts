@@ -47,6 +47,15 @@ export const GET = async (req: Request) => {
     return NextResponse.json({ ok: true, type: 'global', global, at: Date.now() })
   }
 
+  // The Google Places fetch (reviews, aggregate rating, Testimonials fallback)
+  // is cached independently of any page's own revalidation - this is the only
+  // way to force a fresh pull without waiting out its 1-hour window, e.g.
+  // right after fixing a billing/API-key issue or after new reviews come in.
+  if (url.searchParams.get('googleReviews')) {
+    revalidateTag('google-reviews')
+    return NextResponse.json({ ok: true, type: 'google-reviews', at: Date.now() })
+  }
+
   const slug = url.searchParams.get('slug')
   if (slug) {
     const payload = await getPayload({ config })
