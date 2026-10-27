@@ -66,6 +66,17 @@ export const GET = async (req: Request) => {
     return NextResponse.json({ ok: true, type: 'posts-sitemap', at: Date.now() })
   }
 
+  // Same gap as postsSitemap above, but for pages: Header, Footer,
+  // SubServicesNav and the service-listing blocks all read the 'pages-sitemap'
+  // tag for their nav/listing data, not any single page's own tag. A page
+  // created via disableRevalidate never fires it, so nav/listings don't pick
+  // up the new page until this is called - without needing the full sweep's
+  // per-page revalidatePath cost (and its Testimonials Google API hits).
+  if (url.searchParams.get('pagesSitemap')) {
+    revalidateTag('pages-sitemap')
+    return NextResponse.json({ ok: true, type: 'pages-sitemap', at: Date.now() })
+  }
+
   const slug = url.searchParams.get('slug')
   if (slug) {
     const payload = await getPayload({ config })
