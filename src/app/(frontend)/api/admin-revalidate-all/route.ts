@@ -56,6 +56,16 @@ export const GET = async (req: Request) => {
     return NextResponse.json({ ok: true, type: 'google-reviews', at: Date.now() })
   }
 
+  // A post's own ?slug= revalidation (below) only refreshes that post's own
+  // page - it doesn't touch the /posts listing, which reads the separate
+  // 'posts-sitemap' tag. Posts created via a script (disableRevalidate:
+  // true, same reasoning as pages-sitemap above) never fire that tag, so the
+  // listing page keeps serving its last cached state until this is called.
+  if (url.searchParams.get('postsSitemap')) {
+    revalidateTag('posts-sitemap')
+    return NextResponse.json({ ok: true, type: 'posts-sitemap', at: Date.now() })
+  }
+
   const slug = url.searchParams.get('slug')
   if (slug) {
     const payload = await getPayload({ config })
