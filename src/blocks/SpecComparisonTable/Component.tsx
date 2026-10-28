@@ -80,13 +80,24 @@ export const SpecComparisonTableBlock: React.FC<Props> = ({
         </Reveal>
 
         <Reveal delayMs={100}>
-          {/* Desktop table */}
-          <div className="hidden overflow-hidden rounded-2xl border border-border bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_20px_45px_-20px_rgba(0,0,0,0.18)] md:block">
+          {/* Desktop table - visually a CSS grid, but given explicit ARIA
+              table/row/cell roles so screen readers and AI content
+              extraction see the same row/column structure a real <table>
+              would convey instead of unrelated divs. */}
+          <div
+            className="hidden overflow-hidden rounded-2xl border border-border bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_20px_45px_-20px_rgba(0,0,0,0.18)] md:block"
+            role="table"
+            aria-label={typeof title === 'string' ? title : undefined}
+          >
             <div className="overflow-x-auto">
-              <div className="grid min-w-[640px]" style={gridStyle}>
-                <div className="bg-gradient-to-br from-primary_red to-red-700 px-5 py-4" />
+              <div className="grid min-w-[640px]" style={gridStyle} role="row">
+                <div className="bg-gradient-to-br from-primary_red to-red-700 px-5 py-4" role="columnheader" />
                 {columns.map((col, index) => (
-                  <div key={col.id || index} className="relative bg-gradient-to-br from-primary_red to-red-700 px-5 pt-5 pb-4 text-white">
+                  <div
+                    key={col.id || index}
+                    className="relative bg-gradient-to-br from-primary_red to-red-700 px-5 pt-5 pb-4 text-white"
+                    role="columnheader"
+                  >
                     <div className="mb-2 text-sm font-bold uppercase tracking-wide text-white">{col.label}</div>
                     {col.highlight && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-primary_red shadow-sm">
@@ -105,17 +116,23 @@ export const SpecComparisonTableBlock: React.FC<Props> = ({
                     key={row.id || rIndex}
                     className={cn('grid min-w-[640px] items-stretch', rIndex % 2 === 1 && 'bg-gray-50/50')}
                     style={gridStyle}
+                    role="row"
                   >
                     <div
                       className={cn(
                         'flex items-center border-t border-primary_red/15 bg-primary_red/[0.05] px-5 py-4 text-sm font-semibold text-foreground ring-1 ring-inset ring-primary_red/20',
                         isLastRow && 'rounded-bl-2xl pb-5',
                       )}
+                      role="rowheader"
                     >
                       {row.rowLabel}
                     </div>
                     {columns.map((col, cIndex) => (
-                      <div key={row.values?.[cIndex]?.id || cIndex} className={valueCellClass(cIndex, isLastRow)}>
+                      <div
+                        key={row.values?.[cIndex]?.id || cIndex}
+                        className={valueCellClass(cIndex, isLastRow)}
+                        role="cell"
+                      >
                         <ValueDisplay text={row.values?.[cIndex]?.text} />
                       </div>
                     ))}
