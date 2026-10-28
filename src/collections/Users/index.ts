@@ -82,6 +82,24 @@ export const Users: CollectionConfig = {
       required: true,
     },
     {
+      // Surfaced as Person/jobTitle in BlogPostingSchema when a blog post
+      // credits this user as an author - an E-E-A-T signal AI answer
+      // engines weight (who wrote this, and are they credible on the
+      // topic), currently missing since authors only expose a bare name.
+      name: 'jobTitle',
+      type: 'text',
+      admin: {
+        description: 'Shown as author credentials on blog posts (e.g. "IT Director"). Optional.',
+      },
+    },
+    {
+      name: 'linkedinUrl',
+      type: 'text',
+      admin: {
+        description: 'Author\'s LinkedIn profile - linked from blog post author schema. Optional.',
+      },
+    },
+    {
       name: 'role',
       type: 'select',
       required: true,

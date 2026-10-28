@@ -232,6 +232,14 @@ export const Posts: CollectionConfig<'posts'> = {
           name: 'name',
           type: 'text',
         },
+        {
+          name: 'jobTitle',
+          type: 'text',
+        },
+        {
+          name: 'linkedinUrl',
+          type: 'text',
+        },
       ],
     },
     ...slugField(),

@@ -45,6 +45,19 @@ export const OrganizationSchema = async () => {
       addressCountry: 'AE',
     },
     areaServed: UAE_AREA_SERVED,
+    ...(reviewsData?.geo
+      ? { geo: { '@type': 'GeoCoordinates', latitude: reviewsData.geo.lat, longitude: reviewsData.geo.lng } }
+      : {}),
+    ...(reviewsData?.openingHours
+      ? {
+          openingHoursSpecification: reviewsData.openingHours.map((h) => ({
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: h.dayOfWeek,
+            opens: h.opens,
+            closes: h.closes,
+          })),
+        }
+      : {}),
     // Explicit topic list so AI answer engines can map CODE3 to these
     // service entities directly instead of inferring them from footer/nav
     // text - mirrors llms.txt's service list for consistency across both.

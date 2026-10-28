@@ -7,6 +7,7 @@ import { getGoogleReviews } from './getGoogleReviews'
 import { TestimonialCard } from './TestimonialCard'
 import { GoogleRatingBadge } from './GoogleRatingBadge'
 import { CtaButton } from '@/components/site/CtaButton'
+import { getServerSideURL } from '@/utilities/getURL'
 
 type Props = {
   className?: string
@@ -61,8 +62,34 @@ export const TestimonialsBlock: React.FC<Props> = async ({
   // Duplicate the list so the marquee loop is seamless (matches the TrustedBrands pattern).
   const duplicatedCards = cards.length > 0 ? [...cards, ...cards, ...cards] : cards
 
+  // Review schema only for real Google reviews, never the synthetic
+  // FALLBACK_QUOTES/fallbackQuotes - those have no real attributable
+  // reviewer, so marking them up as Review would be a fake-review signal.
+  const reviewSchema =
+    googleReviews && googleReviews.reviews.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'ProfessionalService',
+          name: 'CODE3 Technologies',
+          url: getServerSideURL(),
+          review: googleReviews.reviews.map((r) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: r.author_name },
+            reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5 },
+            reviewBody: r.text,
+          })),
+        }
+      : null
+
   return (
     <section className={cn('bg-white py-8 md:py-10 overflow-hidden', className)}>
+      {reviewSchema && (
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        />
+      )}
       <div className="container mx-auto px-4 sm:px-6">
         <Reveal className="max-w-2xl mb-10">
           {badge && <Eyebrow>{badge}</Eyebrow>}
