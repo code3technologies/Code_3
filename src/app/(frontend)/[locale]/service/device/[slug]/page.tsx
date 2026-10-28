@@ -13,6 +13,7 @@ import {
   getCachedAllOtherDevices,
   getCachedReusedBlocks,
 } from '@/components/DeviceCatalog/getDeviceDetailData'
+import { ProductSchema } from '@/components/StructuredData/ProductSchema'
 
 // Returning [] (rather than omitting generateStaticParams entirely) is
 // deliberate - see the comment on ../[slug]/page.tsx. Enumerating every
@@ -40,6 +41,7 @@ export default async function DeviceDetailPage({ params: paramsPromise }: Args) 
   return (
     <article className="relative">
       <SetLightHeader />
+      <ProductSchema device={device} path={`/service/device/${slug}`} />
       <DeviceHero device={device} />
       <DeviceDetails device={device} />
       <RelatedDeviceProducts devices={otherBrandDevices} moreDevices={allOtherDevices} />
