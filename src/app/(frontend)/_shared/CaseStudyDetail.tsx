@@ -13,6 +13,7 @@ import { Reveal } from '@/components/site/Reveal'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import type { Locale } from '@/utilities/getLocale'
 import { CountUp } from '../[locale]/case-studies/[slug]/CountUp'
+import { CaseStudySchema } from '@/components/StructuredData/CaseStudySchema'
 
 const isNumeric = (value: string) => /^\d/.test(value.trim())
 
@@ -63,6 +64,7 @@ export function CaseStudyDetail({
   return (
     <article className="bg-white">
       {draft && <LivePreviewListener />}
+      <CaseStudySchema study={study} path={`${prefix}/case-studies/${study.slug}`} />
       <Breadcrumbs
         items={[
           { name: locale === 'ar' ? 'الرئيسية' : 'Home', href: prefix || '/' },
