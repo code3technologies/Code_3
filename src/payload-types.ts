@@ -485,6 +485,8 @@ export interface Post {
     | {
         id?: string | null;
         name?: string | null;
+        jobTitle?: string | null;
+        linkedinUrl?: string | null;
       }[]
     | null;
   slug?: string | null;
@@ -617,6 +619,14 @@ export interface Category {
 export interface User {
   id: string;
   name: string;
+  /**
+   * Shown as author credentials on blog posts (e.g. "IT Director"). Optional.
+   */
+  jobTitle?: string | null;
+  /**
+   * Author's LinkedIn profile - linked from blog post author schema. Optional.
+   */
+  linkedinUrl?: string | null;
   role: 'admin' | 'client';
   updatedAt: string;
   createdAt: string;
@@ -8927,6 +8937,8 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         id?: T;
         name?: T;
+        jobTitle?: T;
+        linkedinUrl?: T;
       };
   slug?: T;
   slugLock?: T;
@@ -9204,6 +9216,8 @@ export interface DevicesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  jobTitle?: T;
+  linkedinUrl?: T;
   role?: T;
   updatedAt?: T;
   createdAt?: T;

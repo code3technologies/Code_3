@@ -11,7 +11,8 @@ export const BlogPostingSchema = ({ post, path }: { post: Post; path: string }) 
   const absoluteUrl = (url: string) => (url.startsWith('http') ? url : `${siteUrl}${url}`)
 
   const authors = (post.populatedAuthors || []).filter(
-    (a): a is { id?: string | null; name?: string | null } => !!a?.name,
+    (a): a is { id?: string | null; name?: string | null; jobTitle?: string | null; linkedinUrl?: string | null } =>
+      !!a?.name,
   )
   const imageUrl =
     post.heroImage && typeof post.heroImage === 'object' && post.heroImage.url
@@ -28,7 +29,12 @@ export const BlogPostingSchema = ({ post, path }: { post: Post; path: string }) 
     ...(post.updatedAt ? { dateModified: post.updatedAt } : {}),
     author:
       authors.length > 0
-        ? authors.map((a) => ({ '@type': 'Person', name: a.name }))
+        ? authors.map((a) => ({
+            '@type': 'Person',
+            name: a.name,
+            ...(a.jobTitle ? { jobTitle: a.jobTitle } : {}),
+            ...(a.linkedinUrl ? { sameAs: [a.linkedinUrl] } : {}),
+          }))
         : { '@type': 'Organization', name: 'CODE3 Technologies' },
     publisher: {
       '@type': 'Organization',
