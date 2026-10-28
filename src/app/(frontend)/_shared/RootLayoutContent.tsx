@@ -26,6 +26,7 @@ import { LocaleLinkGuard } from '@/components/LocaleLinkGuard'
 import { TrackedContactLinks } from '@/components/TrackedContactLinks'
 import { CartDrawer } from '@/components/DeviceCatalog/CartDrawer'
 import { OrganizationSchema } from '@/components/StructuredData/OrganizationSchema'
+import { WebSiteSchema } from '@/components/StructuredData/WebSiteSchema'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import '../globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -63,6 +64,7 @@ export async function RootLayoutContent({
       <head>
         <InitTheme />
         <OrganizationSchema />
+        <WebSiteSchema />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
         {/* Microsoft Clarity heatmaps + session recordings. lazyOnload (not

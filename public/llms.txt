@@ -2,7 +2,7 @@
 
 > CODE3 Technologies is a Dubai-based IT infrastructure, cybersecurity, cloud, networking, and audio-visual solutions provider serving businesses across the UAE. 30+ engineers, 1,500+ projects delivered, 50+ technology partners.
 
-CODE3 designs technology around each client's actual business requirements rather than offering one-size-fits-all packages, and takes a proactive approach to identifying and resolving issues before they disrupt operations. Headquartered in Dubai, serving mainland and free zone businesses across Dubai, Abu Dhabi, Sharjah, and the rest of the UAE.
+CODE3 designs technology around each client's actual business requirements rather than offering one-size-fits-all packages, and takes a proactive approach to identifying and resolving issues before they disrupt operations. Headquartered in Dubai, serving mainland and free zone businesses across Dubai, Abu Dhabi, Sharjah, and the rest of the UAE. Most services below have dedicated Dubai, Abu Dhabi, and Sharjah pages (e.g. CCTV, ANPR, AI Cameras, Intercom, Gate Barrier Automation, Queue Management) - replace "dubai-uae" with "abu-dhabi-uae" or "sharjah-uae" in a service URL to find the local variant.
 
 ## Services
 
@@ -13,7 +13,7 @@ CODE3 designs technology around each client's actual business requirements rathe
 - [Network Infrastructure](https://www.code3.ae/service/network-infrastructure-dubai-uae): LAN/WAN, structured cabling, Wi-Fi, and network design.
 - [Backup & Business Continuity](https://www.code3.ae/service/backup-and-business-continuity-dubai-uae): Backup, disaster recovery, and business continuity planning.
 - [Audio Visual (AV) Solutions](https://www.code3.ae/service/audio-visual-av-solutions-dubai-uae): Meeting rooms, boardrooms, video conferencing, and digital signage.
-- [Security & Surveillance](https://www.code3.ae/service/security--surveillance-solutions-dubai-uae): CCTV, access control, visitor management, and queue management systems.
+- [Security & Surveillance](https://www.code3.ae/service/security--surveillance-solutions-dubai-uae): CCTV, access control, visitor management, ANPR, AI cameras, intercom, gate barrier automation, and queue management systems.
 - [Unified Communication](https://www.code3.ae/service/unified-communication-dubai-uae): VoIP, call center, and communication systems.
 - [Hardware & Software](https://www.code3.ae/service/hardware-and-software-services-dubai-uae): Servers, computers, networking equipment, and licensing.
 - [Professional Services](https://www.code3.ae/service/professional-services-dubai-uae): IT consulting, digital transformation, and advisory services.
@@ -27,4 +27,15 @@ CODE3 designs technology around each client's actual business requirements rathe
 
 ## Blog
 
-- [Blog](https://www.code3.ae/blogs): Articles on IT, cybersecurity, cloud, and AV trends in the UAE.
+- [Blog](https://www.code3.ae/posts): Articles on IT, cybersecurity, cloud, security systems, and AV trends in the UAE.
+
+### Recent posts
+
+- [Your Office Has 50+ Smart Cameras. New UAE Research Shows How Fast They Can Be Hacked.](https://www.code3.ae/posts/uae-iot-camera-cyberattack-detection-research-2026)
+- [UAE's New Cybersecurity Centre of Excellence - and What 20,000+ DDoS Attacks Mean for Your Business](https://www.code3.ae/posts/uae-cybersecurity-centre-of-excellence-ddos-attacks-2026)
+- [Why UAE Businesses Are Investing in Queue Management Systems](https://www.code3.ae/posts/why-uae-businesses-are-investing-in-queue-management-systems)
+- [Auditorium AV Installation: What to Plan For Before You Build One Out](https://www.code3.ae/posts/auditorium-av-installation-what-to-plan-for)
+- [IT AMC Dubai: What It Actually Covers and How to Choose a Contract](https://www.code3.ae/posts/it-amc-dubai-what-it-covers-and-how-to-choose-a-contract)
+- [ANPR vs. Manual Gate Logging: What Changes for UAE Facilities](https://www.code3.ae/posts/anpr-vs-manual-gate-logging-what-changes-for-uae-facilities)
+- [Visitor Management Systems: A Buyer's Guide for UAE Offices](https://www.code3.ae/posts/visitor-management-systems-a-buyers-guide-for-uae-offices)
+- [Access Control & Biometric Attendance: A Buyer's Guide for UAE Offices](https://www.code3.ae/posts/access-control--biometric-attendance-a-buyers-guide-for-uae-offices)

@@ -16,6 +16,18 @@ export const ServiceSchema = ({ page, path }: { page: Page; path: string }) => {
   const parentTitle =
     typeof page.parentService === 'object' && page.parentService ? page.parentService.title : undefined
 
+  // City-variant pages (slug ends "-sharjah-uae" / "-abu-dhabi-uae") are
+  // written and targeted at that one emirate specifically, so stating all
+  // seven emirates as areaServed - accurate for the default/Dubai pages,
+  // which serve broad UAE-wide intent - dilutes exactly the local-relevance
+  // signal these pages exist to send. Narrow to the named city instead.
+  const citySlug = page.slug || ''
+  const areaServed = citySlug.endsWith('-sharjah-uae')
+    ? [{ '@type': 'City', name: 'Sharjah' }]
+    : citySlug.endsWith('-abu-dhabi-uae')
+      ? [{ '@type': 'City', name: 'Abu Dhabi' }]
+      : UAE_AREA_SERVED
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -27,7 +39,7 @@ export const ServiceSchema = ({ page, path }: { page: Page; path: string }) => {
       name: 'CODE3 Technologies',
       url: siteUrl,
     },
-    areaServed: UAE_AREA_SERVED,
+    areaServed,
     ...(parentTitle ? { category: parentTitle } : {}),
   }
 
