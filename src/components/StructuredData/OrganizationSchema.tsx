@@ -45,6 +45,24 @@ export const OrganizationSchema = async () => {
       addressCountry: 'AE',
     },
     areaServed: UAE_AREA_SERVED,
+    // Explicit topic list so AI answer engines can map CODE3 to these
+    // service entities directly instead of inferring them from footer/nav
+    // text - mirrors llms.txt's service list for consistency across both.
+    knowsAbout: [
+      'Managed IT Services',
+      'Cybersecurity',
+      'Cloud & Microsoft Solutions',
+      'IT Infrastructure',
+      'Network Infrastructure',
+      'Backup & Business Continuity',
+      'Audio Visual (AV) Solutions',
+      'CCTV & Security Surveillance',
+      'Access Control & Biometric Attendance',
+      'ANPR Systems',
+      'AI Cameras',
+      'Queue Management Systems',
+      'Unified Communication',
+    ],
     ...(sameAs.length > 0 ? { sameAs } : {}),
     ...(reviewsData?.rating && reviewsData.userRatingsTotal
       ? {
