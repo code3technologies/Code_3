@@ -22,6 +22,7 @@ import PageClient from './page.client'
 import type { Locale } from '@/utilities/getLocale'
 import { queryPageBySlug } from '@/utilities/queries/pageQuery'
 import type { Page } from '@/payload-types'
+import { PageTypeSchema } from '@/components/StructuredData/PageTypeSchema'
 
 // Returning [] (rather than omitting generateStaticParams entirely) is
 // deliberate - see the comment on service/[slug]/page.tsx. Enumerating every
@@ -95,6 +96,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   return (
     <article className="relative">
       <PageClient />
+      <PageTypeSchema page={page} path={url} />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
