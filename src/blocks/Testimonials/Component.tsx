@@ -65,13 +65,26 @@ export const TestimonialsBlock: React.FC<Props> = async ({
   // Review schema only for real Google reviews, never the synthetic
   // FALLBACK_QUOTES/fallbackQuotes - those have no real attributable
   // reviewer, so marking them up as Review would be a fake-review signal.
+  // Google requires aggregateRating whenever multiple `review` entries are
+  // present, or the whole item is invalid for rich results - use the Places
+  // API's overall rating/count (the true totals across all Google reviews,
+  // not just the up-to-5 returned here).
   const reviewSchema =
-    googleReviews && googleReviews.reviews.length > 0
+    googleReviews &&
+    googleReviews.reviews.length > 0 &&
+    typeof googleReviews.rating === 'number' &&
+    typeof googleReviews.userRatingsTotal === 'number'
       ? {
           '@context': 'https://schema.org',
           '@type': 'ProfessionalService',
           name: 'CODE3 Technologies',
           url: getServerSideURL(),
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: googleReviews.rating,
+            reviewCount: googleReviews.userRatingsTotal,
+            bestRating: 5,
+          },
           review: googleReviews.reviews.map((r) => ({
             '@type': 'Review',
             author: { '@type': 'Person', name: r.author_name },
