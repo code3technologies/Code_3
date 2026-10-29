@@ -3,22 +3,29 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getServerSideURL } from '@/utilities/getURL'
 import { getGoogleReviews } from '@/blocks/Testimonials/getGoogleReviews'
 import { UAE_AREA_SERVED } from '@/utilities/uaeAreaServed'
-import type { Footer, Media } from '@/payload-types'
+import type { Footer, Header, Media } from '@/payload-types'
 
 // Sitewide ProfessionalService/LocalBusiness structured data - one script in
 // the root layout covers every page, so search engines and AI answer
 // engines can reliably resolve "who is CODE3" (name, contact info, socials)
 // without needing to infer it from prose on any one page.
 export const OrganizationSchema = async () => {
-  const [footerData, reviewsData] = await Promise.all([
+  const [footerData, headerData, reviewsData] = await Promise.all([
     getCachedGlobal('footer', 1, 'en')() as Promise<Footer>,
+    getCachedGlobal('header', 1, 'en')() as Promise<Header>,
     getGoogleReviews(),
   ])
 
   const contactInfo = footerData?.contactInfo
   const address = contactInfo?.address
   const socialLinks = footerData?.socialLinks
-  const logo = footerData?.logo as Media | undefined
+  // The footer global's own `logo` field is a stale/broken relationship
+  // (points at a deleted media doc) - use the header global's logo instead,
+  // which is the site's actual rendered logo. Google's logo guidance prefers
+  // a square image, so use the pre-generated square crop for `logo` while
+  // `image` keeps the full wordmark.
+  const logo = headerData?.logo as Media | undefined
+  const squareLogoUrl = logo?.sizes?.square?.url ? getMediaUrl(logo.sizes.square.url) : undefined
   const siteUrl = getServerSideURL()
 
   const sameAs = [
@@ -35,7 +42,8 @@ export const OrganizationSchema = async () => {
     '@type': 'ProfessionalService',
     name: address?.companyName || 'CODE3 Technologies',
     url: siteUrl,
-    ...(logo?.url ? { logo: getMediaUrl(logo.url), image: getMediaUrl(logo.url) } : {}),
+    ...(squareLogoUrl ? { logo: squareLogoUrl } : {}),
+    ...(logo?.url ? { image: getMediaUrl(logo.url) } : {}),
     ...(contactInfo?.phone ? { telephone: contactInfo.phone.replace(/\s/g, '') } : {}),
     ...(contactInfo?.email ? { email: contactInfo.email } : {}),
     address: {
