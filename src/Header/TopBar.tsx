@@ -47,6 +47,14 @@ function LinkedInIcon() {
   )
 }
 
+function YouTubeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 flex-none">
+      <path d="M22.54 6.42a2.78 2.78 0 00-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 00-1.95 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.95 1.96C5.12 19.5 12 19.5 12 19.5s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48l5.75 3.27-5.75 3.27z" />
+    </svg>
+  )
+}
+
 export async function TopBar({ locale }: { locale: Locale }) {
   const footerData = (await getCachedGlobal('footer', 1, locale)()) as Footer
   const contactInfo = footerData?.contactInfo
@@ -98,7 +106,7 @@ export async function TopBar({ locale }: { locale: Locale }) {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
           </span>
           We&apos;re Online
-          {(socialLinks?.instagram || socialLinks?.linkedin) && (
+          {(socialLinks?.instagram || socialLinks?.linkedin || socialLinks?.youtube) && (
             <>
               <span className="hidden h-3.5 w-px bg-white/25 sm:inline-block" />
               <span className="hidden sm:inline">Follow Us On</span>
@@ -124,6 +132,17 @@ export async function TopBar({ locale }: { locale: Locale }) {
               className="flex items-center opacity-90 transition-opacity hover:opacity-100"
             >
               <LinkedInIcon />
+            </a>
+          )}
+          {socialLinks?.youtube && (
+            <a
+              href={socialLinks.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="flex items-center opacity-90 transition-opacity hover:opacity-100"
+            >
+              <YouTubeIcon />
             </a>
           )}
         </div>
