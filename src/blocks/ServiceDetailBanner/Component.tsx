@@ -194,7 +194,7 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
           </Link>
         )}
         {logo && typeof logo === 'object' && (
-          <div className="mb-4 inline-flex h-16 w-auto max-w-[180px] items-center justify-center rounded-xl bg-white px-4 py-2 shadow-sm">
+          <div className="mb-4 flex h-16 w-fit max-w-[180px] items-center justify-center rounded-xl bg-white px-4 py-2 shadow-sm">
             <Media resource={logo} imgClassName="h-full w-auto max-h-10 object-contain" />
           </div>
         )}
