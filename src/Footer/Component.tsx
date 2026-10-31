@@ -12,6 +12,7 @@ import { unstable_cache } from 'next/cache'
 import type { Locale } from '@/utilities/getLocale'
 import { hasPublishedCaseStudies } from '@/utilities/getCaseStudies'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
+import { isAreaVariantSlug } from '@/utilities/isAreaVariantPage'
 
 interface ServicePageData {
   id: string
@@ -98,7 +99,7 @@ const getFooterServicePages = (locale: 'en' | 'ar') =>
       })
 
       return (servicePagesRes.docs as Page[])
-        .filter((p) => p.slug && p.serviceCategory && p.serviceCategory !== 'none')
+        .filter((p) => p.slug && p.serviceCategory && p.serviceCategory !== 'none' && !isAreaVariantSlug(p.slug))
         .map((p) => ({
           id: p.id,
           slug: p.slug as string,
