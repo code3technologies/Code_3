@@ -63,8 +63,11 @@ import {
 import { cn } from '@/utilities/ui'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
+import { Media } from '@/components/Media'
+import type { Media as MediaType } from '@/payload-types'
 
 interface ServiceDetailBannerBlockProps {
+  logo?: MediaType | string | null
   serviceName?: string
   title?: string
   description?: string
@@ -152,6 +155,7 @@ function FloatingIcons({ set }: { set?: string | null }) {
 
 export const ServiceDetailBannerBlock: React.FC<Props> = ({
   className,
+  logo,
   serviceBadge,
   serviceName,
   title,
@@ -188,6 +192,11 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
             </svg>
             {backLinkLabel}
           </Link>
+        )}
+        {logo && typeof logo === 'object' && (
+          <div className="mb-4 inline-flex h-16 w-auto max-w-[180px] items-center justify-center rounded-xl bg-white px-4 py-2 shadow-sm">
+            <Media resource={logo} imgClassName="h-full w-auto max-h-10 object-contain" />
+          </div>
         )}
         {(serviceBadge || serviceName) && (
           <Eyebrow className={cn(animatedBackground && 'text-red-300')}>{serviceBadge || serviceName}</Eyebrow>

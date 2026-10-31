@@ -1594,6 +1594,10 @@ export interface ServicesStepsBlock {
  * via the `definition` "ServiceDetailBannerBlock".
  */
 export interface ServiceDetailBannerBlock {
+  /**
+   * Shown as a small badge above the title - e.g. the brand logo on a technology partner page.
+   */
+  logo?: (string | null) | Media;
   serviceBadge?: string | null;
   serviceName: string;
   title?: string | null;
@@ -6463,6 +6467,7 @@ export interface ServicesStepsBlockSelect<T extends boolean = true> {
  * via the `definition` "ServiceDetailBannerBlock_select".
  */
 export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
+  logo?: T;
   serviceBadge?: T;
   serviceName?: T;
   title?: T;
