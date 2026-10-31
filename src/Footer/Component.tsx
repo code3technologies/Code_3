@@ -22,6 +22,12 @@ interface ServicePageData {
   parentService: string | null
 }
 
+interface BrandPartnerPageData {
+  id: string
+  slug: string
+  title: string
+}
+
 function PinIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-6 w-6 flex-none">
@@ -115,10 +121,41 @@ const getFooterServicePages = (locale: 'en' | 'ar') =>
     { tags: ['pages-sitemap'] },
   )
 
+// Brand partner pages (e.g. "cisco-partner-dubai") live outside the service
+// catalog (serviceCategory: 'none'), so they're fetched separately and shown
+// as their own "Technology Partners" column in the footer, right after
+// Professional Services.
+const getFooterBrandPartnerPages = (locale: 'en' | 'ar') =>
+  unstable_cache(
+    async (): Promise<BrandPartnerPageData[]> => {
+      const payload = await getPayload({ config: configPromise })
+      const res = await payload.find({
+        collection: 'pages',
+        depth: 0,
+        limit: 100,
+        locale,
+        sort: 'title',
+        where: {
+          and: [
+            { slug: { contains: '-partner-dubai' } },
+            { _status: { equals: 'published' } },
+          ],
+        },
+      })
+
+      return (res.docs as Page[])
+        .filter((p) => p.slug?.endsWith('-partner-dubai'))
+        .map((p) => ({ id: p.id, slug: p.slug as string, title: p.title }))
+    },
+    ['footer-brand-partner-pages', locale],
+    { tags: ['pages-sitemap'] },
+  )
+
 export async function Footer({ locale }: { locale: Locale }) {
-  const [footerData, servicePages] = await Promise.all([
+  const [footerData, servicePages, brandPartnerPages] = await Promise.all([
     getCachedGlobal('footer', 1, locale)() as Promise<Footer>,
     getFooterServicePages(locale)(),
+    getFooterBrandPartnerPages(locale)(),
   ])
 
   const navItems = footerData?.navItems || []
@@ -137,6 +174,44 @@ export async function Footer({ locale }: { locale: Locale }) {
     const key = sub.parentService as string
     if (!subServicesByParent[key]) subServicesByParent[key] = []
     subServicesByParent[key].push(sub)
+  }
+
+  // Insert a synthetic "Technology Partners" column right after Professional
+  // Services, linking to the brand partner pages (Cisco, Fortinet, etc.)
+  // fetched above - these aren't real service pages so they can't come
+  // through the parentServices/subServicesByParent machinery above.
+  const servicesColumns: Array<{
+    id: string
+    title: string
+    href: string
+    items: Array<{ id: string; slug: string; title: string; href: string }>
+  }> = parentServices.map((parent) => ({
+    id: parent.id,
+    title: parent.title,
+    href: `/service/${parent.slug}`,
+    items: (subServicesByParent[parent.id] || []).map((sub) => ({
+      id: sub.id,
+      slug: sub.slug,
+      title: sub.title,
+      href: `/service/${sub.slug}`,
+    })),
+  }))
+  if (brandPartnerPages.length > 0) {
+    const professionalServicesIndex = servicesColumns.findIndex(
+      (c) => c.title === 'Professional Services',
+    )
+    const insertAt = professionalServicesIndex === -1 ? servicesColumns.length : professionalServicesIndex + 1
+    servicesColumns.splice(insertAt, 0, {
+      id: 'technology-partners-column',
+      title: 'Technology Partners',
+      href: '/technology-partners',
+      items: brandPartnerPages.map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        title: p.title.replace(/ Partner Dubai$/, ''),
+        href: `/${p.slug}`,
+      })),
+    })
   }
 
   return (
@@ -285,23 +360,23 @@ export async function Footer({ locale }: { locale: Locale }) {
 
         {/* All Services (fully expanded) */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-10">
-          {parentServices.map((parent) => (
-            <div key={parent.id}>
+          {servicesColumns.map((column) => (
+            <div key={column.id}>
               <Link
-                href={`/service/${parent.slug}`}
+                href={column.href}
                 className="block text-sm font-semibold text-white hover:underline mb-3"
               >
-                {parent.title}
+                {column.title}
               </Link>
-              {(subServicesByParent[parent.id] || []).length > 0 && (
+              {column.items.length > 0 && (
                 <ul className="space-y-2">
-                  {(subServicesByParent[parent.id] || []).map((sub) => (
-                    <li key={sub.id}>
+                  {column.items.map((item) => (
+                    <li key={item.id}>
                       <Link
-                        href={`/service/${sub.slug}`}
+                        href={item.href}
                         className="text-xs text-white/90 hover:text-white hover:underline transition-colors"
                       >
-                        {sub.title}
+                        {item.title}
                       </Link>
                     </li>
                   ))}
