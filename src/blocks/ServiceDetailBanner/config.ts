@@ -4,6 +4,15 @@ export const ServiceDetailBanner: Block = {
   slug: 'serviceDetailBanner',
   fields: [
     {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Partner Logo (optional)',
+      admin: {
+        description: 'Shown as a small badge above the title - e.g. the brand logo on a technology partner page.',
+      },
+    },
+    {
       name: 'serviceBadge',
       type: 'text',
       label: 'Service Badge Text For Sub-Services',
