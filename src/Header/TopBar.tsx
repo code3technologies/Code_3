@@ -29,36 +29,9 @@ function ClockIcon() {
   )
 }
 
-function InstagramIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5 flex-none">
-      <rect x="2" y="2" width="20" height="20" rx="5" />
-      <circle cx="12" cy="12" r="4.2" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-function LinkedInIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 flex-none">
-      <path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3v-12zm7 0h3.8v1.64h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v6.31h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.15 1.46-2.15 2.96v5.7h-4v-12z" />
-    </svg>
-  )
-}
-
-function YouTubeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 flex-none">
-      <path d="M22.54 6.42a2.78 2.78 0 00-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 00-1.95 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.95 1.96C5.12 19.5 12 19.5 12 19.5s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48l5.75 3.27-5.75 3.27z" />
-    </svg>
-  )
-}
-
 export async function TopBar({ locale }: { locale: Locale }) {
   const footerData = (await getCachedGlobal('footer', 1, locale)()) as Footer
   const contactInfo = footerData?.contactInfo
-  const socialLinks = footerData?.socialLinks
 
   const phone = contactInfo?.phone
   const email = contactInfo?.email
@@ -106,45 +79,6 @@ export async function TopBar({ locale }: { locale: Locale }) {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
           </span>
           We&apos;re Online
-          {(socialLinks?.instagram || socialLinks?.linkedin || socialLinks?.youtube) && (
-            <>
-              <span className="hidden h-3.5 w-px bg-white/25 sm:inline-block" />
-              <span className="hidden sm:inline">Follow Us On</span>
-            </>
-          )}
-          {socialLinks?.instagram && (
-            <a
-              href={socialLinks.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="flex items-center opacity-90 transition-opacity hover:opacity-100"
-            >
-              <InstagramIcon />
-            </a>
-          )}
-          {socialLinks?.linkedin && (
-            <a
-              href={socialLinks.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="flex items-center opacity-90 transition-opacity hover:opacity-100"
-            >
-              <LinkedInIcon />
-            </a>
-          )}
-          {socialLinks?.youtube && (
-            <a
-              href={socialLinks.youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube"
-              className="flex items-center opacity-90 transition-opacity hover:opacity-100"
-            >
-              <YouTubeIcon />
-            </a>
-          )}
         </div>
       </div>
     </div>
