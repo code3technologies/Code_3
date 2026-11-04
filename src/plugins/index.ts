@@ -221,6 +221,18 @@ export const plugins: Plugin[] = [
                   stack: err instanceof Error ? err.stack : undefined,
                   name: err instanceof Error ? err.name : undefined,
                 })
+
+                const alertDetails = {
+                  'Enquiry ID': String(doc.id),
+                  Error: err instanceof Error ? err.message : 'Unknown error',
+                  Submitter: doc.email || 'unknown',
+                }
+
+                const { sendSlackAlert } = await import('../utilities/sendSlackAlert')
+                await sendSlackAlert('Contact form email failed to send', alertDetails)
+
+                const { sendWhatsAppAlert } = await import('../utilities/sendWhatsAppAlert')
+                await sendWhatsAppAlert('Contact form email failed to send', alertDetails)
               }
             }
             return doc
