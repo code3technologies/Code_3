@@ -228,9 +228,6 @@ export const plugins: Plugin[] = [
                   Submitter: doc.email || 'unknown',
                 }
 
-                const { sendSlackAlert } = await import('../utilities/sendSlackAlert')
-                await sendSlackAlert('Contact form email failed to send', alertDetails)
-
                 const { sendWhatsAppAlert } = await import('../utilities/sendWhatsAppAlert')
                 await sendWhatsAppAlert('Contact form email failed to send', alertDetails)
               }
