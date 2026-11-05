@@ -91,7 +91,23 @@ export const OrganizationSchema = async () => {
             '@type': 'AggregateRating',
             ratingValue: reviewsData.rating,
             reviewCount: reviewsData.userRatingsTotal,
+            bestRating: 5,
           },
+        }
+      : {}),
+    // Individual reviews live here too (not in a second script block) -
+    // Google expects aggregateRating and review to describe the same
+    // entity instance, and a page previously got two separate
+    // ProfessionalService declarations (this one, plus another from the
+    // Testimonials block) when it should only ever have one.
+    ...(reviewsData?.reviews && reviewsData.reviews.length > 0
+      ? {
+          review: reviewsData.reviews.map((r) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: r.author_name },
+            reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5 },
+            reviewBody: r.text,
+          })),
         }
       : {}),
   }
