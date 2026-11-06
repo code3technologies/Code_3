@@ -11,10 +11,16 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 
   let url = serverUrl + '/code3-social-share.webp'
 
-  if (image && typeof image === 'object' && 'url' in image) {
-    const ogUrl = image.sizes?.og?.url
+  if (image && typeof image === 'object') {
+    const externalUrl = 'externalUrl' in image && typeof image.externalUrl === 'string' ? image.externalUrl.trim() : ''
 
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
+    if (externalUrl) {
+      url = externalUrl
+    } else if ('url' in image) {
+      const ogUrl = image.sizes?.og?.url
+
+      url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
+    }
   }
 
   return url
