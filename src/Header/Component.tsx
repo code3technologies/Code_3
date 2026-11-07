@@ -87,7 +87,10 @@ const getNavData = (locale: Locale) =>
     const pagesRes = await payload.find({
       collection: 'pages',
       depth: 2,
-      limit: 200,
+      // Was 200 - the infrastructure+digital service page count has grown past
+      // that, which silently dropped whichever pages sorted past the cutoff
+      // (navOrder, then title) from every menu and the footer site-wide.
+      limit: 500,
       locale,
       sort: ['navOrder', 'title'],
       where: {

@@ -10,8 +10,15 @@ import { getServerSideURL } from '@/utilities/getURL'
 // field exists specifically to keep attribution safe for publication.
 export const CaseStudySchema = async ({ study, path }: { study: CaseStudy; path: string }) => {
   const siteUrl = getServerSideURL().replace(/\/+$/, '')
-  const image =
-    study.heroImage && typeof study.heroImage === 'object' ? getMediaUrl(study.heroImage.url) : undefined
+  const heroImageExternalUrl =
+    study.heroImage && typeof study.heroImage === 'object' && typeof study.heroImage.externalUrl === 'string'
+      ? study.heroImage.externalUrl.trim()
+      : ''
+  const image = heroImageExternalUrl
+    ? heroImageExternalUrl
+    : study.heroImage && typeof study.heroImage === 'object'
+      ? getMediaUrl(study.heroImage.url)
+      : undefined
 
   // Google's Article guidelines recommend publisher.logo, ideally square -
   // use the header global's logo (the site's actual rendered logo; the

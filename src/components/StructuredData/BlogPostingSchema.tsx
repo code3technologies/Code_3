@@ -16,8 +16,13 @@ export const BlogPostingSchema = async ({ post, path }: { post: Post; path: stri
     (a): a is { id?: string | null; name?: string | null; jobTitle?: string | null; linkedinUrl?: string | null } =>
       !!a?.name,
   )
-  const imageUrl =
-    post.heroImage && typeof post.heroImage === 'object' && post.heroImage.url
+  const heroImageExternalUrl =
+    post.heroImage && typeof post.heroImage === 'object' && typeof post.heroImage.externalUrl === 'string'
+      ? post.heroImage.externalUrl.trim()
+      : ''
+  const imageUrl = heroImageExternalUrl
+    ? heroImageExternalUrl
+    : post.heroImage && typeof post.heroImage === 'object' && post.heroImage.url
       ? absoluteUrl(post.heroImage.url)
       : undefined
 

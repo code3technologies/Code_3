@@ -238,11 +238,20 @@ function RotatingAccent({ base }: { base: string }) {
   // CMS-authored one.
   const visible = reduceMotion ? base : words[index]
 
+  // The width-reserving placeholder used to render the longest word as a
+  // real (invisible) text node alongside the visible one - correct for
+  // layout and for `visibility:hidden`-aware readers, but a plain
+  // DOM-text scrape (cheerio, most non-rendering AI crawlers) ignores CSS
+  // visibility entirely and concatenates both into garbage like
+  // "BusinessEfficientMoving". Render the placeholder word as CSS
+  // generated content instead - never a DOM text node at all - so it
+  // still reserves the exact same pixel width but can't be scraped.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const placeholderStyle = { '--hero-placeholder-word': JSON.stringify(longest) } as any
+
   return (
     <span className="relative inline-block">
-      <span aria-hidden className="hero-shimmer-text invisible select-none bg-clip-text text-transparent" style={gradientStyle}>
-        {longest}
-      </span>
+      <span aria-hidden className="hero-placeholder-word invisible select-none" style={placeholderStyle} />
       <span
         key={index}
         className="hero-shimmer-text hero-word-fade absolute inset-0 bg-clip-text text-transparent"
@@ -459,6 +468,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, HeroText, subTex
               <RotatingAccent base={accent} />
             </h1>
             <style>{`
+              .hero-placeholder-word::before { content: var(--hero-placeholder-word, ''); }
               .hero-shimmer-text { animation: hero-shimmer 6s ease-in-out infinite; }
               @keyframes hero-shimmer {
                 0% { background-position: 0% 50%; }
