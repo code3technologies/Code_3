@@ -31,11 +31,11 @@ CODE3 designs technology around each client's actual business requirements rathe
 
 ### Recent posts
 
+- [The Hidden Cost of Bad Cabling: Why UAE Offices Keep Rebuilding Networks They Just Installed](https://www.code3.ae/posts/the-hidden-cost-of-bad-cabling-why-uae-offices-keep-rebuilding-networks)
+- [Sophos Firewalls: A Buyer's Guide for UAE Businesses](https://www.code3.ae/posts/sophos-firewalls-a-buyers-guide-for-uae-businesses)
+- [Everyone Quotes the Same UAE Data Protection Fine. The Law That Would Confirm It Still Doesn't Exist.](https://www.code3.ae/posts/uae-pdpl-fines-executive-regulations-not-yet-issued-2026)
+- [UAE Is Pouring Billions Into New Data Centers. One Outage This Year Still Isn't Fully Resolved.](https://www.code3.ae/posts/uae-cloud-outage-business-continuity-lessons-2026)
+- [Nearly Half of UAE Employees Use AI Tools Their IT Team Never Approved - New Research Shows the Real Cost](https://www.code3.ae/posts/shadow-ai-governance-gap-uae-businesses-2026)
 - [Your Office Has 50+ Smart Cameras. New UAE Research Shows How Fast They Can Be Hacked.](https://www.code3.ae/posts/uae-iot-camera-cyberattack-detection-research-2026)
 - [UAE's New Cybersecurity Centre of Excellence - and What 20,000+ DDoS Attacks Mean for Your Business](https://www.code3.ae/posts/uae-cybersecurity-centre-of-excellence-ddos-attacks-2026)
 - [Why UAE Businesses Are Investing in Queue Management Systems](https://www.code3.ae/posts/why-uae-businesses-are-investing-in-queue-management-systems)
-- [Auditorium AV Installation: What to Plan For Before You Build One Out](https://www.code3.ae/posts/auditorium-av-installation-what-to-plan-for)
-- [IT AMC Dubai: What It Actually Covers and How to Choose a Contract](https://www.code3.ae/posts/it-amc-dubai-what-it-covers-and-how-to-choose-a-contract)
-- [ANPR vs. Manual Gate Logging: What Changes for UAE Facilities](https://www.code3.ae/posts/anpr-vs-manual-gate-logging-what-changes-for-uae-facilities)
-- [Visitor Management Systems: A Buyer's Guide for UAE Offices](https://www.code3.ae/posts/visitor-management-systems-a-buyers-guide-for-uae-offices)
-- [Access Control & Biometric Attendance: A Buyer's Guide for UAE Offices](https://www.code3.ae/posts/access-control--biometric-attendance-a-buyers-guide-for-uae-offices)
