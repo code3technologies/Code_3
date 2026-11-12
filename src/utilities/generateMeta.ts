@@ -64,7 +64,7 @@ export const generateMeta = async (args: {
           ]
         : undefined,
       title,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
+      url: basePath,
     }),
     alternates: {
       canonical: basePath,
