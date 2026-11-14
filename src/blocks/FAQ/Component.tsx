@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
+import Link from 'next/link'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { CtaButton } from '@/components/site/CtaButton'
@@ -9,6 +10,36 @@ interface FAQItem {
   question: string
   answer: string
 }
+
+// FAQ answers are plain text, but occasionally need to link to a related
+// article (e.g. a pricing breakdown) - supports a single [text](url) markdown
+// link per answer without pulling in a full markdown renderer for 24+ items
+// that are otherwise plain strings.
+const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)]+)\)/g
+
+const renderAnswer = (answer: string) => {
+  if (!answer.includes('](')) return answer
+
+  const parts: React.ReactNode[] = []
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+  MARKDOWN_LINK.lastIndex = 0
+
+  while ((match = MARKDOWN_LINK.exec(answer)) !== null) {
+    if (match.index > lastIndex) parts.push(answer.slice(lastIndex, match.index))
+    parts.push(
+      <Link key={match.index} href={match[2]} className="text-primary_red underline underline-offset-2">
+        {match[1]}
+      </Link>,
+    )
+    lastIndex = match.index + match[0].length
+  }
+  parts.push(answer.slice(lastIndex))
+
+  return parts.map((part, i) => <Fragment key={i}>{part}</Fragment>)
+}
+
+const stripMarkdownLinks = (answer: string) => answer.replace(MARKDOWN_LINK, '$1')
 
 interface FAQBlockProps {
   title: string
@@ -49,7 +80,7 @@ const FaqItem = ({
       </button>
       {isOpen && (
         <div className="pb-5 pr-8 text-sm text-gray-600 leading-relaxed">
-          <p>{faq.answer}</p>
+          <p>{renderAnswer(faq.answer)}</p>
         </div>
       )}
     </div>
@@ -79,7 +110,7 @@ export const FAQBlock: React.FC<FAQBlockProps> = ({
       name: faq.question,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: faq.answer,
+        text: stripMarkdownLinks(faq.answer),
       },
     })),
   }
