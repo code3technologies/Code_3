@@ -5,6 +5,8 @@ export interface GoogleReview {
   relative_time_description: string
 }
 
+type RawReview = GoogleReview & { time?: number }
+
 export interface GoogleOpeningHoursSpec {
   dayOfWeek: string
   opens: string
@@ -44,27 +46,54 @@ export async function getGoogleReviews(): Promise<GoogleReviewsData | null> {
 
     // Without a timeout, a slow/hanging Google Places API response blocks the
     // entire page's server render - cap it so a bad external call can't do that.
-    const res = await fetch(url, {
+    // "most_relevant" alone can leave a brand-new review out of the 5 returned
+    // (seen with a review posted 2026-11-18), so also fetch the 5 newest and
+    // merge the two lists. The second call is best-effort: if it fails we
+    // still show the most-relevant set.
+    const newestUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(
+      placeId,
+    )}&fields=reviews&reviews_sort=newest&key=${apiKey}`
+
+    const fetchOpts = {
       next: { revalidate: 3600, tags: ['google-reviews'] },
       signal: AbortSignal.timeout(4000),
-    })
+    }
+    const [res, newestRes] = await Promise.all([
+      fetch(url, fetchOpts),
+      fetch(newestUrl, fetchOpts).catch(() => null),
+    ])
     if (!res.ok) return null
 
     const data = await res.json()
     if (data.status !== 'OK' || !data.result) return null
 
-    const reviews = Array.isArray(data.result.reviews)
-      ? data.result.reviews
-          // Drop reviews with no real comment (e.g. a bare star rating) - not
-          // "good content" even though they're genuine reviews.
-          .filter((r: GoogleReview) => (r.text || '').trim().length >= 20)
-          .map((r: GoogleReview) => ({
-            author_name: r.author_name,
-            rating: r.rating,
-            text: r.text,
-            relative_time_description: r.relative_time_description,
-          }))
-      : []
+    let newestReviews: RawReview[] = []
+    if (newestRes && newestRes.ok) {
+      const newestData = await newestRes.json().catch(() => null)
+      if (newestData?.status === 'OK' && Array.isArray(newestData.result?.reviews)) {
+        newestReviews = newestData.result.reviews
+      }
+    }
+
+    const seen = new Set<string>()
+    const reviews = [...(Array.isArray(data.result.reviews) ? data.result.reviews : []), ...newestReviews]
+      .filter((r: RawReview) => {
+        const key = `${r.author_name}|${r.time}`
+        if (seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+      // Drop reviews with no real comment (e.g. a bare star rating) - not
+      // "good content" even though they're genuine reviews.
+      .filter((r: RawReview) => (r.text || '').trim().length >= 20)
+      // Newest first, so a fresh review is visible straight away.
+      .sort((a: RawReview, b: RawReview) => (b.time || 0) - (a.time || 0))
+      .map((r: RawReview) => ({
+        author_name: r.author_name,
+        rating: r.rating,
+        text: r.text,
+        relative_time_description: r.relative_time_description,
+      }))
 
     const location = data.result.geometry?.location
     const geo =
