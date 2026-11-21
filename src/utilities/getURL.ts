@@ -18,7 +18,10 @@ function getVercelDeploymentURL(): string | undefined {
 }
 
 export const getServerSideURL = () => {
-  return process.env.NEXT_PUBLIC_SERVER_URL || getVercelDeploymentURL() || 'http://localhost:3000'
+  const url = process.env.NEXT_PUBLIC_SERVER_URL || getVercelDeploymentURL() || 'http://localhost:3000'
+  // Strip any trailing slash so `${getServerSideURL()}/path` never produces a
+  // double slash (production's env value ends in "/", which broke og:image URLs).
+  return url.replace(/\/+$/, '')
 }
 
 export const getClientSideURL = () => {
