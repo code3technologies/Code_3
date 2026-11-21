@@ -17,9 +17,10 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
     if (externalUrl) {
       url = externalUrl
     } else if ('url' in image) {
-      const ogUrl = image.sizes?.og?.url
+      const src = image.sizes?.og?.url || image.url || ''
 
-      url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
+      // Vercel Blob storage returns absolute URLs - only prefix relative paths.
+      if (src) url = /^https?:\/\//i.test(src) ? src : serverUrl + src
     }
   }
 
