@@ -31,6 +31,7 @@ CODE3 designs technology around each client's actual business requirements rathe
 
 ### Recent posts
 
+- [Microsoft Teams Rooms vs Zoom Rooms: How to Choose a VC System for Your Meeting Rooms](https://www.code3.ae/posts/teams-rooms-vs-zoom-rooms-vc-system-guide-uae)
 - [Cloud Migration in the UAE: AWS vs Azure, and How to Move Without Downtime](https://www.code3.ae/posts/cloud-migration-uae-aws-vs-azure-guide)
 - [Meeting Room Booking Panels and Control Systems: A Buyer's Guide for UAE Offices](https://www.code3.ae/posts/meeting-room-booking-panels-buyers-guide-uae)
 - [New Office IT Setup in Dubai: A Checklist and Cost Guide for 2026](https://www.code3.ae/posts/new-office-it-setup-dubai-checklist-costs-2026)
