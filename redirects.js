@@ -223,6 +223,12 @@ const redirects = async () => {
       destination: '/service/it-consulting-dubai-uae',
       permanent: true,
     },
+    // CODE3 no longer offers DaaS as a standalone service.
+    {
+      source: '/desktop-as-a-service-daas',
+      destination: '/service/cloud-and-microsoft-solutions-dubai-uae',
+      permanent: true,
+    },
   ]
 
   // Next.js redirects run before middleware, so the /ar/ copies of the legacy
