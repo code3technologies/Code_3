@@ -195,9 +195,52 @@ const redirects = async () => {
       destination: '/posts',
       permanent: true,
     },
+    // More pages from the original site, outside the /service/ hierarchy,
+    // each duplicating a full-depth service page (split rankings between two
+    // URLs for one topic in Search Console).
+    {
+      source: '/structured-cabling-and-networking',
+      destination: '/service/cat6cat6a-cabling-dubai-uae',
+      permanent: true,
+    },
+    {
+      source: '/cctv-surveillance',
+      destination: '/service/cctv-installations-dubai-uae',
+      permanent: true,
+    },
+    {
+      source: '/cloud-migration-and-hosting',
+      destination: '/service/cloud-migration-dubai-uae',
+      permanent: true,
+    },
+    {
+      source: '/it-relocation-and-office-setup',
+      destination: '/service/it-relocation-dubai-uae',
+      permanent: true,
+    },
+    {
+      source: '/it-consulting-and-advisory',
+      destination: '/service/it-consulting-dubai-uae',
+      permanent: true,
+    },
   ]
 
-  const redirects = [internetExplorerRedirect, ...serviceSlugRedirects, ...legacyPageRedirects]
+  // Next.js redirects run before middleware, so the /ar/ copies of the legacy
+  // URLs above don't match them - they fell through to the [slug] page's own
+  // service-page redirect and landed on /ar/service/<old-slug> (a 404).
+  // Mirror each legacy redirect for the Arabic locale explicitly.
+  const arabicLegacyPageRedirects = legacyPageRedirects.map(({ source, destination, permanent }) => ({
+    source: `/ar${source}`,
+    destination: `/ar${destination}`,
+    permanent,
+  }))
+
+  const redirects = [
+    internetExplorerRedirect,
+    ...serviceSlugRedirects,
+    ...legacyPageRedirects,
+    ...arabicLegacyPageRedirects,
+  ]
 
   return redirects
 }
