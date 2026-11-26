@@ -138,6 +138,23 @@ export const ServiceDetailBanner: Block = {
       type: 'text',
       label: 'Side Card Link URL (optional)',
     },
+    {
+      name: 'extraCards',
+      type: 'array',
+      label: 'More Side Cards (optional carousel)',
+      admin: {
+        description:
+          'Add cards here to turn the side card into a carousel. It starts with the side card above, then shows these in order.',
+        condition: (_, siblingData) => Boolean(siblingData?.cardHeading),
+      },
+      fields: [
+        { name: 'badge', type: 'text', label: 'Badge', localized: true },
+        { name: 'heading', type: 'text', label: 'Heading', required: true, localized: true },
+        { name: 'description', type: 'textarea', label: 'Description', localized: true },
+        { name: 'linkText', type: 'text', label: 'Link Text', localized: true },
+        { name: 'linkHref', type: 'text', label: 'Link URL' },
+      ],
+    },
   ],
   interfaceName: 'ServiceDetailBannerBlock',
 }
