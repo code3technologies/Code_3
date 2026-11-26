@@ -50,6 +50,9 @@ import {
   ScreenShare,
   Server,
   ShieldCheck,
+  Settings2,
+  DatabaseBackup,
+  Phone,
   SlidersHorizontal,
   Sparkles,
   Split,
@@ -115,7 +118,7 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (
     t.includes('cisco') ||
     t.includes('ubiquiti') ||
-    t.includes('unifi') ||
+    /\bunifi\b/.test(t) ||
     t.includes('ruijie') ||
     t.includes('aruba') ||
     t.includes('meraki')
@@ -196,14 +199,23 @@ function getItemIcon(text?: string | null): LucideIcon {
   if (t.includes('content')) return Image
   if (t.includes('integrat')) return Combine
   if (t.includes('support')) return Headset
+  // Service-area titles that otherwise fell through to the camera default.
+  if (t.includes('managed it') || t.includes('amc')) return Settings2
+  if (t.includes('cyber')) return ShieldCheck
+  if (t.includes('data protection') || t.includes('continuity') || t.includes('backup')) return DatabaseBackup
+  if (t.includes('infrastructure') || t.includes('hardware')) return Server
+  if (t.includes('communication')) return Phone
+  if (t.includes('professional') || t.includes('consult')) return Briefcase
   return Camera
 }
 
 type Props = {
   className?: string
+  design?: 'modern'
 } & DetailedFeatureGridBlockProps
 
-export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, title, subtitle, items = [], footer }) => {
+export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, title, subtitle, items = [], footer, design }) => {
+  const modern = design === 'modern'
   const safeItems = items || []
   if (safeItems.length === 0) return null
 
@@ -219,8 +231,12 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
         <Reveal
           delayMs={100}
           className={cn(
-            'mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2',
-            safeItems.length <= 2 ? 'lg:grid-cols-2' : safeItems.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3',
+            modern
+              ? // Modern: flex-wrap so an incomplete last row is centred instead of left-aligned.
+                'mx-auto flex max-w-6xl flex-wrap justify-center gap-4'
+              : 'mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2',
+            !modern &&
+              (safeItems.length <= 2 ? 'lg:grid-cols-2' : safeItems.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'),
           )}
         >
           {safeItems.map((item, index) => {
@@ -229,7 +245,10 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
             return (
               <div
                 key={item.id || index}
-                className="flex flex-col gap-3 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md"
+                className={cn(
+                  'flex flex-col gap-3 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary_red/30 hover:shadow-md',
+                  modern && 'w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]',
+                )}
               >
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#FDEBEC] text-primary_red">
@@ -244,7 +263,20 @@ export const DetailedFeatureGridBlock: React.FC<Props> = ({ className, badge, ti
                 )}
                 <p className="text-sm leading-relaxed text-gray-600">{item.description}</p>
 
-                {applications.length > 0 && (
+                {applications.length > 0 && modern && (
+                  <ul className="mt-1 flex flex-wrap gap-1.5">
+                    {applications.map((app, appIndex) => (
+                      <li
+                        key={app.id || appIndex}
+                        className="rounded-full border border-border bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-700"
+                      >
+                        {app.text}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {applications.length > 0 && !modern && (
                   <div className="mt-1">
                     <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-gray-400">
                       Common applications:

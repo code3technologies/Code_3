@@ -114,8 +114,25 @@ import { Microsoft365MigrationEstimatorBlock } from './Microsoft365MigrationEsti
 interface BlockProps {
   disableInnerContainer?: boolean
   currentPage?: Page | null
+  design?: 'modern'
   [key: string]: unknown
 }
+
+// White-background sections that take part in the Modern design style's
+// alternating backgrounds.
+const LIGHT_BLOCKS = new Set<string>([
+  'iconFeatureGrid',
+  'detailedFeatureGrid',
+  'checklistCard',
+  'coverageTable',
+  'industries',
+  'scopeChecklist',
+  'serviceCoverage',
+  'serviceCatalog',
+  'trustedBrands',
+  'caseStudies',
+  'testimonials',
+])
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -237,32 +254,41 @@ export const RenderBlocks: React.FC<{
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
   if (hasBlocks) {
-    return (
-      <Fragment>
-        {blocks.map((block, index) => {
-          const { blockType } = block
+    // "Modern" design style (page setting): consecutive light sections
+    // alternate white / soft grey and get more vertical space. Coloured
+    // sections (banner, stats, CTA, etc.) are left as they are and reset
+    // the alternation. Styles live in globals.css under [data-design].
+    const modern = currentPage?.designStyle === 'modern'
+    let lightRun = 0
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType] as React.ComponentType<BlockProps>
+    const content = blocks.map((block, index) => {
+      const { blockType } = block
 
-            if (Block) {
-              return (
-                <div className="" key={index}>
-                  <Block
-                    {...block}
-                    blockId={(block as any).blockId}
-                    disableInnerContainer={true}
-                    currentPage={currentPage}
-                    locale={locale}
-                  />
-                </div>
-              )
-            }
-          }
-          return null
-        })}
-      </Fragment>
-    )
+      if (blockType && blockType in blockComponents) {
+        const Block = blockComponents[blockType] as React.ComponentType<BlockProps>
+
+        if (Block) {
+          const isLight = modern && LIGHT_BLOCKS.has(blockType)
+          const tone = isLight ? (lightRun++ % 2 === 1 ? 'alt' : 'base') : undefined
+          if (modern && !isLight) lightRun = 0
+          return (
+            <div className="" key={index} data-block={modern ? blockType : undefined} data-tone={tone}>
+              <Block
+                {...block}
+                blockId={(block as any).blockId}
+                disableInnerContainer={true}
+                currentPage={currentPage}
+                locale={locale}
+                design={modern ? 'modern' : undefined}
+              />
+            </div>
+          )
+        }
+      }
+      return null
+    })
+
+    return modern ? <div data-design="modern">{content}</div> : <Fragment>{content}</Fragment>
   }
 
   return null

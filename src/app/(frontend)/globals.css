@@ -306,5 +306,30 @@
 }
 
 /* ============================= */
+/* MODERN PAGE DESIGN STYLE       */
+/* ============================= */
+/* Opt-in per page (Pages > Design Style = Modern). RenderBlocks wraps the
+   page in [data-design=modern] and tags each light section with
+   data-tone=base|alt. Layout only - no content changes. */
+[data-design='modern'] [data-tone] > section {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+@media (min-width: 768px) {
+  [data-design='modern'] [data-tone] > section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+[data-design='modern'] [data-tone='alt'] > section {
+  background-color: #f6f6f8;
+}
+/* Cards with a faint grey fill would disappear on the grey band. */
+[data-design='modern'] [data-tone='alt'] .bg-gray-50\/60,
+[data-design='modern'] [data-tone='alt'] .bg-gray-50 {
+  background-color: #ffffff;
+}
+
+/* ============================= */
 /* END OF FILE                    */
 /* ============================= */

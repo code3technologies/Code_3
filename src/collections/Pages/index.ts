@@ -217,6 +217,21 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     {
+      name: 'designStyle',
+      type: 'select',
+      label: 'Design Style',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Modern (alternating sections, more spacing)', value: 'modern' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description:
+          'Modern alternates light section backgrounds, adds more space between sections and uses compact service cards. Layout only — content is unchanged.',
+      },
+    },
+    {
       name: 'navOrder',
       type: 'number',
       label: 'Navigation Order',
