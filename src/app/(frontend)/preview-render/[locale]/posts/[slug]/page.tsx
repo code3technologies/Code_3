@@ -116,5 +116,5 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const locale: Locale = rawLocale === 'ar' ? 'ar' : 'en'
   const post = await queryPostBySlug({ slug, locale, draft })
 
-  return generateMeta({ doc: post })
+  return generateMeta({ doc: post, locale })
 }

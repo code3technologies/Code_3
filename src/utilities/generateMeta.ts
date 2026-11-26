@@ -43,8 +43,9 @@ const getCanonicalBasePath = (doc: Partial<Page> | Partial<Post> | null): string
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
+  locale?: 'en' | 'ar'
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, locale } = args
 
   const ogImage = getImageURL(doc?.meta?.image)
 
@@ -52,6 +53,13 @@ export const generateMeta = async (args: {
 
   const basePath = getCanonicalBasePath(doc)
   const arPath = basePath === '/' ? '/ar' : `/ar${basePath}`
+
+  // Most /ar pages still render English content (untranslated fields fall
+  // back to English), so they canonicalise to the English URL to avoid
+  // duplicates. A page whose Arabic meta title is actually written in Arabic
+  // has been translated, so its /ar URL is canonical for itself.
+  const isTranslatedArabic = locale === 'ar' && /[؀-ۿ]/.test(doc?.meta?.title || '')
+  const canonicalPath = isTranslatedArabic ? arPath : basePath
 
   return {
     description: doc?.meta?.description,
@@ -65,10 +73,10 @@ export const generateMeta = async (args: {
           ]
         : undefined,
       title,
-      url: basePath,
+      url: canonicalPath,
     }),
     alternates: {
-      canonical: basePath,
+      canonical: canonicalPath,
       languages: {
         en: basePath,
         ar: arPath,
