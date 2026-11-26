@@ -172,6 +172,12 @@ const redirects = async () => {
   // page - redirecting consolidates any existing SEO value instead of splitting
   // it across two pages on the same subject.
   const legacyPageRedirects = [
+    // Old directory listings link to /contact-us; the real page is /contact.
+    {
+      source: '/contact-us',
+      destination: '/contact',
+      permanent: true,
+    },
     {
       source: '/microsoft-365-and-collaboration-tools',
       destination: '/service/microsoft-365-dubai-uae',

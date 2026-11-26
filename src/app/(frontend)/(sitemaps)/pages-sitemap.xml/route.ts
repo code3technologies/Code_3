@@ -36,13 +36,11 @@ const getPagesSitemap = unstable_cache(
 
     const dateFallback = new Date().toISOString()
 
+    // /search is noindex and /posts 307-redirects to /posts/page/1, so list
+    // only the real blog index; sitemaps should hold indexable 200 URLs.
     const defaultSitemap = [
       {
-        loc: `${SITE_URL}/search`,
-        lastmod: dateFallback,
-      },
-      {
-        loc: `${SITE_URL}/posts`,
+        loc: `${SITE_URL}/posts/page/1`,
         lastmod: dateFallback,
       },
     ]
