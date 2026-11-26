@@ -1645,6 +1645,19 @@ export interface ServiceDetailBannerBlock {
   cardDescription?: string | null;
   cardLinkText?: string | null;
   cardLinkHref?: string | null;
+  /**
+   * Add cards here to turn the side card into a carousel. It starts with the side card above, then shows these in order.
+   */
+  extraCards?:
+    | {
+        badge?: string | null;
+        heading: string;
+        description?: string | null;
+        linkText?: string | null;
+        linkHref?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'serviceDetailBanner';
@@ -6484,6 +6497,16 @@ export interface ServiceDetailBannerBlockSelect<T extends boolean = true> {
   cardDescription?: T;
   cardLinkText?: T;
   cardLinkHref?: T;
+  extraCards?:
+    | T
+    | {
+        badge?: T;
+        heading?: T;
+        description?: T;
+        linkText?: T;
+        linkHref?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

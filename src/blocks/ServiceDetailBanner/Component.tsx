@@ -64,6 +64,7 @@ import { cn } from '@/utilities/ui'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import type { Media as MediaType } from '@/payload-types'
+import { SideCards, type SideCard } from './SideCards'
 
 interface ServiceDetailBannerBlockProps {
   logo?: MediaType | string | null
@@ -98,6 +99,7 @@ interface ServiceDetailBannerBlockProps {
   cardDescription?: string
   cardLinkText?: string
   cardLinkHref?: string
+  extraCards?: SideCard[] | null
   ctaLabel?: string
   ctaUrl?: string
 }
@@ -167,6 +169,7 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
   cardDescription,
   cardLinkText,
   cardLinkHref,
+  extraCards,
   ctaLabel,
   ctaUrl,
 }) => {
@@ -237,62 +240,19 @@ export const ServiceDetailBannerBlock: React.FC<Props> = ({
 
       {showCard && (
         <Reveal delayMs={100}>
-          <div
-            className={cn(
-              'rounded-2xl p-8 md:p-10',
-              animatedBackground ? 'border border-white/15 bg-white/10 backdrop-blur-sm' : 'bg-gray-50',
-            )}
-          >
-            {cardBadge && (
-              <span
-                className={cn(
-                  'text-sm md:text-base font-semibold uppercase tracking-[0.12em]',
-                  animatedBackground ? 'text-red-300' : 'text-primary_red',
-                )}
-              >
-                {cardBadge}
-              </span>
-            )}
-            <h2
-              className={cn(
-                'mt-3 text-2xl md:text-3xl font-bold tracking-tight',
-                animatedBackground ? 'text-white' : 'text-foreground',
-              )}
-            >
-              {cardHeading}
-            </h2>
-            {cardDescription && (
-              <p className={cn('mt-4 leading-relaxed', animatedBackground ? 'text-white/75' : 'text-gray-600')}>
-                {cardDescription}
-              </p>
-            )}
-            {cardLinkText && cardLinkHref && (
-              <a
-                href={cardLinkHref}
-                className={cn(
-                  'mt-6 inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
-                  animatedBackground
-                    ? 'border-white/20 bg-white/10 text-white hover:border-white/50'
-                    : 'border-border bg-white text-foreground hover:border-primary_red hover:text-primary_red',
-                )}
-              >
-                {cardLinkText}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17 17 7" />
-                  <path d="M7 7h10v10" />
-                </svg>
-              </a>
-            )}
-          </div>
+          <SideCards
+            dark={animatedBackground}
+            cards={[
+              {
+                badge: cardBadge,
+                heading: cardHeading as string,
+                description: cardDescription,
+                linkText: cardLinkText,
+                linkHref: cardLinkHref,
+              },
+              ...(extraCards || []).filter((c) => c?.heading),
+            ]}
+          />
         </Reveal>
       )}
     </div>
