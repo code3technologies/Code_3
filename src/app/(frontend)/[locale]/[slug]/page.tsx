@@ -115,5 +115,5 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     draft: false,
   })
 
-  return generateMeta({ doc: page })
+  return generateMeta({ doc: page, locale })
 }
