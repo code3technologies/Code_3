@@ -77,6 +77,18 @@ import {
 // camera-type mapping so the same item reads consistently across blocks.
 function getItemIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  // Arabic service-area titles (translated pages), checked first since the
+  // English keyword rules below never match Arabic text.
+  if (t.includes('تقنية المعلومات المُدارة') || t.includes('عقود الصيانة')) return Settings2
+  if (t.includes('الأمن السيبراني')) return ShieldCheck
+  if (t.includes('الحوسبة السحابية')) return Cloud
+  if (t.includes('حماية البيانات') || t.includes('استمرارية')) return DatabaseBackup
+  if (t.includes('للشبكات')) return Network
+  if (t.includes('البنية التحتية') || t.includes('الأجهزة')) return Server
+  if (t.includes('السمعية والبصرية')) return Volume2
+  if (t.includes('الاتصالات')) return Phone
+  if (t.includes('الأمن والمراقبة')) return Camera
+  if (t.includes('الخدمات المهنية')) return Briefcase
   // Networking / infrastructure keywords (LAN & WAN pages) — checked first so
   // "design"/"approach" summary cards don't fall through to a camera icon.
   if (t.includes('how code3') || t.includes('code3 design') || t.includes('approach') || t.includes('designs your'))

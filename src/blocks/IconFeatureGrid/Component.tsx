@@ -104,6 +104,11 @@ import {
 // Best-effort icon per item, matched by keyword.
 function getItemIcon(text?: string | null): LucideIcon {
   const t = (text || '').toLowerCase()
+  // Arabic labels (translated pages); the English keyword rules below never match Arabic text.
+  if (t.includes('جاهز للتدقيق') || t.includes('الأمن السيبراني')) return ShieldCheck
+  if (t.includes('وصول مقيّد') || t.includes('حماية البيانات')) return Lock
+  if (t.includes('الحوسبة السحابية')) return Cloud
+  if (t.includes('في الموقع') || t.includes('عن بُعد')) return Headset
   if (t.includes('workstation') || t.includes('desktop') || t.includes('laptop')) return Laptop
   if (t.includes('windows')) return AppWindow
   if (t.includes('macos') || t.includes('mac os')) return Laptop
