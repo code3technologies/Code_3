@@ -38,6 +38,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     src: srcFromProps,
     loading: loadingFromProps,
     onError,
+    displayWidth,
   } = props
 
   let width: number | undefined
@@ -96,6 +97,27 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   if (!src) {
     return null
+  }
+
+  // Fixed small display width: size the image to it (keeping the aspect
+  // ratio) and leave out `sizes`, so Next emits only 1x/2x candidates.
+  if (displayWidth && !fill && width && height) {
+    const w = Math.min(displayWidth, width)
+    return (
+      <picture className={cn(pictureClassName)}>
+        <NextImage
+          alt={alt || ''}
+          className={cn(imgClassName)}
+          height={Math.round((height * w) / width)}
+          priority={priority}
+          quality={quality}
+          loading={loading}
+          src={src}
+          width={w}
+          onError={onError}
+        />
+      </picture>
+    )
   }
 
   const shimmerDataURL = `data:image/svg+xml;base64,${toBase64(

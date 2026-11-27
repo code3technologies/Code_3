@@ -30,4 +30,8 @@ export const notoSansArabic = Noto_Sans_Arabic({
   weight: ['400', '500', '600', '700'],
   variable: '--font-arabic',
   display: 'swap',
+  // Not preloaded: English pages never use it, and preloading it there
+  // competed with the hero for bandwidth on mobile. Arabic pages still fetch
+  // it as soon as Arabic text renders.
+  preload: false,
 })

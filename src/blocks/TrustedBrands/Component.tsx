@@ -81,6 +81,7 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
         resource={brand.logo}
         alt={brand.name}
         size="180px"
+        displayWidth={180}
         imgClassName={cn(
           'w-auto max-w-[180px] object-contain transition-all duration-300',
           wrap ? 'h-14 md:h-20' : 'h-16 md:h-24',
