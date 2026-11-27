@@ -330,6 +330,26 @@
   background-color: #ffffff;
 }
 
+/* Logo marquee (TrustedBrands). The track holds three copies of the logos,
+   so moving it by one copy (a third) loops without a jump. Duration comes
+   from --marquee-duration, set per block from its logo count. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.3333%);
+  }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
 /* ============================= */
 /* END OF FILE                    */
 /* ============================= */
