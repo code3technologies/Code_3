@@ -32,11 +32,11 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
   const isMarquee = !isGrid && !isHorizontalScroll
   const duplicatedBrands = isMarquee && safeBrands.length > 0 ? [...safeBrands, ...safeBrands, ...safeBrands] : safeBrands
   const safeAnimationSpeed = animationSpeed || 'normal'
-  const speedClasses = {
-    slow: 'animate-scroll-slow',
-    normal: 'animate-scroll',
-    fast: 'animate-scroll-fast'
-  } as const
+  // A fixed duration made long logo lists fly past (62 logos in 50s on the
+  // ADGM page). Time it per logo instead, so every marquee moves at the same
+  // readable pace however many logos it has. Seconds each logo takes to pass.
+  const secondsPerLogo = { slow: 3, normal: 2.2, fast: 1.5 } as const
+  const marqueeDuration = `${Math.max(20, safeBrands.length * secondsPerLogo[safeAnimationSpeed])}s`
 
   interface Brand {
     name: string
@@ -200,18 +200,23 @@ export const TrustedBrandsBlock: React.FC<Props> = ({
             <div className="flex overflow-hidden">
               <div
                 className={cn(
-                  'flex items-center gap-8 md:gap-12 lg:gap-16 xl:gap-20 whitespace-nowrap',
-                  speedClasses[safeAnimationSpeed],
+                  'flex items-center whitespace-nowrap',
+                  'animate-marquee',
                   pauseOnHover && 'hover:[animation-play-state:paused]'
                 )}
-                style={{
-                  width: 'max-content',
-                }}
+                style={
+                  {
+                    width: 'max-content',
+                    '--marquee-duration': marqueeDuration,
+                  } as React.CSSProperties
+                }
               >
                 {duplicatedBrands.map((brand, index) => (
                   <div
                     key={`${brand.name}-${index}`}
-                    className="group flex-shrink-0 flex items-center justify-center"
+                    // Spacing as padding, not flex gap, so the track is exactly
+                    // three equal copies and the one-third loop is seamless.
+                    className="group flex-shrink-0 flex items-center justify-center pr-8 md:pr-12 lg:pr-16 xl:pr-20"
                   >
                     <BrandLogo brand={brand} index={index} />
                   </div>
