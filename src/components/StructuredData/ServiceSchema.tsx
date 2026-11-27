@@ -2,6 +2,11 @@ import type { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { UAE_AREA_SERVED } from '@/utilities/uaeAreaServed'
 
+// The ADGM landing page lives at /it-solutions-adgm (rendered by [slug], not
+// /service/[slug]) but is a real, location-specific service offering, so the
+// [slug] routes render this schema for it too, with ADGM as the area served.
+export const ADGM_SLUG = 'it-solutions-adgm'
+
 // Every page rendered by /service/[slug] is a real service offering (that
 // route only ever queries pages with serviceCategory !== 'none'), so this
 // can be added unconditionally there. Marks each one up as a distinct
@@ -22,11 +27,19 @@ export const ServiceSchema = ({ page, path }: { page: Page; path: string }) => {
   // which serve broad UAE-wide intent - dilutes exactly the local-relevance
   // signal these pages exist to send. Narrow to the named city instead.
   const citySlug = page.slug || ''
-  const areaServed = citySlug.endsWith('-sharjah-uae')
-    ? [{ '@type': 'City', name: 'Sharjah' }]
-    : citySlug.endsWith('-abu-dhabi-uae')
-      ? [{ '@type': 'City', name: 'Abu Dhabi' }]
-      : UAE_AREA_SERVED
+  const areaServed =
+    citySlug === ADGM_SLUG
+      ? [
+          { '@type': 'AdministrativeArea', name: 'Abu Dhabi Global Market (ADGM)' },
+          { '@type': 'Place', name: 'Al Maryah Island' },
+          { '@type': 'Place', name: 'Al Reem Island' },
+          { '@type': 'City', name: 'Abu Dhabi' },
+        ]
+      : citySlug.endsWith('-sharjah-uae')
+        ? [{ '@type': 'City', name: 'Sharjah' }]
+        : citySlug.endsWith('-abu-dhabi-uae')
+          ? [{ '@type': 'City', name: 'Abu Dhabi' }]
+          : UAE_AREA_SERVED
 
   const schema = {
     '@context': 'https://schema.org',

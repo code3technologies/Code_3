@@ -23,6 +23,7 @@ import type { Locale } from '@/utilities/getLocale'
 import { queryPageBySlug } from '@/utilities/queries/pageQuery'
 import type { Page } from '@/payload-types'
 import { PageTypeSchema } from '@/components/StructuredData/PageTypeSchema'
+import { ADGM_SLUG, ServiceSchema } from '@/components/StructuredData/ServiceSchema'
 
 export const dynamic = 'force-dynamic'
 
@@ -81,6 +82,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     <article className="relative">
       <PageClient />
       <PageTypeSchema page={page} path={url} />
+      {page.slug === ADGM_SLUG && <ServiceSchema page={page} path={url} />}
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
