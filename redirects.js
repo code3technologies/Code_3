@@ -107,7 +107,7 @@ const redirects = async () => {
     { source: '/service/virtual-machines', destination: '/service/virtual-machines-dubai-uae', permanent: true },
     { source: '/service/server-rack-installation', destination: '/service/server-rack-installation-dubai-uae', permanent: true },
     { source: '/service/environmental-monitoring', destination: '/service/environmental-monitoring-dubai-uae', permanent: true },
-    { source: '/service/cloud-backup', destination: '/service/cloud-backup-dubai-uae', permanent: true },
+    { source: '/service/cloud-backup', destination: '/service/cloud-backup-solutions-dubai-uae', permanent: true },
     { source: '/service/local-backup', destination: '/service/local-backup-dubai-uae', permanent: true },
     { source: '/service/hybrid-backup', destination: '/service/hybrid-backup-dubai-uae', permanent: true },
     { source: '/service/disaster-recovery-planning', destination: '/service/disaster-recovery-planning-dubai-uae', permanent: true },
@@ -167,6 +167,13 @@ const redirects = async () => {
   // page - redirecting consolidates any existing SEO value instead of splitting
   // it across two pages on the same subject.
   const legacyPageRedirects = [
+    // Two near-identical cloud backup pages split rankings (positions ~19 and
+    // ~54 for the same searches). Consolidated into the stronger page.
+    {
+      source: '/service/cloud-backup-dubai-uae',
+      destination: '/service/cloud-backup-solutions-dubai-uae',
+      permanent: true,
+    },
     // Old directory listings link to /contact-us; the real page is /contact.
     {
       source: '/contact-us',
