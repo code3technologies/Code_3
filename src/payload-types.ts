@@ -1516,6 +1516,14 @@ export interface CurrentOpeningsBlock {
         location: string;
         type: string;
         /**
+         * When this role was advertised. Needed for the role to appear in Google job search; leave empty to keep it off Google Jobs. Remove the listing once the role is filled.
+         */
+        datePosted?: string | null;
+        /**
+         * Last day to apply. Google drops the role from job search after this date.
+         */
+        validThrough?: string | null;
+        /**
          * Shown in the "View More Details" modal, one bullet point per line.
          */
         responsibilitiesText?: string | null;
@@ -6425,6 +6433,8 @@ export interface CurrentOpeningsBlockSelect<T extends boolean = true> {
         description?: T;
         location?: T;
         type?: T;
+        datePosted?: T;
+        validThrough?: T;
         responsibilitiesText?: T;
         requirementsText?: T;
         id?: T;

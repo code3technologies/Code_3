@@ -119,6 +119,25 @@ export const CurrentOpenings: Block = {
           localized: true,
         },
         {
+          name: 'datePosted',
+          type: 'date',
+          label: 'Date Posted',
+          admin: {
+            date: { pickerAppearance: 'dayOnly' },
+            description:
+              'When this role was advertised. Needed for the role to appear in Google job search; leave empty to keep it off Google Jobs. Remove the listing once the role is filled.',
+          },
+        },
+        {
+          name: 'validThrough',
+          type: 'date',
+          label: 'Closing Date (optional)',
+          admin: {
+            date: { pickerAppearance: 'dayOnly' },
+            description: 'Last day to apply. Google drops the role from job search after this date.',
+          },
+        },
+        {
           name: 'responsibilitiesText',
           type: 'textarea',
           label: 'Key Responsibilities (one per line)',
