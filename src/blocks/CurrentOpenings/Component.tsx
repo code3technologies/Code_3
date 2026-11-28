@@ -7,6 +7,9 @@ import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { Button } from '@/components/ui/button'
 import { JobApplicationModal } from './JobApplicationModal'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { jobSlug } from '@/utilities/jobSlug'
 
 type Job = NonNullable<CurrentOpeningsBlockProps['jobListings']>[number]
 
@@ -86,6 +89,8 @@ export const CurrentOpeningsBlock: React.FC<CurrentOpeningsBlockProps & { classN
   jobListings = [],
 }) => {
   const [activeDept, setActiveDept] = useState('all')
+  // Each role has its own page (/careers/<role>) for Google Jobs; link to it.
+  const prefix = usePathname()?.startsWith('/ar') ? '/ar' : ''
   const [detailsJob, setDetailsJob] = useState<Job | null>(null)
   const [applyJobTitle, setApplyJobTitle] = useState<string | null>(null)
 
@@ -146,7 +151,14 @@ export const CurrentOpeningsBlock: React.FC<CurrentOpeningsBlockProps & { classN
                       {job.department}
                     </span>
                     <div className="flex flex-wrap items-center gap-2 mt-1 mb-3">
-                      <h3 className="text-lg font-semibold text-foreground">{job.title}</h3>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        <Link
+                          href={`${prefix}/careers/${jobSlug(job.title) || job.id}`}
+                          className="hover:text-primary_red hover:underline"
+                        >
+                          {job.title}
+                        </Link>
+                      </h3>
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs bg-[#F5F5F6] text-gray-600">
                         {job.category}
                       </span>

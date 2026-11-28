@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 import { buildLocalizedSitemapEntries } from '@/utilities/localizedSitemapEntry'
+import { getOpenJobs, isJobOpen } from '@/utilities/jobs'
 
 const getPagesSitemap = unstable_cache(
   async () => {
@@ -94,7 +95,14 @@ const getPagesSitemap = unstable_cache(
         ]
       : []
 
-    return [...defaultSitemap, ...sitemap, ...deviceSitemap, ...caseStudySitemap]
+    // One page per open role (/careers/<role>), built from /careers.
+    const jobSitemap = (await getOpenJobs('en'))
+      .filter(({ job }) => isJobOpen(job))
+      .flatMap(({ slug, job }) =>
+        buildLocalizedSitemapEntries(SITE_URL, `/careers/${slug}`, job.datePosted || dateFallback),
+      )
+
+    return [...defaultSitemap, ...sitemap, ...deviceSitemap, ...caseStudySitemap, ...jobSitemap]
   },
   ['pages-sitemap'],
   {

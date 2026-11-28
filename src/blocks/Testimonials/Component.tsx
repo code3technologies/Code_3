@@ -4,7 +4,7 @@ import { cn } from '@/utilities/ui'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Reveal } from '@/components/site/Reveal'
 import { getGoogleReviews } from './getGoogleReviews'
-import { TestimonialCard } from './TestimonialCard'
+import { TestimonialTrack } from './TestimonialTrack'
 import { GoogleRatingBadge } from './GoogleRatingBadge'
 import { CtaButton } from '@/components/site/CtaButton'
 
@@ -58,9 +58,6 @@ export const TestimonialsBlock: React.FC<Props> = async ({
         ? fallbackQuotes
         : FALLBACK_QUOTES
 
-  // Duplicate the list so the marquee loop is seamless (matches the TrustedBrands pattern).
-  const duplicatedCards = cards.length > 0 ? [...cards, ...cards, ...cards] : cards
-
   return (
     <section className={cn('bg-white py-8 md:py-10 overflow-hidden', className)}>
       <div className="container mx-auto px-4 sm:px-6">
@@ -84,16 +81,7 @@ export const TestimonialsBlock: React.FC<Props> = async ({
         <div className="absolute -right-1 top-0 w-16 md:w-24 h-full bg-gradient-to-l from-white via-white/30 to-transparent z-10 pointer-events-none" />
 
         <div className="flex overflow-hidden">
-          <div
-            className="flex items-stretch gap-6 animate-scroll-veryslow hover:[animation-play-state:paused]"
-            style={{ width: 'max-content' }}
-          >
-            {duplicatedCards.map((t, i) => (
-              <div key={t.name + i} className="w-[320px] sm:w-[380px] flex-none">
-                <TestimonialCard t={t} />
-              </div>
-            ))}
-          </div>
+          <TestimonialTrack cards={cards} />
         </div>
       </Reveal>
 
