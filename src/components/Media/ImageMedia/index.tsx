@@ -2,7 +2,7 @@
 
 import type { StaticImageData } from 'next/image'
 import { cn } from '@/utilities/ui'
-import NextImage from 'next/image'
+import NextImage, { getImageProps } from 'next/image'
 import React from 'react'
 import type { Props as MediaProps } from '../types'
 import { cssVariables } from '@/cssVariables'
@@ -57,10 +57,51 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
   if (!srcFromProps && externalUrl) {
+    const fileFromUrl = (() => {
+      try {
+        return decodeURIComponent(externalUrl.split('?')[0].split('/').pop() || '')
+      } catch {
+        return ''
+      }
+    })()
     const externalAlt =
       altFromProps ||
       (resource && typeof resource === 'object' ? resource.alt || '' : '') ||
-      (resource && typeof resource === 'object' ? altFromFilename(resource.filename) : '')
+      (resource && typeof resource === 'object' ? altFromFilename(resource.filename) : '') ||
+      altFromFilename(fileFromUrl)
+
+    // Images on Vercel Blob (already in next.config remotePatterns) go through
+    // Next's optimizer: these are mostly ~2 MB PNG blog hero images, which were
+    // otherwise sent at full size to every phone. getImageProps respects the
+    // `unoptimized` config, so preview deployments still get the original URL.
+    // Width/height are only used to build the srcset; the rendered size stays
+    // CSS-controlled exactly as before.
+    if (/^https:\/\/[a-z0-9-]+\.(public\.)?blob\.vercel-storage\.com\//i.test(externalUrl)) {
+      const {
+        props: { width: _w, height: _h, style: _s, ...optimized },
+      } = getImageProps({
+        src: externalUrl,
+        alt: externalAlt,
+        width: 1920,
+        height: 1080,
+        quality,
+        priority,
+        loading: priority ? undefined : loading,
+        sizes: sizeFromProps || '(max-width: 768px) 100vw, 1200px',
+      })
+      return (
+        <picture className={cn(pictureClassName)}>
+          <img
+            {...optimized}
+            alt={externalAlt}
+            className={cn(imgClassName)}
+            style={
+              fill ? { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' } : undefined
+            }
+          />
+        </picture>
+      )
+    }
 
     return (
       <picture className={cn(pictureClassName)}>
