@@ -126,7 +126,6 @@ export const rootMetadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
   },
   verification: getSiteVerification(),
 }

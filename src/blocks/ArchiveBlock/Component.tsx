@@ -7,6 +7,7 @@ import React, { Suspense } from 'react'
 import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { StaticFirstPage } from '@/components/CollectionArchive/StaticFirstPage'
 
 const fetchArchivePosts = async (categoryIds: string[], limit: number) => {
   const payload = await getPayload({ config: configPromise })
@@ -71,7 +72,7 @@ export const ArchiveBlock: React.FC<
           <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <Suspense fallback={<div className="container py-8">Loading posts...</div>}>
+      <Suspense fallback={<StaticFirstPage posts={posts} />}>
         <CollectionArchive posts={posts} />
       </Suspense>
     </div>

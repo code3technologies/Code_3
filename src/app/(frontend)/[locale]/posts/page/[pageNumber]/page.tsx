@@ -1,12 +1,14 @@
 import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { StaticFirstPage } from '@/components/CollectionArchive/StaticFirstPage'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 import PageClient from './page.client'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { notFound } from 'next/navigation'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 export const revalidate = 600
 
@@ -53,7 +55,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         </div>
       </div>
 
-      <Suspense fallback={<div className="container py-8">Loading posts...</div>}>
+      <Suspense fallback={<StaticFirstPage posts={posts.docs} />}>
         <CollectionArchive posts={posts.docs} categories={categories.docs} />
       </Suspense>
 
@@ -67,10 +69,16 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   const page = Number(pageNumber)
+  const path = `/posts/page/${Number.isInteger(page) && page > 0 ? page : 1}`
   return {
     title: `Insights & Articles${page > 1 ? ` | Page ${page}` : ''} | CODE3`,
     description:
       'IT, cybersecurity, cloud, networking and AV insights from the CODE3 Technologies team in Dubai and the UAE.',
+    alternates: {
+      canonical: path,
+      languages: { en: path, ar: `/ar${path}`, 'x-default': path },
+    },
+    openGraph: mergeOpenGraph({ title: 'Insights & Articles | CODE3', url: path }),
   }
 }
 

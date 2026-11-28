@@ -74,6 +74,15 @@ export const generateMeta = async (args: {
         : undefined,
       title,
       url: canonicalPath,
+      // Blog posts are articles (with dates) for link previews and crawlers;
+      // pages stay "website".
+      ...(doc && !('layout' in doc)
+        ? {
+            type: 'article' as const,
+            publishedTime: (doc as Partial<Post>).publishedAt || undefined,
+            modifiedTime: doc.updatedAt || undefined,
+          }
+        : {}),
     }),
     alternates: {
       canonical: canonicalPath,
