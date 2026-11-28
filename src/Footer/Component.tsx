@@ -1,4 +1,5 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { cleanMapEmbedUrl } from '@/utilities/cleanMapEmbedUrl'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import React from 'react'
@@ -347,7 +348,7 @@ export async function Footer({ locale }: { locale: Locale }) {
               </h3>
               <div className="overflow-hidden rounded-xl border-2 border-white/30">
                 <iframe
-                  src={contactInfo.mapEmbedUrl}
+                  src={cleanMapEmbedUrl(contactInfo.mapEmbedUrl)}
                   className="h-[220px] w-full"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -422,7 +423,8 @@ export async function Footer({ locale }: { locale: Locale }) {
       <div className="bg-foreground">
         <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4 text-sm text-white/90">
           <div>
-            {bottomBar?.copyrightText}
+            {/* The year typed in the CMS goes stale every January; always show the current one. */}
+            {bottomBar?.copyrightText?.replace(/©\s*\d{4}/, `© ${new Date().getFullYear()}`)}
             {' | '}
             <Link href="/privacy-policy" className="hover:text-white hover:underline">
               Privacy Policy

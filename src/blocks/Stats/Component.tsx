@@ -13,11 +13,20 @@ type Props = {
 
 function Counter({ target, suffix }: { target: number; suffix?: string | null }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [value, setValue] = useState(0)
+  // Starts at the real figure so the server HTML (what Google and AI crawlers
+  // read) shows e.g. "1500+" instead of "0+". After hydration, a counter that
+  // is still below the fold is reset to 0 off-screen and counts up on scroll;
+  // one already on screen just keeps its final value.
+  const [value, setValue] = useState(target)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
+    {
+      const rect = el.getBoundingClientRect()
+      if (rect.top < window.innerHeight && rect.bottom > 0) return
+    }
+    setValue(0)
 
     let started = false
     const runCounter = () => {

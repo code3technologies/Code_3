@@ -1,4 +1,5 @@
 import type { ContactUsBlock as ContactUsBlockProps } from 'src/payload-types'
+import { cleanMapEmbedUrl } from '@/utilities/cleanMapEmbedUrl'
 import type { Footer } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
@@ -94,7 +95,7 @@ export const ContactUsBlock: React.FC<Props> = async ({
   const mapsSearchUrl = mapsSearchQuery
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsSearchQuery)}`
     : undefined
-  const mapEmbedUrl = contactInfo?.mapEmbedUrl
+  const mapEmbedUrl = cleanMapEmbedUrl(contactInfo?.mapEmbedUrl)
 
   type InfoCard = { icon: React.ReactElement; label: string; value: string; href?: string }
   const infoCards: InfoCard[] = [
