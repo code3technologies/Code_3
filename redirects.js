@@ -237,6 +237,12 @@ const redirects = async () => {
       destination: '/service/cloud-and-microsoft-solutions-dubai-uae',
       permanent: true,
     },
+    // Self-ranking "Top 10" post rewritten as a neutral buyer's guide (Nov 2026).
+    {
+      source: '/posts/top-10-it-companies-in-dubai-uae-in-2026-why-code3-stands-out',
+      destination: '/posts/how-to-choose-it-company-dubai',
+      permanent: true,
+    },
   ]
 
   // Next.js redirects run before middleware, so the /ar/ copies of the legacy
